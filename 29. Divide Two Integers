@@ -1,0 +1,29 @@
+Question: Divide two integers without using multiplication, division and mod operator. If it is overflow, return MAX_INT.
+
+any number can be converted to the format: num = a_0*2^0 + a_1*2^1 +...+ a_n*2^n
+Time complexity: O(logn). Space complexity: O(1).
+public class Solution {
+    public int divide(int dividend, int divisor) {
+        if (divisor == 0) {
+            return Integer.MAX_VALUE;
+        }
+        if (dividend == Integer.MIN_VALUE && divisor == -1) {
+            return Integer.MAX_VALUE;
+        }
+        long a = Math.abs((long)dividend);     //       
+        long b = Math.abs((long)divisor);
+        int result = 0;
+        while (a >= b) {
+            int shift = 0;
+            while (a >= (b << shift)) {
+                shift++;
+            }
+            a -= b << (shift - 1);
+            result += 1 << (shift - 1);
+        }
+        if ((dividend > 0 && divisor < 0) || (dividend < 0 && divisor > 0)) {
+            return -result;
+        }
+        return result;
+    }
+}
