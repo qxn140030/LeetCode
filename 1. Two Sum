@@ -1,0 +1,46 @@
+Question: Given an array of integers, return indices of the two numbers such that they add up to a specific target.
+          You may assume that each input would have exactly one solution.
+Example: Given nums = [2, 7, 11, 15], target = 9, Because nums[0] + nums[1] = 2 + 7 = 9, return [0, 1].
+
+Solution 1: Brute Force: nested for loops.
+            examine every possible pair of numbers in this integer array. 
+            Time complexity in worst case: O(n^2). 
+            For each element, we try to find its complement by looping through the rest of array which takes O(n) time.
+            Space complexity: O(1).
+public class Solution {
+    public int[] twoSum(int[] nums, int target) {   
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = i + 1; j < nums.length; j++) {
+                if (nums[i] + nums[j] == target) {
+		                int[] rst = {i, j};             
+                    return rst;
+                }
+            }
+        }
+        return null;
+    }
+}
+
+Solution 2: Use HashMap to store the target value.
+            Time complexity: O(n), it depends on the put and get operations of HashMap which is normally O(1). 
+            traverse the list containing n elements only once. Each look up in the table costs only O(1) time.
+            Space complexity: O(n). 
+            extra space required depends on the number of items stored in the hash table, which stores at most n elements.
+public class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        if (nums == null || nums.length < 2) {
+            return null;
+        }
+	      int[] rst = new int[2];
+        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+        for (int i = 0; i < nums.length; i++) {
+            if (map.containsKey(target - nums[i])) {
+                rst[0] = map.get(target - nums[i]);
+                rst[1] = i;
+                break;
+            } 
+            map.put(nums[i], i);
+        }
+        return rst;
+    }
+}
