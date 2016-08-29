@@ -1,0 +1,51 @@
+Question: Given a linked list, determine if it has a cycle in it.
+Follow up: Can you solve it without using extra space?
+
+Solution 1: record each node's reference (or memory address) in a hash table.
+Time complexity: O(n). visit each of the n elements in the list at most once. Adding a node to the hash table costs O(1) time.
+Space complexity: O(n).
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public boolean hasCycle(ListNode head) {
+        Set<ListNode> hs = new HashSet<ListNode>();
+        while (head != null) {
+            if (hs.contains(head)) {
+                return true;
+            } 
+            hs.add(head);
+            head = head.next;
+        }
+        return false;
+    }
+}
+
+Solution 2: slow pointer moves one step at a time while the fast pointer moves two steps at a time. when both pointers are in the
+            cycle, it takes (distance between the 2 runners) / (difference of speed) loops for the fast runner to catch up with the
+            slow runner. 
+time complexity: O(n). Space complexity: O(1). only use two nodes.
+public class Solution {
+    public boolean hasCycle(ListNode head) {
+        if (head == null) {
+            return false;
+        }
+        ListNode fast = head;
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            head = head.next;
+            if (fast == head) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
