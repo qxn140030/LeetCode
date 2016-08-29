@@ -1,0 +1,17 @@
+Question: Given an array of integers, every element appears twice except for one. Find that single one.
+    Note: Your algorithm should have a linear runtime complexity. Could you implement it without using extra memory?
+
+Bit manipulation. XOR will return 1 only on two different bits. If two numbers are the same, XOR will return 0. Finally only one left.
+Time complexity: O(n). Space complexity: O(1).
+ public class Solution {
+    public int singleNumber(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return -1;
+        }
+        int rst = 0;
+        for (int num : nums) {
+            rst ^= num;
+        }
+        return rst;
+    }
+}
