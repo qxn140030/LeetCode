@@ -1,0 +1,72 @@
+Question: Given an integer, convert it to a roman numeral. Input is guaranteed to be within the range from 1 to 3999.
+
+Solution 1: I 1, V 5, X 10, L 50, C 100, D 500, M 1000
+Time complexity: O(n), n is the number of digits <= 4.
+Space complexity: O(1).
+public class Solution {
+    public String intToRoman(int num) {
+        List<Integer> digits = new ArrayList<>();
+        int digit = 1000;
+        while (digit > 0) {
+            digits.add(num / digit);
+            num %= digit;
+            digit /= 10;
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append(helper(digits.get(0), 'M', ' ', ' '));
+        sb.append(helper(digits.get(1), 'C', 'D', 'M'));
+        sb.append(helper(digits.get(2), 'X', 'L', 'C'));
+        sb.append(helper(digits.get(3), 'I', 'V', 'X'));
+        return sb.toString();
+    }
+    private String helper(int num, char one, char five, char ten) {
+        StringBuilder sb = new StringBuilder();
+        switch(num) {
+            case 9:
+                sb.append(one);
+                sb.append(ten);
+                break;
+            case 8:
+            case 7:
+            case 6:
+            case 5:
+                sb.append(five);
+                for (int i = 5; i < num; i++) {
+                    sb.append(one);
+                }
+                break;
+            case 4:
+                sb.append(one);
+                sb.append(five);
+                break;
+            case 3:
+            case 2:
+            case 1:
+                for (int i = 0; i < num; i++) {
+                    sb.append(one);
+                }
+                break;
+            default:
+                break;
+        }
+        return sb.toString();
+    }
+}
+
+Solution 2: Greedy
+Time complexity: O(n), n is the number of digits <= 4.
+Space complexity: O(1).
+public class Solution {
+    public String intToRoman(int num) {
+        String rst = "";
+        String[] roman = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
+        int[] latin = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+        for (int i = 0; num != 0; i++) {
+            while (num >= latin[i]) {
+                rst += roman[i];
+                num -= latin[i];
+            }
+        }
+        return rst;
+    }
+}
