@@ -1,8 +1,7 @@
 Question: Given an integer, convert it to a roman numeral. Input is guaranteed to be within the range from 1 to 3999.
 
 Solution 1: I 1, V 5, X 10, L 50, C 100, D 500, M 1000
-Time complexity: O(n), n is the number of digits <= 4.
-Space complexity: O(1).
+Time complexity: O(n), n is the number of digits <= 4. Space complexity: O(1).
 public class Solution {
     public String intToRoman(int num) {
         List<Integer> digits = new ArrayList<>();
@@ -54,8 +53,7 @@ public class Solution {
 }
 
 Solution 2: Greedy
-Time complexity: O(n), n is the number of digits <= 4.
-Space complexity: O(1).
+Time complexity: O(n), n is the number of digits <= 4. Space complexity: O(1).
 public class Solution {
     public String intToRoman(int num) {
         String rst = "";
