@@ -10,7 +10,7 @@ public class Solution {
         if (dividend == Integer.MIN_VALUE && divisor == -1) {
             return Integer.MAX_VALUE;
         }
-        long a = Math.abs((long)dividend);     //       
+        long a = Math.abs((long)dividend);     // convert from int to long first, then get the absolute value.    
         long b = Math.abs((long)divisor);
         int result = 0;
         while (a >= b) {
