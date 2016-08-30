@@ -1,8 +1,7 @@
 Question: Merge two sorted linked lists and return it as a new list. The new list should be made by splicing together the nodes of
           the first two lists.
 
-using dummy head.
-Time complexity: O(m + n). Space complexity: O(1).
+using dummy head. Time complexity: O(m + n). Space complexity: O(1).
 /**
  * Definition for singly-linked list.
  * public class ListNode {
