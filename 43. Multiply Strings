@@ -1,0 +1,31 @@
+Given two numbers represented as strings, return multiplication of the numbers as a string.
+Note: The numbers can be arbitrarily large and are non-negative.
+      Converting the input string to integer is NOT allowed.
+      You should NOT use internal library such as BigInteger.
+
+Time Complexity: O(m * n). Space complexity: O(m + n).
+public class Solution {
+    public String multiply(String num1, String num2) {
+        num1 = new StringBuilder(num1).reverse().toString();      // reverse the numbers first.
+        num2 = new StringBuilder(num2).reverse().toString();
+        int[] digits = new int[num1.length() + num2.length()];
+        for (int i = 0; i < num1.length(); i++) {             // multiply each digit and sum at the corresponding positions.
+            int a = num1.charAt(i) - '0';
+            for (int j = 0; j < num2.length(); j++) {
+                int b = num2.charAt(j) - '0';
+                digits[i + j] += a * b;
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        int carry = 0;
+        for (int i = 0; i < digits.length; i++) {
+            int digit = digits[i] + carry;
+            carry = digit / 10;
+            sb.insert(0, digit % 10);              // StringBuilder.insert(int, int);
+        }
+        while (sb.charAt(0) == '0' && sb.length() > 1) {         // remove front 0's.
+            sb.deleteCharAt(0);
+        }
+        return sb.toString();
+    }
+}
