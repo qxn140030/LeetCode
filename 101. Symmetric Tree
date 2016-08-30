@@ -13,7 +13,7 @@ But the following [1,2,2,null,3,null,3] is not:
    3    3
 Note: Bonus points if you could solve it both recursively and iteratively.
 
-Recursive. Time complexity: O(h). Space complexity: O(h).
+Solution 1: Recursive. Time complexity: O(n). Space complexity: O(logn).
 /**
  * Definition for a binary tree node.
  * public class TreeNode {
@@ -38,5 +38,33 @@ public class Solution {
             return false;
         }
         return sym(p.left, q.right) && sym(p.right, q.left);
+    }
+}
+
+Solution 2: Iteration. time complexity: O(n). space complexity: O(n).
+public class Solution {
+    public boolean isSymmetric(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+        Queue<TreeNode> q1 = new LinkedList<TreeNode>();
+        Queue<TreeNode> q2 = new LinkedList<TreeNode>();
+        q1.offer(root.left);
+        q2.offer(root.right);
+        while (!q1.isEmpty() && !q2.isEmpty()) {
+            TreeNode n1 = q1.poll();
+            TreeNode n2 = q2.poll();
+            if (n1 == null && n2 == null) {
+                continue;
+            }
+            if (n1 == null || n2 == null || n1.val != n2.val) {
+                return false;
+            }
+            q1.offer(n1.left);
+            q1.offer(n1.right);
+            q2.offer(n2.right);
+            q2.offer(n2.left);
+        }
+        return true;
     }
 }
