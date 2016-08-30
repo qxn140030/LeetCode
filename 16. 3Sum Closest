@@ -3,8 +3,7 @@ Question: Given an array S of n integers, find three integers in S such that the
           For example, given array S = {-1 2 1 -4}, and target = 1.
           The sum that is closest to the target is 2. (-1 + 2 + 1 = 2).
 
-Time complexity: O(n^2).
-Space complexity: O(1).
+Time complexity: O(n^2). Space complexity: O(1).
 public class Solution {
     public int threeSumClosest(int[] nums, int target) {
         while (nums == null || nums.length < 3) {
