@@ -4,7 +4,7 @@ A mapping of digit to letters (just like on the telephone buttons).
 Input:Digit string "23", Output: ["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"].
 Note: Although the above answer is in lexicographical order, your answer could be in any order you want.
 
-Solution 1: DFS, recursion.
+DFS, recursion.
 Time complexity: O(m^n), m is the average number of letters on every number, n is the length of digits.
 Space complexity: O(m*n).
 public class Solution {
