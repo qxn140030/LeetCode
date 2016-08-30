@@ -8,10 +8,8 @@ Question: The string "PAYPALISHIRING" is written in a zigzag pattern on a given 
           string convert(string text, int nRows);
           convert("PAYPALISHIRING", 3) should return "PAHNAPLSIIGYIR".
 
-only visit each character in s once. 
-time complexity: O(n). 
-space complexity: O(1).
-public class Solution {          // Never forget the last condition: numRows <= 1.
+only visit each character in s once. time complexity: O(n). space complexity: O(1).
+public class Solution {                        // Never forget the last condition: numRows <= 1.
     public String convert(String s, int numRows) {
         if (s == null || numRows >= s.length() || numRows <= 1) {
             return s;
