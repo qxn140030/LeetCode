@@ -1,0 +1,52 @@
+Determine if a Sudoku is valid.
+The Sudoku board could be partially filled, where empty cells are filled with the character '.'
+Note: A valid Sudoku board (partially filled) is not necessarily solvable. Only the filled cells need to be validated.
+
+Using HashSet. Time complexity: O(3 * n ^ 2), n = 9, O(n^2). Space complexity: O(n).
+public class Solution {
+    public boolean isValidSudoku(char[][] board) {
+        if (board == null || board.length != 9 || board[0].length != 9) {
+            return false;
+        }
+        Set<Character> hs = new HashSet<Character>();
+        // check rows
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (board[i][j] != '.') {
+                    if (hs.contains(board[i][j])) {
+                        return false;
+                    }
+                    hs.add(board[i][j]);
+                }
+            }
+            hs.clear();
+        }
+        // columns
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (board[j][i] != '.') {
+                    if (hs.contains(board[j][i])) {
+                        return false;
+                    } 
+                    hs.add(board[j][i]);
+                }
+            }
+            hs.clear();
+        }
+        // cells
+        for (int i = 0; i < 9; i++) {
+            for (int j = i / 3 * 3; j < i / 3 * 3 + 3; j++) {
+                for (int k = i % 3 * 3; k < i % 3 * 3 + 3; k++) {
+                    if (board[j][k] != '.') {
+                        if (hs.contains(board[j][k])) {
+                            return false;
+                        } 
+                        hs.add(board[j][k]);
+                    }
+                }
+            }
+            hs.clear();
+        }
+        return true;
+    }
+}
