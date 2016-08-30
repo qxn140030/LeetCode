@@ -1,8 +1,7 @@
 Question: Write a function to find the longest common prefix string amongst an array of strings.
 
 Solution 1: preprocess the array, find the minimum length, then compare every char with the one in strs[0].
-Time complexity: O(m * n), m is the length of shortest string, n is array length.
-Space complexity: O(1).
+Time complexity: O(m * n), m is the length of shortest string, n is array length. Space complexity: O(1).
 public class Solution {
     public String longestCommonPrefix(String[] strs) {
         if (strs == null || strs.length == 0) {
@@ -27,8 +26,7 @@ public class Solution {
 }
 
 Solution 2: compare every string with strs[0].
-Time complexity: O(m * n), m is the length of shortest string, n is array length.
-Space complexity: O(1).
+Time complexity: O(m * n), m is the length of shortest string, n is array length. Space complexity: O(1).
 public class Solution {
     public String longestCommonPrefix(String[] strs) {
         if (strs == null || strs.length == 0) {
