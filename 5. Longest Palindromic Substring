@@ -1,1 +1,56 @@
+Given a string S, find the longest palindromic substring in S. You may assume that the maximum length of S is 1000, and there exists
+one unique longest palindromic substring.
 
+Solution 1: Expand Around Center
+palindrome mirrors around its center. there are 2n - 1 centers, n letters and (n - 1) slots between two letters.
+Time complexity: O(n^2). since expanding a palindrome around its center take O(n) time. Space complexity: O(1).
+public class Solution {
+    public String longestPalindrome(String s) {
+        if (s == null || s.length() == 0) {
+            return null;
+        }
+        String longest = "";
+        for (int i = 0; i < s.length(); i++) {
+            String tmp = expandAroundCenter(s, i, i);
+            if (tmp.length() > longest.length()) {
+                longest = tmp;
+            }
+            tmp = expandAroundCenter(s, i, i + 1);
+            if (tmp.length() > longest.length()) {
+                longest = tmp;
+            }
+        }
+        return longest;
+    }
+    private String expandAroundCenter(String s, int left, int right) {
+        while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+            right++;
+            left--;
+        }
+        return s.substring(left + 1, right);
+    }
+}
+
+Solution 2: Dynamic Programming. Time complexity: O(n^2). Space complexity: O(n^2).
+public class Solution {
+    public String longestPalindrome(String s) {
+        if (s == null || s.length() == 0) {
+            return null;
+        }
+        boolean[][] isPalindrome = new boolean[s.length()][s.length()];
+        int start = 0;
+        int end = 0;
+        for (int i = s.length() - 1; i >= 0 ; i--) {
+            for (int j = i; j < s.length(); j++) {
+                if (s.charAt(i) == s.charAt(j) && (j - i <= 2 || isPalindrome[i + 1][j - 1])) {
+                    isPalindrome[i][j] = true;
+                    if (j - i > end - start) {
+                        start = i;
+                        end = j;
+                    }
+                }
+            }
+        }
+        return s.substring(start, end + 1);
+    }
+}
