@@ -1,0 +1,41 @@
+The set [1,2,3,…,n] contains a total of n! unique permutations.
+By listing and labeling all of the permutations in order,
+We get the following sequence (ie, for n = 3):
+1."123"
+2."132"
+3."213"
+4."231"
+5."312"
+6."321"
+Given n and k, return the kth permutation sequence.
+Note: Given n will be between 1 and 9 inclusive.
+
+n numbers have n! permutations. for the same number at index 0, there are (n-1)! permutaitions from index 1 to n - 1. 
+after (n-1)! permutaitions, we will have another number at index 0.
+Time complexity: O(n). Space complexity: O(n).
+public class Solution {
+    public String getPermutation(int n, int k) {
+        k--;                         // to begin from index 0 rather than 1
+        List<Integer> nums = new ArrayList<Integer>();
+        for (int i = 1; i <= n; i++) {                 
+            nums.add(i);                  // initialize all numbers
+        }
+        int factorial = 1;
+        for (int i = 2; i < n; i++) {
+            factorial *= i;              // set factorial of n - 1
+        }
+        int round = n - 1;
+        StringBuilder sb = new StringBuilder();
+        while (round >= 0) {
+            int index = k / factorial;
+            k %= factorial;
+            sb.append(nums.get(index));
+            nums.remove(index);
+            if (round > 0) {
+                factorial /= round;
+            }
+            round--;
+        }
+        return sb.toString();
+    }
+}
