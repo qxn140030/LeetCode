@@ -9,7 +9,7 @@ For example, Given board =
 ]
 word = "ABCCED", -> returns true, word = "SEE", -> returns true, word = "ABCB", -> returns false.
 
-Time complexity: O(m^2 * n^2). Space complexity: O(m * n). 
+Time complexity: O(m * n * 4 ^ k), where k is the length of the word. Space complexity: O(m * n). 
 public class Solution {
     public boolean exist(char[][] board, String word) {
         if (board == null || board.length == 0 || board[0].length == 0) {
@@ -37,9 +37,9 @@ public class Solution {
         }
         visited[row][col] = true;
         boolean rst = search(board, word, index + 1, row + 1, col, visited) 
- 		             	|| search(board, word, index + 1, row, col + 1, visited) 
-			            || search(board, word, index + 1, row - 1, col, visited) 
-			            || search(board, word, index + 1, row, col - 1, visited);
+ 		   || search(board, word, index + 1, row, col + 1, visited) 
+		   || search(board, word, index + 1, row - 1, col, visited) 
+		   || search(board, word, index + 1, row, col - 1, visited);
         visited[row][col] = false;
         return rst;
     }
