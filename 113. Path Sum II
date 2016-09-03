@@ -13,7 +13,7 @@ return
    [5,8,4,5]
 ]
 
-Time complexity: O(n). Space complexity: O(klogn). where k is the number of results.
+Time complexity: O(n). Space complexity: O(klogn). where k is the number of paths.
 /**
  * Definition for a binary tree node.
  * public class TreeNode {
