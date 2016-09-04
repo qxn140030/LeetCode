@@ -1,0 +1,67 @@
+Given two words (beginWord and endWord), and a dictionary's word list, find the length of shortest transformation sequence
+from beginWord to endWord, such that:
+Only one letter can be changed at a time
+Each intermediate word must exist in the word list
+For example, Given: beginWord = "hit", endWord = "cog", wordList = ["hot","dot","dog","lot","log"]
+As one shortest transformation is "hit" -> "hot" -> "dot" -> "dog" -> "cog", return its length 5.
+Note: Return 0 if there is no such transformation sequence.
+All words have the same length.
+All words contain only lowercase alphabetic characters.
+
+Search problem, BFS guarantees the optimal solution.
+Time complexity: O(25 * N * L). where L is the length of the word, N is the size of wordList. 
+SPace complexity: O(n). because of the getNextWords function, dynamic search.
+public class Solution {
+    public int ladderLength(String beginWord, String endWord, Set<String> wordList) {
+        if (beginWord.equals(endWord)) {
+            return 1;
+        }
+        if (wordList == null || wordList.size() == 0) {
+            return 0;
+        }
+        wordList.add(beginWord);
+        wordList.add(endWord);
+        int steps = 2;
+        Queue<String> q = new LinkedList<>();
+        Set<String> hs = new HashSet<>();
+        hs.add(beginWord);
+        q.add(beginWord);
+        while (!q.isEmpty()) {
+            int size = q.size();
+            for (int i = 0; i < size; i++) {
+                String cur = q.remove();
+                for (String s : getNextWords(cur, wordList)) {
+                    if (hs.contains(s)) {
+                        continue;
+                    }
+                    if (s.equals(endWord)) {
+                        return steps;
+                    }
+                    q.add(s);
+                    hs.add(s);
+                }
+            }
+            steps++;
+        }
+        return 0;
+    }
+    private Set<String> getNextWords(String s, Set<String> wordList) {
+        Set<String> nextWords = new HashSet<>();
+        for (int i = 0; i < s.length(); i++) {
+            for (char c = 'a'; c <= 'z'; c++) {
+                if (s.charAt(i) != c) {
+                    String tmp = swap(s, i, c);
+                    if (wordList.contains(tmp)) {
+                        nextWords.add(tmp);
+                    }
+                }
+            }
+        }
+        return nextWords;
+    }
+    private String swap(String s, int i, char c) {
+        char[] arr = s.toCharArray();
+        arr[i] = c;
+        return new String(arr);
+    }
+}
