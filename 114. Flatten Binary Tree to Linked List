@@ -20,7 +20,7 @@ The flattened tree should look like:
 Hints:
 If you notice carefully in the flattened tree, each node's right child points to the next node of a pre-order traversal.
 
-Solution 1: recursive. Time complexity: O(n). Space complexity: O(n).
+Solution 1: recursive. Time complexity: O(n). Space complexity: O(logn).
 /**
  * Definition for a binary tree node.
  * public class TreeNode {
