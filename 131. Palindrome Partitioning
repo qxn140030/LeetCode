@@ -1,0 +1,42 @@
+Given a string s, partition s such that every substring of the partition is a palindrome.
+Return all possible palindrome partitioning of s.
+For example, given s = "aab", Return
+[
+  ["aa","b"],
+  ["a","a","b"]
+]
+
+Time complexity: exponential. Space complexity: exponential.
+public class Solution {
+    public List<List<String>> partition(String s) {
+        List<List<String>> rst = new ArrayList<List<String>>();
+        if (s == null || s.length() == 0) {
+            return rst;
+        }
+        List<String> path = new ArrayList<String>();
+        helper(s, rst, path, 0);
+        return rst;
+    }
+    private void helper(String s, List<List<String>> rst, List<String> path, int pos) {
+        if (pos == s.length()) {
+            rst.add(new ArrayList<String>(path));
+            return;
+        }
+        for (int i = pos; i < s.length(); i++) {
+            String sub = s.substring(pos, i + 1);
+            if (palin(sub)) {
+                path.add(sub);
+                helper(s, rst, path, i + 1);
+                path.remove(path.size() - 1);
+            }
+        }
+    }
+    private boolean palin(String s) {
+        for (int i = 0, j = s.length() - 1; i < j; i++, j--) {
+            if (s.charAt(i) != s.charAt(j)) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
