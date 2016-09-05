@@ -1,0 +1,55 @@
+Given a binary tree, return the preorder traversal of its nodes' values.
+For example: Given binary tree {1,#,2,3},
+   1
+    \
+     2
+    /
+   3
+return [1,2,3].
+Note: Recursive solution is trivial, could you do it iteratively?
+
+Solution 1: recursive. Time complexity: O(n). Space complexity: O(logn).
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public List<Integer> preorderTraversal(TreeNode root) {
+        List<Integer> rst = new ArrayList<Integer>();
+        if (root == null) {
+            return rst;
+        }
+        rst.add(root.val);
+        rst.addAll(preorderTraversal(root.left));
+        rst.addAll(preorderTraversal(root.right));
+        return rst;
+    }
+}
+
+Solution 2: iterative. Time complexity: O(n). Space complexity: O(logn).
+public class Solution {
+    public List<Integer> preorderTraversal(TreeNode root) {
+        List<Integer> rst = new ArrayList<Integer>();
+        if (root == null) {
+            return rst;
+        }
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(root);
+        while (!stack.empty()) {
+            root = stack.pop();
+            rst.add(root.val);
+            if (root.right != null) {
+                stack.push(root.right);
+            }
+            if (root.left != null) {
+                stack.push(root.left);
+            }
+        }
+        return rst;
+    }
+}
