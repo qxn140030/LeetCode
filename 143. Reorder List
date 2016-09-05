@@ -2,7 +2,7 @@ Given a singly linked list L: L0→L1→…→Ln-1→Ln, reorder it to: L0→Ln�
 You must do this in-place without altering the nodes' values.
 For example, Given {1,2,3,4}, reorder it to {1,4,2,3}.
 
-
+Time complexity: O(n). Space complexity: O(1).
 /**
  * Definition for singly-linked list.
  * public class ListNode {
@@ -23,41 +23,41 @@ public class Solution {
     }
     private ListNode findMid(ListNode head) {
         ListNode fast = head.next;
-        ListNode slow = head;
         while (fast != null && fast.next != null) {
-            fast = fast.next.next;
-            slow = slow.next;
-        }
-        return slow;
-    }
-    private void merge(ListNode l1, ListNode l2) {
-        int index = 0;
-        ListNode head = new ListNode(0);
-        while (l1 != null || l2 != null) {
-            if (index % 2 == 0) {
-                head.next = l1;
-                l1 = l1.next;
-            } else {
-                head.next = l2;
-                l2 = l2.next;
-            }
             head = head.next;
-            index++;
+            fast = fast.next.next;
         }
-        if (l1 != null) {
-            head.next = l1;
-        } else {
-            head.next = l2;
-        }
+        return head;
     }
     private ListNode reverse(ListNode head) {
         ListNode pre = null;
         while (head != null) {
-            ListNode tmp = head.next;
+            ListNode post = head.next;
             head.next = pre;
             pre = head;
-            head = tmp;
+            head = post;
         }
         return pre;
+    }
+    private void merge(ListNode l1, ListNode l2) {
+        int index = 0;
+        ListNode head = new ListNode(0);
+        ListNode tail = head;
+        while (l1 != null && l2 != null) {
+            if (index % 2 == 0) {
+                tail.next = l1;
+                l1 = l1.next;
+            } else {
+                tail.next = l2;
+                l2 = l2.next;
+            }
+            index++;
+            tail = tail.next;
+        }
+        if (l1 != null) {
+            tail.next = l1;
+        } else {
+            tail.next = l2;
+        }
     }
 }
