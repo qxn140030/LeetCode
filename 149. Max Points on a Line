@@ -1,0 +1,47 @@
+Given n points on a 2D plane, find the maximum number of points that lie on the same straight line.
+
+Time complexity: O(n^2). Space complexity: O(n).
+/**
+ * Definition for a point.
+ * class Point {
+ *     int x;
+ *     int y;
+ *     Point() { x = 0; y = 0; }
+ *     Point(int a, int b) { x = a; y = b; }
+ * }
+ */
+public class Solution {
+    public int maxPoints(Point[] points) {
+        if (points == null || points.length == 0) {
+            return 0;
+        }
+        int max = 0;
+        for (int i = 0; i < points.length; i++) {
+            int same = 1;
+            int vertical = 0;
+            Map<Double, Integer> map = new HashMap<>();
+            for (int j = i + 1; j < points.length; j++) {
+                if (points[i].x == points[j].x) {
+                    if (points[i].y == points[j].y) {
+                        same++;
+                    } else {
+                        vertical++;
+                    }
+                } else {
+                    double slope = points[i].y == points[j].y ? 0 : 
+                                   1.0 * (points[i].y - points[j].y) / (points[i].x - points[j].x);
+                    if (!map.containsKey(slope)) {
+                        map.put(slope, 1);
+                    } else {
+                        map.put(slope, map.get(slope) + 1);
+                    }
+                }
+            }
+            for (int num : map.values()) {
+                max = Math.max(max, num + same);          // Note: + same; for normal cases.
+            }
+            max = Math.max(max, vertical + same);         // Note: + same; for vertical cases.
+        }
+        return max;
+    }
+}
