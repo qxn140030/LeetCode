@@ -1,0 +1,61 @@
+Given a binary tree, return the postorder traversal of its nodes' values.
+For example: Given binary tree {1,#,2,3},
+   1
+    \
+     2
+    /
+   3
+return [3,2,1].
+Note: Recursive solution is trivial, could you do it iteratively?
+
+Solution 1: recursive. Time complexity: O(n). Space complexity: O(logn).
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public List<Integer> postorderTraversal(TreeNode root) {
+        List<Integer> rst = new ArrayList<Integer>();
+        if (root == null) {
+            return rst;
+        }
+        rst.addAll(postorderTraversal(root.left));
+        rst.addAll(postorderTraversal(root.right));
+        rst.add(root.val);
+        return rst;
+    }
+}
+
+Solution 2: iterative. Time complexity: O(n). Space complexity: O(logn).
+public class Solution {
+    public List<Integer> postorderTraversal(TreeNode root) {
+        List<Integer> rst = new ArrayList<Integer>();
+        if (root == null) {
+            return rst;
+        }
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(root);
+        while (!stack.empty()) {
+            root = stack.peek();                                 // check the top of stack.
+            if (root.left == null && root.right == null) {       // no children, then add to rst and pop.
+                rst.add(root.val);
+                stack.pop();
+            } else {
+                if (root.right != null) {                        
+                    stack.push(root.right);            // push right child to stack first. 
+                    root.right = null;                 // Note: then set the right child as null, important!!
+                }
+                if (root.left != null) {
+                    stack.push(root.left);             // then push left child to stack.
+                    root.left = null;                  // set the left child as null!
+                }
+            }
+        }
+        return rst;
+    }
+}
