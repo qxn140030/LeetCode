@@ -1,0 +1,64 @@
+There are N children standing in a line. Each child is assigned a rating value.
+You are giving candies to these children subjected to the following requirements:
+Each child must have at least one candy.
+Children with a higher rating get more candies than their neighbors.
+What is the minimum candies you must give?
+
+Time complexity: O(n). Space complexity: O(n).
+public class Solution {
+    public int candy(int[] ratings) {
+        if (ratings == null || ratings.length == 0) {
+            return 0;
+        }
+        int[] left = new int[ratings.length];
+        left[0] = 1;
+        for (int i = 1; i < ratings.length; i++) {
+            if (ratings[i] > ratings[i - 1]) {
+                left[i] = left[i - 1] + 1;
+            } else {
+                left[i] = 1;
+            }
+        }
+        int[] right = new int[ratings.length];
+        right[ratings.length - 1] = 1;
+        for (int i = ratings.length - 2; i >= 0; i--) {
+            if (ratings[i] > ratings[i + 1]) {
+                right[i] = right[i + 1] + 1;
+            } else {
+                right[i] = 1;
+            }
+        }
+        int max = 0;
+        for (int i = 0; i < ratings.length; i++) {
+            max += Math.max(left[i], right[i]);
+        }
+        return max;
+    }
+}
+
+public class Solution {
+    public int candy(int[] ratings) {
+        if (ratings == null || ratings.length == 0) {
+            return 0;
+        }
+        int[] candy = new int[ratings.length];
+        candy[0] = 1;
+        for (int i = 1; i < ratings.length; i++) {
+            if (ratings[i] > ratings[i - 1]) {
+                candy[i] = candy[i - 1] + 1;
+            } else {
+                candy[i] = 1;
+            }
+        }
+        int rst = candy[ratings.length - 1];
+        for (int i = ratings.length - 2; i >= 0; i--) {
+            int cur = 1;
+            if (ratings[i] > ratings[i + 1]) {
+                cur = candy[i + 1] + 1;
+            } 
+            rst += Math.max(cur, candy[i]);
+            candy[i] = cur;
+        }
+        return rst;
+    }
+}
