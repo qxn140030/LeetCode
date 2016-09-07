@@ -1,0 +1,76 @@
+Given a string s and a dictionary of words dict, add spaces in s to construct a sentence where each word is a valid
+dictionary word. Return all such possible sentences.
+For example, given s = "catsanddog", dict = ["cat", "cats", "and", "sand", "dog"].
+A solution is ["cats and dog", "cat sand dog"].
+
+Solution 1: Brute force. recursion. Time Limit Exceeded.
+Time complexity: exponential. Space complexity: exponential.
+public class Solution {
+    public List<String> wordBreak(String s, Set<String> wordDict) {
+        List<String> rst = new ArrayList<String>();
+        if (s == null || s.length() == 0) {
+            return rst;
+        }
+        List<String> path = new ArrayList<String>();
+        helper(s, wordDict, rst, path, 0);
+        return rst;
+    }
+    private void helper(String s, Set<String> wordDict, List<String> rst, List<String> path, int pos) {
+        if (pos >= s.length()) {
+            StringBuilder sb = new StringBuilder();
+            for (String str : path) {
+                sb.append(str).append(" ");
+            }
+            sb.deleteCharAt(sb.length() - 1);
+            rst.add(sb.toString());
+            return;
+        }
+        for (int i = pos; i < s.length(); i++) {
+            String sub = s.substring(pos, i + 1);
+            if (wordDict.contains(sub)) {
+                path.add(sub);
+                helper(s, wordDict, rst, path, i + 1);
+                path.remove(path.size() - 1);
+            }
+        }
+    }
+}
+
+Solution 2: Time complexity: exponential. Space complexity: exponential.
+public class Solution {
+    public List<String> wordBreak(String s, Set<String> wordDict) {
+        List<String> rst = new ArrayList<String>();
+        if (s == null || s.length() == 0) {
+            return rst;
+        }
+        boolean[] dp = new boolean[s.length() + 1];
+        dp[0] = true;
+        for (int i = 1; i <= s.length(); i++) {
+            for (int j = 0; j < i; j++) {
+                if (dp[j] && wordDict.contains(s.substring(j, i))) {
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+        if (!dp[s.length()]) {          // check whether it can break first.
+            return rst;
+        }
+        Map<Integer, List<String>> map = new HashMap<>();            // HashMap
+        List<String> base = new ArrayList<String>();                 // Note
+        base.add("");                                                // Note
+        map.put(0, base);                                            // Note
+        for (int i = 1; i <= s.length(); i++) {
+            List<String> cur = new ArrayList<String>();
+            map.put(i, cur);
+            for (int j = 0; j < i; j++) {
+                if (wordDict.contains(s.substring(j, i))) {
+                    for (String str : map.get(j)) {
+                        cur.add(str + (str.length() == 0 ? "" : " ") + s.substring(j, i));
+                    }
+                }
+            }
+        }
+        return map.get(s.length());
+    }
+}
