@@ -16,7 +16,6 @@ class MyQueue {
     public void push(int x) {
         s1.push(x);
     }
-
     // Removes the element from in front of queue.
     public void pop() {
         if (!s2.isEmpty()) {
@@ -29,7 +28,6 @@ class MyQueue {
             s2.pop();
         }
     }
-
     // Get the front element.
     public int peek() {
         if (empty()) {
@@ -44,7 +42,6 @@ class MyQueue {
         }
         return s2.peek();
     }
-
     // Return whether the queue is empty.
     public boolean empty() {
         return s1.isEmpty() && s2.isEmpty();
