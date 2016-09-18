@@ -26,7 +26,9 @@ public class Solution {
     }
 }
 
-Solution 3: Mathmatics. i = log3(n). i = logb(n) / lohb(3).
+Solution 3: Mathmatics. n = 3 ^ i. i = log3(n). i = logb(n) / lohb(3).
+n is a power of three if and only if i is an integer. In Java, we check if a number is an integer by taking the decimal
+part (using % 1) and checking if it is 0.
 never use == when comparing double. 
 because the result of Math.log10(n) / Math.log10(3) could be 5.0000001 or 4.9999999. 
 public class Solution {
