@@ -1,0 +1,36 @@
+Given an integer, write a function to determine if it is a power of three.
+Follow up:
+Could you do it without using any loop / recursion?
+
+Solution 1: Loop iteration.
+public class Solution {
+    public boolean isPowerOfThree(int n) {
+        if (n < 1) {
+            return false;
+        }
+        while (n % 3 == 0) {
+            n /= 3;
+        }
+        return n == 1;
+    }
+}
+
+Solution 2: base conversion. regular expression.
+convert the number to base 3 and check if it is written as a leading 1 followed by all 0.
+A couple of built-in Java functions will help us along the way.
+String baseChange = Integer.toString(number, base);
+Time complexity: O(log3(n)). Space complexity: O(log3(n)).
+public class Solution {
+    public boolean isPowerOfThree(int n) {
+        return Integer.toString(n, 3).matches("^10*$");
+    }
+}
+
+Solution 3: Mathmatics. i = log3(n). i = logb(n) / lohb(3).
+never use == when comparing double. 
+because the result of Math.log10(n) / Math.log10(3) could be 5.0000001 or 4.9999999. 
+public class Solution {
+    public boolean isPowerOfThree(int n) {
+        return Math.log10(n) / Math.log10(3) % 1 == 0;
+    }
+}
