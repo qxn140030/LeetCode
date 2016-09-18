@@ -1,0 +1,82 @@
+Given two strings s and t, write a function to determine if t is an anagram of s.
+For example,
+s = "anagram", t = "nagaram", return true.
+s = "rat", t = "car", return false.
+Note:
+You may assume the string contains only lowercase alphabets.
+Follow up:
+What if the inputs contain unicode characters? How would you adapt your solution to such case?
+
+Solution 1: sorting.
+Time complexity: O(nlogn). Space complexity: O(1).
+O(1) auxiliary space if heapsort is used. Note that in Java, toCharArray() makes a copy of the string so it costs O(n) extra
+space, but we ignore this for complexity analysis because:
+It is a language dependent detail.
+It depends on how the function is designed. For example, the function parameter types can be changed to char[].
+public class Solution {
+    public boolean isAnagram(String s, String t) {
+        if (s == null && t == null) {
+            return true;
+        }
+        if (s == null || t == null || s.length() != t.length()) {
+            return false;
+        }
+        char[] c1 = s.toCharArray();
+        char[] c2 = t.toCharArray();
+        Arrays.sort(c1);
+        Arrays.sort(c2);
+        return Arrays.equals(c1, c2);
+    }
+}
+
+Solution 2: string contains only lower case letters.
+Time complexity: O(n). Space complexity: O(1).
+public class Solution {
+    public boolean isAnagram(String s, String t) {
+        if (s == null && t == null) {
+            return true;
+        }
+        if (s == null || t == null || s.length() != t.length()) {
+            return false;
+        }
+        int[] ch = new int[26];
+        for (int i = 0; i < s.length(); i++) {
+            ch[s.charAt(i) - 'a']++;
+            ch[t.charAt(i) - 'a']--;
+        }
+        for (int count : ch) {
+            if (count != 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+Solution 3: Use a hash table instead of a fixed size counter to fit the entire range of unicode characters. more generic.
+Time complexity: O(n). Space complexity: O(1).
+public class Solution {
+    public boolean isAnagram(String s, String t) {
+        if (s == null && t == null) {
+            return true;
+        }
+        if (s == null || t == null || s.length() != t.length()) {
+            return false;
+        }
+        Map<Character, Integer> map = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            if (!map.containsKey(s.charAt(i))) {
+                map.put(s.charAt(i), 1);
+            } else {
+                map.put(s.charAt(i), map.get(s.charAt(i)) + 1);
+            }
+        }
+        for (int i = 0; i < t.length(); i++) {
+            if (!map.containsKey(t.charAt(i)) || map.get(t.charAt(i)) == 0) {
+                return false;
+            }
+            map.put(t.charAt(i), map.get(t.charAt(i)) - 1);
+        }
+        return true;
+    }
+}
