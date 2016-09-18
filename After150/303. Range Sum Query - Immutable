@@ -1,0 +1,30 @@
+Given an integer array nums, find the sum of the elements between indices i and j (i ≤ j), inclusive.
+Example: Given nums = [-2, 0, 3, -5, 2, -1]
+sumRange(0, 2) -> 1
+sumRange(2, 5) -> -1
+sumRange(0, 5) -> -3
+Note:
+You may assume that the array does not change.
+There are many calls to sumRange function.
+
+Caching.
+Time complexity: O(1) time per query, O(n) time pre-computation. 
+Since the cumulative sum is cached, each sumRange query can be calculated in O(1) time.
+Space complexity: O(n).
+public class NumArray {
+    public int[] sum; 
+    public NumArray(int[] nums) {
+        sum = new int[nums.length + 1];
+        for (int i = 0; i < nums.length; i++) {
+            sum[i + 1] = sum[i] + nums[i];
+        }
+    }
+    public int sumRange(int i, int j) {
+        return sum[j + 1] - sum[i];
+    }
+}
+// Your NumArray object will be instantiated and called as such:
+// NumArray numArray = new NumArray(nums);
+// numArray.sumRange(0, 1);
+// numArray.sumRange(1, 2);
+// numArray.sumRange(1, 2);
