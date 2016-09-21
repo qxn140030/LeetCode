@@ -1,4 +1,4 @@
-Question: Returns the index of the first occurrence of needle in haystack, or -1 if needle is not part of haystack.
+Returns the index of the first occurrence of needle in haystack, or -1 if needle is not part of haystack.
 
 Time complexity: O(m * n). Space complexity: O(1).
 public class Solution {
