@@ -1,0 +1,40 @@
+Given a string that contains only digits 0-9 and a target value, return all possibilities to add binary operators (not
+unary) +, -, or * between the digits so they evaluate to the target value.
+Examples: 
+"123", 6 -> ["1+2+3", "1*2*3"] 
+"232", 8 -> ["2*3+2", "2+3*2"]
+"105", 5 -> ["1*0+5","10-5"]
+"00", 0 -> ["0+0", "0-0", "0*0"]
+"3456237490", 9191 -> []
+
+public class Solution {
+    public List<String> addOperators(String num, int target) {
+        List<String> rst = new ArrayList<String>();
+        if (num == null || num.length() == 0) {
+            return rst;
+        }
+        helper(num, target, rst, "", 0, 0);
+        return rst;
+    }
+    private void helper(String num, int target, List<String> rst, String path, long sum, long last) {
+        if (sum == target && num.length() == 0) { 
+            rst.add(path);
+            return;
+        }
+        for (int i = 1; i <= num.length(); i++) {
+            String sub = num.substring(0, i);
+            if (sub.length() > 1 && num.charAt(0) == '0') {
+                return;
+            }
+            String next = num.substring(i);
+            long cur = Long.parseLong(sub);
+            if (path.length() == 0) {
+                helper(next, target, rst, sub, cur, cur);
+            } else {
+                helper(next, target, rst, path + "+" + cur, sum + cur, cur);
+                helper(next, target, rst, path + "-" + cur, sum - cur, -cur);       // Note: neagative sign for last number.
+                helper(next, target, rst, path + "*" + cur, (sum - last) + (last * cur), cur * last);
+            }
+        }
+    }
+}
