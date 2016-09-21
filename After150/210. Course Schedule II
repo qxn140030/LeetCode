@@ -21,7 +21,7 @@ This problem is equivalent to finding the topological order in a directed graph.
 exists and therefore it will be impossible to take all courses.
 Topological sort could also be done via BFS.
 
-// runtime error
+Solution 1: BFS.
 public class Solution {
     public int[] findOrder(int numCourses, int[][] prerequisites) {
         int[] indegrees = new int[numCourses];
@@ -30,8 +30,8 @@ public class Solution {
             indegrees[prerequisites[i][0]]++;
         }
         Queue<Integer> q = new LinkedList<>();
-        for (int i : indegrees) {
-            if (i == 0) {
+        for (int i = 0; i < numCourses; i++) {
+            if (indegrees[i] == 0) {
                 q.offer(i);
             }
         }
@@ -42,13 +42,17 @@ public class Solution {
             for (int i = 0; i < m; i++) {
                 if (prerequisites[i][1] == cur) {
                     indegrees[prerequisites[i][0]]--;
+                    if (indegrees[prerequisites[i][0]] == 0) {
+                        q.offer(prerequisites[i][0]);
+                    }
                 }
-                if (indegrees[prerequisites[i][0]] == 0) {
-                    q.offer(prerequisites[i][0]);
-                }
+                
             }
-            order[index++] = cur;    // error
+            order[index++] = cur;   
         }
-        return order;
+        if (index == numCourses) {
+            return order;
+        }
+        return new int[0];                 // return [].
     }
 }
