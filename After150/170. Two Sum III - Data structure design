@@ -1,0 +1,56 @@
+Design and implement a TwoSum class. It should support the following operations: add and find.
+add - Add the number to an internal data structure.
+find - Find if there exists any pair of numbers which sum is equal to the value.
+For example, add(1); add(3); add(5);
+find(4) -> true
+find(7) -> false
+
+Since the desired class need add and get operations, HashMap is a good option for this purpose.
+public class TwoSum {
+    Map<Integer, Integer> nums = new HashMap<>();
+    // Add the number to an internal data structure.
+	public void add(int number) {
+	    if (nums.containsKey(number)) {
+	        nums.put(number, nums.get(number) + 1);
+	    } else {
+	        nums.put(number, 1);
+	    }
+	}
+
+    // Find if there exists any pair of numbers which sum is equal to the value.
+	public boolean find(int value) {
+	    for (int num : nums.keySet()) {
+	        int target = value - num;
+	        if (nums.containsKey(target)) {
+	            if (num == target && nums.get(num) < 2) {
+	                continue;
+	            }
+	            return true;
+	        }
+	    }
+	    return false;
+	}
+}
+
+public class TwoSum {
+    List<Integer> nums = new ArrayList<>();
+    // Add the number to an internal data structure.
+	public void add(int number) {
+	    nums.add(number);
+	}
+    // Find if there exists any pair of numbers which sum is equal to the value.
+	public boolean find(int value) {
+	    Set<Integer> hs = new HashSet<>();
+	    for (int i = 0; i < nums.size(); i++) {
+	        if (hs.contains(value - nums.get(i))) {
+	            return true;
+	        }
+	        hs.add(nums.get(i));
+	    }
+	    return false;
+	}
+}
+// Your TwoSum object will be instantiated and called as such:
+// TwoSum twoSum = new TwoSum();
+// twoSum.add(number);
+// twoSum.find(value);
