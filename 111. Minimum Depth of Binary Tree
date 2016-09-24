@@ -44,7 +44,7 @@ public class Solution {
     }
 }
 
-Solution 2; Iterative, using two queues. Time complexity: O(n). Space complexity: O(n).
+Solution 2: Iterative, using a queue. Time complexity: O(n). Space complexity: O(n).
 public class Solution {
     public int minDepth(TreeNode root) {
         if (root == null) {
