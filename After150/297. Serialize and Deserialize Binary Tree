@@ -1,0 +1,125 @@
+Serialization is the process of converting a data structure or object into a sequence of bits so that it can be stored in a file or
+memory buffer, or transmitted across a network connection link to be reconstructed later in the same or another computer environment.
+Design an algorithm to serialize and deserialize a binary tree. There is no restriction on how your serialization/deserialization
+algorithm should work. You just need to ensure that a binary tree can be serialized to a string and this string can be deserialized to
+the original tree structure.
+For example, you may serialize the following tree
+    1
+   / \
+  2   3
+     / \
+    4   5
+as "[1,2,3,null,null,4,5]", just the same as how LeetCode OJ serializes a binary tree. You do not necessarily need to follow this
+format, so please be creative and come up with different approaches yourself.
+Note: Do not use class member/global/static variables to store states. Your serialize and deserialize algorithms should be stateless.
+
+Solution 1: level order traversal.
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Codec {
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        if (root == null) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        Queue<TreeNode> q = new LinkedList<>();
+        q.offer(root);
+        while (!q.isEmpty()) {
+            root = q.poll();
+            if (root != null) {
+                sb.append(root.val).append(",");
+                q.offer(root.left);
+                q.offer(root.right);
+            } else {
+                sb.append("#,");
+            }
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        return sb.toString();
+    }
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        if (data == null || data.length() == 0) {
+            return null;
+        }
+        String[] arr = data.split(",");
+        TreeNode root = new TreeNode(Integer.parseInt(arr[0]));
+        Queue<TreeNode> q = new LinkedList<>();
+        q.offer(root);
+        int i = 1;
+        while (!q.isEmpty()) {
+            TreeNode node = q.poll();
+            if (!arr[i].equals("#")) {
+                node.left = new TreeNode(Integer.parseInt(arr[i]));
+                q.offer(node.left);
+            } else {
+                node.left = null;
+            }
+            i++;
+            if (!arr[i].equals("#")) {
+                node.right = new TreeNode(Integer.parseInt(arr[i]));
+                q.offer(node.right);
+            } else {
+                node.right = null;
+            }
+            i++;
+        }
+        return root;
+    }
+}
+// Your Codec object will be instantiated and called as such:
+// Codec codec = new Codec();
+// codec.deserialize(codec.serialize(root));
+
+Solution 2: preorder traversal
+public class Codec {
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        if (root == null) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(root);
+        while (!stack.isEmpty()) {
+            root = stack.pop();
+            if (root != null) {
+                sb.append(root.val).append(",");
+                stack.push(root.right);
+                stack.push(root.left);
+            } else {
+                sb.append("#,");
+            }
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        return sb.toString();
+    }
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        if (data == null || data.length() == 0) {
+            return null;
+        }
+        int[] t = {0};
+        String[] arr = data.split(",");
+        return helper(arr, t);
+    }
+    private TreeNode helper(String[] arr, int[] t) {
+        if (arr[t[0]].equals("#")) {
+            return null;
+        }
+        TreeNode root = new TreeNode(Integer.parseInt(arr[t[0]]));
+        t[0] += 1;
+        root.left = helper(arr, t);
+        t[0] += 1;
+        root.right = helper(arr, t);
+        return root;
+    }
+}
