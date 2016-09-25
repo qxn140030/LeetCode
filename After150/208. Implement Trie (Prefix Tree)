@@ -2,8 +2,7 @@ Implement a trie with insert, search, and startsWith methods.
 Note:
 You may assume that all inputs are consist of lowercase letters a-z.
 
-Trie (we pronounce "try") or prefix tree is a tree data structure, which is used for retrieval of a key in a dataset of
-strings.
+Trie (we pronounce "try") or prefix tree is a tree data structure, which is used for retrieval of a key in a dataset of strings.
 class TrieNode {
     // R links to node children
     private TrieNode[] links;
@@ -28,7 +27,6 @@ class TrieNode {
         return isEnd;
     }
 }
-
 public class Trie {
     private TrieNode root;
     public Trie() {
@@ -45,8 +43,7 @@ public class Trie {
             node = node.get(cur);
         }
         node.setEnd();
-    }
-    
+    }    
     // search a prefix or whole key in trie and
     // returns the node where search ends
     public TrieNode searchPrefix(String word) {
@@ -61,20 +58,17 @@ public class Trie {
         }
         return node;
     }
-
     // Returns if the word is in the trie.
     public boolean search(String word) {
         TrieNode node = searchPrefix(word);
         return node != null && node.isEnd();
     }
-
     // Returns if there is any word in the trie
     // that starts with the given prefix.
     public boolean startsWith(String prefix) {
         return searchPrefix(prefix) != null;
     }
 }
-
 // Your Trie object will be instantiated and called as such:
 // Trie trie = new Trie();
 // trie.insert("somestring");
