@@ -1,0 +1,53 @@
+Given a string S and a string T, find the minimum window in S which will contain all the characters in T in complexity O(n).
+For example,
+S = "ADOBECODEBANC"
+T = "ABC"
+Minimum window is "BANC".
+Note:
+If there is no such window in S that covers all characters in T, return the empty string "".
+If there are multiple such windows, you are guaranteed that there will always be only one unique minimum window in S.
+
+public class Solution {
+    public String minWindow(String s, String t) {
+        if (s == null || t == null || s.length() < t.length()) {
+            return "";
+        }
+        Map<Character, Integer> map = new HashMap<>();
+        for (int i = 0; i < t.length(); i++) {
+            char c = t.charAt(i);
+            if (!map.containsKey(c)) {
+                map.put(c, 1);
+            } else {
+                map.put(c, map.get(c) + 1);
+            }
+        }
+        int minStart = 0;
+        int count = 0;
+        int minLen = s.length() + 1;
+        int left = 0;
+        for (int i = 0; i < s.length(); i++) {      // move the end pointer right, until find all the characters.
+            char c = s.charAt(i);
+            if (map.containsKey(c)) {
+                map.put(c, map.get(c) - 1);
+                if (map.get(c) >= 0) {
+                    count++;
+                }                         // already find all the characters, then move the left pointer as right as possible.
+                while (count == t.length()) {      
+                    if (i - left + 1 < minLen) {
+                        minStart = left;
+                        minLen = i - left + 1;
+                    }
+                    char ch = s.charAt(left);
+                    if (map.containsKey(ch)) {
+                        map.put(ch, map.get(ch) + 1);
+                        if (map.get(ch) > 0) {
+                            count--;
+                        }
+                    }
+                    left++;
+                }
+            }
+        }
+        return minLen == s.length() + 1 ? "" : s.substring(minStart, minStart + minLen);
+    }
+}
