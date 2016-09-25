@@ -20,7 +20,7 @@ public class Solution {
                 int tmp = nums[j];
                 nums[j] = nums[i];
                 nums[i] = tmp;
-                j++;
+                j++;                 // Note.
             }
         }
     }
