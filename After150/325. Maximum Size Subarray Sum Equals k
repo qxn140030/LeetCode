@@ -1,0 +1,37 @@
+Given an array nums and a target value k, find the maximum length of a subarray that sums to k. If there isn't one, return 0 instead.
+Example 1: 
+Given nums = [1, -1, 5, -2, 3], k = 3,
+return 4. (because the subarray [1, -1, 5, -2] sums to 3 and is the longest)
+Example 2:
+Given nums = [-2, -1, 2, 1], k = 1,
+return 2. (because the subarray [-1, 2] sums to 1 and is the longest)
+Follow Up:
+Can you do it in O(n) time?
+
+Use a HashMap to keep track of the sum from index 0 to index i, use it as the key, and use the current index as the value.
+build the hashmap: if the current sum does not exist in the hashmap, put it in. If the current sum does exist in Hashmap, do not
+replace or add to the older value, simply do not update. Because this value might be the left index of our subarray in later comparison.
+We are looking for the longest subarray so we want the left index to be the smaller the better. 
+
+public class Solution {
+    public int maxSubArrayLen(int[] nums, int k) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(0, -1);                              // Note: Important.
+        int sum = 0;
+        int max = 0;
+        for (int i = 0; i < nums.length; i++) {
+            sum += nums[i];
+            if (!map.containsKey(sum)) {
+                map.put(sum, i);
+            }
+            if (map.containsKey(sum - k)) {
+                int len = i - map.get(sum - k);
+                max = Math.max(max, len);
+            }
+        }
+        return max == 0 ? 0 : max;
+    }
+}
