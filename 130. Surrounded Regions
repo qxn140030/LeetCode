@@ -90,7 +90,7 @@ public class Solution {
             int col = code % n;
             if (row > 0 && board[row - 1][col] == 'O') {
                 q.add((row - 1) * n + col);
-                board[row - 1][col] = '#';
+                board[row - 1][col] = '#';                    // Note: change to '#' here is important.
             }
             if (row < m - 1 && board[row + 1][col] == 'O') {
                 q.add((row + 1) * n + col);
