@@ -1,1 +1,58 @@
+You are given a string, s, and a list of words, words, that are all of the same length. Find all starting indices of
+substring(s) in s that is a concatenation of each word in words exactly once and without any intervening characters.
+For example, given:
+s: "barfoothefoobarman"
+words: ["foo", "bar"]
+You should return the indices: [0,9].
+(order does not matter).
 
+Time complexity: O(n). 
+Space complexity: O(m * len). m is the number of length, len is the length of each word.
+public class Solution {
+    public List<Integer> findSubstring(String s, String[] words) {
+        List<Integer> rst = new ArrayList<Integer>();
+        int len = words[0].length();        
+        Map<String, Integer> map = new HashMap<>();
+        for (String word : words) {
+            if (!map.containsKey(word)) {
+                map.put(word, 1);
+            } else {
+                map.put(word, map.get(word) + 1);
+            }
+        }
+        for (int i = 0; i < len; i++) {
+            int start = i;
+            int count = 0;
+            Map<String, Integer> cur = new HashMap<>();
+            for (int j = i; j <= s.length() - len; j += len) {
+                String word = s.substring(j, j + len);
+                if (!map.containsKey(word)) {
+                    start = j + len;
+                    count = 0;
+                    cur = new HashMap<>();
+                } else {
+                    if (!cur.containsKey(word)) {
+                        cur.put(word, 1);                       
+                    } else {
+                        cur.put(word, cur.get(word) + 1);
+                    }
+                    count++;
+                    while (cur.get(word) > map.get(word)) {                        
+                        String left = s.substring(start, start + len);
+                        cur.put(left, cur.get(left) - 1);
+                        count--;
+                        start += len;
+                    }
+                    if (count == words.length) {
+                        rst.add(start);                       
+                        String left = s.substring(start, start + len);
+                        cur.put(left, cur.get(left) - 1);
+                        count--;
+                        start += len;
+                    }                   
+                }
+            }
+        }
+        return rst;
+    }
+}
