@@ -1,6 +1,7 @@
 Implement pow(x, n).
 
-recursive. relation: x^n = x^(n/2) * x^(n/2) * x^(n%2). Time complexity: O(logn). Space complexity: O(logn).
+recursive. relation: x^n = x^(n/2) * x^(n/2) * x^(n%2). 
+Time complexity: O(logn). Space complexity: O(logn).
 public class Solution {
     public double myPow(double x, int n) {
         if (n == 0) {
