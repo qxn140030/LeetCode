@@ -1,0 +1,32 @@
+Given a string, find the length of the longest substring T that contains at most k distinct characters.
+For example, Given s = “eceba” and k = 2,
+T is "ece" which its length is 3.
+
+public class Solution {
+    public int lengthOfLongestSubstringKDistinct(String s, int k) {
+        Map<Character, Integer> map = new HashMap<>();
+        int start = 0;
+        int rst = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (map.containsKey(c)) {
+                map.put(c, map.get(c) + 1);
+            } else {
+                map.put(c, 1);
+            }
+            if (map.size() > k) {
+                rst = Math.max(rst, i - start);
+                while (map.size() > k) {
+                    char ch = s.charAt(start);
+                    if (map.get(ch) == 1) {
+                        map.remove(ch);
+                    } else {
+                        map.put(ch, map.get(ch) - 1);
+                    }
+                    start++;
+                }
+            }
+        }
+        return Math.max(rst, s.length() - start);      // Note.
+    }
+}
