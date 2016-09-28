@@ -1,8 +1,8 @@
 You are given a m x n 2D grid initialized with these three possible values.
 -1 - A wall or an obstacle.
 0 - A gate.
-INF - Infinity means an empty room. We use the value 231 - 1 = 2147483647 to represent INF as you may assume that the distance to a
-gate is less than 2147483647.
+INF - Infinity means an empty room. We use the value 231 - 1 = 2147483647 to represent INF as you may assume that the
+distance to a gate is less than 2147483647.
 Fill each empty room with the distance to its nearest gate. If it is impossible to reach a gate, it should be filled with INF.
 For example, given the 2D grid:
 INF  -1  0  INF
@@ -49,3 +49,41 @@ public class Solution {
 }
 
 Solution 2: BFS.
+public class Solution {
+    public void wallsAndGates(int[][] rooms) {
+        if (rooms == null || rooms.length == 0 || rooms[0].length == 0) {
+            return;
+        }
+        int m = rooms.length;
+        int n = rooms[0].length;
+        Queue<Integer> q = new LinkedList<>();
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (rooms[i][j] == 0) {
+                    q.offer(i * n + j);
+                }
+            }
+        }
+        while (!q.isEmpty()) {
+            int code = q.poll();
+            int row = code / n;
+            int col = code % n;
+            if (row > 0 && rooms[row - 1][col] == Integer.MAX_VALUE) {
+                q.offer((row - 1) * n + col);
+                rooms[row - 1][col] = rooms[row][col] + 1;
+            }
+            if (row < m - 1 && rooms[row + 1][col] == Integer.MAX_VALUE) {
+                q.offer((row + 1) * n + col);
+                rooms[row + 1][col] = rooms[row][col] + 1;
+            }
+            if (col > 0 && rooms[row][col - 1] == Integer.MAX_VALUE) {
+                q.offer(row * n + col - 1);
+                rooms[row][col - 1] = rooms[row][col] + 1;
+            }
+            if (col < n - 1 && rooms[row][col + 1] == Integer.MAX_VALUE) {
+                q.offer(row * n + col + 1);
+                rooms[row][col + 1] = rooms[row][col] + 1;
+            }
+        }
+    }
+}
