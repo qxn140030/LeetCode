@@ -1,0 +1,72 @@
+Given a 2D grid, each cell is either a wall 'W', an enemy 'E' or empty '0' (the number zero), return the maximum enemies
+you can kill using one bomb.
+The bomb kills all the enemies in the same row and column from the planted point until it hits the wall since the wall is
+too strong to be destroyed.
+Note that you can only put the bomb at an empty cell.
+Example: For the given grid
+0 E 0 0
+E 0 W E
+0 E 0 0
+return 3. (Placing a bomb at (1,1) kills 3 enemies)
+
+Solution 1: naive.
+public class Solution {
+    public int maxKilledEnemies(char[][] grid) {
+        if (grid == null || grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
+        int m = grid.length;
+        int n = grid[0].length;
+        int rst = 0;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == '0') {
+                    rst = Math.max(rst, dfs(grid, i, j));
+                }
+            }
+        }
+        return rst;
+    }
+    private int dfs(char[][] grid, int i, int j) {
+        int m = grid.length;
+        int n = grid[0].length;
+        int count = 0;
+        int row = i - 1;
+        while (row >= 0) {
+            if (grid[row][j] == 'E') {
+                count++;
+            } else if (grid[row][j] == 'W') {
+                break;
+            }
+            row--;
+        }
+        row = i + 1;
+        while (row < m) {
+            if (grid[row][j] == 'E') {
+                count++;
+            } else if (grid[row][j] == 'W') {
+                break;
+            }
+            row++;
+        }
+        int col = j - 1;
+        while (col >= 0) {
+            if (grid[i][col] == 'E') {
+                count++;
+            } else if (grid[i][col] == 'W') {
+                break;
+            }
+            col--;
+        }
+        col = j + 1;
+        while (col < n) {
+            if (grid[i][col] == 'E') {
+                count++;
+            } else if (grid[i][col] == 'W') {
+                break;
+            }
+            col++;
+        }
+        return count;
+    }
+}
