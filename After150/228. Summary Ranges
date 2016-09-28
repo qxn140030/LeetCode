@@ -9,13 +9,11 @@ public class Solution {
         }
         for (int i = 0; i < nums.length; i++) {
             int start = i;
-            int end = i;
             while (i + 1 < nums.length && nums[i + 1] - nums[i] == 1) {
                 i++;
-                end++;
             }
-            if (end > start) {
-                rst.add(nums[start] + "->" + nums[end]);
+            if (i > start) {
+                rst.add(nums[start] + "->" + nums[i]);
             } else {
                 rst.add(Integer.toString(nums[start]));
             }
