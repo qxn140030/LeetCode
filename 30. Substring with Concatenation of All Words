@@ -56,3 +56,32 @@ public class Solution {
         return rst;
     }
 }
+
+// wrong!
+public class Solution {
+    public List<Integer> findSubstring(String s, String[] words) {
+        List<Integer> rst = new ArrayList<Integer>();
+        int size = 1;
+        for (String word : words) {
+            s = s.replaceAll(word, "" + size);
+            size++;
+        }
+        size--;
+        for (int i = 0; i < s.length() - size; i++) {
+            String str = s.substring(i, i + size);
+            List<Character> list = new ArrayList<>();
+            for (char c : str.toCharArray()) {
+                if (list.contains(c)) {
+                    break;
+                }
+                if (c > '0' && c <= '9') {
+                    list.add(c);
+                }
+            }
+            if (list.size() == size) {
+                rst.add(i);
+            }
+        }
+        return rst;
+    }
+}
