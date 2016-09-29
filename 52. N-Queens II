@@ -1,0 +1,34 @@
+Follow up for N-Queens problem.
+Now, instead outputting board configurations, return the total number of distinct solutions.
+
+public class Solution {
+    public int totalNQueens(int n) {
+        List<Integer> rst = new ArrayList<Integer>();
+        rst.add(0);
+        List<Integer> cols = new ArrayList<Integer>();
+        helper(rst, cols, n);
+        return rst.get(0);
+    }
+    private void helper(List<Integer> rst, List<Integer> cols, int n) {
+        if (cols.size() == n) {
+            rst.set(0, rst.get(0) + 1);
+            return;
+        }
+        for (int i = 0; i < n; i++) {
+            if (isValid(cols, i)) {
+                cols.add(i);
+                helper(rst, cols, n);
+                cols.remove(cols.size() - 1);
+            }
+        }
+    }
+    private boolean isValid(List<Integer> cols, int col) {
+        int row = cols.size();
+        for (int i = 0; i < row; i++) {
+            if (cols.get(i) == col || row - i == Math.abs(cols.get(i) - col)) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
