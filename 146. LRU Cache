@@ -6,8 +6,7 @@ invalidate the least recently used item before inserting a new item.
 
 LRU cache is a hash table of keys and double linked list nodes.
 Time complexity: O(1). Space complexity: O(n). n is the capacity.
-public class LRUCache {
-    
+public class LRUCache {    
     private class Node {             // Define a double linked list node.
         Node pre;
         Node next;
