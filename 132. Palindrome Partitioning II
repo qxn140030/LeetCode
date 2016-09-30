@@ -14,7 +14,7 @@ public class Solution {
         boolean[][] palin = new boolean[n][n];
         int[] cut = new int[n];
         for (int i = 1; i < n; i++) {
-            cut[i] = i;                                                // set the maximum number of cut.
+            cut[i] = i;                   // initialize cut[i] to a maximum number.
             for (int j = 0; j <= i; j++) {
                 if (s.charAt(j) == s.charAt(i) && (i - j <= 2 || palin[j + 1][i - 1])) {
                     palin[j][i] = true;
