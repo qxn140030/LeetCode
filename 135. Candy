@@ -52,12 +52,12 @@ public class Solution {
         }
         int rst = candy[ratings.length - 1];
         for (int i = ratings.length - 2; i >= 0; i--) {
-            int cur = 1;
+            int cur = 1;                      // initialize cur to 1.
             if (ratings[i] > ratings[i + 1]) {
                 cur = candy[i + 1] + 1;
             } 
             rst += Math.max(cur, candy[i]);
-            candy[i] = cur;
+            candy[i] = cur;                // update candy[i] to cur.
         }
         return rst;
     }
