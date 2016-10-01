@@ -45,8 +45,7 @@ public class Solution {
                     if (indegrees[prerequisites[i][0]] == 0) {
                         q.offer(prerequisites[i][0]);
                     }
-                }
-                
+                }                
             }
             order[index++] = cur;   
         }
