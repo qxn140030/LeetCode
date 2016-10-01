@@ -35,7 +35,7 @@ public class Solution {
         for (int i = 0; i < nums.length; i++) {
             sum[i + 1] = sum[i] + nums[i];
             if (sum[i + 1] >= s) {
-                int left = search(sum, sum[i + 1] - s, 0, i + 1);
+                int left = search(sum, sum[i + 1] - s, 0, i + 1);    // find the rightmost sum that <= current sum - target.
                 len = Math.min(len, i + 1 - left);
             }
         }
@@ -52,8 +52,7 @@ public class Solution {
         }
         if (nums[end] <= target) {
             return end;
-        } else {                      // Note: else is a must! why?
-            return start;
-        }
+        } 
+        return start;
     }
 }
