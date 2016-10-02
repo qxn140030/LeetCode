@@ -34,7 +34,6 @@ public class ZigzagIterator {
         }
         return 0;
     }
-
     public boolean hasNext() {
         return it1.hasNext() || it2.hasNext();
     }
