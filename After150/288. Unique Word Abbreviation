@@ -21,70 +21,37 @@ isUnique("cane") -> false
 isUnique("make") -> true
 
 public class ValidWordAbbr {
-    HashMap<Integer, Set<String>> map = new HashMap<>();
+    Map<Integer, Set<String>> map = new HashMap<>();
     public ValidWordAbbr(String[] dictionary) {
         int len = 0;
-        for(String word : dictionary){
+        for (String word : dictionary) {
             len = word.length();
-            if(map.containsKey(len)) map.get(len).add(word);
-            else{
+            if (map.containsKey(len)) {
+                map.get(len).add(word);
+            } else {
                 Set<String> l = new HashSet<String>();
                 l.add(word);
                 map.put(len, l);
             }
         }
     }
-
     public boolean isUnique(String word) {
         int len = word.length();
-        if(!map.containsKey(len)) return true;
+        if (!map.containsKey(len)) {
+            return true;
+        }
         Set<String> list = map.get(len);
-        for(String s : list){
-            if(s.equals(word)) return true;
-            if(!s.equals("") && s.charAt(0) == word.charAt(0) && s.charAt(len-1) == word.charAt(len-1)){
+        for (String s : list) {
+            if (s.equals(word)) {
+                return true;
+            }
+            if (!s.equals("") && s.charAt(0) == word.charAt(0) && s.charAt(len-1) == word.charAt(len-1)) {
                 return false;
             }
         }
         return true;
     }
 }
-// Your ValidWordAbbr object will be instantiated and called as such:
-// ValidWordAbbr vwa = new ValidWordAbbr(dictionary);
-// vwa.isUnique("Word");
-// vwa.isUnique("anotherWord");
-
-public class ValidWordAbbr {    // wrong
-    Map<Integer, Set<String>> map = new HashMap<>();
-    public ValidWordAbbr(String[] dictionary) {
-        for (String s : dictionary){
-            int len = s.length();
-            if (!map.containsKey(len)){
-                Set<String> hs = new HashSet<>();
-                map.put(len, hs);
-            }
-            map.get(len).add(s);
-        }
-    }
-
-    public boolean isUnique(String word) {
-        int len = word.length();
-        if (!map.containsKey(len)) {
-            return true;
-        }
-        Set<String> words = map.get(len);
-        for (String s : words) {
-            if (s.equals(word)) {
-                return true;
-            }
-            if (s.charAt(0) == word.charAt(0) && s.charAt(len - 1) == word.charAt(len - 1)) {
-                return false;   
-            }
-        }
-        return true;
-    }
-}
-
-
 // Your ValidWordAbbr object will be instantiated and called as such:
 // ValidWordAbbr vwa = new ValidWordAbbr(dictionary);
 // vwa.isUnique("Word");
