@@ -13,7 +13,7 @@ You are guaranteed to have only one unique value in the BST that is closest to t
  * }
  */
 public class Solution {
-    private double diff = Double.MAX_VALUE;
+    private double diff = Double.MAX_VALUE;                  // Note: double.
     private int rst;
     public int closestValue(TreeNode root, double target) {
         helper(root, target);
