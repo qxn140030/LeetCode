@@ -17,7 +17,7 @@ public class Solution {
             while (start < end) {
                 int sum = nums[i] + nums[start] + nums[end];
                 if (sum < target) {
-                    count += end - start;
+                    count += end - start;                   // Note.
                     start++;
                 } else {
                     end--;
