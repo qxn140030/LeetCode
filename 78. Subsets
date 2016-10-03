@@ -22,7 +22,7 @@ public class Solution {
             return result;
         }
         Arrays.sort(nums);                   // Elements in a subset must be in non-descending order.
-		    List<Integer> list = new ArrayList<Integer>();
+		List<Integer> list = new ArrayList<Integer>();
         helper(nums, result, list, 0);
         return result;
     }
