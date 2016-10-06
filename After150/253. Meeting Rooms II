@@ -30,13 +30,38 @@ public class Solution {
         PriorityQueue<Integer> q = new PriorityQueue<>();
         q.offer(intervals[0].end);
         for (int i = 1; i < intervals.length; i++) {
-            if (intervals[i].start < q.peek()) {
-                count++;
+            if (intervals[i].start < q.peek()) { 
+                count++;                          // do not understand.
             } else {
                 q.poll();
             }
             q.offer(intervals[i].end);
         }
         return count;
+    }
+}
+
+public class Solution {
+    public int minMeetingRooms(Interval[] intervals) {
+        if (intervals == null || intervals.length == 0) {
+            return 0;
+        }
+        Arrays.sort(intervals, new Comparator<Interval>() {
+            public int compare(Interval a, Interval b) {
+                if (a.start == b.start) {
+                    return a.end - b.end;
+                }
+                return a.start - b.start;
+            }
+        });
+        PriorityQueue<Integer> q = new PriorityQueue<>();
+        q.offer(intervals[0].end);
+        for (int i = 1; i < intervals.length; i++) {
+            if (intervals[i].start >= q.peek()) {
+                q.poll();
+            }
+            q.offer(intervals[i].end);
+        }
+        return q.size();
     }
 }
