@@ -15,6 +15,6 @@ public class Solution {
                 start = mid;
             }
         }
-        return nums[start] < nums[end] ? nums[start] : nums[end];
+        return Math.min(nums[start], nums[end]);
     }
 }
