@@ -23,14 +23,10 @@ public class Solution {
         int start = 0;
         int end = nums.length - 1;
         while (start + 1 < end) {
-            while (start < end && nums[start] == nums[end]) {
-                start++;
-            }
-            if (nums[start] < nums[end]) {
-                return nums[start];
-            }
             int mid = start + (end - start) / 2;
-            if (nums[mid] < nums[start]) {
+            if (nums[mid] == nums[end]) {
+                end--;
+            } else if (nums[mid] < nums[end]) {
                 end = mid;
             } else {
                 start = mid;
