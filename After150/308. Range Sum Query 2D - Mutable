@@ -24,8 +24,8 @@ public class NumMatrix {
             return;   
          }
          this.matrix = matrix;
-         int m   = matrix.length;
-         int n   = matrix[0].length;
+         int m = matrix.length;
+         int n = matrix[0].length;
          colSums = new int[m + 1][n];
          for (int i = 1; i <= m; i++) {
              for (int j = 0; j < n; j++) {
@@ -40,11 +40,11 @@ public class NumMatrix {
         matrix[row][col] = val;
     }
     public int sumRegion(int row1, int col1, int row2, int col2) {
-        int ret = 0;
+        int rst = 0;
         for (int j = col1; j <= col2; j++) {
-            ret += colSums[row2 + 1][j] - colSums[row1][j];
+            rst += colSums[row2 + 1][j] - colSums[row1][j];
         }
-        return ret;
+        return rst;
     }
 }
 // Your NumMatrix object will be instantiated and called as such:
