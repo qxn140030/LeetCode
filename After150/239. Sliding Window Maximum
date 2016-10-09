@@ -21,22 +21,46 @@ The queue size need not be the same as the window’s size.
 Remove redundant elements and the queue should store only elements that need to be considered.
 
 Solution 1: use PriorityQueue.
-Time complexity: O(klogk). Space complexity: O(k).
+Time complexity: O(nlogk). Space complexity: O(k).
 public class Solution {
     public int[] maxSlidingWindow(int[] nums, int k) {
         if (nums == null || nums.length == 0) {
             return new int[0];
         }
-        PriorityQueue<Integer> q = new PriorityQueue<>(Collections.reverseOrder());
-        int[] rst = new int[nums.length - k + 1];
-        int index = 0;
+        PriorityQueue<Integer> q = new PriorityQueue<>(Collections.reverseOrder());      // max heap.
+        int[] rst = new int[nums.length - k + 1];                                        // result size = n - k + 1.
         for (int i = 0; i < nums.length; i++) {
             q.offer(nums[i]);
             if (q.size() >= k) {
-                rst[i - k + 1] = q.peek();
+                rst[i - k + 1] = q.peek();          // result index = i - k + 1.
                 q.remove(nums[i - k + 1]);
             }
         }
         return rst;
+    }
+}
+
+Solution 2: use Deque.
+Time complexity: O(n). Space complexity: O(k).
+public class Solution {
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        if (nums == null || nums.length == 0) {
+            return new int[0];
+        }
+        int[] rst = new int[nums.length - k + 1];   
+        Deque<Integer> q = new LinkedList<>();
+        for (int i = 0; i < nums.length; i++) {
+            if (!q.isEmpty() && q.peek() == (i - k)) {      
+                q.poll();
+            }
+            while (!q.isEmpty() && nums[q.peekLast()] < nums[i]) {         // in descending order.
+                q.pollLast();
+            }
+            q.offer(i);
+            if (i - k + 1 >= 0) {
+                rst[i - k + 1] = nums[q.peek()];         // the head of deque is the largest number.
+            }
+        }
+        return rst;        
     }
 }
