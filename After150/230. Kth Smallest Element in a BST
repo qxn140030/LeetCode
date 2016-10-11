@@ -1,0 +1,65 @@
+Given a binary search tree, write a function kthSmallest to find the kth smallest element in it.
+Note: 
+You may assume k is always valid, 1 ≤ k ≤ BST's total elements.
+Follow up:
+What if the BST is modified (insert/delete operations) often and you need to find the kth smallest frequently? How would you
+optimize the kthSmallest routine?
+Hint:
+Try to utilize the property of a BST.
+What if you could modify the BST node's structure?
+The optimal runtime complexity is O(height of BST).
+
+Solution 1: Inorder traversal.
+Time complexity: O(n). Space complexity: O(h).
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public int kthSmallest(TreeNode root, int k) {
+        Stack<TreeNode> stack = new Stack<>();
+        int rst = 0;
+        while (root != null || !stack.isEmpty()) {
+            while (root != null) {
+                stack.push(root);
+                root = root.left;
+            }
+            root = stack.pop();
+            k--;
+            if (k == 0) {
+                rst = root.val;
+                break;
+            }
+            root = root.right;
+        }
+        return rst;
+    }
+}
+
+Solution 2: Time complexity: O(h).
+public class Solution {
+    public int kthSmallest(TreeNode root, int k) {
+        if (root == null) {
+            return 0;
+        }
+        int leftNo = noOfNodes(root.left);           // get the no. of nodes in the left subtree of the root.
+        if (k == leftNo + 1) {
+            return root.val;
+        } else if (k > leftNo + 1) {
+            return kthSmallest(root.right, k - leftNo - 1);
+        } else {
+            return kthSmallest(root.left, k);
+        }
+    }
+    private int noOfNodes(TreeNode root) {            // get the no. of nodes in this subtree.
+        if (root == null) {
+            return 0;
+        }
+        return noOfNodes(root.left) + 1 + noOfNodes(root.right);
+    }
+}
