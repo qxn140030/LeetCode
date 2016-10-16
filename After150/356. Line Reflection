@@ -1,0 +1,36 @@
+Given n points on a 2D plane, find if there is such a line parallel to y-axis that reflect the given points.
+Example 1:
+Given points = [[1,1],[-1,1]], return true.
+Example 2:
+Given points = [[1,1],[-1,-1]], return false.
+Follow up:
+Could you do better than O(n^2)?
+Hint:
+Find the smallest and largest x-value for all points.
+If there is a line then it should be at y = (minX + maxX) / 2.
+For each point, make sure that it has a reflected point in the opposite side.
+
+public class Solution {
+    public boolean isReflected(int[][] points) {
+        if (points == null || points.length < 2) {
+            return true;
+        }
+        Map<Integer, Set<Integer>> map = new HashMap<>();     // key - y coordinate, value - x coordinates.
+        int min = Integer.MAX_VALUE;
+        int max = Integer.MIN_VALUE;
+        for (int[] p : points) {
+            min = Math.min(min, p[0]);        // the most left of x coordinate.
+            max = Math.max(max, p[0]);
+            if (!map.containsKey(p[1])) {
+                map.put(p[1], new HashSet<>());
+            }
+            map.get(p[1]).add(p[0]);
+        }
+        for (int[] p : points) {
+            if (!map.containsKey(p[1]) || !map.get(p[1]).contains(min + max - p[0])) {     // min + max - x coordinate.
+                return false;
+            }
+        }
+        return true;
+    }
+}
