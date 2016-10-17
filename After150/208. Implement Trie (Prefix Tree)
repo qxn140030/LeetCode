@@ -2,74 +2,140 @@ Implement a trie with insert, search, and startsWith methods.
 Note:
 You may assume that all inputs are consist of lowercase letters a-z.
 
+Solution 1: using HashMap<Character, TrieNode> children.
 Trie (we pronounce "try") or prefix tree is a tree data structure, which is used for retrieval of a key in a dataset of strings.
 class TrieNode {
-    // R links to node children
-    private TrieNode[] links;
-    private final int R = 26;
-    private boolean isEnd;
+    char c;
+    Map<Character, TrieNode> children = new HashMap<>();
+    boolean isLeaf;
+    // Initialize your data structure here.
     public TrieNode() {
-        links = new TrieNode[R];
+        
     }
-    public boolean containsKey(char ch) {
-        return links[ch - 'a'] != null;
-    }
-    public TrieNode get(char ch) {
-        return links[ch - 'a'];
-    }
-    public void put(char ch, TrieNode node) {
-        links[ch - 'a'] = node;
-    }
-    public void setEnd() {
-        isEnd = true;
-    }
-    public boolean isEnd() {
-        return isEnd;
+    public TrieNode(char c) {
+        this.c = c;
     }
 }
+
 public class Trie {
     private TrieNode root;
+
     public Trie() {
         root = new TrieNode();
     }
-    // Inserts a word into the trie. Time complexity: O(m), where m is the key length.
+
+    // Inserts a word into the trie.
     public void insert(String word) {
-        TrieNode node = root;
+        Map<Character, TrieNode> children = root.children;
         for (int i = 0; i < word.length(); i++) {
-            char cur = word.charAt(i);
-            if (!node.containsKey(cur)) {
-                node.put(cur, new TrieNode());
+            char c = word.charAt(i);
+            TrieNode trie = null;
+            if (!children.containsKey(c)) {
+                trie = new TrieNode(c);
+                children.put(c, trie);
             }
-            node = node.get(cur);
+            trie = children.get(c);
+            children = trie.children;
+            if (i == word.length() - 1) {
+                trie.isLeaf = true;
+            }
         }
-        node.setEnd();
-    }    
-    // search a prefix or whole key in trie and
-    // returns the node where search ends
-    public TrieNode searchPrefix(String word) {
-        TrieNode node = root;
-        for (int i = 0; i < word.length(); i++) {
-            char cur = word.charAt(i);
-            if (node.containsKey(cur)) {
-                node = node.get(cur);
+    }
+    
+    private TrieNode searchHelper(String s) {
+        Map<Character, TrieNode> children = root.children;
+        TrieNode node = null;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (children.containsKey(c)) {
+                node = children.get(c);
+                children = node.children;
             } else {
                 return null;
             }
         }
         return node;
     }
+
     // Returns if the word is in the trie.
     public boolean search(String word) {
-        TrieNode node = searchPrefix(word);
-        return node != null && node.isEnd();
+        TrieNode node = searchHelper(word);
+        if (node != null && node.isLeaf) {
+            return true;
+        }
+        return false;
     }
+
     // Returns if there is any word in the trie
     // that starts with the given prefix.
     public boolean startsWith(String prefix) {
-        return searchPrefix(prefix) != null;
+        return searchHelper(prefix) == null ? false : true;
     }
 }
+
 // Your Trie object will be instantiated and called as such:
 // Trie trie = new Trie();
 // trie.insert("somestring");
 // trie.search("key");
+
+Solution 2: Improve Performance by Using an Array.
+Each trie node can only contains 'a'-'z' characters. So we can use a small array to store the character.
+class TrieNode {
+    TrieNode[] children;
+    boolean isLeaf;
+    // Initialize your data structure here.
+    public TrieNode() {
+        children = new TrieNode[26];
+    }
+}
+
+public class Trie {
+    private TrieNode root;
+
+    public Trie() {
+        root = new TrieNode();
+    }
+
+    // Inserts a word into the trie.
+    public void insert(String word) {
+        TrieNode p = root;
+        for (int i = 0; i < word.length(); i++) {
+            char c = word.charAt(i);
+            int index = c - 'a';
+            if (p.children[index] == null) {
+                TrieNode tmp = new TrieNode();
+                p.children[index] = tmp;
+            }
+            p = p.children[index];
+        }
+        p.isLeaf = true;
+    }
+    
+    private TrieNode searchHelper(String s) {
+        TrieNode p = root;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            int index = c - 'a';
+            if (p.children[index] == null) {
+                return null;
+            }
+            p = p.children[index];
+        }
+        return p;
+    }
+
+    // Returns if the word is in the trie.
+    public boolean search(String word) {
+        TrieNode node = searchHelper(word);
+        if (node != null && node.isLeaf) {
+            return true;
+        }
+        return false;
+    }
+
+    // Returns if there is any word in the trie
+    // that starts with the given prefix.
+    public boolean startsWith(String prefix) {
+        return searchHelper(prefix) == null ? false : true;
+    }
+}
