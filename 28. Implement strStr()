@@ -8,8 +8,8 @@ public class Solution {
         }
         int m = haystack.length();
         int n = needle.length();
-        int j;
         for (int i = 0; i < m - n + 1; i++) {
+            int j = 0;
             for (j = 0; j < n; j++) {
                 if (haystack.charAt(i + j) != needle.charAt(j)) {
                     break;
@@ -20,5 +20,28 @@ public class Solution {
             }
         }
         return -1;
+    }
+}
+
+public class Solution {
+    public int strStr(String haystack, String needle) {
+        int m = haystack.length();
+        int n = needle.length();
+        if (n == 0) {
+            return 0;
+        }
+        int threshold = m - n;
+        for (int i = 0; i <= threshold; i++) {
+            if (haystack.substring(i, i + n).equals(needle)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+}
+
+public class Solution {
+    public int strStr(String haystack, String needle) {
+        return haystack.indexOf(needle);
     }
 }
