@@ -1,7 +1,7 @@
-Question: You are given two linked lists representing two non-negative numbers. The digits are stored in reverse order and each of 
-          their nodes contain a single digit. Add the two numbers and return it as a linked list.
-          Input: (2 -> 4 -> 3) + (5 -> 6 -> 4)
-          Output: 7 -> 0 -> 8
+You are given two linked lists representing two non-negative numbers. The digits are stored in reverse order and each of 
+their nodes contain a single digit. Add the two numbers and return it as a linked list.
+Input: (2 -> 4 -> 3) + (5 -> 6 -> 4)
+Output: 7 -> 0 -> 8
 
 Time complexity: O(max(m, n)). m and n represents the length of l1 and l2 respectively.
 Space complexity: O(max(m, n)). The length of the new list is at most max(m, n) + 1.
@@ -25,10 +25,10 @@ public class Solution {
             tail.next = new ListNode(sum % 10);
             tail = tail.next;
             carry = sum / 10;
-            if(l1 != null) {
+            if (l1 != null) {
                 l1 = l1.next;
             }
-            if(l2 != null) {
+            if (l2 != null) {
                 l2 = l2.next;
             }
         }
