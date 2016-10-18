@@ -35,25 +35,25 @@ public class Solution extends Reader4 {
     }
 }
 
-public class Solution extends Reader4 {     // not run yet.
-    private boolean endOfFile = false;  
-    private Queue<Character> q = new LinkedList<>();
+public class Solution extends Reader4 {
+    Queue<Character> q = new LinkedList<>();
+    boolean endOfFile = false;
     public int read(char[] buf, int n) {
-        char[] tmp = new char[4];   
-        int i = 0;
-        while (q.size() < n && !endOfFile) {    
-            int r = read4(tmp);  
-            if (r < 4) {
-                this.endOfFile = true;  
+        int index = 0;  
+        char[] temp = new char[4]; 
+        while (q.size() < n && !endOfFile) {  
+            int cur = read4(temp);  
+            if (cur < 4) {
+                endOfFile = true;  
             }
-            for (int i = 0; i < r; i++) {
-                q.add(tmp[i]);  
+            for (int i = 0; i < cur; i++) {
+                q.add(temp[i]);  
             }
-        }            
-        int cur = Math.min(q.size(), n);  
-        for (int i = 0 ; i < cur; i++) {  
-            buf[i++] = q.poll();    
         }  
-        return 
+        int len = Math.min(q.size(), n);  
+        for (int i = 0 ; i < len; i++) {  
+            buf[index++] = q.poll();  
+        }  
+        return index; 
     }
 }
