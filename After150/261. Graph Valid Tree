@@ -50,7 +50,7 @@ public class Solution {
 Solution 2: BFS.
 public class Solution {
     public boolean validTree(int n, int[][] edges) {
-        Map<Integer, List<Integer>> map = new HashMap<>();
+        Map<Integer, List<Integer>> map = new HashMap<>();     // key - node, value - neighbors of the node(parent, children).
         for (int i = 0; i < n; i++) {
             List<Integer> list = new ArrayList<Integer>();
             map.put(i, list);
