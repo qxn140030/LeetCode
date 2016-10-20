@@ -6,7 +6,7 @@ For example, given s = "++++", return true. The starting player can guarantee a 
 Follow up:
 Derive your algorithm's runtime complexity.
 
-backtracking. Time complexity: exponential.
+backtracking. Time complexity: exponential. each recursion takes O(n) and there are totally n recursions.
 public class Solution {
     public boolean canWin(String s) {
         if (s == null || s.length() == 0) {
