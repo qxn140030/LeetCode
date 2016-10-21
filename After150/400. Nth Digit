@@ -18,6 +18,6 @@ public class Solution {
         }
         start += (n - 1) / len;
         String s = String.valueOf(start);
-        return Character.getNumericValue(s.charAt((n - 1) % len));     // Note.
+        return Character.getNumericValue(s.charAt((n - 1) % len));     // return s.charAt((n - 1) % len) - '0'; 
     }
 }
