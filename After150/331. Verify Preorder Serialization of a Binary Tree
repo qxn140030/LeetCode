@@ -33,7 +33,7 @@ public class Solution {
                 return false;
             }
             int start = i;
-            while (i > 0 && s.charAt(i - 1) != ',') {
+            while (i > 0 && s.charAt(i - 1) != ',') {        // example: "9,#,92,#,#"
                 i--;
             }
             s = s.substring(0, i) + s.substring(start + 3);
