@@ -24,7 +24,7 @@ public class Solution {
             while (i + 1 < sb.length() && sb.charAt(i) <= sb.charAt(i + 1)) {
                 i++;
             }
-            sb.delete(i, i + 1);            // Note: first - inclusive, second - exclusive.
+            sb.delete(i, i + 1);            // Note: first - inclusive, second - exclusive. or sb.deleteCharAt(i);
         }
         while (sb.length() > 1 && sb.charAt(0) == '0') {
             sb.deleteCharAt(0);
