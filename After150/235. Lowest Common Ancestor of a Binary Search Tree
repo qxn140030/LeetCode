@@ -22,29 +22,29 @@ node can be a descendant of itself according to the LCA definition.
  */
 public class Solution {
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        if (root == null || !cover(root, p) || !cover(root, q)) {
+        if (!contain(root, p) || !contain(root, q)) {
             return null;
         }
-        int min = p.val > q.val ? q.val : p.val;
-        int max = q.val < p.val ? p.val : q.val;
-        if (max >= root.val && root.val >= min) {
-            return root;
-        } else if (min > root.val) {
-            return lowestCommonAncestor(root.right, p, q);
-        } else {
+        int min = Math.min(p.val, q.val);
+        int max = Math.max(p.val, q.val);
+        if (max < root.val) {
             return lowestCommonAncestor(root.left, p, q);
-        }
+        } 
+        if (min > root.val) {
+            return lowestCommonAncestor(root.right, p, q);
+        } 
+        return root;
     }
-    private boolean cover(TreeNode root, TreeNode p) {
+    private boolean contain(TreeNode root, TreeNode p) {
         if (root == null) {
             return false;
         }
         if (root.val == p.val) {
             return true;
-        } else if (root.val < p.val) {
-            return cover(root.right, p);
-        } else {
-            return cover(root.left, p);
-        }
+        } 
+        if (root.val < p.val) {
+            return contain(root.right, p);
+        } 
+        return contain(root.left, p);
     }
 }
