@@ -72,39 +72,17 @@ public class Solution {
         if (digits == null || digits.length() == 0) {
             return rst;
         }
+        String[] board = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
         rst.add("");
-        for (int i = 0; i < digits.length(); i++) {  
-            String letters = getLetters(digits.charAt(i));  
-            List<String> cur = new ArrayList<String>();  
-            for (int j = 0; j < rst.size(); j++) {  
-                for (int k = 0; k < letters.length(); k++)  {      
-                    cur.add(rst.get(j) + Character.toString(letters.charAt(k)));  
-                }  
-            }  
-            rst = cur;  
-        }  
-        return rst; 
+        for (int i = 0; i < digits.length(); i++) {
+            List<String> cur = new ArrayList<String>();
+            for (int k = 0; k < board[digits.charAt(i) - '0'].length(); k++) {
+                for (int j = 0; j < rst.size(); j++) {
+                    cur.add(rst.get(j) + board[digits.charAt(i) - '0'].charAt(k));
+                }
+            }
+            rst = cur;
+        }
+        return rst;
     }
-    private String getLetters(char digit) {  
-        switch(digit) {  
-            case '2':  
-                return "abc";  
-            case '3':  
-                return "def";  
-            case '4':  
-                return "ghi";  
-            case '5':  
-                return "jkl";  
-            case '6':  
-                return "mno";  
-            case '7':  
-                return "pqrs";  
-            case '8':  
-                return "tuv";  
-            case '9':  
-                return "wxyz";  
-            default:  
-                return "";  
-        }  
-    }  
 }
