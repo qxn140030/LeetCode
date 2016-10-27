@@ -37,23 +37,27 @@ public class Solution extends Reader4 {
 
 public class Solution extends Reader4 {
     Queue<Character> q = new LinkedList<>();
-    boolean endOfFile = false;
+    /**
+     * @param buf Destination buffer
+     * @param n   Maximum number of characters to read
+     * @return    The number of characters read
+     */
     public int read(char[] buf, int n) {
-        int index = 0;  
-        char[] temp = new char[4]; 
-        while (q.size() < n && !endOfFile) {  
-            int cur = read4(temp);  
-            if (cur < 4) {
-                endOfFile = true;  
+        char[] tmp = new char[4];
+        while (q.size() < n) {
+            int cur = read4(tmp);
+            if (cur == 0) {
+                break;
             }
             for (int i = 0; i < cur; i++) {
-                q.add(temp[i]);  
+                q.offer(tmp[i]);
             }
-        }  
-        int len = Math.min(q.size(), n);  
-        for (int i = 0 ; i < len; i++) {  
-            buf[index++] = q.poll();  
-        }  
-        return index; 
+        }
+        int num = Math.min(q.size() , n);
+        int idx = 0;
+        for (int i = 0; i < num; i++) {
+            buf[idx++] = q.poll();
+        }
+        return idx;
     }
 }
