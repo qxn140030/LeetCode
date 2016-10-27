@@ -27,30 +27,27 @@ when meet an element, for example sum[i] is larger or equal to s, then find the 
 target + 1 by using binary search. If find, the index j to index i - 1 is the subarray. length = i - j
 public class Solution {
     public int minSubArrayLen(int s, int[] nums) {
-        if (nums == null || nums.length == 0) {
-            return 0;
-        }
-        int len = nums.length + 1;
         int[] sum = new int[nums.length + 1];
+        int len = nums.length + 1;
         for (int i = 0; i < nums.length; i++) {
             sum[i + 1] = sum[i] + nums[i];
             if (sum[i + 1] >= s) {
-                int left = search(sum, sum[i + 1] - s, 0, i + 1);    // find the rightmost sum that <= current sum - target.
-                len = Math.min(len, i + 1 - left);
+                int cur = search(sum, 0, i + 1, sum[i + 1] - s);      // find the rightmost sum that <= current sum - target.
+                len = Math.min(len, i + 1 - cur);
             }
         }
         return len == nums.length + 1 ? 0 : len;
     }
-    private int search(int[] nums, int target, int start, int end) {
+    private int search(int[] sum, int start, int end, int target) {
         while (start + 1 < end) {
             int mid = start + (end - start) / 2;
-            if (nums[mid] >= target) {
-                end = mid;
-            } else {
+            if (sum[mid] <= target) {
                 start = mid;
+            } else {
+                end = mid;
             }
         }
-        if (nums[end] <= target) {
+        if (sum[end] <= target) {
             return end;
         } 
         return start;
