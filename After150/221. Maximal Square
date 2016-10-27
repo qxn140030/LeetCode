@@ -10,10 +10,7 @@ Time complexity: O((m * n) ^ 2). In worst case, we need to traverse the complete
 Space complexity: O(1).
 public class Solution {
     public int maximalSquare(char[][] matrix) {
-        if (matrix == null || matrix.length == 0) {
-            return 0;
-        }
-        if (matrix[0] == null || matrix[0].length == 0) {
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
             return 0;
         }
         int rst = 0;
