@@ -18,13 +18,12 @@ This problem is equivalent to finding the topological order in a directed graph.
 and therefore it will be impossible to take all courses.
 Topological sort could also be done via BFS.
 
-Solution 1: BFS.
+BFS.
 public class Solution {
     public int[] findOrder(int numCourses, int[][] prerequisites) {
         int[] indegrees = new int[numCourses];
-        int m = prerequisites.length;
-        for (int i = 0; i < m; i++) {
-            indegrees[prerequisites[i][0]]++;
+        for (int[] pre : prerequisites) {
+            indegrees[pre[0]]++;
         }
         Queue<Integer> q = new LinkedList<>();
         for (int i = 0; i < numCourses; i++) {
@@ -36,19 +35,19 @@ public class Solution {
         int index = 0;
         while (!q.isEmpty()) {
             int cur = q.poll();
-            for (int i = 0; i < m; i++) {
-                if (prerequisites[i][1] == cur) {
-                    indegrees[prerequisites[i][0]]--;
-                    if (indegrees[prerequisites[i][0]] == 0) {
-                        q.offer(prerequisites[i][0]);
+            order[index++] = cur; 
+            for (int[] pre : prerequisites) {
+                if (pre[1] == cur) {
+                    indegrees[pre[0]]--;
+                    if (indegrees[pre[0]] == 0) {
+                        q.offer(pre[0]);
                     }
-                }                
+                }
             }
-            order[index++] = cur;   
         }
         if (index == numCourses) {
             return order;
         }
-        return new int[0];                 // return [].
+        return new int[0];         // return [].
     }
 }
