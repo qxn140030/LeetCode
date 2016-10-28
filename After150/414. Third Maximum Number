@@ -1,0 +1,64 @@
+Given a non-empty array of integers, return the third maximum number in this array. If it does not exist, return the
+maximum number. The time complexity must be in O(n).
+Example 1:
+Input: [3, 2, 1], Output: 1
+Explanation: The third maximum is 1.
+
+Example 2:
+Input: [1, 2], Output: 2
+Explanation: The third maximum does not exist, so the maximum (2) is returned instead.
+
+Example 3:
+Input: [2, 2, 3, 1], Output: 1
+Explanation: Note that the third maximum here means the third maximum distinct number.
+Both numbers with value 2 are both considered as second maximum.
+
+Solution 1: three variables. 
+Time complexity: O(n). Space complexity: O(1).
+public class Solution {
+    public int thirdMax(int[] nums) {
+        long p1 = Long.MIN_VALUE;
+        long p2 = Long.MIN_VALUE;
+        long p3 = Long.MIN_VALUE;       // should be long, for corner cases.
+        for (int i : nums) {
+            if (i > p1) {
+                p3 = p2;
+                p2 = p1;
+                p1 = i;
+            } else if (i > p2 && i < p1) {
+                p3 = p2;
+                p2 = i;
+            } else if (i > p3 && i < p2) {
+                p3 = i;
+            }
+        }
+        if (p3 > Long.MIN_VALUE) {
+            return (int)p3;
+        }
+        return (int)p1;
+    }
+}
+
+Solution 2: using a PriorityQueue and HashSet.
+Time complexity: O(n). Space complexity: O(n).
+public class Solution {
+    public int thirdMax(int[] nums) {
+        PriorityQueue<Integer> q = new PriorityQueue<>(3);
+        Set<Integer> hs = new HashSet<>();
+        for (int i : nums) {
+            if (!hs.contains(i)) {
+                q.offer(i);
+                hs.add(i);
+                if (q.size() > 3) {
+                    q.poll();
+                }
+            } 
+        }
+        if (q.size() < 3) {
+            while (q.size() > 1) {
+                q.poll();
+            }
+        }
+        return q.poll();
+    }
+}
