@@ -7,6 +7,7 @@ Given an encoded message containing digits, determine the total number of ways t
 For example, 
 Given encoded message "12", it could be decoded as "AB" (1 2) or "L" (12). The number of ways decoding "12" is 2.
              
+Solution 1: DP.
 Time complexity: O(n). Space complexity: O(n).
 public class Solution {
     public int numDecodings(String s) {
@@ -27,5 +28,35 @@ public class Solution {
             }
         }
         return dp[n];
+    }
+}
+
+Solution 2: Backtracking, using HashMap.
+public class Solution {
+    public int numDecodings(String s) {
+        if (s == null || s.length() == 0) {
+            return 0;
+        }
+        Map<String, Integer> map = new HashMap<>();
+        return helper(s, map);
+    }
+    private int helper(String s, Map<String, Integer> map) {
+        if (s.length() == 0) {
+            return 1;
+        }
+        if (map.containsKey(s)) {
+            return map.get(s);
+        }
+        int rst = 0;
+        for (int i = 1; i <= s.length(); i++) {
+            int val = Integer.valueOf(s.substring(0, i));
+            if (val > 0 && val <= 26) {
+                rst += helper(s.substring(i), map);
+            } else {
+                break;
+            }
+        }
+        map.put(s, rst);
+        return rst;
     }
 }
