@@ -5,6 +5,7 @@ For example, add(1); add(3); add(5);
 find(4) -> true
 find(7) -> false
 
+Solution 1: use HashMap.
 Since the desired class need add and get operations, HashMap is a good option for this purpose.
 public class TwoSum {
     Map<Integer, Integer> nums = new HashMap<>();
@@ -16,13 +17,12 @@ public class TwoSum {
 	        nums.put(number, 1);
 	    }
 	}
-
     // Find if there exists any pair of numbers which sum is equal to the value.
 	public boolean find(int value) {
 	    for (int num : nums.keySet()) {
 	        int target = value - num;
 	        if (nums.containsKey(target)) {
-	            if (num == target && nums.get(num) < 2) {
+	            if (num == target && nums.get(num) < 2) {        // Note.
 	                continue;
 	            }
 	            return true;
@@ -32,6 +32,7 @@ public class TwoSum {
 	}
 }
 
+Solution 2: using List and HashSet.
 public class TwoSum {
     List<Integer> nums = new ArrayList<>();
     // Add the number to an internal data structure.
