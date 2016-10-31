@@ -60,10 +60,11 @@ public class Solution {
             n -= leaves.size();                  // identify and remove all leaf nodes
             List<Integer> newLeaves = new ArrayList<>();
             for (int leaf : leaves) {
-                int neighbor = adjList.get(leaf).iterator().next();         // How and Why?
-                adjList.get(neighbor).remove(leaf);
-                if (adjList.get(neighbor).size() == 1) {
-                    newLeaves.add(neighbor);
+                for (int neighbor : adjList.get(leaf)) {      // int neighbor = adjList.get(leaf).iterator().next();
+                    adjList.get(neighbor).remove(leaf);
+                    if (adjList.get(neighbor).size() == 1) {
+                        newLeaves.add(neighbor);
+                    }
                 }
             }
             leaves = newLeaves;
