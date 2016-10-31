@@ -22,12 +22,10 @@ class PeekingIterator implements Iterator<Integer> {
 	    this.it = iterator;
 	    this.cache = it.next();
 	}
-
     // Returns the next element in the iteration without advancing the iterator.
 	public Integer peek() {
         return cache;
 	}
-
 	// hasNext() and next() should behave the same as in the Iterator interface.
 	// Override them if needed.
 	@Override
@@ -36,7 +34,6 @@ class PeekingIterator implements Iterator<Integer> {
 	    cache = it.hasNext() ? it.next() : null;
 	    return rst;
 	}
-
 	@Override
 	public boolean hasNext() {
 	    return it.hasNext() || cache != null;
