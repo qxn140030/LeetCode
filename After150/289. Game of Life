@@ -29,7 +29,7 @@ public class Solution {
                         live++;
                     }
                 }
-                if (live < 2) {
+                if (live < 2 || live > 3) {
                     board[i][j] &= 1;
                 }
                 if (live == 2 || live == 3) {
@@ -37,9 +37,6 @@ public class Solution {
                 }
                 if (live == 3) {
                     board[i][j] |= 2;
-                }
-                if (live > 3) {
-                    board[i][j] &= 1;
                 }
             }
         }
