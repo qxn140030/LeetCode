@@ -71,6 +71,7 @@ public class Solution {
     }
 }
 
+Solution 2: better.
 public class Solution {
     public int maxKilledEnemies(char[][] grid) {
         if (grid == null || grid.length == 0 || grid[0].length == 0) {
