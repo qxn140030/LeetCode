@@ -18,7 +18,7 @@ logger.shouldPrintMessage(10,"foo"); returns false;
 // logging string "foo" at timestamp 11
 logger.shouldPrintMessage(11,"foo"); returns true;
 
-public class Logger {
+public class Logger {                         // not run yet!
     Map<String, Integer> map;
     /** Initialize your data structure here. */
     public Logger() {
@@ -28,11 +28,7 @@ public class Logger {
         If this method returns false, the message will not be printed.
         The timestamp is in seconds granularity. */
     public boolean shouldPrintMessage(int timestamp, String message) {
-        if (!map.containsKey(message)) {
-            map.put(message, timestamp);
-            return true;
-        } 
-        if (timestamp - map.get(message) >= 10) {
+        if (!map.containsKey(message) || timestamp - map.get(message) >= 10) {
             map.put(message, timestamp);
             return true;
         } 
