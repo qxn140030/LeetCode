@@ -8,8 +8,10 @@ matrix = [
 ],
 k = 8, return 13.
 Note: 
-You may assume k is always valid, 1 ≤ k ≤ n2.
+You may assume k is always valid, 1 ≤ k ≤ n^2.
 
+Solution 1: using a max heap.
+Time compexity: O(n^2 * logk). Space complexity: O(k).
 public class Solution {
     public int kthSmallest(int[][] matrix, int k) {
         PriorityQueue<Integer> q = new PriorityQueue<>(k, Collections.reverseOrder());
@@ -25,7 +27,9 @@ public class Solution {
     }
 }
 
-Time complexity: O(nlogn * lgx), x = matrix[n - 1][n - 1] - matrix[0][0].
+Solution 2: binary search.
+Time complexity: O(n * lgx), x = matrix[n - 1][n - 1] - matrix[0][0].
+Space complexity: O(1).
 public class Solution {
     public int kthSmallest(int[][] matrix, int k) {
         int n = matrix.length;
