@@ -124,17 +124,17 @@ public class WordDictionary {
         if (c == '.') {
             boolean result = false;
             for (int j = 0; j < 26; j++) {
-				if (p.children[j] != null) {
-					if (dfsSearch(p.children[j], word, start + 1)) {
-						result = true;
-						break;
-					}
+	            if (p.children[j] != null) {
+		            if (dfsSearch(p.children[j], word, start + 1)) {
+		                result = true;
+			            break;
+		            }
 				}
 			}
-            return result;
-        } else {
-            int idx = c - 'a';
-            if (p.children[idx] != null) {
+				return result;
+			} else {
+				int idx = c - 'a';
+				if (p.children[idx] != null) {
 				return dfsSearch(p.children[idx], word, start + 1);
 			} else {
 				return false;
