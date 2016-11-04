@@ -13,7 +13,6 @@ Use a HashMap to keep track of the sum from index 0 to index i, use sum as the k
 build the hashmap: if the current sum does not exist in the hashmap, put it in. If the current sum does exist in Hashmap, do
 not replace or add to the older value, simply do not update. Because this value might be the left index of our subarray in
 later comparison. We are looking for the longest subarray so we want the left index to be the smaller the better. 
-
 public class Solution {
     public int maxSubArrayLen(int[] nums, int k) {
         if (nums == null || nums.length == 0) {
