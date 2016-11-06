@@ -89,8 +89,7 @@ class TrieNode{
 
 Solution 2: using Array.
 public class WordDictionary {
-    private TrieNode root;
- 
+    private TrieNode root; 
     public WordDictionary(){
         root = new TrieNode();
     }
@@ -100,7 +99,6 @@ public class WordDictionary {
         for (int i = 0; i < word.length(); i++) {
             char c = word.charAt(i);
             int idx = c - 'a';
-            TrieNode t = null;
             if (p.children[idx] == null) {
                 TrieNode tmp = new TrieNode();
                 p.children[idx] = tmp;
@@ -109,13 +107,11 @@ public class WordDictionary {
         }
         p.isWord = true;
     }
-
     // Returns if the word is in the data structure. A word could
     // contain the dot character '.' to represent any one letter.
     public boolean search(String word) {
         return dfsSearch(root, word, 0);
-    }
-    
+    }    
     public boolean dfsSearch(TrieNode p, String word, int start) {
         if (start == word.length() && p.isWord) {
             return true; 
