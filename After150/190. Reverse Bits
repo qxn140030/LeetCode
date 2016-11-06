@@ -10,7 +10,7 @@ public class Solution {
         int rst = 0;
         for (int i = 0; i < 32; i++) {
             rst = (rst << 1) | (n & 1);
-            n = (n >> 1);
+            n >>= 1;
         }
         return rst;
     }
@@ -35,11 +35,10 @@ public class Solution {
         return result;
     }
     private int reverseByte(byte b) {
-        Integer value = cache.get(b);      // first look up from cache
-        if (value != null) {
-            return value;
+        if (cache.containsKey(b)) {        // first look up from cache
+            return cache.get(b);
         }
-        value = 0;        
+        int value = 0;        
         for (int i = 0; i < 8; i++) {     // reverse by bit
             value += ((b >>> i) & 1);
             if (i < 7) {
