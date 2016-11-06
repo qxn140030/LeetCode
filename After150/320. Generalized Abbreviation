@@ -5,48 +5,22 @@ Given word = "word", return the following list (order does not matter):
 
 public class Solution {
     public List<String> generateAbbreviations(String word) {
-        List<String> result = new ArrayList<>();
- 
+        List<String> result = new ArrayList<>(); 
         result.add(word);
-        generateHelper(0, word, result);
-         
+        helper(0, word, result);         
         return result;
-    }
-     
-    private void generateHelper(int start, String s, List<String> result) {
+    }     
+    private void helper(int start, String s, List<String> result) {
         if (start >= s.length()) {
             return;
-        }
-         
+        }         
         for (int i = start; i < s.length(); i++) {
             for (int j = 1; i + j <= s.length(); j++) {
                 String num = Integer.toString(j);
                 String abbr = s.substring(0, i) + num + s.substring(i + j);
                 result.add(abbr);
-                generateHelper(i + 1 + num.length(), abbr, result); // skip 1b
+                helper(i + 1 + num.length(), abbr, result); 
             }
         }
-    }
-}
-
-public class Solution {
-	List<String> res;
-    public List<String> generateAbbreviations(String word) {
-        res = new ArrayList<String>();        
-        dfs(word,0, "", 0);
-        return res;
-    }
-    private void dfs(String word, int p, String prv, int count) {
-    	if (p == word.length()) {
-    		if (count != 0) {
-    			prv = prv + count;
-    		}
-    		res.add(prv);
-    		return;
-    	}   	
-        char curr = word.charAt(p);
-        String cache = count == 0 ? "" : count+"";
-        dfs(word, p+1, prv+cache+curr, 0);
-        dfs(word, p+1, prv, count+1);   
     }
 }
