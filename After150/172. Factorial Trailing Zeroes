@@ -4,7 +4,7 @@ Note: Your solution should be in logarithmic time complexity.
 public class Solution {
     public int trailingZeroes(int n) {
         int rst = 0;
-        for (long i = 5; n / i >= 1; i *= 5) {         // Note: long i.
+        for (long i = 5; n / i > 0; i *= 5) {         // Note: long i.
             rst += n / i;
         }
         return rst;
