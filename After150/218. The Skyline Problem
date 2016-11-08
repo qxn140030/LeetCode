@@ -29,8 +29,8 @@ public class Solution {
         }
         List<int[]> height = new ArrayList<>();
         for (int[] b : buildings) {
-            height.add(new int[]{b[0], -b[2]});    // left top point(x, -y)
-            height.add(new int[]{b[1], b[2]});     // right top point(x, y)
+            height.add(new int[] {b[0], -b[2]});    // left top point(x, -y)
+            height.add(new int[] {b[1], b[2]});     // right top point(x, y)
         }
         Collections.sort(height, new Comparator<int[]>() {
             public int compare(int[] a, int[] b) {
@@ -51,7 +51,7 @@ public class Solution {
             }
             int cur = pq.peek();
             if (pre != cur) {
-                rst.add(new int[]{h[0], cur});
+                rst.add(new int[] {h[0], cur});
                 pre = cur;
             }
         }
