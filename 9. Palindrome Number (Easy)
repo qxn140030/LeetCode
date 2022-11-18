@@ -1,0 +1,66 @@
+Question: Determine whether an integer is a palindrome. Do this without extra space.
+          Could negative integers be palindromes? (ie, -1) NO!
+          If you are thinking of converting the integer to string, note the restriction of using extra space.
+          You could also try reversing an integer. However, if you have solved the problem "Reverse Integer", you know that the 
+          reversed integer might overflow. How would you handle such case? There is a more generic way of solving this problem.
+
+Approach 1: convert number into string
+the first idea that comes to mind is to convert the number into string, and check if string is a palindrome, but this would require extra non-constant 
+space for creating the string.
+Time complexity: O(n). 
+Space complexity: O(n).
+
+class Solution {
+    public boolean isPalindrome(int x) {
+        String str = Integer.toString(x);
+        int left = 0;
+        int right = str.length() - 1;
+        while (left < right) {
+            if (str.charAt(left) != str.charAt(right)) {
+                return false;
+            }
+            left++;
+            right--;
+        }
+        return true;
+    }
+}
+
+Approach 2: revert the number
+compare the reverted number with original number. However, if the reversed number is larger than int.MAX, we will hit integer overflow problem.
+Time complexity: O(n). 
+Space complexity: O(1).
+
+public class Solution {
+    public boolean isPalindrome(int x) {
+        if (x < 0) {
+            return false;
+        }
+        int revert = 0;
+        int newX = x;
+        while (newX > 0) {
+            revert = revert * 10 + newX % 10;
+            newX /= 10;
+        }
+        return revert == x;
+    }
+}
+
+Approach 3: revert half of the number
+to avoid the overflow issue of the reverted number. how do we know that we've reached the half of the number?
+when the original number is less than the reversed number, it means we've processed half of the number digits.
+
+class Solution {
+    public boolean isPalindrome(int x) {
+        if (x < 0 || (x % 10 == 0 && x != 0)) {
+            return false;
+        }
+        int reverse = 0;
+        int tmp = x;
+        while (tmp > reverse) {
+            reverse = reverse * 10 + tmp % 10;
+            tmp /= 10;
+        }
+        return tmp == reverse || tmp == reverse / 10;
+    }
+}
