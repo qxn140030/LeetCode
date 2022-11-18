@@ -1,8 +1,9 @@
-Given a non-negative number represented as an array of digits, plus one to the number. The digits are stored such that the
+Question: Given a non-negative number represented as an array of digits, plus one to the number. The digits are stored such that the
 most significant digit is at the head of the list.
 
 Time complexity: O(n). 
 Space complexity: O(n) in worst case, O(1) in most time.
+
 public class Solution {
     public int[] plusOne(int[] digits) {
         if (digits == null) {
