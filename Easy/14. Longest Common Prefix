@@ -3,7 +3,7 @@ Question: Write a function to find the longest common prefix string amongst an a
 Approach 1: Horizontal scanning
 iterates through the strings, finding at each iteration the longest common prefix of strings.
 preprocess the array, find the minimum length, then compare every char with the one in strs[0].
-Time complexity: O(m * n), m is the length of shortest string, n is array length. 
+Time complexity: O(m * n), m is the length of string, n is array length. 
 Space complexity: O(1).
 
 public class Solution {
@@ -26,7 +26,7 @@ public class Solution {
 
 Approach 2: Vertical scanning
 compare characters from top to bottom on the same column (same character index of the strings) before moving to the next column.
-Time complexity: O(m * n), m is the length of shortest string, n is array length. 
+Time complexity: O(m * n), m is the length of string, n is array length. 
 Space complexity: O(1).
 
 public class Solution {
@@ -74,4 +74,36 @@ class Solution {
         }
         return left.substring(0, minLen);
     }
+}
+
+Approach 4: Binary search
+Time complexity: O(SlogM), where S is the number of all characters in the array. The algorithm makes logM iterations.
+Space complexity: O(1)
+
+public String longestCommonPrefix(String[] strs) {
+    int minLen = Integer.MAX_VALUE;
+    for (String str : strs) {
+        minLen = Math.min(minLen, str.length());
+    }
+    int low = 1;
+    int high = minLen;
+    while (low <= high) {
+        int middle = (low + high) / 2;
+        if (isCommonPrefix(strs, middle)) {
+            low = middle + 1;
+        } else {
+            high = middle - 1;
+        }
+    }
+    return strs[0].substring(0, (low + high) / 2);
+}
+
+private boolean isCommonPrefix(String[] strs, int len){
+    String str1 = strs[0].substring(0,len);
+    for (int i = 1; i < strs.length; i++) {
+        if (!strs[i].startsWith(str1)) {
+            return false;
+        }
+    }
+    return true;
 }
