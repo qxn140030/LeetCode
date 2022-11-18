@@ -1,0 +1,77 @@
+Question: Write a function to find the longest common prefix string amongst an array of strings.
+
+Approach 1: Horizontal scanning
+iterates through the strings, finding at each iteration the longest common prefix of strings.
+preprocess the array, find the minimum length, then compare every char with the one in strs[0].
+Time complexity: O(m * n), m is the length of shortest string, n is array length. 
+Space complexity: O(1).
+
+public class Solution {
+    public String longestCommonPrefix(String[] strs) {
+        if (strs == null || strs.length == 0) {
+            return "";
+        }
+        String prefix = strs[0];
+        for (int i = 1; i < strs.length; i++) {
+            while (strs[i].indexOf(prefix) != 0) {
+                prefix = prefix.substring(0, prefix.length() - 1);
+                if (prefix.isEmpty()) {
+                    return "";
+                }
+            }
+        }
+        return prefix;
+    }
+}
+
+Approach 2: Vertical scanning
+compare characters from top to bottom on the same column (same character index of the strings) before moving to the next column.
+Time complexity: O(m * n), m is the length of shortest string, n is array length. 
+Space complexity: O(1).
+
+public class Solution {
+    public String longestCommonPrefix(String[] strs) {
+        if (strs == null || strs.length == 0) {
+            return "";
+        }
+        for (int i = 0; i < strs[0].length(); i++) {
+            for (int j = 1; j < strs.length; j++) {
+                if (strs[j].length() <= i || strs[j].charAt(i) != strs[0].charAt(i)) {
+                    return strs[0].substring(0, i);
+                }
+            }
+        }
+        return strs[0];
+    }
+}
+
+Approach 3: Divide and conquer
+Time complexity: O(S), where S is the number of all characters in the array.
+Space complexity: O(MlogN), there is a memory overhead since we store recursive calls in the execution stack.
+
+class Solution {
+    public String longestCommonPrefix(String[] strs) {
+        if (strs == null || strs.length == 0) {
+            return "";
+        }
+        return longestCommonPrefix(strs, 0, strs.length - 1);
+    }
+    private String longestCommonPrefix(String[] strs, int left, int right) {
+        if (left == right) {
+            return strs[left];
+        }
+        int mid = (left + right) / 2;
+        String leftCommonPrefix = longestCommonPrefix(strs, left, mid);
+        String rightCommonPrefix = longestCommonPrefix(strs, mid + 1, right);
+        return compare(leftCommonPrefix, rightCommonPrefix);
+    }
+    private String compare(String left, String right) {
+        int minLen = Math.min(left.length(), right.length());
+        for (int i = 0; i < minLen; i++) {
+            if (left.charAt(i) != right.charAt(i)) {
+                return left.substring(0, i);
+            }
+        }
+        return left.substring(0, minLen);
+    }
+}
