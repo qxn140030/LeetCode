@@ -20,7 +20,7 @@ Solution 1: recursive. Time complexity: O(n). Space complexity: O(logn).
  */
 public class Solution {
     public List<Integer> inorderTraversal(TreeNode root) {
-        List<Integer> rst = new ArrayList<Integer>();
+        List<Integer> rst = new ArrayList<>();
         if (root == null) {
             return rst;
         }
