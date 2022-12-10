@@ -68,3 +68,30 @@ public class Solution {
         return true;
     }
 }
+
+Solution 3: Iteration, using one stack. time complexity: O(n). space complexity: O(n).
+class Solution {
+    public boolean isSymmetric(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(root.left);
+        stack.push(root.right);
+        while(!stack.isEmpty()) {
+            TreeNode node1 = stack.pop();
+            TreeNode node2 = stack.pop();
+            if (node1 == null && node2 == null) {
+                continue;
+            }
+            if (node1 == null || node2 == null || node1.val != node2.val) {
+                return false;
+            }
+            stack.push(node1.left);
+            stack.push(node2.right);
+            stack.push(node1.right);
+            stack.push(node2.left);
+        }
+        return true;
+    }
+}
