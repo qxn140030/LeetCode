@@ -1,10 +1,11 @@
 # LeetCode
-花花酱的讲解
-YouTube 博主：Huifeng Guan
+花花酱的讲解，YouTube 博主：Huifeng Guan
 ## 排序类（Sort）
 入门题目：
 Leetcode 148. Sort List
+
 Leetcode 56. Merge Intervals
+
 Leetcode 27. Remove elements
 进阶题目：
 Leetcode 179. Largest Number
