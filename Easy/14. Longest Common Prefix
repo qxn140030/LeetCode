@@ -1,4 +1,5 @@
 Question: Write a function to find the longest common prefix string amongst an array of strings.
+Companies: Amazon, Apple, Google, Adobe, Microsoft, Facebook, Uber, Yahoo
 
 Approach 1: Horizontal scanning
 iterates through the strings, finding at each iteration the longest common prefix of strings.
