@@ -2,11 +2,13 @@ Question: Given an array of integers, return indices of the two numbers such tha
 You may assume that each input would have exactly one solution.
 Example: Given nums = [2, 7, 11, 15], target = 9, Because nums[0] + nums[1] = 2 + 7 = 9, return [0, 1].
 
+Companies: Amazon, Adobe, Apple, Google, Bloomberg, Microsoft, Facebook, Uber, Spotify, Oracle
+
 Approach 1: Brute Force
 nested for loops. examine every possible pair of numbers in this integer array. 
 Time complexity: O(n^2). 
 For each element, we try to find its complement by looping through the rest of array which takes O(n) time.
-Space complexity: O(1).
+Space complexity: O(1). The space required does not depend on the size of the input array.
 
 public class Solution {
     public int[] twoSum(int[] nums, int target) {   
