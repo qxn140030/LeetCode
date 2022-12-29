@@ -67,7 +67,6 @@ have to keep track of the previous merged list using pointer tail and the next s
 Time complexity: O(nlogn). 
 Space complexity: O(1).
 
-
 class Solution {
     public ListNode sortList(ListNode head) {
         if (head == null || head.next == null) {
@@ -83,28 +82,28 @@ class Solution {
         
         ListNode dummyHead = new ListNode();
         dummyHead.next = head;
-        
+        ListNode left = new ListNode();
+        ListNode right = new ListNode();
+        ListNode tail = new ListNode();
         for (int size = 1; size < len; size *= 2) {
             cur = dummyHead.next;
-            while (start != null) {
-                if (start.next == null) {
-                    tail.next = start;
-                    break;
-                }
-                ListNode mid = split(start, size);
-                merge(start, mid);
-                start = nextSubList;
+            tail = dummyHead;
+            while (cur != null) {
+                left = cur;
+                right = split(left, size);
+                cur = split(right, size);
+                Pair<ListNode, ListNode> merged = merge(left, right);
+                tail.next = merged.getKey();
+                tail = merged.getValue();
             }
-            start = dummyHead.next;
         }
         return dummyHead.next;
     }
 
-    // splits the list into two parts, first size elements and the rest, return the head of the rest.
-    ListNode split(ListNode start, int size) {
-        while (size > 1 && head != null) {
+    // splits the list into two parts, first n elements and the rest, return the head of the rest.
+    ListNode split(ListNode head, int n) {
+        while (n-- > 1 && head != null) {
             head = head.next;
-            size--;
         }
         ListNode rest = head != null ? head.next : null;
         if (head != null) {
@@ -114,7 +113,7 @@ class Solution {
     }
 
     // Merge two lists, return the head and tail of the merged list.
-    pair<ListNode, ListNode> merge(ListNode list1, ListNode list2) {
+    Pair<ListNode, ListNode> merge(ListNode list1, ListNode list2) {
         ListNode dummyHead = new ListNode();
         ListNode tail = dummyHead;
         while (list1 != null && list2 != null) {
@@ -132,6 +131,6 @@ class Solution {
         while (tail.next != null) {
             tail = tail.next;
         }
-        return [dummyHead.next, tail];
+        return new Pair(dummyHead.next, tail);
     }
 }
