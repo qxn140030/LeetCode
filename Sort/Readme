@@ -41,3 +41,10 @@ a recursive algorithm continuously splits the array in half until it cannot be f
 has only one element left, the dividing will stop, i.e. it is the base case to stop the recursion. 
 If the array has multiple elements, split the array into halves and recursively invoke the merge sort on each of the halves. 
 Finally, when both halves are sorted, the merge operation is applied. 
+
+Merge Sort is one of the efficient sorting algorithms that is popularly used for sorting the linked list. it runs in O(nlog⁡n) time in all the cases.
+
+Quicksort is also one of the efficient algorithms with the average time complexity of O(nlog⁡n). But the worst-case time complexity is O(n^2).
+Also, variations of the quick sort like randomized quicksort are not efficient for the linked list because unlike arrays, 
+random access in the linked list is not possible in O(1) time. If we sort the linked list using quicksort, 
+we would end up using the head as a pivot element which may not be efficient in all scenarios.
