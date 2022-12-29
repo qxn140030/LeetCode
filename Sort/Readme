@@ -1,0 +1,43 @@
+Method                    container   Time complexity     Space complexity
+----------------------------------------------------------------------
+                           array      O(n^2)                 O(1)
+Insertion sort            -------------------------------------------
+                           list       O(n^2)                 O(1)
+---------------------------------------------------------------------
+                           array      O(nlogn)
+Heap sort                 ---------------------------------------
+                           list       O(nlogn)
+-----------------------------------------------------------------
+                           array      O(nlogn) - O(n^2)      O(logn) - O(n)
+Quick sort                ----------------------------------------
+                           list       O(nlogn) - O(n^2)      O(logn) - O(n)
+-----------------------------------------------------------------
+                           array      O(nlogn)
+Merge sort (top down)     -----------------------------------------
+                           list       O(nlogn)               O(logn)
+--------------------------------------------------------------------
+                           array      O(nlogn)               O(n)
+Merge sort (bottom up)    -------------------------------------------
+                           list       O(nlogn)               O(1)
+-----------------------------------------------------------------
+
+
+
+1. Insertion sort
+works similar to the way you sort playing cards in your hands. The array is virtually split into a sorted and an unsorted part. 
+Values from the unsorted part are picked and placed at the correct position in the sorted part.
+
+Compare the current element (key) to its predecessor. If the key element is smaller than its predecessor, compare it to the elements before. 
+Move the greater elements one position up to make space for the swapped element.
+
+takes maximum time to sort if elements are sorted in reverse order.
+a stable sorting algorithm.
+used when number of elements is small. useful when input array is almost sorted, only few elements are misplaced in complete big array.
+
+
+3. Merge sort
+is based on the Divide and Conquer paradigm. array is initially divided into two equal halves and then they are combined in a sorted manner.
+a recursive algorithm continuously splits the array in half until it cannot be further divided. This means that if the array becomes empty or 
+has only one element left, the dividing will stop, i.e. it is the base case to stop the recursion. 
+If the array has multiple elements, split the array into halves and recursively invoke the merge sort on each of the halves. 
+Finally, when both halves are sorted, the merge operation is applied. 
