@@ -1,9 +1,9 @@
 Question: Merge two sorted linked lists and return it as a new list. The new list should be made by splicing together the nodes of
 the first two lists.
 
-Approach 1: recursive
-Time complexity: O(m + n). traversing all the nodes of the lists.
-Space complexity: O(m + n).
+Approach 1: recursion
+Time complexity: O(m + n). traversing all the nodes of the lists, each recursive call increments the pointer to l1 or l2 by one.
+Space complexity: O(m + n). 
 
 class Solution {
     public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
@@ -23,10 +23,10 @@ class Solution {
     }
 }
 
-Approach 2: merge
+Approach 2: iteration
 using dummy head. 
-Time complexity: O(m + n). traversing all the nodes of the lists.
-Space complexity: O(1). creating a list to store our result, but we are not using it as part of our intermediate computations.
+Time complexity: O(m + n). traversing all the nodes of the lists, exactly one of l1 or l2 is incremented on each loop iteration.
+Space complexity: O(1). only allocates a few pointers.
 
 /**
  * Definition for singly-linked list. 
@@ -50,11 +50,7 @@ public class Solution {
             }
             last = last.next;
         }
-        if (l1 != null) {
-            last.next = l1;
-        } else {
-            last.next = l2;
-        }
+        last.next = l1 != null ? l1 : l2;
         return dummy.next;
     }
 }
