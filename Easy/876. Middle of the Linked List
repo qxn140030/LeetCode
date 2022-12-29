@@ -1,0 +1,18 @@
+Question: Given the head of s singly linked list, return the middle node of the linked list.
+If there are two middle nodes, return the second middle node.
+
+Approach: fast and slow pointer
+Time complexity: O(n), where n is thet number of nodes in the given list.
+Space complexity: O(1).
+
+class Solution {
+    public ListNode middleNode(ListNode head) {
+        ListNode slow = head;
+        ListNode fast = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return slow;
+    }
+}
