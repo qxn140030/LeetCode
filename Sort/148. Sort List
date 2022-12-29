@@ -1,4 +1,62 @@
-Sort a linked list in O(n log n) time using constant space complexity.
+Question: Given the head of a linked list, retrun the list after sorting it in ascending order.
+Follow up: Sort a linked list in O(n log n) time using constant space complexity.
+Companies: Amazon, Apple, TikTok, Microsoft, Google.
+
+Merge Sort is one of the efficient sorting algorithms that is popularly used for sorting the linked list. it runs in O(nlog⁡n) time in all the cases.
+
+Quicksort is also one of the efficient algorithms with the average time complexity of O(nlog⁡n). But the worst-case time complexity is O(n^2).
+Also, variations of the quick sort like randomized quicksort are not efficient for the linked list because unlike arrays, 
+random access in the linked list is not possible in O(1) time. If we sort the linked list using quicksort, 
+we would end up using the head as a pivot element which may not be efficient in all scenarios.
+
+Approach 1: Top Down Merge Sort (recursion)
+recursively splits the original list into two halves, the split continues until there is only one. 
+sorts each sublist independently, and eventually merge the sorted lists.
+Time complexity: O(nlogn). The recursion tree expands in form of a complete binary tree. The number of levels: log⁡2(n). 
+At each level, we merge n nodes which takes O(n) time. 
+Space complexity: O(logn). Since the problem is recursive, we need additional space to store the recursive call stack. 
+The maximum depth of the recursion tree is log⁡n.
+
+class Solution {
+    public ListNode sortList(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode mid = getMid(head);
+        ListNode left = sortList(head);
+        ListNode right = sortList(mid);
+        return merge(left, right);
+    }
+
+    ListNode merge(ListNode list1, ListNode list2) {
+        ListNode dummyHead = new ListNode();
+        ListNode tail = dummyHead;
+        while (list1 != null && list2 != null) {
+            if (list1.val < list2.val) {
+                tail.next = list1;
+                list1 = list1.next;
+            } else {
+                tail.next = list2;
+                list2 = list2.next;
+            }
+            tail = tail.next;
+        }
+        tail.next = list1 != null ? list1 : list2;
+        return dummyHead.next;
+    }
+
+    ListNode getMid(ListNode head) {
+        ListNode midPrev = head;
+        while (head != null && head.next != null) {
+            midPrev = (midPrev == null) ? head : midPrev.next;
+            head = head.next.next;
+        }
+        ListNode mid = midPrev.next;
+        midPrev.next = null;
+        return mid;
+    }
+}
+
 
 Solution 1: Merge Sort. Time complexity: O(nlogn). Space complexity: O(1). use stack memory space of the recursion path.
 /**
