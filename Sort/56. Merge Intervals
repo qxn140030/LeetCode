@@ -1,0 +1,36 @@
+Question: Given an array of intervals where intervals[i] = [start i, end i], merge all overlapping intervals, and return an array of the non-overlapping 
+intervals that cover all the intervals in the input.
+Example 1:
+Input: intervals = [[1,3],[2,6],[8,10],[15,18]]
+Output: [[1,6],[8,10],[15,18]]
+Example 2:
+Input: intervals = [[1,4],[4,5]]
+Output: [[1,5]]
+
+Approach 1: Connected components (brute force)
+Time complexity: O(n^2)
+Space complexity: O(n^2)
+
+Approach 2: Sorting
+sort the intervals by their start value
+Time complexity: O(nlogn)
+Space complexity: O(logn) if we can sort intervals in place, the sorting itself takes O(logn) space.
+Otherwise, O(n), we must allocate linear space to store a copy of intervals and sort that.
+
+public class Solution {
+    public int[][] merge(int[][] intervals) {
+        if (intervals == null || intervals.length < 2) {
+            return intervals;
+        }
+        Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
+        LinkedList<int[]> rst = new LinkedList<>();
+        for (int[] interval : intervals) {
+            if (rst.isEmpty() || rst.getLst()[1] < interval[0]) {
+                rst.add(interval);
+            } else {
+                rst.getLast()[1] = Math.max(rst.getLast()[1], interval[1]);
+            }
+        }
+        return rst.toArray(new int[rst.size()][]);
+    }
+}
