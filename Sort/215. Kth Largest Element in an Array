@@ -1,0 +1,84 @@
+Question: Given an integer array nums and integer k, return the kth largest element in the array.
+Note that it is the kth largest element in the sorted order, not the kthdistinct element.
+You must solve it in O(n) time complexity.
+
+Example 1:
+Input: nums = [3,2,1,5,6,4], k = 2
+Output: 5
+
+Example 2:
+Input: nums = [3,2,3,1,2,4,5,5,6], k = 4
+Output: 4
+
+Approach 1: Sort (naive solution)
+Time complexity: O(nlogn)
+Space complexity: O(1)
+
+public class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        Arrays.sort(nums);
+        return nums[nums.length - k];
+    }
+}
+
+Approach 2: Min Heap
+The heap stores the top k elements. Whenever the size is greater than k, delete the min.
+Time complexity: O(nlog(k)), adding an element in a heap of size k: O(logk), we do it n times. 
+Space complexity: O(k) for storing the top k numbers.
+
+public class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        PriorityQueue<Integer> heap = new PriorityQueue<>(k);
+        for (int i : nums) {
+            heap.offer(i);
+            if (heap.size() > k) {
+                heap.poll();
+            }
+        }
+        return heap.poll();
+    }
+}
+
+Approach 3: Quick select
+good average performance, but is sensitive to the pivot that is chosen. consistently decrease the search set by a given fraction - linear.
+Time complexity: O(n) in avarage, O(n^2) in the worst case.
+Space complexity: O(1)
+
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        return quickSelect(nums, 0, nums.length - 1, k);
+    }
+
+    private int quickSelect(int[] nums, int left, int right, int k) {
+        int pivot = nums[(left + right) / 2];
+        // similar to sort three colors, split to three parts
+        int i = left;         
+        int j = right;
+        int p = left;
+        while (p <= j) {
+            if (nums[p] > pivot) {
+                swap(nums, p, j);
+                j--;
+            } else if (nums[p] < pivot) {
+                swap(nums, p, i);
+                p++;
+                i++;
+            } else {
+                p++;
+            }
+        }
+        if (right - j >= k) {
+            return quickSelect(nums, j + 1, right, k);
+        } else if (right - i + 1 >= k) {
+            return pivot;
+        } else {
+            return quickSelect(nums, left, i - 1, k - (right - i + 1));
+        }
+    }
+
+    private void swap(int[] nums, int a, int b) {
+        int tmp = nums[a];
+        nums[a] = nums[b];
+        nums[b] = tmp;
+    }
+}
