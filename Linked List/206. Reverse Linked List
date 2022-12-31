@@ -16,11 +16,12 @@ Space complexity: O(1)
 public class Solution {
     public ListNode reverseList(ListNode head) {
         ListNode pre = null;
-        while (head != null) {
-            ListNode tmp = head.next;
-            head.next = pre;
-            pre = head;
-            head = tmp;
+        ListNode cur = head;
+        while (cur != null) {
+            ListNode tmp = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = tmp;
         }
         return pre;
     }
@@ -30,15 +31,14 @@ Approach 2: Recursive
 Time complexity: O(n). Assume that n is the list's length.
 Space complexity: O(n). The extra space comes from implicit stack space due to recursion. The recursion could go up to n levels deep.
 
-public class Solution {
+class Solution {
     public ListNode reverseList(ListNode head) {
         if (head == null || head.next == null) {
             return head;
         }
-        ListNode second = head.next;
+        ListNode p = reverseList(head.next);
+        head.next.next = head;
         head.next = null;
-        ListNode rest = reverseList(second);
-        second.next = head;
-        return rest;
+        return p;
     }
 }
