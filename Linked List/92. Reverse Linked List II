@@ -5,7 +5,52 @@ Given 1->2->3->4->5->NULL, left = 2 and right = 4, return 1->4->3->2->5->NULL.
 Follow up:
 Do it in-place and in one-pass.
 
-Time complexity: O(n). Space complexity: O(1).
+Approach 1: Recursion
+two pointers at the left-th and right-th node from the beginning. Once we have such pointers in place, we can repeatedly swap the data between the nodes.
+we don't have any backward pointers, so we rely on recursion to simulate the backward pointer.
+Time complexity: O(n), process all the nodes at most twice.
+Space complexity: O(n), in the worst case we have to reverse the entire list. space occupied by the recursion stack.
+
+class Solution {
+    public ListNode reverseBetween(ListNode head, int left, int right) {
+        if (head == null || head.next == null || right == left) {
+            return head;
+        }
+        ListNode leftNode = head;
+        ListNode leftPre = new ListNode(0);
+        leftPre.next = leftNode;
+        ListNode rightNode = head;
+        int leftP = left;
+        int rightP = right;
+        while (rightP-- > 1) {
+            if (leftP-- > 1) {
+                leftPre = leftNode;
+                leftNode = leftNode.next;
+            }
+            rightNode = rightNode.next;
+        }
+        ListNode rightAfter = rightNode.next;
+        ListNode p = reverse(leftNode, right - left);
+        ListNode reversedTail = leftPre.next;
+        leftPre.next = p;
+        reversedTail.next = rightAfter;
+        return left == 1 ? p : head;
+    }
+
+    private ListNode reverse(ListNode head, int n) {
+        if (head == null || head.next == null || n < 1) {
+            return head;
+        }
+        ListNode p = reverse(head.next, n - 1);
+        head.next.next = head;
+        head.next = null;
+        return p;
+    }
+}
+
+Approach 2: 
+Time complexity: O(n)
+Space complexity: O(1)
 /**
  * Definition for singly-linked list.
  * public class ListNode {
