@@ -1,10 +1,12 @@
-Given a linked list, determine if it has a cycle in it.
+Question: Given the head of a linked list, determine if it has a cycle in it.
 Follow up: 
-Can you solve it without using extra space?
+Can you solve it using O(1) memory?
 
-Solution 1: record each node's reference (or memory address) in a hash table.
+Approach 1: Hash Table
+check whether a node had been visited before. record each node's reference (or memory address) in a hash table.
 Time complexity: O(n). visit each of the n elements in the list at most once. Adding a node to the hash table costs O(1) time.
 Space complexity: O(n).
+
 /**
  * Definition for singly-linked list.
  * class ListNode {
@@ -18,30 +20,32 @@ Space complexity: O(n).
  */
 public class Solution {
     public boolean hasCycle(ListNode head) {
-        Set<ListNode> hs = new HashSet<ListNode>();
+        Set<ListNode> visited = new HashSet<>();
         while (head != null) {
-            if (hs.contains(head)) {
+            if (visited.contains(head)) {
                 return true;
             } 
-            hs.add(head);
+            visited.add(head);
             head = head.next;
         }
         return false;
     }
 }
 
-Solution 2: slow pointer moves one step at a time while the fast pointer moves two steps at a time. when both pointers are
-in the cycle, it takes (distance between the 2 runners) / (difference of speed) loops for the fast runner to catch up with
-the slow runner. 
-time complexity: O(n). 
-Space complexity: O(1). only use one node - fast.
+Approach 2: Floyd's cycle finding algorithm
+slow pointer moves one step at a time while the fast pointer moves two steps at a time. when both pointers are in the cycle, 
+it takes (distance between the 2 runners) / (difference of speed) loops for the fast runner to catch up with the slow runner. 
+time complexity: O(n)
+Space complexity: O(1)
+
 public class Solution {
     public boolean hasCycle(ListNode head) {
+        ListNode slow = head;
         ListNode fast = head;
         while (fast != null && fast.next != null) {
+            slow = slow.next;
             fast = fast.next.next;
-            head = head.next;
-            if (fast == head) {
+            if (fast == slow) {
                 return true;
             }
         }
