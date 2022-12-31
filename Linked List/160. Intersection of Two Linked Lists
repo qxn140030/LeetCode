@@ -1,0 +1,129 @@
+Question: Given the heads of two singly linked-lists headA and headB, return the node at which the two lists intersect.
+If the two linked lists have no intersection at all, return null.
+
+For example, the following two linked lists:
+A:          a1 → a2
+                   ↘
+                     c1 → c2 → c3
+                   ↗            
+B:     b1 → b2 → b3
+begin to intersect at node c1.
+
+Note that the linked lists must retain their original structure after the function returns.
+You may assume there are no cycles anywhere in the entire linked structure.
+Your code should preferably run in O(n) time and use only O(1) memory.
+
+Approach 1: Brute force
+For each node in list A, traverse over list B and check whether or not the node is present in list B.
+Time complexity: O(m * n)
+Space complexity: O(1)
+
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        while (headA != null) {
+            ListNode pB = headB;
+            while (pB != null) {
+                if (headA == pB) {
+                    return headA;
+                }
+                pB = pB.next;
+            }
+            headA = headA.next;
+        }
+        return null;
+    }
+}
+
+Approach 2: Hash Table
+Time complexity: O(m + n)
+Space complexity: O(m). As we store each of the nodes from list B into a hash table.
+
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        Set<ListNode> nodesInB = new HashSet<>();
+        while (headB != null) {
+            nodesInB.add(headB);
+            headB = headB.next;
+        }
+        while (headA != null) {
+            if (nodesInB.contains(headA)) {
+                return headA;
+            }
+            headA = headA.next;
+        }
+        return null;
+    }
+}
+
+Approach 3: Two pointers
+Count the length of list A and B, set the start pointer for the longer list, step the pointers through the list together.
+Time complexity: O(m + n)
+Space complexity: O(1)
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        if (headA == null || headB == null) {
+            return null;
+        }
+        int lenA = 1;
+        ListNode tailA = headA;
+        while (tailA.next != null) {
+            lenA++;
+            tailA = tailA.next;
+        }
+        int lenB = 1;
+        ListNode tailB = headB;
+        while (tailB.next != null) {
+            lenB++;
+            tailB = tailB.next;
+        }
+        if (tailA != tailB) {
+            return null;
+        }
+        if (lenA < lenB) {
+            for (int i = 0; i < lenB - lenA; i++) {
+                headB = headB.next;
+            }
+        } else {
+            for (int i = 0; i < lenA - lenB; i++) {
+                headA = headA.next;
+            }
+        }
+        while (headA != headB) {
+            headA = headA.next;
+            headB = headB.next;
+        }
+        return headA;
+    }
+}
+
+Approach 4: Two pointers (simplify the code a bit, single loop)
+Time complexity: O(m + n)
+Space complexity: O(1)
+
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        ListNode pA = headA;
+        ListNode pB = headB;
+        while (pA != pB) {
+            pA = pA == null ? headB : pA.next;
+            pB = pB == null ? headA : pB.next;
+        }
+        return pA;
+        // Note: In the case lists do not intersect, the pointers for A and B
+        // will still line up in the 2nd iteration, just that here won't be
+        // a common node down the list and both will reach their respective ends
+        // at the same time. So pA will be NULL in that case.
+    }
+}
