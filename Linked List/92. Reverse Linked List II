@@ -6,7 +6,7 @@ Follow up:
 Do it in-place and in one-pass.
 
 Approach 1: Recursion
-two pointers at the left-th and right-th node from the beginning. Once we have such pointers in place, we can repeatedly swap the data between the nodes.
+two pointers at the left-th and right-th node from the beginning. Once we have such pointers in place, we can recursively reverse nodes between them.
 we don't have any backward pointers, so we rely on recursion to simulate the backward pointer.
 Time complexity: O(n), process all the nodes at most twice.
 Space complexity: O(n), in the worst case we have to reverse the entire list. space occupied by the recursion stack.
@@ -48,9 +48,49 @@ class Solution {
     }
 }
 
-Approach 2: 
+Approach 2: Iterative Link Reversal
 Time complexity: O(n)
 Space complexity: O(1)
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode reverseBetween(ListNode head, int left, int right) {
+        if (head == null || head.next == null || right == left) {
+            return head;
+        }
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode pre = dummy;
+        while (left-- > 1) {
+            pre = pre.next;
+            right--;
+        }
+        ListNode beforeReverse = pre;
+        ListNode cur = pre.next;
+        ListNode reverseTail = cur;
+        pre = null;
+        ListNode after = null;
+        while (right-- > 0 && cur != null) { 
+            after = cur.next;     
+            cur.next = pre;
+            pre = cur;
+            cur = after;
+        }
+        beforeReverse.next = pre;
+        reverseTail.next = cur;
+        return dummy.next;
+    }
+}
+
 /**
  * Definition for singly-linked list.
  * public class ListNode {
