@@ -1,0 +1,5 @@
+Question: Given the head of a singly linked list, group all the nodes with odd indicies with odd indices together 
+followed by the nodes with even indicies, and return the reordered list.
+The first node is considered odd, and the second node is even.
+Note that the relative order inside both the even and odd groups should remai as it was in the input.
+You must solve the problem in O(1) extra spacve complexity and O(n) time complexity.
