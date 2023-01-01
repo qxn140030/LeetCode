@@ -1,0 +1,76 @@
+Question: Given a string, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases.
+For example, 
+"A man, a plan, a canal: Panama" is a palindrome. 
+"race a car" is not a palindrome.
+empty string as valid palindrome.
+
+Approach 1: Compare with reverse
+Time complexity: O(n)
+Space complexity: O(n), need additional space to store the filtered string and the reverse string.
+
+class Solution {
+  public boolean isPalindrome(String s) {
+    StringBuilder builder = new StringBuilder();
+    for (char ch : s.toCharArray()) {
+      if (Character.isLetterOrDigit(ch)) {
+        builder.append(Character.toLowerCase(ch));
+      }
+    }
+    String filteredString = builder.toString();
+    String reversedString = builder.reverse().toString();
+    return filteredString.equals(reversedString);
+  }
+}
+
+Approach 2: Two pointers
+Time complexity: O(n)
+Space complexity: O(1)
+
+class Solution {
+    public boolean isPalindrome(String s) {
+        if (s == null || s.length() < 2) {
+            return true;
+        }
+        int i = 0;
+        int j = s.length() - 1;
+        while (i < j) {
+            while (i < j && !Character.isLetterOrDigit(s.charAt(i))) {
+                i++;
+            }
+            while (i < j && !Character.isLetterOrDigit(s.charAt(j))) {
+                j--;
+            }
+            if (Character.toLowerCase(s.charAt(i)) != Character.toLowerCase(s.charAt(j))) {
+                return false;
+            }
+            i++;
+            j--;
+        }
+        return true;
+    }
+}
+
+Approach 3: Stack
+Time complexity: O(n)
+Space complexity: O(n)
+
+public class Solution {
+    public boolean isPalindrome(String s) {
+        s = s.toLowerCase().replaceAll("[^a-z0-9]", "");      // replaceAll().
+        Stack<Character> stack = new Stack<>();
+        int len = s.length();
+        int index = 0;
+        while (index < len / 2) {
+            stack.push(s.charAt(index++));
+        }
+        if (len % 2 == 1) {
+            index++;
+        }
+        while (index < len) {
+            if (s.charAt(index++) != stack.pop()) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
