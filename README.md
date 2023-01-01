@@ -1,5 +1,5 @@
 # LeetCode高频知识点
-花花酱的讲解，YouTube 博主：Huifeng Guan
+花花酱的讲解，YouTube 博主：Huifeng Guan, 山景城一姐
 ## 排序类（Sort）
 入门题目：
 * Leetcode 148. Sort List
@@ -10,9 +10,8 @@
 * Leetcode 179. Largest Number
 * Leetcode 75. Sort Colors
 * Leetcode 215. Kth Largest Element （可以用堆的解法替代）
-* Leetcode 4. Median of Two Sorted Arrays
 
-后两题是与快速排序非常相似的快速选择（Quick Select）算法，面试中很常考
+最后一题是与快速排序非常相似的快速选择（Quick Select）算法，面试中很常考
 
 ## 链表类（Linked List）
 基础题目：
@@ -79,6 +78,7 @@ Heap／Priority Queue题目：
 * Leetcode 278. First Bad Version
 * Leetcode 74. Search a 2D Matrix
 * Leetcode 240. Search a 2D Matrix II
+* Leetcode 4. Median of Two Sorted Arrays
 
 隐式二分法：
 * Leetcode 69. Sqrt(x)
