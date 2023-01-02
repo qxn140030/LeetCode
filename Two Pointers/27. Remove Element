@@ -17,9 +17,9 @@ Try two pointers.
 Did you use the property of "the order of elements can be changed"?
 What happens when the elements to remove are rare?
 
-Approach 1: two pointers
-Time complexity: O(n). 
-Space complexity: O(1).
+Approach 1: Two pointers
+Time complexity: O(n)
+Space complexity: O(1)
 
 public class Solution {
     public int removeElement(int[] nums, int val) {
@@ -36,16 +36,13 @@ public class Solution {
     }
 }
 
-Solution 2: two pointers - when elements to remove are rare.
+Approach 2: Two pointers - when elements to remove are rare.
 Time complexity: O(n). 
 the number of assignment operation is equal to the number of elements to remove. So it is more efficient if elements to remove are rare.
-Space complexity: O(1).
+Space complexity: O(1)
 
 public class Solution {
     public int removeElement(int[] nums, int val) {
-        if (nums == null || nums.length == 0) {
-            return 0;
-        }
         int left = 0;
         int right = nums.length - 1;
         while (left <= right) {
