@@ -1,0 +1,88 @@
+Question: Given two integer arrays nums1 and nums2, return an array of their intersection.
+Each element in the result should appear as many times as it shows in both arrays in any order.
+
+Example 1:
+Input: nums1 = [1,2,2,1], nums2 = [2,2]
+Output: [2,2]
+
+Example 2:
+Input: nums1 = [4,9,5], nums2 = [9,4,9,8,4]
+Output: [4,9] or [9,4]
+
+Follow up:
+1. What if the given array is already sorted? How would you optimize your algorithm?
+Use approach 2, it will give us linear time and constant memory complexity.
+
+2. What if nums1's size is small compared to nums2's size? Which algorithm is better?
+Approach 1 is better.
+
+3. What if elements of nums2 are stored on disk, and the memory is limited such that you cannot load all elements into the memory at once?
+If nums1 fits into the memory, use approach 1, sequentially load and process nums2.
+If neither of the arrays fit into the memory, we can apply some partial processing strategies:
+> Split the numeric range into subranges that fits into the memory. Modify approach 1 to collect counts only within a given subrange,
+and call the method multiple times (for each subrange).
+> Use an external sort for both arrays. Modify approach 2 to load and process arrays sequentially.
+
+Approach 1: Hash Map
+collect numbers and their counts from smaller array into a hash map (reduce memory usage).
+then iterate along the second array, check if the number exists in the hash map and its count is positive.
+Time complexity: O(m + n)
+Space complexity: O(m), use hash map to store numbers.
+
+public class Solution {
+    public int[] intersect(int[] nums1, int[] nums2) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i : nums1) {
+            if (map.containsKey(i)) {
+                map.put(i, map.get(i) + 1);
+            } else {
+                map.put(i, 1);
+            }
+        } 
+        List<Integer> tmp = new ArrayList<>();
+        for (int i : nums2) {
+            if (map.containsKey(i) && map.get(i) > 0) {
+                tmp.add(i);
+                map.put(i, map.get(i) - 1);
+            }
+        }
+        int[] rst = new int[tmp.size()];
+        for (int i = 0; i < rst.length; i++) {
+            rst[i] = tmp.get(i);
+        }
+        return rst;
+    }
+}
+
+Approach 2: Sort
+Time complexity: O(nlogn + mlogm)
+Space complexity: from O(logn + logm) to O(m + n), depending on the implementation of thet sorting algorithm.
+For the complexity analysis purpose, we ignore the memory required by inputs and outputs.
+
+public class Solution {
+    public int[] intersect(int[] nums1, int[] nums2) {
+        Arrays.sort(nums1);
+        Arrays.sort(nums2);
+        int i = 0;
+        int j = 0;
+        List<Integer> tmp = new ArrayList<>();
+        while (i < nums1.length && j < nums2.length) {
+            if (nums1[i] == nums2[j]) {
+                tmp.add(nums1[i]);
+                i++;
+                j++;
+            } else if (nums1[i] < nums2[j]) {
+                i++;
+            } else {
+                j++;
+            }
+        }
+        int[] rst = new int[tmp.size()];
+        for (int k = 0; k < rst.length; k++) {
+            rst[k] = tmp.get(k);
+        }
+        return rst;
+    }
+}
+
+
