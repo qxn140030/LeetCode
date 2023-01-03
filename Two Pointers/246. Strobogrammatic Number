@@ -1,0 +1,67 @@
+Question: Given a string num which represent an integer, return true if num is a strobogrammatic number.
+A strobogrammatic number is a number that looks the same when rotated 180 degrees (looked at upside down).
+Write a function to determine if a number is strobogrammatic. The number is represented as a string.
+
+Example 1:
+Input: num = "69"
+Output: true
+
+Example 2:
+Input: num = "88"
+Output: true
+
+Example 3:
+Input: num = "962"
+Output: false
+
+Approach 1: Make a rotated copy
+always use a string builder to build a new string, and not repeated string concatenations.
+in most programming languages, the built-in string type is immutable. If the string is modified, then a new string object must be made.
+appending n characters to a string would have a cost of O(n^2).
+a string builder is a list-like data structure that characters are inserted in.
+Time complexity: O(n)
+Space complexity: O(n), the string builder required space.
+
+class Solution {
+    public boolean isStrobogrammatic(String num) {
+        StringBuilder rotatedStringBuilder = new StringBuilder();
+        for (int i = num.length() - 1; i >= 0; i--) {
+            char c = num.charAt(i);
+            if (c == '0' || c == '1' || c == '8') {
+                rotatedStringBuilder.append(c);
+            } else if (c == '6') {
+                rotatedStringBuilder.append('9');
+            } else if (c == '9') {
+                rotatedStringBuilder.append('6');
+            } else { 
+                return false;
+            }
+        }   
+        String rotatedString = rotatedStringBuilder.toString();
+        return num.equals(rotatedString);
+    }
+}
+
+Approach 2: Two pointers
+Time complexity: O(n)
+Space complexity: O(1)
+
+public class Solution {
+    public boolean isStrobogrammatic(String num) {
+        if (num == null || num.length() == 0) {
+            return true;
+        }
+        for (int i = 0, j = num.length() - 1; i <= j; i++, j--) {
+            char num1 = num.charAt(i);
+            char num2 = num.charAt(j);
+            if (!check(num1, num2)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    private boolean check(char c1, char c2) {
+        return (c1 == '0' && c2 == '0') || (c1 == '1' && c2 == '1') || (c1 == '8' && c2 == '8') || (c1 == '6' && c2 == '9')
+            || (c1 == '9' && c2 == '6');
+    }
+}
