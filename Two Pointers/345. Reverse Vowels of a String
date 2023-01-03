@@ -1,14 +1,19 @@
-Write a function that takes a string as input and reverse only the vowels of a string.
+Question: Given a string s, reverse only the vowels in the string and return it.
+The vowels are 'a', 'e', 'i', 'o', and 'u', and they can appear in both lower and upper cases, more than once.
+
 Example 1: Given s = "hello", return "holle".
 Example 2: Given s = "leetcode", return "leotcede".
-Note:
-The vowels does not include the letter "y".
+
+Approach 1: Two pointers
+Time complexity: O(n)
+Space complexity: O(n), convert the string to a char array.
 
 public class Solution {
     public String reverseVowels(String s) {
-        if (s == null || s.length() == 0) {
+        if (s == null || s.length() < 2) {
             return s;
         }
+        // Convert String to char array as String is immutable in Java
         char[] arr = s.toCharArray();
         String vowels = "AOEIUaoeiu";
         int left = 0;
@@ -20,12 +25,13 @@ public class Solution {
             while (left < right && !vowels.contains(String.valueOf(arr[right]))) {
                 right--;
             }
-            char tmp = arr[left];
-            arr[left] = arr[right];
-            arr[right] = tmp;
-            left++;
-            right--;
+            if (left < right) {
+                char tmp = arr[left];
+                arr[left++] = arr[right];
+                arr[right--] = tmp;
+            }
         }
+        // Converting char array back to String
         return new String(arr);
     }
 }
