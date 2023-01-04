@@ -1,23 +1,25 @@
-Given two strings s and t, write a function to determine if t is an anagram of s.
-For example,
-s = "anagram", t = "nagaram", return true.
-s = "rat", t = "car", return false.
-Note:
-You may assume the string contains only lowercase alphabets.
+Question: Given two strings s and t, write a function to determine if t is an anagram of s.
+An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.
+
+Example 1:
+Input: s = "anagram", t = "nagaram"
+Output: true
+
+Example 2:
+Input: s = "rat", t = "car"
+Output: false
+
 Follow up:
 What if the inputs contain unicode characters? How would you adapt your solution to such case?
 
-Solution 1: sorting.
-Time complexity: O(nlogn). Space complexity: O(1).
-O(1) auxiliary space if heapsort is used. Note that in Java, toCharArray() makes a copy of the string so it costs O(n) extra
-space, but we ignore this for complexity analysis because:
-It is a language dependent detail.
-It depends on how the function is designed. For example, the function parameter types can be changed to char[].
+Approach 1: Sorting
+Time complexity: O(nlogn)
+Space complexity: O(1) auxiliary space if heapsort is used. 
+in Java, toCharArray() makes a copy of the string so it costs O(n) extraspace, 
+but we ignore this for complexity analysis because: It is a language dependent detail.
+
 public class Solution {
     public boolean isAnagram(String s, String t) {
-        if (s == null && t == null) {
-            return true;
-        }
         if (s == null || t == null || s.length() != t.length()) {
             return false;
         }
@@ -29,13 +31,13 @@ public class Solution {
     }
 }
 
-Solution 2: string contains only lower case letters.
-Time complexity: O(n). Space complexity: O(1).
+Solution 2: Frequency counter
+string contains only lower case letters.
+Time complexity: O(n)
+Space complexity: O(1)
+
 public class Solution {
     public boolean isAnagram(String s, String t) {
-        if (s == null && t == null) {
-            return true;
-        }
         if (s == null || t == null || s.length() != t.length()) {
             return false;
         }
@@ -53,13 +55,13 @@ public class Solution {
     }
 }
 
-Solution 3: Use a hash table instead of a fixed size counter to fit the entire range of unicode characters. more generic.
-Time complexity: O(n). Space complexity: O(1).
+Solution 3: Hash Table (Follow up)
+Use a hash table instead of a fixed size counter to fit the entire range of unicode characters. more generic.
+Time complexity: O(n)
+Space complexity: O(n)
+
 public class Solution {
     public boolean isAnagram(String s, String t) {
-        if (s == null && t == null) {
-            return true;
-        }
         if (s == null || t == null || s.length() != t.length()) {
             return false;
         }
