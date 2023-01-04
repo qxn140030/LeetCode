@@ -1,0 +1,64 @@
+Question: Given a binary string s, return the number of non-empty substrings that have the same number of 0's and 1's,
+and all the 0's and all the 1's in these substrings are grouped consecutively.
+Substrings that occur multiple times are counted the number of times they occur.
+
+Example 1:
+
+Input: s = "00110011"
+Output: 6
+Explanation: There are 6 substrings that have equal number of consecutive 1's and 0's: "0011", "01", "1100", "10", "0011", and "01".
+Notice that some of these substrings repeat and are counted the number of times they occur.
+Also, "00110011" is not a valid substring because all the 0's (and 1's) are not grouped together.
+Example 2:
+
+Input: s = "10101"
+Output: 4
+Explanation: There are 4 substrings: "10", "01", "10", "01" that have equal number of consecutive 1's and 0's.
+
+Approach 1: Group by character
+convert the string s into an array groups that represents the length of same character contiguous blocks within the string.
+if s = "110001111000000", then groups = [2,3,4,6]
+we can make min(groups[i], groups[i + 1]) valid binary strings.
+Time complexity: O(n)
+Space complexity: O(n)
+
+class Solution {
+    public int countBinarySubstrings(String s) {
+        int[] groups = new int[s.length()];
+        int j = 0;
+        groups[0] = 1;
+        for (int i = 1; i < s.length(); i++) {
+            if (s.charAt(i - 1) != s.charAt(i)) {
+                groups[++j] = 1;
+            } else {
+                groups[j]++;
+            }
+        }
+        int rst = 0;
+        for (int i = 1; i <= j; i++) {
+            rst += Math.min(groups[i - 1], groups[i]);
+        }
+        return rst;
+    }
+}
+
+Approach 2: Linear scan
+amend approach 1 to calculate tge answer on the fly.
+Time complexity: O(n)
+Space complexity: O(1)
+
+class Solution {
+    public int countBinarySubstrings(String s) {
+        int rst = 0, prev = 0, cur = 1;
+        for (int i = 1; i < s.length(); i++) {
+            if (s.charAt(i - 1) != s.charAt(i)) {
+                rst += Math.min(prev, cur);
+                prev = cur;
+                cur = 1;
+            } else {
+                cur++;
+            }
+        }
+        return rst + Math.min(prev, cur);
+    }
+}
