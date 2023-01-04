@@ -1,0 +1,95 @@
+Question: Given the root of a binary search tree and an integer k, return true if there exists two elements in the BST
+such that their sum is equal to k.
+
+Example 1:
+         5
+        / \
+       3   6
+      / \   \
+     2   4   7
+Input: root = [5,3,6,2,4,null,7], k = 9
+Output: true
+
+Example 2:
+Input: root = [5,3,6,2,4,null,7], k = 28
+Output: false
+
+Approach 1: HashSet
+Time complexity: O(n)
+Space complexity: O(n)
+
+public class Solution {
+    public boolean findTarget(TreeNode root, int k) {
+        Set<Integer> set = new HashSet<>();
+        return find(root, k, set);
+    }
+    public boolean find(TreeNode root, int k, Set<Integer> set) {
+        if (root == null) {
+            return false;
+        }
+        if (set.contains(k - root.val)) {
+            return true;
+        }
+        set.add(root.val);
+        return find(root.left, k, set) || find(root.right, k, set);
+    }
+}
+
+Approach 2: BFS and HashSet
+Time complexity: O(n)
+Space complexity: O(n)
+
+public class Solution {
+    public boolean findTarget(TreeNode root, int k) {
+        Set<Integer> set = new HashSet();
+        Queue<TreeNode> queue = new LinkedList();
+        queue.add(root);
+        while (!queue.isEmpty()) {
+            if (queue.peek() != null) {
+                TreeNode node = queue.remove();
+                if (set.contains(k - node.val)) {
+                    return true;
+                }
+                set.add(node.val);
+                queue.add(node.right);
+                queue.add(node.left);
+            } else {
+                queue.remove();     // Remove null
+            }
+        }
+        return false;
+    }
+}
+
+Approach 3: BST
+inorder traversal of a BST gives the nodes in ascending order.
+Time complexity: O(n)
+Space complexity: O(n)
+
+public class Solution {
+    public boolean findTarget(TreeNode root, int k) {
+        List<Integer> list = new ArrayList();
+        inorder(root, list);
+        int l = 0;
+        int r = list.size() - 1;
+        while (l < r) {
+            int sum = list.get(l) + list.get(r);
+            if (sum < k) {
+                l++;
+            } else if (sum > k) {
+                r--;
+            } else {
+                return true;
+            }
+        }
+        return false;
+    }
+    public void inorder(TreeNode root, List<Integer> list) {
+        if (root == null) {
+            return;
+        }
+        inorder(root.left, list);
+        list.add(root.val);
+        inorder(root.right, list);
+    }
+}
