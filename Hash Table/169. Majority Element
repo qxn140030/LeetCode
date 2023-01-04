@@ -1,0 +1,185 @@
+Question: Given an array nums of size n, return the majority element. 
+The majority element is the element that appears more than n / 2 times.
+
+Example 1:
+Input: nums = [3,2,3]
+Output: 3
+
+Example 2:
+Input: nums = [2,2,1,1,1,2,2]
+Output: 2
+
+Follow up:
+Could you solve the problem in linear time and in O(1) space?
+
+Approach 1: Brute force
+Time complexity: O(n^2)
+Space complexity: O(1)
+
+class Solution {
+    public int majorityElement(int[] nums) {
+        int majorityCount = nums.length / 2;
+        for (int num : nums) {
+            int count = 0;
+            for (int elem : nums) {
+                if (elem == num) {
+                    count++;
+                }
+            }
+            if (count > majorityCount) {
+                return num;
+            }
+        }
+        return -1;    
+    }
+}
+
+Approach 2: HashMap
+Time complexity: O(n)
+Space complexity: O(n)
+
+class Solution {
+    public int majorityElement(int[] nums) {
+        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+        for (int num : nums) {
+            if (!map.containsKey(num)) {
+                map.put(num, 1);
+            } else {
+                map.put(num, map.get(num) + 1);
+            }
+        }
+        Map.Entry<Integer, Integer> majorityEntry = null;
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            if (majorityEntry == null || entry.getValue() > majorityEntry.getValue()) {
+                majorityEntry = entry;
+            }
+        }
+        return majorityEntry.getKey();
+    }
+}
+
+Approach 3: Sorting
+Time complexity: O(nlogn)
+Space complexity: O(1) or O(n), if in place is allowed or not.
+
+public class Solution {
+    public int majorityElement(int[] nums) {
+        Arrays.sort(nums);
+        return nums[nums.length / 2];
+    }
+}
+
+Approach 4: Bit manipulation
+If an element occurs more than n / 2 times, then there are at least n / 2 elements of identical values at each bit.
+Time complexity: O(nlogC), C is the max absolute value in nums.
+Space complexity: O(1)
+
+class Solution {
+    public int majorityElement(int[] nums) {
+        int n = nums.length;
+        int majority_element = 0;
+        for (int i = 0; i < 32; i++) {
+            int bit = 1 << i;
+            // Count how many numbers have this bit set.
+            int bit_count = 0;
+            for (int num : nums) {
+                if ((num & bit) != 0) {
+                    bit_count++;
+                }
+            }
+            // If this bit is present in more than n / 2 elements, it must be set in the majority element.
+            if (bit_count > n / 2) {
+                majority_element |= bit;
+            }
+        }
+        return majority_element;
+    }
+}
+
+Approach 5: Randomization
+Because more than n / 2 array indices are occupied by the majority element, a random array index is likely to contain the majority element.
+Time complexity: O(∞), it is technically possible for this algorithm to run indefinitely.
+Space complexity: O(1)
+
+class Solution {
+    private int randRange(Random rand, int min, int max) {
+        return rand.nextInt(max - min) + min;
+    }
+    private int countOccurences(int[] nums, int num) {
+        int count = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == num) {
+                count++;
+            }
+        }
+        return count;
+    }
+    public int majorityElement(int[] nums) {
+        Random rand = new Random();
+        int majorityCount = nums.length / 2;
+        while (true) {
+            int candidate = nums[randRange(rand, 0, nums.length)];
+            if (countOccurences(nums, candidate) > majorityCount) {
+                return candidate;
+            }
+        }
+    }
+}
+
+Approach 6: Divide and conquer
+Time complexity: O(nlogn)
+Space complexity: O(logn)
+
+class Solution {
+    private int countInRange(int[] nums, int num, int left, int right) {
+        int count = 0;
+        for (int i = left; i <= right; i++) {
+            if (nums[i] == num) {
+                count++;
+            }
+        }
+        return count;
+    }
+    private int majorityElementRec(int[] nums, int i, int j) {
+        if (i == j) {
+            return nums[i];
+        }
+        // recurse on left and right halves of this slice.
+        int mid = (j - i) / 2 + i;
+        int left = majorityElementRec(nums, i, mid);
+        int right = majorityElementRec(nums, mid+1, j);
+        // if the two halves agree on the majority element, return it.
+        if (left == right) {
+            return left;
+        }
+        // otherwise, count each element and return the "winner".
+        int leftCount = countInRange(nums, left, i, j);
+        int rightCount = countInRange(nums, right, i, j);
+        return leftCount > rightCount ? left : right;
+    }
+    public int majorityElement(int[] nums) {
+        return majorityElementRec(nums, 0, nums.length - 1);
+    }
+}
+
+Approach 7: Boyer-Moore voting algorithm
+Time complexity: O(n)
+Space complexity: O(1)
+
+public class Solution {
+    public int majorityElement(int[] nums) {
+        int num = nums[0];
+        int count = 1;
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] == num) {
+                count++;
+            } else if (count > 0) {
+                count--;
+            } else {
+                num = nums[i];
+                count = 1;
+            }
+        }
+        return num;
+    }
+}
