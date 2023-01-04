@@ -15,7 +15,6 @@ Time complexity: O(logn), finding the next value has a cost of O(logn) because w
 Space complexity: O(logn), closely related to the time complexity, and is a measure of what number we're putting in the HashSet.
 
 class Solution {
-
     private int getNext(int n) {
         int totalSum = 0;
         while (n > 0) {
@@ -25,7 +24,6 @@ class Solution {
         }
         return totalSum;
     }
-
     public boolean isHappy(int n) {
         Set<Integer> seen = new HashSet<>();
         while (n != 1 && !seen.contains(n)) {
@@ -42,7 +40,6 @@ Time complexity: O(logn), once both pointers are in the cycle, the fast runner w
 Space complexity: O(1)
 
 class Solution {
-
      public int getNext(int n) {
         int totalSum = 0;
         while (n > 0) {
@@ -52,7 +49,6 @@ class Solution {
         }
         return totalSum;
     }
-
     public boolean isHappy(int n) {
         int slow = n;
         int fast = getNext(n);
