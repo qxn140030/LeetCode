@@ -1,0 +1,113 @@
+Question: Given two strings ransomNote and magazine, return true if ransomNote can be constructed by using the letters from magazine.
+Each letter in magazine can only be used once in ransomNote.
+
+Example 1:
+Input: ransomNote = "a", magazine = "b"
+Output: false
+
+Example 2:
+Input: ransomNote = "aa", magazine = "ab"
+Output: false
+
+Example 3:
+Input: ransomNote = "aa", magazine = "aab"
+Output: true
+
+Approach 1: Simulation
+Time complexity: O(m * n)
+Finding the letter we need in the magazine has a cost of O(m), because we need to perform a linear search.
+Removing the letter from the magazine is also O(m), because we need to make a new string to represent it.
+Space complexity: O(m), create new magazin with one letter less requires aucillary space the length of the magazine.
+
+public boolean canConstruct(String ransomNote, String magazine) {
+    for (char c : ransomNote.toCharArray()) {
+        // Find the index of the first occurrence of c in the magazine.
+        int index = magazine.indexOf(c);
+        // If there are none of c left in the String, return False.
+        if (index == -1) {
+            return false;
+        }
+        // Use substring to make a new string with the characters before "index" (but not including), and the characters after "index". 
+        magazine = magazine.substring(0, index) + magazine.substring(index + 1);
+    }
+    return true;
+}
+
+Approach 2: HashMap
+Time complexity: O(m * n)
+Space complexity: O(1), never more than 26.
+
+class Solution {
+    public boolean canConstruct(String ransomNote, String magazine) {
+        if (ransomNote.length() > magazine.length()) {
+            return false;
+        }
+        Map<Character, Integer> map = new HashMap<>();
+        for (char c : s.toCharArray()) {
+            int currentCount = counts.getOrDefault(c, 0);
+            counts.put(c, currentCount + 1);
+        }
+        for (char c : ransomNote.toCharArray()) {
+            int countInMagazine = magazineCounts.getOrDefault(c, 0);
+            if (countInMagazine == 0) {
+                return false;
+            }
+            magazineCounts.put(c, countInMagazine - 1);
+        }
+        return true;
+    }
+}
+
+public class Solution {
+    public boolean canConstruct(String ransomNote, String magazine) {
+        if (ransomNote.length() > magazine.length()) {
+            return false;
+        }
+        int[] arr = new int[26];
+        for (char ch : magazine.toCharArray()) {
+            arr[ch - 'a']++;
+        }
+        for (char ch : ransomNote.toCharArray()) {
+            if (arr[ch - 'a'] > 0) {
+                arr[ch - 'a']--;
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+Approach 4: Sorting and stacks
+Time complexity: O(mlogm)
+Space complexity: O(m + n)
+
+class Solution {
+    public boolean canConstruct(String ransomNote, String magazine) {
+        if (ransomNote.length() > magazine.length()) {
+            return false;
+        }
+        Stack<Character> magazineStack = sortedCharacterStack(magazine);
+        Stack<Character> ransomNoteStack = sortedCharacterStack(ransomNote);
+        while (!magazineStack.isEmpty() && !ransomNoteStack.isEmpty()) {
+            if (magazineStack.peek().equals(ransomNoteStack.peek())) {
+                ransomNoteStack.pop();
+                magazineStack.pop();
+            } else if (magazineStack.peek() > ransomNoteStack.peek()) {
+                magazineStack.pop();
+            } else {
+                return false;
+            }
+        }
+        return ransomNoteStack.isEmpty();
+    }
+    private Stack<Character> sortedCharacterStack(String s) {
+        char[] charArray = s.toCharArray();
+        Arrays.sort(charArray);
+        Stack<Character> stack = new Stack<>();
+        for (int i = 0; i < s.length(); i++) {
+            stack.push(charArray[i]);
+        }
+        return stack;
+    }
+}
