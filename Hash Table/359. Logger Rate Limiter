@@ -1,0 +1,77 @@
+Question: Design a logger system that receives a stream of messages along with its timestamps, 
+each unique message should only be printed at most every 10 seconds.
+All messages will come in chronological order. Several messages may arrive at the same timestamp.
+
+Note:
+If message are not chronological ordered, we have to iterate through the entire queue to remove expired messages.
+
+Example:
+Logger logger = new Logger();
+// logging string "foo" at timestamp 1
+logger.shouldPrintMessage(1, "foo"); returns true;  // next allowed timestamp for "foo" is 1 + 10 = 11
+logger.shouldPrintMessage(2,"bar"); returns true;
+logger.shouldPrintMessage(3,"foo"); returns false;
+logger.shouldPrintMessage(8,"bar"); returns false;
+logger.shouldPrintMessage(10,"foo"); returns false;
+logger.shouldPrintMessage(11,"foo"); returns true;
+
+Approach 1: Queue + Set
+use a queue as a sort of sliding window to keep all the printable messages in certain time frame (10 seconds).
+At the arrival of each incoming messages, first invalidate expired messages in our queue.
+Time complexity: O(n) where n is the size of the queue. 
+In the worst case, all the messages in the queue become obsolete, we need to clean them up.
+Space complexity: O(n), we do proactive cleaning, remove expired messages.
+
+class Pair<U, V> {
+  public U first;
+  public V second;
+  public Pair(U first, V second) {
+    this.first = first;
+    this.second = second;
+  }
+}
+class Logger {
+  private LinkedList<Pair<String, Integer>> msgQueue;
+  private HashSet<String> msgSet;
+  public Logger() {
+    msgQueue = new LinkedList<Pair<String, Integer>>();
+    msgSet = new HashSet<String>();
+  }
+  public boolean shouldPrintMessage(int timestamp, String message) {
+    // clean up.
+    while (msgQueue.size() > 0) {
+      Pair<String, Integer> head = msgQueue.getFirst();
+      if (timestamp - head.second >= 10) {
+        msgQueue.removeFirst();
+        msgSet.remove(head.first);
+      } else
+        break;
+    }
+    if (!msgSet.contains(message)) {
+      Pair<String, Integer> newEntry = new Pair<String, Integer>(message, timestamp);
+      msgQueue.addLast(newEntry);
+      msgSet.add(message);
+      return true;
+    } else {
+      return false;
+    }
+  }
+}
+
+Approach 2: Hash Table / Dictionary
+Time complexity: O(1), lookup and update of hash table.
+Space complexity: O(M), size of all upcoming messages.
+
+public class Logger {                         
+    Map<String, Integer> map;
+    public Logger() {
+        map = new HashMap<>();
+    }
+    public boolean shouldPrintMessage(int timestamp, String message) {
+        if (!map.containsKey(message) || timestamp - map.get(message) >= 10) {
+            map.put(message, timestamp);
+            return true;
+        } 
+        return false;
+    }
+}
