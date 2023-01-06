@@ -9,39 +9,31 @@ Notes:
 list or deque (double-ended queue), as long as you use only standard operations of a stack.
 You may assume that all operations are valid (for example, no pop or peek operations will be called on an empty queue).
 
+Approach 1: Two stacks
+
 class MyQueue {
-    Stack<Integer> s1 = new Stack<>();
-    Stack<Integer> s2 = new Stack<>();
-    // Push element x to the back of queue.
+    Stack<Integer> s1;
+    Stack<Integer> s2;
+    public MyQueue() {
+        s1 = new Stack<>();
+        s2 = new Stack<>();
+    }
     public void push(int x) {
-        s1.push(x);
-    }
-    // Removes the element from in front of queue.
-    public void pop() {
-        if (!s2.isEmpty()) {
-            s2.pop();
-        } else if (!s1.isEmpty()) {
-            while (!s1.isEmpty()) {
-                s2.push(s1.pop());
-            }
-            s2.pop();
-        }
-    }
-    // Get the front element.
-    public int peek() {
-        if (empty()) {
-            return -1;
-        }
-        if (!s2.isEmpty()) {
-            return s2.peek();
-        } 
         while (!s1.isEmpty()) {
             s2.push(s1.pop());
         }
-        return s2.peek();
+        s1.push(x);
+        while (!s2.isEmpty()) {
+            s1.push(s2.pop());
+        }
     }
-    // Return whether the queue is empty.
+    public int pop() {
+        return s1.pop();
+    }
+    public int peek() {
+        return s1.peek();
+    }
     public boolean empty() {
-        return s1.isEmpty() && s2.isEmpty();
+        return s1.isEmpty();
     }
 }
