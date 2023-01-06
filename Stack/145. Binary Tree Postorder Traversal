@@ -1,4 +1,4 @@
-Given a binary tree, return the postorder traversal of its nodes' values.
+Question: Given the root of a binary tree, return the postorder traversal of its nodes' values.
 For example: Given binary tree {1,#,2,3},
    1
     \
@@ -6,9 +6,13 @@ For example: Given binary tree {1,#,2,3},
     /
    3
 return [3,2,1].
-Note: Recursive solution is trivial, could you do it iteratively?
+Follow up: 
+Recursive solution is trivial, could you do it iteratively?
 
-Solution 1: recursive. Time complexity: O(n). Space complexity: O(logn).
+Approach 1: Recursive
+Time complexity: O(n)
+Space complexity: O(logn)
+
 /**
  * Definition for a binary tree node.
  * public class TreeNode {
@@ -31,7 +35,10 @@ public class Solution {
     }
 }
 
-Solution 2: iterative. Time complexity: O(n). Space complexity: O(logn).
+Approach 2: Iterative
+Time complexity: O(n)
+Space complexity: O(logn)
+
 public class Solution {
     public List<Integer> postorderTraversal(TreeNode root) {
         List<Integer> rst = new ArrayList<Integer>();
