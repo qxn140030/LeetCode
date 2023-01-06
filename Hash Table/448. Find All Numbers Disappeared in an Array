@@ -1,0 +1,60 @@
+Question: Given an array nums of n integers where nums[i] is in the range [1, n],
+return an array of all the integers in the range [1, n] that do not appear in nums.
+Follow up:
+Could you do it without extra space and in O(n) runtime? You may assume the returned list does not count as extra space.
+
+Example 1:
+Input: nums = [4,3,2,7,8,2,3,1]
+Output: [5,6]
+
+Example 2:
+Input: nums = [1,1]
+Output: [2]
+
+Approach 1: Hash Table
+Time complexity: O(n)
+Space complexity: O(n)
+
+class Solution {
+    public List<Integer> findDisappearedNumbers(int[] nums) {
+        Set<Integer> hs = new HashSet<>();
+        for (int num : nums) {
+            hs.add(num);
+        }
+        List<Integer> result = new LinkedList<Integer>();
+        for (int i = 1; i <= nums.length; i++) {
+            if (!hs.contains(i)) {
+                result.add(i);
+            }
+        } 
+        return result;
+    }
+}
+
+Approach 2: InPlace Modification
+We will be negating the numbers seen in the array and use the sign of each of the numbers for finding our missing numbers.
+We will be treating numbers in the array as indices and mark corresponding locations in the arrays as negative.
+Time complexity: O(n)
+Space complexity: O(1), we are reusing the input array itself as a hash table.
+
+class Solution {
+    public List<Integer> findDisappearedNumbers(int[] nums) {
+        for (int i = 0; i < nums.length; i++) { 
+            // Treat the value as the new index
+            int newIndex = Math.abs(nums[i]) - 1;     
+            // Check the magnitude of value at this new index
+            // If the magnitude is positive, make it negative (visited)
+            if (nums[newIndex] > 0) {
+                nums[newIndex] *= -1;
+            }
+        }
+        List<Integer> result = new LinkedList<>(); 
+        // Iterate over the numbers from 1 to N and add all those that have positive magnitude in the array
+        for (int i = 1; i <= nums.length; i++) {   
+            if (nums[i - 1] > 0) {
+                result.add(i);
+            }
+        }    
+        return result;
+    }
+}
