@@ -1,0 +1,38 @@
+Question: You are given an integer array score of size n, where score[i] is the score of the ith athelete in a competition.
+All the scores are guanranteed to be unique.
+The atheletes are places based on their scores, where the 1st place athelete has the highest score.
+
+Example 1:
+Input: score = [5,4,3,2,1]
+Output: ["Gold Medal","Silver Medal","Bronze Medal","4","5"]
+
+Example 2:
+Input: score = [10,3,8,9,4]
+Output: ["Gold Medal","5","Bronze Medal","Silver Medal","4"]
+
+Approach 1: Sorting + Hash Map
+Time complexity: O(nlogn)
+Space complexity: O(n)
+
+class Solution {
+    public String[] findRelativeRanks(int[] score) {
+        int n = score.length;
+        String[] rst = new String[n];
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            map.put(score[i], i);
+        }
+        Arrays.sort(score);
+        String[] medals = new String[] {"Gold Medal", "Silver Medal", "Bronze Medal"};
+        for (int i = n - 1; i >= 0; i--) {
+            int rank = n - 1 - i;
+            int index = map.get(score[i]);
+            if (rank < 3) {
+                rst[index] = medals[rank]; 
+            } else {
+                rst[index] = String.valueOf(n - i);
+            }
+        }
+        return rst;
+    }
+}
