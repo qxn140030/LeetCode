@@ -1,0 +1,73 @@
+Question: Given two binary strings, return their sum as a binary string.
+
+Example 1:
+Input: a = "11", b = "1"
+Output: "100"
+
+Example 2:
+Input: a = "1010", b = "1011"
+Output: "10101"
+
+Approach 1: Built-in functions
+drawbacks:
+1. in java, once the string is long enough, the result of conversion into integers will not fit.
+2. the method has quite low performance in the case of large input numbers.
+Time complexity: O(m + n)
+Space complexity: 
+
+class Solution {
+  public String addBinary(String a, String b) {
+    return Integer.toBinaryString(Integer.parseInt(a, 2) + Integer.parseInt(b, 2));
+  }
+}
+
+Approach 2: Bit-by-bit computation
+Time complexity: O(max(m, n)). m, n are the length of two strings. 
+Space complexity: O(max(m, n)), length of result.
+
+public class Solution {
+    public String addBinary(String a, String b) {
+        int carries = 0;
+        int i = a.length() - 1;
+        int j = b.length() - 1;
+        StringBuilder sb = new StringBuilder();
+        while (i >= 0 || j >= 0) {
+            int na = i >= 0 ? a.charAt(i) - '0' : 0;
+            int nb = j >= 0 ? b.charAt(j) - '0' : 0;
+            int sum = na + nb + carries;
+            carries = sum / 2;
+            sb.append(sum % 2);
+            i--;
+            j--;
+        }
+        if (carries > 0) {
+            sb.append(carries);
+        }
+        return sb.reverse().toString();
+    }
+}
+
+Approach 3: Bit manipulation
+when interviewer provides you two numbers and asks to sum them up without using addition operation.
+XOR is a sum of two binaries without taking carry into account.
+to find current carry: AND of two input numbers, shifted one bit to the left.
+Time complexity: O(m + n) 
+Space complexity: O(max(m, n))
+
+// Here we deal with input numbers which are greater than 2^100. That forces us to use slow BigInteger in Java.
+import java.math.BigInteger;
+class Solution {
+  public String addBinary(String a, String b) {
+    BigInteger x = new BigInteger(a, 2);
+    BigInteger y = new BigInteger(b, 2);
+    BigInteger zero = new BigInteger("0", 2);
+    BigInteger carry, answer;
+    while (y.compareTo(zero) != 0) {
+      answer = x.xor(y);
+      carry = x.and(y).shiftLeft(1);
+      x = answer;
+      y = carry;
+    }
+    return x.toString(2);
+  }
+}
