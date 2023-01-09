@@ -1,17 +1,12 @@
 Question: Write a function to find the longest common prefix string amongst an array of strings.
-Companies: Amazon, Apple, Google, Adobe, Microsoft, Facebook, Uber, Yahoo
 
 Approach 1: Horizontal scanning
 iterates through the strings, finding at each iteration the longest common prefix of strings.
-preprocess the array, find the minimum length, then compare every char with the one in strs[0].
 Time complexity: O(m * n), m is the length of string, n is array length. 
-Space complexity: O(1).
+Space complexity: O(1)
 
 public class Solution {
     public String longestCommonPrefix(String[] strs) {
-        if (strs == null || strs.length == 0) {
-            return "";
-        }
         String prefix = strs[0];
         for (int i = 1; i < strs.length; i++) {
             while (strs[i].indexOf(prefix) != 0) {
@@ -26,15 +21,14 @@ public class Solution {
 }
 
 Approach 2: Vertical scanning
+if common prefix is very short, we can use vertical scanning to do less comparisons.
 compare characters from top to bottom on the same column (same character index of the strings) before moving to the next column.
 Time complexity: O(m * n), m is the length of string, n is array length. 
-Space complexity: O(1).
+in the best case there are at most n * minLen.
+Space complexity: O(1)
 
 public class Solution {
     public String longestCommonPrefix(String[] strs) {
-        if (strs == null || strs.length == 0) {
-            return "";
-        }
         for (int i = 0; i < strs[0].length(); i++) {
             for (int j = 1; j < strs.length; j++) {
                 if (strs[j].length() <= i || strs[j].charAt(i) != strs[0].charAt(i)) {
@@ -47,14 +41,11 @@ public class Solution {
 }
 
 Approach 3: Divide and conquer
-Time complexity: O(S), where S is the number of all characters in the array.
-Space complexity: O(MlogN), there is a memory overhead since we store recursive calls in the execution stack.
+Time complexity: O(m * n), where m * n is the number of all characters in the array.
+Space complexity: O(mlogn), there is a memory overhead since we store recursive calls in the execution stack.
 
 class Solution {
     public String longestCommonPrefix(String[] strs) {
-        if (strs == null || strs.length == 0) {
-            return "";
-        }
         return longestCommonPrefix(strs, 0, strs.length - 1);
     }
     private String longestCommonPrefix(String[] strs, int left, int right) {
@@ -78,7 +69,7 @@ class Solution {
 }
 
 Approach 4: Binary search
-Time complexity: O(SlogM), where S is the number of all characters in the array. The algorithm makes logM iterations.
+Time complexity: O(mnlogm), where m * n is the number of all characters in the array. The algorithm makes logm iterations.
 Space complexity: O(1)
 
 public String longestCommonPrefix(String[] strs) {
@@ -98,7 +89,6 @@ public String longestCommonPrefix(String[] strs) {
     }
     return strs[0].substring(0, (low + high) / 2);
 }
-
 private boolean isCommonPrefix(String[] strs, int len){
     String str1 = strs[0].substring(0,len);
     for (int i = 1; i < strs.length; i++) {
