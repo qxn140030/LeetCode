@@ -20,9 +20,6 @@ Space complexity: O(1)
 
 public class Solution {
     public int searchInsert(int[] nums, int target) {
-        if (nums == null || nums.length == 0) {
-            return 0;
-        }
         int start = 0;
         int end = nums.length - 1;
         while (start < end - 1) {
