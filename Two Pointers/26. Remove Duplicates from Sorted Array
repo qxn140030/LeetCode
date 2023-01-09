@@ -1,7 +1,16 @@
-Question: Given a sorted array, remove the duplicates in place such that each element appear only once and return the new length.
-Do not allocate extra space for another array, you must do this in place with constant memory.
-For example, Given input array nums = [1,1,2], Your function should return length = 2, with the first two elements of nums
-being 1 and 2 respectively. It doesn't matter what you leave beyond the new length.
+Question: Given an integer array nums sorted in non-decreasing order, remove the duplicates in-place such that 
+each unique element appear only once. The relative order of the elements should kept the same.
+Do not allocate extra space for another array, you must do this in-place with constant memory.
+
+Example 1:
+Input: nums = [1,1,2]
+Output: 2, nums = [1,2,_]
+
+Example 2:
+Input: nums = [0,0,1,1,1,2,2,3,3,4]
+Output: 5, nums = [0,1,2,3,4,_,_,_,_,_]
+Explanation: Your function should return k = 5, with the first five elements of nums being 0, 1, 2, 3, and 4 respectively.
+It does not matter what you leave beyond the returned k (hence they are underscores).
 
 If we are allowed to use extra space. create a map which stores all elements as the key and frequency as the value.
 then iterate the map and push all keys in array.
@@ -13,14 +22,14 @@ Space complexity: O(1)
 
 class Solution {
     public int removeDuplicates(int[] nums) {
-        int insertIndex = 1;
+        int index = 1;
         for (int i = 1; i < nums.length; i++){
-            // We skip to next index if we see a duplicate element
+            // We skip to next i if we see a duplicate element
             if (nums[i - 1] != nums[i]) {
-                // Storing the unique element at insertIndex index and incrementing the insertIndex by 1
-                nums[insertIndex++] = nums[i];
+                // Storing the unique element at index and incrementing the index by 1
+                nums[index++] = nums[i];
             }
         }
-        return insertIndex;
+        return index;
     }
 }
