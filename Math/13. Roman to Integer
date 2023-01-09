@@ -3,7 +3,7 @@ Question: Given a roman numeral, convert it to an integer. Input is guaranteed t
 Approach 1: Left-to-right pass
 each symbol adds its own value, except for when a smaller valued symbol is before a larger valued symbol.
 Time complexity: O(n)
-Space complexity: O(n) or O(1)
+Space complexity: O(1)
 
 class Solution {
     public int romanToInt(String s) {
@@ -16,31 +16,28 @@ class Solution {
         map.put('D', 500);
         map.put('M', 1000);
         
-        int sum = 0;
-        int i = 0;
-        while (i < s.length()) {
-            String currentSymbol = s.substring(i, i + 1);
-            int currentValue = map.get(currentSymbol);
-            int nextValue = 0;
+        int rst = 0;
+        for (int i = 0; i < s.length(); i++) {
+            int currentValue = map.get(s.charAt(i));
+            int rightValue = 0;
             if (i + 1 < s.length()) {
-                String nextSymbol = s.substring(i + 1, i + 2);
-                nextValue = map.get(nextSymbol);
+                rightValue = map.get(s.charAt(i + 1));
             }
-            if (currentValue < nextValue) {
-                sum += (nextValue - currentValue);
-                i += 2;
-            } else {
-                sum += currentValue;
+            if (currentValue < rightValue) {
+                rst += rightValue - currentValue;
                 i++;
-            }      
+            } else {
+                rst += currentValue;
+            }
         }
-        return sum;
+        return rst;
     }
 }
 
-Approach 2: Left-to-rigjt pass improved
+Approach 2: Left-to-right pass
+When we take substring from original string, new String objext will be created in constant pool or in heap.
 Time complexity: O(n)
-Space complexity: O(n) or O(1)
+Space complexity: O(1)
 
 class Solution {
     public int romanToInt(String s) {
@@ -80,7 +77,7 @@ class Solution {
     }
 }
 
-Approach 3: Roght-to-left pass (mor elegant)
+Approach 3: Roght-to-left pass (more elegant)
 maintain a map/dictionary with Roman symbols and their corresponding integer equivalent.
 scan the string from right to left. when the character at left of current character is less than current, we will subtract the left value.
 Time complexity: O(n)
