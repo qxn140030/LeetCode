@@ -1,0 +1,86 @@
+Question: You are climbing a stair case. It takes n steps to reach to the top.
+Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?
+
+Approach 1: Brute force
+Time complexity: O(2^n). size of recursion tree. 
+Space complexity: O(n). depth of recursion tree.
+
+public class Solution {
+    public int climbStairs(int n) {
+        return climb_Stairs(0, n);
+    }
+    public int climb_Stairs(int i, int n) {
+        if (i > n) {
+            return 0;
+        }
+        if (i == n) {
+            return 1;
+        }
+        return climb_Stairs(i + 1, n) + climb_Stairs(i + 2, n);
+    }
+}
+
+Approach 2: Recursion with Memoization
+avoid redundantly calculating the result for every step.
+store the result at each step in memo array and directly returning the result from the memo array whenever the function is called again.
+Time complexity: O(n). size of recursion tree. 
+Space complexity: O(n). depth of recursion tree.
+
+public class Solution {
+    public int climbStairs(int n) {
+        int memo[] = new int[n + 1];
+        return climb_Stairs(0, n, memo);
+    }
+    public int climb_Stairs(int i, int n, int memo[]) {
+        if (i > n) {
+            return 0;
+        }
+        if (i == n) {
+            return 1;
+        }
+        if (memo[i] > 0) {
+            return memo[i];
+        }
+        memo[i] = climb_Stairs(i + 1, n, memo) + climb_Stairs(i + 2, n, memo);
+        return memo[i];
+    }
+}
+
+Approach 3: Dynamic Programming
+Time complexity: O(n)
+Space complexity: O(n)
+
+public class Solution {
+    public int climbStairs(int n) {
+        if (n == 1) {
+            return 1;
+        }
+        int[] dp = new int[n + 1];
+        dp[1] = 1;
+        dp[2] = 2;
+        for (int i = 3; i <= n; i++) {
+            dp[i] = dp[i - 1] + dp[i - 2];
+        }
+        return dp[n];
+    }
+}
+
+Approach 4: Fibonacci number
+Time complexity: O(n)
+Space complexity: O(1)
+
+public class Solution {
+    public int climbStairs(int n) {
+        if (n <= 2) {
+            return n;
+        }
+        int pre1 = 1;
+        int pre2 = 2;
+        for (int i = 3; i <= n; i++) {
+            int now = pre1 + pre2;
+            pre1 = pre2;
+            pre2 = now;
+        }
+        return pre2;
+    }
+}
