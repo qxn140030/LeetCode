@@ -39,10 +39,10 @@ class Solution {
         int end = x;
         while (start + 1 < end) {
             int mid = start + (end - start) / 2;
-            if (mid <= x / mid) {
+            if (mid <= x / mid) {                    // mid * mid might cause overflow
                 start = mid;
             } else {
-                end = mid - 1;
+                end = mid;
             }
         }
         return end <= x / end ? end : start;
@@ -66,7 +66,7 @@ class Solution {
 }
 
 Approach 4: Newton's Method
-Time complexity: O(logn)
+Time complexity: O(logn) since the set coverages quadratically.
 Space complexity: O(1)
 
 class Solution {
