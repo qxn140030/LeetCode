@@ -1,7 +1,10 @@
-Question: Given two binary trees, write a function to check if they are equal or not. Two binary trees are considered equal
-          if they are structurally identical and the nodes have the same value.
+Question: Given the roots of two binary trees p and q, write a function to check if they are equal or not. 
+Two binary trees are considered equal if they are structurally identical and the nodes have the same value.
 
-Solution 1: Recursive. Time complexity: O(n). Space complexity: O(logn).
+Approach 1: Recursion 
+Time complexity: O(n)
+Space complexity: O(logn), O(n) in the worst case of completely unbalanced tree.
+
 /**
  * Definition for a binary tree node.
  * public class TreeNode {
@@ -23,7 +26,10 @@ public class Solution {
     }
 }
 
-Solution 2: iteration, using two queues. time complexity: O(n). space complexity: O(n).
+Approach 2: Iteration (Two queues)
+Time complexity: O(n)
+Space complexity: O(n)
+
 public class Solution {
     public boolean isSameTree(TreeNode p, TreeNode q) {
         Queue<TreeNode> q1 = new LinkedList<TreeNode>();
@@ -48,7 +54,10 @@ public class Solution {
     }
 }
 
-Solution 3: iteration, using one stack. time complexity: O(n). space complexity: O(n).
+Approach 3: Iteration (One stack)
+Time complexity: O(n)
+Space complexity: O(n)
+
 class Solution {
     public boolean isSameTree(TreeNode p, TreeNode q) {
         Stack<TreeNode> stack = new Stack<>();
