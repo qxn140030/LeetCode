@@ -1,5 +1,14 @@
 Question: Write a function to find the longest common prefix string amongst an array of strings.
 
+Example 1:
+Input: strs = ["flower","flow","flight"]
+Output: "fl"
+
+Example 2:
+Input: strs = ["dog","racecar","car"]
+Output: ""
+Explanation: There is no common prefix among the input strings.
+
 Approach 1: Horizontal scanning
 iterates through the strings, finding at each iteration the longest common prefix of strings.
 Time complexity: O(m * n), m is the length of string, n is array length. 
@@ -42,7 +51,8 @@ public class Solution {
 
 Approach 3: Divide and conquer
 Time complexity: O(m * n), where m * n is the number of all characters in the array.
-Space complexity: O(mlogn), there is a memory overhead since we store recursive calls in the execution stack.
+Space complexity: O(mlogn), where n is the length of array.
+there is a memory overhead since we store recursive calls in the execution stack.
 
 class Solution {
     public String longestCommonPrefix(String[] strs) {
@@ -89,7 +99,7 @@ public String longestCommonPrefix(String[] strs) {
     }
     return strs[0].substring(0, (low + high) / 2);
 }
-private boolean isCommonPrefix(String[] strs, int len){
+private boolean isCommonPrefix(String[] strs, int len) {
     String str1 = strs[0].substring(0,len);
     for (int i = 1; i < strs.length; i++) {
         if (!strs[i].startsWith(str1)) {
