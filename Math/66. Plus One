@@ -15,8 +15,8 @@ Example 3:
 Input: digits = [9]
 Output: [1,0]
 
-Approach 1: Schollbook addition with carry
-Time complexity: O(n). 
+Approach 1: Schoolbook addition with carry
+Time complexity: O(n)
 Space complexity: O(n) in worst case, O(1) in most time.
 
 public class Solution {
