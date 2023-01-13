@@ -13,7 +13,6 @@ drawbacks:
 1. in java, once the string is long enough, the result of conversion into integers will not fit.
 2. the method has quite low performance in the case of large input numbers.
 Time complexity: O(m + n)
-Space complexity: 
 
 class Solution {
   public String addBinary(String a, String b) {
