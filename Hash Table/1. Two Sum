@@ -34,8 +34,8 @@ public class Solution {
 }
 
 Approach 2: Two-pass Hash Table
-Time complexity: O(n). 
-Space complexity: O(n).
+Time complexity: O(n)
+Space complexity: O(n)
 
 class Solution {
     public int[] twoSum(int[] nums, int target) {
@@ -53,7 +53,7 @@ class Solution {
     }
 }
 
-Approach 2: One-pass Hash Table
+Approach 3: One-pass Hash Table
 Time complexity: O(n), it depends on the put and get operations of HashMap which is normally O(1). 
 traverse the list containing n elements only once. Each look up in the table costs only O(1) time.
 Space complexity: O(n)
