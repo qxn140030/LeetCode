@@ -26,11 +26,9 @@ class Solution {
         int left = 0;
         int right = str.length() - 1;
         while (left < right) {
-            if (str.charAt(left) != str.charAt(right)) {
+            if (str.charAt(left++) != str.charAt(right--)) {
                 return false;
             }
-            left++;
-            right--;
         }
         return true;
     }
@@ -52,11 +50,11 @@ public class Solution {
             revert = revert * 10 + tmp % 10;
             tmp /= 10;
         }
-        return (int)revert == x;
+        return revert == x;
     }
 }
 
-Approach 3: revert half of the number
+Approach 3: Revert half of the number
 to avoid the overflow issue of the reverted number. how do we know that we've reached the half of the number?
 when the original number is less than the reversed number, it means we've processed half of the number digits.
 Time complexity: O(log10(n)). We divided the input by 10 for every iteration.
