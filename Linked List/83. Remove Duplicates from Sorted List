@@ -10,8 +10,8 @@ Input: head = [1,1,2,3,3]
 Output: [1,2,3]
 
 Approach 1: Straight-forward
-Time complexity: O(n). 
-Space complexity: O(1).
+Time complexity: O(n)
+Space complexity: O(1)
 
 /**
  * Definition for singly-linked list.
