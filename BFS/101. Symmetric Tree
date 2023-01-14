@@ -13,7 +13,7 @@ But the following [1,2,2,null,3,null,3] is not:
    3    3
 Note: Bonus points if you could solve it both recursively and iteratively.
 
-Solution 1: Recursive
+Approach 1: Recursive
 A tree is symmetric if the left subtree is mirror reflection of the right subtree.
 Time complexity: O(n)
 Space complexity: O(logn)
@@ -45,7 +45,7 @@ public class Solution {
     }
 }
 
-Solution 2: Iteration (Two queues)
+Approach 2: Iteration (Two queues)
 Time complexity: O(n)
 Space complexity: O(n)
 
@@ -76,7 +76,7 @@ public class Solution {
     }
 }
 
-Solution 3: Iteration (One stack)
+Approach 3: Iteration (One queue)
 Time complexity: O(n)
 Space complexity: O(n)
 
@@ -85,22 +85,22 @@ class Solution {
         if (root == null) {
             return true;
         }
-        Stack<TreeNode> stack = new Stack<>();
-        stack.push(root.left);
-        stack.push(root.right);
-        while(!stack.isEmpty()) {
-            TreeNode node1 = stack.pop();
-            TreeNode node2 = stack.pop();
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root.left);
+        queue.offer(root.right);
+        while(!queue.isEmpty()) {
+            TreeNode node1 = queue.poll();
+            TreeNode node2 = queue.poll();
             if (node1 == null && node2 == null) {
                 continue;
             }
             if (node1 == null || node2 == null || node1.val != node2.val) {
                 return false;
             }
-            stack.push(node1.left);
-            stack.push(node2.right);
-            stack.push(node1.right);
-            stack.push(node2.left);
+            queue.offer(node1.left);
+            queue.offer(node2.right);
+            queue.offer(node1.right);
+            queue.offer(node2.left);
         }
         return true;
     }
