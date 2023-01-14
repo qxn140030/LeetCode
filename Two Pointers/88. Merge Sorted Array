@@ -4,6 +4,8 @@ merge nums1 and nums2 into a singly array sorted in non-decreasing order.
 Note: 
 You may assume that nums1 has enough space (size that is greater or equal to m + n) to hold additional elements from nums2.
 The number of elements initialized in nums1 and nums2 are m and n respectively.
+Follow up:
+Can you come up with an algorithm that runs in O(m + n) time?
 
 Example 1:
 Input: nums1 = [1,2,3,0,0,0], m = 3, nums2 = [2,5,6], n = 3
@@ -24,7 +26,7 @@ Note that because m = 0, there are no elements in nums1. The 0 is only there to 
 Approach 1: Merge and sort
 Write the values from nums2 into the end of nums1, then sort nums1.
 Time complexity: O((m + n)log(m + n))
-Space complexity: O(m + n), but it can vary. Most programming language have a built-in sorting algorithm that uses O(n) space.
+Space complexity: O(n), but it can vary. Most programming language have a built-in sorting algorithm that uses O(n) space.
 
 class Solution {
     public void merge(int[] nums1, int m, int[] nums2, int n) {
@@ -35,7 +37,33 @@ class Solution {
     }
 }
 
-Approach 2: Three pointers (Start from the end)
+Approach 2: Three pointers (Start from the beginning)
+Time complexity: O(m + n)
+Space complexity: O(m)
+
+class Solution {
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        // Make a copy of the first m elements of nums1.
+        int[] nums1Copy = new int[m];
+        for (int i = 0; i < m; i++) {
+            nums1Copy[i] = nums1[i];
+        }
+        // Read pointers for nums1Copy and nums2 respectively.
+        int p1 = 0;
+        int p2 = 0;          
+        // Compare elements from nums1Copy and nums2 and write the smallest to nums1.
+        for (int p = 0; p < m + n; p++) {
+            // We also need to ensure that p1 and p2 aren't over the boundaries of their respective arrays.
+            if (p2 >= n || (p1 < m && nums1Copy[p1] < nums2[p2])) {
+                nums1[p] = nums1Copy[p1++];
+            } else {
+                nums1[p] = nums2[p2++];
+            }
+        }
+    }
+}
+
+Approach 3: Three pointers (Start from the end)
 Tip: whenever you are trying to solve an array problem in-place, always consider the possibility of iterating backwards.
 Time complexity: O(m + n)
 Space complexity: O(1)
