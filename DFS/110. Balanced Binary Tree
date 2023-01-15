@@ -4,16 +4,10 @@ the depth of the two subtrees of every node never differ by more than 1.
 
 Approach 1: Top-down recursion
 Time complexity: O(nlogn) = O(n) + 2 * O(n/2) + 4 * O(n/4) + ...
-height will be called on each node O(logn) times.
+function height will be called on each node O(logn) times.
 Space complexity: O(logn) or O(n)
 
 class Solution {
-  private int height(TreeNode root) {
-    if (root == null) {
-      return 0;
-    }
-    return 1 + Math.max(height(root.left), height(root.right));
-  }
   public boolean isBalanced(TreeNode root) {
     if (root == null) {
       return true;
@@ -22,7 +16,13 @@ class Solution {
         && isBalanced(root.left)
         && isBalanced(root.right);
   }
-};
+  private int height(TreeNode root) {
+    if (root == null) {
+      return 0;
+    }
+    return 1 + Math.max(height(root.left), height(root.right));
+  }
+}
 
 Approach 2: Bottom-up recursion
 Time complexity: O(n)
