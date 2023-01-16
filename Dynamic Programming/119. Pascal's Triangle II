@@ -4,16 +4,10 @@ Follow up:
 Could you optimize your algorithm to use only O(rowIndex) extra space?
 
 Approach 1: Brute force recursion
-Time complexity: O(2^n)
+Time complexity: O(2^n), we are calling recursive function for all column index of given row.
 Space complexity: O(n)
 
 class Solution {
-  private int getNum(int row, int col) {
-    if (row == 0 || col == 0 || row == col) {
-      return 1;
-    }
-    return getNum(row - 1, col - 1) + getNum(row - 1, col);
-  }
   public List<Integer> getRow(int rowIndex) {
     List<Integer> ans = new ArrayList<>();
     for (int i = 0; i <= rowIndex; i++) {
@@ -21,25 +15,31 @@ class Solution {
     }
     return ans;
   }
+  private int getNum(int row, int col) {
+    if (row == 0 || col == 0 || row == col) {
+      return 1;
+    }
+    return getNum(row - 1, col - 1) + getNum(row - 1, col);
+  }
 }
 
 Approach 2: DP
 Time complexity: O(n^2)
 Space complexity: O(n)
 
-public class Solution {
+class Solution {
     public List<Integer> getRow(int rowIndex) {
-        List<Integer> rst = new ArrayList<Integer>();
-        for (int i = 0; i <= rowIndex; i++) {
-            rst.add(0);
-        }
-        rst.set(0, 1);
+        List<Integer> pre = new ArrayList<>(){{add(1);}};
+        List<Integer> cur = new ArrayList<>(){{add(1);}};
         for (int i = 1; i <= rowIndex; i++) {
-            for (int j = i; j > 0; j--) {
-                rst.set(j, rst.get(j - 1) + rst.get(j));
+            cur = new ArrayList<>(i + 1){{add(1);}};
+            for (int j = 1; j < i; j++) {
+                cur.add(pre.get(j - 1) + pre.get(j));
             }
+            cur.add(1);
+            pre = cur;
         }
-        return rst;
+        return cur;
     }
 }
 
@@ -80,5 +80,19 @@ class Solution {
             }
         }
         return rst;
+    }
+}
+
+Approach 4: Math
+Time complexity: O(n)
+Space complexity: O(n)
+
+class Solution {
+    public List<Integer> getRow(int rowIndex) {
+        List<Integer> row = new ArrayList<>() {{add(1);}};
+        for (int i = 1; i <= rowIndex; i++) {
+            row.add((int) ((row.get(row.size() - 1) * (long) (rowIndex - i + 1)) / i));
+        }
+        return row;
     }
 }
