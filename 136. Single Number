@@ -1,6 +1,18 @@
 Question: Given a non-empty array of integers nums, every element appears twice except for one. Find that single one.
 You must implement a solution with a linear runtime complexity and use only constant extra space.
 
+Example 1:
+Input: nums = [2,2,1]
+Output: 1
+
+Example 2:
+Input: nums = [4,1,2,1,2]
+Output: 4
+
+Example 3:
+Input: nums = [1]
+Output: 1
+
 Approach 1: List operation
 Time complexity: O(n^2), the ArrayList.contains() method requires O(n) time.
 Space complexity: O(n)
@@ -22,16 +34,68 @@ class Solution {
 }
 
 Approach 2: Hash Table
-Time complexity: O(n^2), the ArrayList.contains() method requires O(n) time.
+Time complexity: O(n)
 Space complexity: O(n)
 
-Bit manipulation. XOR will return 1 only on two different bits. If two numbers are the same, XOR will return 0. Finally only one left.
-Time complexity: O(n). Space complexity: O(1).
+class Solution {
+    public int singleNumber(int[] nums) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int num : nums) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
+        for (int num : nums) {
+            if (map.get(num) == 1) {
+                return num;
+            }
+        }
+        return 0;
+    }
+}
+
+class Solution {
+    public int singleNumber(int[] nums) {
+        Set<Integer> hs = new HashSet<>();
+        for (int num : nums) {
+            if (hs.contains(num)) {
+                hs.remove(num);
+            } else {
+                hs.add(num);
+            }
+        }
+        for (int num : hs) {
+            return num;
+        }
+        return 0;
+    }
+}
+
+Approach 3: Math
+2 * (a + b + c) - (a + a + b + b + c) = c
+Time complexity: O(n)
+Space complexity: O(n)
+
+class Solution {
+    public int singleNumber(int[] nums) {
+        int sumOfSet = 0, sumOfNums = 0;
+        Set<Integer> set = new HashSet<>();
+        for (int num : nums) {
+            if (!set.contains(num)) {
+                set.add(num);
+                sumOfSet += num;
+            }
+            sumOfNums += num;
+        }
+        return 2 * sumOfSet - sumOfNums;
+    }
+}
+
+Approach 4: Bit manipulation
+XOR will return 1 only on two different bits. If two numbers are the same, XOR will return 0. Finally only one left.
+Time complexity: O(n)
+Space complexity: O(1)
+
  public class Solution {
     public int singleNumber(int[] nums) {
-        if (nums == null || nums.length == 0) {
-            return -1;
-        }
         int rst = 0;
         for (int num : nums) {
             rst ^= num;
