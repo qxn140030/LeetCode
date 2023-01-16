@@ -1,5 +1,29 @@
-Question: Given an array of integers, every element appears twice except for one. Find that single one.
-    Note: Your algorithm should have a linear runtime complexity. Could you implement it without using extra memory?
+Question: Given a non-empty array of integers nums, every element appears twice except for one. Find that single one.
+You must implement a solution with a linear runtime complexity and use only constant extra space.
+
+Approach 1: List operation
+Time complexity: O(n^2), the ArrayList.contains() method requires O(n) time.
+Space complexity: O(n)
+ArrayList.remove(Object) takes an Object to remove.
+ArrayList.remove(int) takes an index to remove.
+
+class Solution {
+    public int singleNumber(int[] nums) {
+        List<Integer> list = new ArrayList<>();
+        for (int num : nums) {
+            if (!list.contains(num)) {
+                list.add(num);
+            } else {
+                list.remove(Integer.valueOf(num));   // list.remove(new Integer(num));
+            }
+        }
+        return list.get(0);
+    }
+}
+
+Approach 2: Hash Table
+Time complexity: O(n^2), the ArrayList.contains() method requires O(n) time.
+Space complexity: O(n)
 
 Bit manipulation. XOR will return 1 only on two different bits. If two numbers are the same, XOR will return 0. Finally only one left.
 Time complexity: O(n). Space complexity: O(1).
