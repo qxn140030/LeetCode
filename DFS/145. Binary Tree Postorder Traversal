@@ -22,6 +22,22 @@ Space complexity: O(logn)
  *     TreeNode(int x) { val = x; }
  * }
  */
+class Solution {
+    public List<Integer> postorderTraversal(TreeNode root) {
+        List<Integer> rst = new ArrayList<>();
+        helper(root, rst);
+        return rst;
+    }
+    void helper(TreeNode root, List<Integer> rst) {
+        if (root == null) {
+            return;
+        }
+        helper(root.left, rst);
+        helper(root.right, rst);
+        rst.add(root.val);
+    }
+} 
+
 public class Solution {
     public List<Integer> postorderTraversal(TreeNode root) {
         List<Integer> rst = new ArrayList<Integer>();
