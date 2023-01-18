@@ -73,18 +73,13 @@ Space complexity: O(1)
  */
 public class Solution {
     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
-        if (headA == null || headB == null) {
-            return null;
-        }
-        int lenA = 1;
-        ListNode tailA = headA;
-        while (tailA.next != null) {
+        int lenA = 0, lenB = 0;
+        ListNode tailA = headA, tailB = headB;
+        while (tailA != null) {
             lenA++;
             tailA = tailA.next;
         }
-        int lenB = 1;
-        ListNode tailB = headB;
-        while (tailB.next != null) {
+        while (tailB != null) {
             lenB++;
             tailB = tailB.next;
         }
