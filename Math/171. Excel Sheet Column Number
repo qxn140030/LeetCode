@@ -1,0 +1,46 @@
+Question: Given a string columnTitle that represents the column title as appears in an Excel sheet, return its corresponding column number.
+For example:
+    A -> 1
+    B -> 2
+    C -> 3
+    ...
+    Z -> 26
+    AA -> 27
+    AB -> 28 
+
+converting base-26 number system to base-10 number system.
+
+Approach 1: Right to left
+Time complexity: O(n)
+Space complexity: O(1), even though we have an alphabet to index mapping, it's constant.
+
+class Solution {
+    public int titleToNumber(String columnTitle) {
+        int rst = 0;
+        Map<Character, Integer> map = new HashMap<>();
+        for (int i = 0; i < 26; i++) {
+            int c = i + 65;
+            map.put((char)c, i + 1);
+        }
+        int n = columnTitle.length();
+        for (int i = n - 1; i >= 0; i--) {
+            char ch = columnTitle.charAt(i);
+            rst += map.get(ch) * Math.pow(26, n - 1 - i);
+        }
+        return rst;
+    }
+}
+
+Approach 1: Right to left
+Time complexity: O(n)
+Space complexity: O(1)
+
+public class Solution {
+    public int titleToNumber(String s) {
+        int rst = 0;
+        for (int i = 0; i < s.length(); i++) {
+            rst = rst * 26 + s.charAt(i) - 'A' + 1;
+        }
+        return rst;
+    }
+}
