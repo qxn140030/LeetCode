@@ -4,6 +4,15 @@ By using the read4 API, implement the function int read(char *buf, int n) that r
 Note:
 The read function will only be called once for each test case.
 
+Question: how does the memory work?
+- Because of the physical implementation, loading 4 bytes in DDR is faster than to load 1 byte 4 times.
+- On the majority of computers today, collection of 4 bytes, or 32 bits, is called a word.
+  Most computer CPUs are optimized for the operations with words.
+
+Approach 1: Use internal buffer of 4 characters
+Time complexity: O(n) to copy n characters.
+Space complexity: O(1) to keep tmp of 4 elements.
+
 /* The read4 API is defined in the parent class Reader4.
       int read4(char[] buf); */
 public class Solution extends Reader4 {
@@ -16,12 +25,12 @@ public class Solution extends Reader4 {
         char[] tmp = new char[4];
         int index = 0;
         while (index < n) {
-            int cur = read4(tmp);
-            if (cur == 0) {
+            int count = read4(tmp);
+            if (count == 0) {
                 break;
             }
-            cur = Math.min(cur, n - index);
-            for (int i = 0; i < cur; i++) {
+            count = Math.min(count, n - index);
+            for (int i = 0; i < count; i++) {
                 buf[index++] = tmp[i];
             }
         }
@@ -30,22 +39,19 @@ public class Solution extends Reader4 {
 }
 
 public class Solution extends Reader4 {
-    Queue<Character> q = new LinkedList<>();
-    boolean endOfFile = false;
-    /**
-     * @param buf Destination buffer
-     * @param n   Maximum number of characters to read
-     * @return    The number of characters read
-     */
     public int read(char[] buf, int n) {
+        Queue<Character> q = new LinkedList<>();
+        boolean endOfFile = false;
         int index = 0;  
         char[] temp = new char[4]; 
         while (q.size() < n && !endOfFile) {  
             int cur = read4(temp);  
-            if (cur < 4)  
-                endOfFile = true;  
-            for (int i = 0; i < cur; i++)  
+            if (cur < 4) {
+                endOfFile = true; 
+            }
+            for (int i = 0; i < cur; i++) {
                 q.add(temp[i]);  
+            }
         }  
         int l = Math.min(q.size(), n);  
         for (int i = 0 ; i < l; i++) {  
