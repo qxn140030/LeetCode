@@ -1,8 +1,12 @@
-Reverse bits of a given 32 bits unsigned integer.
+Question: Reverse bits of a given 32 bits unsigned integer.
 For example, given input 43261596 (represented in binary as 00000010100101000001111010011100), return 964176192 (represented
 in binary as 00111001011110000010100101000000).
 Follow up:
 If this function is called many times, how would you optimize it?
+
+Approach 1: Bit by bit
+Time complexity: O(1)
+Space complexity: O(1)
 
 public class Solution {
     // you need treat n as an unsigned value
@@ -16,7 +20,28 @@ public class Solution {
     }
 }
 
+public class Solution {
+    // you need treat n as an unsigned value
+    public int reverseBits(int n) {  
+        int rst = 0, power = 31;
+        while (power >= 0) {
+            rst += (n & 1) << power;
+            n >>= 1;
+            power--;
+        }
+        return rst;
+    }
+}
+
 Follow up:
+Approach 2: Mask and shift (Divide and Conquer)
+divide the original 32-bits into 4 bytes via bit masking, then reverse each byte via bit shifting, then combining into an int.
+>> is an arithmetic shift, the sign bit is extended to preserve the signedness of the number.
+>>> is logical shift, does not care that the value could possibly represent a signed number,
+simply moves everything to the right and fills in from the left with 0s.
+Time complexity: O(1)
+Space complexity: O(1)
+
 public class Solution {
     // you need treat n as an unsigned value
     Map<Byte, Integer> cache = new HashMap<Byte, Integer>();
