@@ -22,15 +22,12 @@ Space comeplexity: O(1), size of the ASCII character set is fixed.
 class Solution {
     public boolean isIsomorphic(String s, String t) {
         int[] mappingDictStoT = new int[256];
-        Arrays.fill(mappingDictStoT, -1);
         int[] mappingDictTtoS = new int[256];
-        Arrays.fill(mappingDictTtoS, -1);
-        
-        for (int i = 0; i < s.length(); ++i) {
+        for (int i = 0; i < s.length(); i++) {
             char c1 = s.charAt(i);
             char c2 = t.charAt(i);
             // Case 1: No mapping exists in either of the dictionaries
-            if (mappingDictStoT[c1] == -1 && mappingDictTtoS[c2] == -1) {
+            if (mappingDictStoT[c1] == 0 && mappingDictTtoS[c2] == 0) {
                 mappingDictStoT[c1] = c2;
                 mappingDictTtoS[c2] = c1;
             }
@@ -44,38 +41,8 @@ class Solution {
     }
 }
 
-Approach 2: First occurence transformation
-Time complexity: O(n)
-Space comeplexity: O(n)
-
-class Solution {
-    private String transformString(String s) {
-        Map<Character, Integer> indexMapping = new HashMap<>();
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < s.length(); ++i) {
-            char c1 = s.charAt(i);
-            if (!indexMapping.containsKey(c1)) {
-                indexMapping.put(c1, i);
-            }
-            builder.append(Integer.toString(indexMapping.get(c1)));
-            builder.append(" ");
-        }
-        return builder.toString();
-    }
-    public boolean isIsomorphic(String s, String t) {
-        return transformString(s).equals(transformString(t));
-    }
-}
-
-Approach 2: HashMap
-Time complexity: O(n)
-Space comeplexity: O(n)
-
 public class Solution {
     public boolean isIsomorphic(String s, String t) {
-        if (s == null && t == null) {
-            return true;
-        }
         Map<Character, Character> map = new HashMap<>();
         for (int i = 0; i < s.length(); i++) {
             if (map.containsKey(s.charAt(i))) {
@@ -89,5 +56,31 @@ public class Solution {
             }
         }
         return true;
+    }
+}
+
+Approach 2: First occurence transformation
+For each character in the given string, we replace it with the index of that character's first occurence in the string.
+For "paper", the transformed string will be 01034.
+For "title", the transformed string would be 01034. same
+Time complexity: O(n)
+Space comeplexity: O(n), form two new strings returned by our transformation function. 
+
+class Solution {
+    public boolean isIsomorphic(String s, String t) {
+        return transformString(s).equals(transformString(t));
+    }
+    private String transformString(String s) {
+        Map<Character, Integer> indexMapping = new HashMap<>();
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            char c1 = s.charAt(i);
+            if (!indexMapping.containsKey(c1)) {
+                indexMapping.put(c1, i);
+            }
+            builder.append(Integer.toString(indexMapping.get(c1)));
+            builder.append(" ");
+        }
+        return builder.toString();
     }
 }
