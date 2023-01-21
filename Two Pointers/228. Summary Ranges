@@ -1,0 +1,23 @@
+Question: Given a sorted unique integer array, return the summary of its ranges.
+For example, given [0,1,2,4,5,7], return ["0->2","4->5","7"].
+
+Time complexity: O(n)
+Space complexity: O(1)
+
+class Solution {
+    public List<String> summaryRanges(int[] nums) {
+        List<String> rst = new ArrayList<>();
+        for (int i = 0; i < nums.length; i++) {
+            int j = i;
+            while (i + 1 < nums.length && nums[i + 1] - nums[i] == 1) {
+                i++;
+            }
+            if (i == j) {
+                rst.add(Integer.toString(nums[j]));    
+            } else {
+                rst.add(nums[j] + "->" + nums[i]);
+            }
+        }
+        return rst;
+    }
+}
