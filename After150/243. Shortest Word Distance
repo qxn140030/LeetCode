@@ -5,6 +5,35 @@ Given word1 = "makes", word2 = "coding", return 1.
 Note:
 You may assume that word1 does not equal to word2, and word1 and word2 are both in the list.
 
+Approach 1: Brute force
+Time complexity: O(n^2)
+Space complexity: O(1)
+
+class Solution {
+    public int shortestDistance(String[] words, String word1, String word2) {
+        int minDistance = words.length;
+        for (int i = 0; i < words.length; i++) {
+            if (words[i].equals(word1)) {
+                for (int j = 0; j < words.length; j++) {
+                    if (words[j].equals(word2)) {
+                        minDistance = Math.min(minDistance, Math.abs(i - j));
+                    }
+                }
+            }
+        }
+        return minDistance;
+    }
+}
+
+Approach 2: One-pass
+Time complexity: O(n)
+String.equals first compares the reference, if the reference is the same, return true;
+if the input param to compare is not String type, return false;
+then the length is compared, if length of two String are not the same, return false;
+only in these three cases, the complexity is O(1).
+otherwise, the method will compare each character of the two String, which has O(n) complexity.
+Space complexity: O(1)
+
 public class Solution {
     public int shortestDistance(String[] words, String word1, String word2) {
         int rst = words.length;
