@@ -26,17 +26,21 @@ Spacecomplexity: O(n), the space usage is on the runtime stack.
 
 class Solution {
     private ListNode frontPointer;
-    private boolean recursivelyCheck(ListNode current) {
-        if (current != null) {
-            if (!recursivelyCheck(current.next)) return false;
-            if (current.val != frontPointer.val) return false;
-            frontPointer = frontPointer.next;
-        }
-        return true;
-    }
     public boolean isPalindrome(ListNode head) {
         frontPointer = head;
         return recursivelyCheck(head);
+    }
+    private boolean recursivelyCheck(ListNode current) {
+        if (current != null) {
+            if (!recursivelyCheck(current.next)) {
+                return false;
+            }
+            if (current.val != frontPointer.val) {
+                return false;
+            }
+            frontPointer = frontPointer.next;
+        }
+        return true;
     }
 }
 
