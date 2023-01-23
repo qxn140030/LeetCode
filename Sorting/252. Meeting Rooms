@@ -1,0 +1,45 @@
+Question: Given an array of meeting time intervals where intervals[i] = [starti, endi], determine if a person could attend all meetings.
+
+Example 1:
+Input: intervals = [[0,30],[5,10],[15,20]]
+Output: false
+
+Example 2:
+Input: intervals = [[7,10],[2,4]]
+Output: true
+
+Approach 1: Brute force
+Time complexity: O(n^2)
+Space complexity: O(1)
+
+class Solution {
+    public boolean canAttendMeetings(int[][] intervals) {
+        for (int i = 0; i < intervals.length - 1; i++) {
+            for (int j = i + 1; j < intervals.length; j++) {
+                if (overlap(intervals[i], intervals[j])) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    private boolean overlap(int[] interval1, int[] interval2) {
+        return Math.max(interval1[0], interval2[0]) < Math.min(interval1[1], interval2[1]);
+    }
+}
+
+Approach 2: Sorting
+Time complexity: O(nlogn)
+Space complexity: O(1)
+
+public class Solution {
+    public boolean canAttendMeetings(Interval[] intervals) {
+        Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
+        for (int i = 1; i < intervals.length; i++) {
+            if (intervals[i][0] < intervals[i - 1][1]) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
