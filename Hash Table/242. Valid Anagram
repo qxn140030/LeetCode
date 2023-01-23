@@ -20,9 +20,6 @@ but we ignore this for complexity analysis because: It is a language dependent d
 
 public class Solution {
     public boolean isAnagram(String s, String t) {
-        if (s == null || t == null || s.length() != t.length()) {
-            return false;
-        }
         char[] c1 = s.toCharArray();
         char[] c2 = t.toCharArray();
         Arrays.sort(c1);
@@ -31,14 +28,14 @@ public class Solution {
     }
 }
 
-Solution 2: Frequency counter
+Approach 2: Frequency counter
 string contains only lower case letters.
 Time complexity: O(n)
 Space complexity: O(1)
 
 public class Solution {
     public boolean isAnagram(String s, String t) {
-        if (s == null || t == null || s.length() != t.length()) {
+        if (s.length() != t.length()) {
             return false;
         }
         int[] ch = new int[26];
@@ -62,16 +59,9 @@ Space complexity: O(n)
 
 public class Solution {
     public boolean isAnagram(String s, String t) {
-        if (s == null || t == null || s.length() != t.length()) {
-            return false;
-        }
         Map<Character, Integer> map = new HashMap<>();
         for (int i = 0; i < s.length(); i++) {
-            if (!map.containsKey(s.charAt(i))) {
-                map.put(s.charAt(i), 1);
-            } else {
-                map.put(s.charAt(i), map.get(s.charAt(i)) + 1);
-            }
+            map.put(s.charAt(i), map.getOrDefault(s.charAt(i), 0) + 1);
         }
         for (int i = 0; i < t.length(); i++) {
             if (!map.containsKey(t.charAt(i)) || map.get(t.charAt(i)) == 0) {
