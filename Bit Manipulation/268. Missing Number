@@ -16,7 +16,7 @@ Output: 8
 
 Approach 1: Sorting
 Time complexity: O(nlogn)
-Space complexity: O(1) or O(n)
+Space complexity: O(1) - sort in place, or O(n) - if modifying nums is forbidden.
 
 class Solution {
     public int missingNumber(int[] nums) {
@@ -62,7 +62,7 @@ Space complexity: O(1)
 class Solution {
     public int missingNumber(int[] nums) {
         int n = nums.length;
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < nums.length; i++) {
             n ^= i ^ nums[i];
         }
         return n;
