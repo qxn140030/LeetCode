@@ -27,7 +27,7 @@ public class Solution {
 }
 
 Approach 2: Mathematical: Digital Root
-Time complexity: O(logn)
+Time complexity: O(1)
 Space complexity: O(1)
 
 public class Solution {
