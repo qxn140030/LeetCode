@@ -8,7 +8,10 @@ Hint:
 2. What are all the possible results?  the range is [1, 9].
 3. How do they occur, periodically or randomly? periodically.
 
-Solution 1: naive.
+Approach 1: Naive
+Time complexity: O(logn)
+Space complexity: O(1)
+
 public class Solution {
     public int addDigits(int num) {
         while (num >= 10) {
@@ -23,7 +26,10 @@ public class Solution {
     }
 }
 
-Solution 2: 
+Approach 2: Mathematical: Digital Root
+Time complexity: O(logn)
+Space complexity: O(1)
+
 public class Solution {
     public int addDigits(int num) {
         return (num - 1) % 9 + 1;
