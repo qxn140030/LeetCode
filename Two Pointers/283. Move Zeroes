@@ -42,9 +42,6 @@ Space complexity: O(1)
 
 public class Solution {
     public void moveZeroes(int[] nums) {
-        if (nums == null || nums.length < 2) {
-            return;
-        }
         int j = -1;
         for (int i = 0; i < nums.length; i++) {
             if (nums[i] == 0) {
