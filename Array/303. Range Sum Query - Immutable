@@ -18,16 +18,16 @@ class NumArray {
     }   
     public int sumRange(int left, int right) {
         int sum = 0;
-        for (int k = i; k <= j; k++) {
-            sum += data[k];
+        for (int i = left; i <= right; i++) {
+            sum += data[i];
         }
         return sum;
     }
 }
 
-Approach 2: Caching - Brute Force HashMap
-trade in extra space for speed. By pre-computing all range sum possibilities and store its results in a hash table, we can speed up the query.
-Time complexity: O(1) time per query, O(n) time pre-computation. 
+Approach 2: Caching
+trade in extra space for speed. By pre-computing range sum and store its results, we can speed up the query.
+Time complexity: O(1) per query, O(n) pre-computation. 
 Since the cumulative sum is cached, each sumRange query can be calculated in O(1) time.
 Space complexity: O(n)
 
