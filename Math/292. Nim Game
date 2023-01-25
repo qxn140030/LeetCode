@@ -8,7 +8,12 @@ last stone will always be removed by your friend.
 Hint:
 If there are 5 stones in the heap, could you figure out a way to remove the stones such that you will always be the winner?
 
+Approach 1: Naive
+You can always win a Nim game if the number of stones n in the pile is not divisible by 4.
 1,2,3 -> first player wins; 4 -> lose...
+Time complexity: O(1)
+Space complexity: O(1)
+
 public class Solution {
     public boolean canWinNim(int n) {
         return n % 4 != 0;
