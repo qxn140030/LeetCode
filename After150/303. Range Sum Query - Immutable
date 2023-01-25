@@ -7,10 +7,30 @@ Note:
 You may assume that the array does not change.
 There are many calls to sumRange function.
 
-Caching.
+Approach 1: Brute force
+Time complexity: O(n)
+Space complexity: O(1), Note that data is a reference to nums and is not a copy of it.
+
+class NumArray {
+    private int[] data;
+    public NumArray(int[] nums) {
+        data = nums;
+    }   
+    public int sumRange(int left, int right) {
+        int sum = 0;
+        for (int k = i; k <= j; k++) {
+            sum += data[k];
+        }
+        return sum;
+    }
+}
+
+Approach 2: Caching - Brute Force HashMap
+trade in extra space for speed. By pre-computing all range sum possibilities and store its results in a hash table, we can speed up the query.
 Time complexity: O(1) time per query, O(n) time pre-computation. 
 Since the cumulative sum is cached, each sumRange query can be calculated in O(1) time.
-Space complexity: O(n).
+Space complexity: O(n)
+
 public class NumArray {
     public int[] sum; 
     public NumArray(int[] nums) {
