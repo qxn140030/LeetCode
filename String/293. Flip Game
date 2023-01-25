@@ -10,15 +10,16 @@ For example, given s = "++++", after one move, it may become one of the followin
 ]
 If there is no valid move, return an empty list [].
 
-public class Solution {
-    public List<String> generatePossibleNextMoves(String s) {
-        List<String> rst = new ArrayList<String>();
-        if (s == null || s.length() < 2) {
-            return rst;
-        }
-        for (int i = 0; i < s.length() - 1; i++) {
-            if (s.substring(i, i + 2).equals("++")) {
-                rst.add(s.substring(0, i) + "--" + s.substring(i + 2));
+Approach 1: Naive
+Time complexity: O(n)
+Space complexity: O(n)
+
+class Solution {
+    public List<String> generatePossibleNextMoves(String currentState) {
+        List<String> rst = new ArrayList<>();
+        for (int i = 1; i < currentState.length(); i++) {
+            if (currentState.charAt(i) == '+' && currentState.charAt(i - 1) == '+') {
+                rst.add(currentState.substring(0, i - 1) + "--" + currentState.substring(i + 1));
             }
         }
         return rst;
