@@ -24,29 +24,28 @@ Approach 1: Two Hash Maps
 one for mapping characters to words and the other for mapping words to characters.
 checking for values in a hash map is a O(k) operation where k is the number of key value pairs in the hash map.
 Time complexity: O(m + n)
-Space complexity: O(w) where w represents the number of unique words in s.
+Space complexity: O(w), where w represents the number of unique words in s.
 
 class Solution {
     public boolean wordPattern(String pattern, String s) {
-        HashMap<Character, String> map_char = new HashMap();
-        HashMap<String, Character> map_word = new HashMap();
+        Map<Character, String> charToWord = new HashMap<>();
+        Map<String, Character> wordToChar = new HashMap<>();
         String[] words = s.split(" ");
         if (words.length != pattern.length()) {
             return false;
         }
         for (int i = 0; i < words.length; i++) {
             char c = pattern.charAt(i);
-            String w = words[i];
-            if (!map_char.containsKey(c)) {
-                if (map_word.containsKey(w)) {
+            String word = words[i];
+            if (!charToWord.containsKey(c)) {
+                if (wordToChar.containsKey(word)) {
                     return false;
                 } else {
-                    map_char.put(c, w);
-                    map_word.put(w, c);
+                    charToWord.put(c, word);
+                    wordToChar.put(word, c);
                 }
             } else {
-                String mapped_word = map_char.get(c);
-                if (!mapped_word.equals(w)) {
+                if (!charToWord.get(c).equals(word)) {
                     return false;
                 }
             }
@@ -61,25 +60,24 @@ goal is to make sure that the indices of each character and word match up.
 Time complexity: O(m + n)
 Space complexity: O(w)
 
-public class Solution {
+class Solution {
     public boolean wordPattern(String pattern, String s) {
-        Map<Character, String> map = new HashMap<>();
-        String[] arr = str.split(" ");
-        if (pattern.length() != arr.length) {
+        Map<Object, Integer> map = new HashMap<>();           // Note: key could be Character or String
+        String[] words = s.split(" ");
+        if (words.length != pattern.length()) {
             return false;
         }
-        for (int i = 0; i < pattern.length(); i++) {
+        for (Integer i = 0; i < words.length; i++) {
             char c = pattern.charAt(i);
-            String w = words[i];
-            if (!map_index.containsKey(c)) {
-                map_index.put(c, i);
+            if (!map.containsKey(c)) {
+                map.put(c, i);
             }
-            if (!map_index.containsKey(w)) {
-                map_index.put(w, i);
+            if (!map.containsKey(words[i])) {
+                map.put(words[i], i);
             }
-            if (map_index.get(c) != map_index.get(w)) {
+            if (map.get(c) != map.get(words[i])) {
                 return false;
-            }
+            }      
         }
         return true;
     }
