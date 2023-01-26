@@ -1,9 +1,41 @@
 Question: Given the head of s singly linked list, return the middle node of the linked list.
 If there are two middle nodes, return the second middle node.
 
-Approach: fast and slow pointer
+Example:
+1 -> 2 -> 3 -> 4 -> 5 -> 6
+Input: head = [1,2,3,4,5,6]
+Output: [4,5,6]. Since the list has two middle nodes with values 3 and 4, we return the second one.
+
+Approach 1: Output to array
+Time complexity: O(n)
+Space complexity: O(n)
+
+class Solution {
+    public ListNode middleNode(ListNode head) {
+        ListNode[] arr = new ListNode[100];
+        int i = 0;
+        while (head != null) {
+            arr[i++] = head;
+            head = head.next;
+        }
+        return arr[i / 2];
+    }
+}
+
+class Solution {
+    public ListNode middleNode(ListNode head) {
+        List<ListNode> list = new ArrayList<>();
+        while (head != null) {
+            list.add(head);
+            head = head.next;
+        }
+        return list.get(list.size() / 2);
+    }
+}
+
+Approach 2: fast and slow pointer
 Time complexity: O(n), where n is thet number of nodes in the given list.
-Space complexity: O(1).
+Space complexity: O(1)
 
 class Solution {
     public ListNode middleNode(ListNode head) {
