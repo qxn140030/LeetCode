@@ -2,7 +2,9 @@ You are given two linked lists representing two non-negative numbers. The digits
 their nodes contain a single digit. Add the two numbers and return it as a linked list.
 Input: (2 -> 4 -> 3) + (5 -> 6 -> 4)
 Output: 7 -> 0 -> 8
+Explanation: 342 + 465 = 807.
 
+Approach 1: Elementary Math
 Time complexity: O(max(m, n)). m and n represents the length of l1 and l2 respectively.
 Space complexity: O(max(m, n)). The length of the new list is at most max(m, n) + 1.
 /**
@@ -19,8 +21,8 @@ public class Solution {
         ListNode tail = dummy;
         int carry = 0;
         while (l1 != null || l2 != null) {
-            int val1 = (l1 == null) ? 0 : l1.val;
-            int val2 = (l2 == null) ? 0 : l2.val;
+            int val1 = l1 == null ? 0 : l1.val;
+            int val2 = l2 == null ? 0 : l2.val;
             int sum = val1 + val2 + carry;
             tail.next = new ListNode(sum % 10);
             tail = tail.next;
