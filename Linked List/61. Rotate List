@@ -1,7 +1,15 @@
 Given a list, rotate the list to the right by k places, where k is non-negative.
-For example: Given 1->2->3->4->5->NULL and k = 2, return 4->5->1->2->3->NULL.
+Example 1:
+          1 -> 2 -> 3 -> 4 -> 5, k = 2
+rotate 1: 5 -> 1 -> 2 -> 3 -> 4
+rotate 2: 4 -> 5 -> 1 -> 2 -> 3
+Input: head = [1,2,3,4,5], k = 2
+Output: [4,5,1,2,3]
 
-Time complexity: O(n). Space complexity: O(1).
+Approach 1: Intuition
+Time complexity: O(n)
+Space complexity: O(1)
+
 /**
  * Definition for singly-linked list.
  * public class ListNode {
@@ -21,9 +29,9 @@ public class Solution {
             len++;
             node = node.next;
         }
-        k %= len;
+        len = k % len;
         ListNode fast = head;
-        while (k-- > 0) {
+        for (int i = 0; i < len; i++) {
             fast = fast.next;
         }
         ListNode slow = head;
