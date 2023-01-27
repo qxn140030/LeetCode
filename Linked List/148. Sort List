@@ -84,9 +84,7 @@ class Solution {
         }
         ListNode dummy = new ListNode(0);
         dummy.next = head;
-        ListNode left = new ListNode(0);
-        ListNode right = new ListNode(0);
-        ListNode tail = new ListNode(0);
+        ListNode left, right, tail;
         for (int size = 1; size < len; size *= 2) {
             cur = dummy.next;
             tail = dummy;
