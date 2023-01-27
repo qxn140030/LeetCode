@@ -1,0 +1,37 @@
+Write a function to delete a node (except the tail) in a singly linked list, given only access to that node.
+4 -> 5 -> 1 -> 9, given node is 5
+4 ------> 1 -> 9
+
+Approach 1: Copy the next value to the current and delete the tail node
+Time complexity: O(n)
+Space complexity: O(1)
+
+class Solution {
+    public void deleteNode(ListNode node) {
+        while (node.next.next != null) {
+            node.val = node.next.val;
+            node = node.next;
+        }
+        node.val = node.next.val;
+        node.next = null;
+    }
+}
+
+Approach 2: Delete next node instead of current node
+Time complexity: O(1)
+Space complexity: O(1)
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public void deleteNode(ListNode node) {
+        node.val = node.next.val;
+        node.next = node.next.next;
+    }
+}
