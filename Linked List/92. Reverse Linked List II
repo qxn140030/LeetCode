@@ -13,18 +13,14 @@ Space complexity: O(n), in the worst case we have to reverse the entire list. sp
 
 class Solution {
     public ListNode reverseBetween(ListNode head, int left, int right) {
-        if (head == null || head.next == null || right == left) {
-            return head;
-        }
-        ListNode leftNode = head;
-        ListNode leftPre = new ListNode(0);
-        leftPre.next = leftNode;
-        ListNode rightNode = head;
-        int leftP = left;
-        int rightP = right;
-        while (rightP-- > 1) {
-            if (leftP-- > 1) {
-                leftPre = leftNode;
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode leftPre = dummy, leftNode = head, rightNode = head;
+        int p1 = left;
+        int p2 = right;
+        while (--p2 > 0) {
+            if (--p1 > 0) {
+                leftPre = leftPre.next;
                 leftNode = leftNode.next;
             }
             rightNode = rightNode.next;
@@ -36,7 +32,6 @@ class Solution {
         reversedTail.next = rightAfter;
         return left == 1 ? p : head;
     }
-
     private ListNode reverse(ListNode head, int n) {
         if (head == null || head.next == null || n < 1) {
             return head;
@@ -64,21 +59,14 @@ Space complexity: O(1)
  */
 class Solution {
     public ListNode reverseBetween(ListNode head, int left, int right) {
-        if (head == null || head.next == null || right == left) {
-            return head;
-        }
         ListNode dummy = new ListNode(0);
         dummy.next = head;
         ListNode pre = dummy;
-        while (left-- > 1) {
+        while (--left > 0) {
             pre = pre.next;
             right--;
         }
-        ListNode beforeReverse = pre;
-        ListNode cur = pre.next;
-        ListNode reverseTail = cur;
-        pre = null;
-        ListNode after = null;
+        ListNode beforeReverse = pre, cur = pre.next, reverseTail = cur, after = null;
         while (right-- > 0 && cur != null) { 
             after = cur.next;     
             cur.next = pre;
