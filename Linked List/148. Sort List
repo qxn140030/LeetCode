@@ -61,8 +61,8 @@ class Solution {
 Approach 2: Bottom Up Merge Sort (iteration)
 splitting the problem into the smallest subproblems and iteratively merge them. After the first iteration, we get the sorted lists of size 2.
 have to keep track of the previous merged list using pointer tail and the next sublist to be sorted using pointer nextSubList.
-Time complexity: O(nlogn). 
-Space complexity: O(1).
+Time complexity: O(nlogn)
+Space complexity: O(1)
 
 /**
  * Definition for singly-linked list.
