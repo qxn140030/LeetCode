@@ -5,10 +5,10 @@ Companies: Amazon, Apple, TikTok, Microsoft, Google.
 Approach 1: Top Down Merge Sort (recursion)
 recursively splits the original list into two halves, the split continues until there is only one. 
 sorts each sublist independently, and eventually merge the sorted lists.
-Time complexity: O(nlogn). 
+Time complexity: O(nlogn)
 The recursion tree expands in form of a complete binary tree. The number of levels: log⁡2(n). 
 At each level, we merge n nodes which takes O(n) time. 
-Space complexity: O(logn). 
+Space complexity: O(logn)
 Since the problem is recursive, we need additional space to store the recursive call stack. 
 The maximum depth of the recursion tree is log⁡n.
 
@@ -30,9 +30,8 @@ class Solution {
         ListNode right = sortList(mid);
         return merge(left, right);
     }
-
     ListNode merge(ListNode list1, ListNode list2) {
-        ListNode dummyHead = new ListNode();
+        ListNode dummyHead = new ListNode(0);
         ListNode tail = dummyHead;
         while (list1 != null && list2 != null) {
             if (list1.val < list2.val) {
@@ -47,9 +46,8 @@ class Solution {
         tail.next = list1 != null ? list1 : list2;
         return dummyHead.next;
     }
-
     ListNode getMid(ListNode head) {
-        ListNode midPrev = head;
+        ListNode midPrev = null;
         while (head != null && head.next != null) {
             midPrev = (midPrev == null) ? head : midPrev.next;
             head = head.next.next;
@@ -60,34 +58,38 @@ class Solution {
     }
 }
 
-
 Approach 2: Bottom Up Merge Sort (iteration)
 splitting the problem into the smallest subproblems and iteratively merge them. After the first iteration, we get the sorted lists of size 2.
 have to keep track of the previous merged list using pointer tail and the next sublist to be sorted using pointer nextSubList.
 Time complexity: O(nlogn). 
 Space complexity: O(1).
 
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
 class Solution {
     public ListNode sortList(ListNode head) {
-        if (head == null || head.next == null) {
-            return head;
-        }
-        // get the length of the linked list
         int len = 0;
         ListNode cur = head;
         while (cur != null) {
             cur = cur.next;
             len++;
         }
-        
-        ListNode dummyHead = new ListNode();
-        dummyHead.next = head;
-        ListNode left = new ListNode();
-        ListNode right = new ListNode();
-        ListNode tail = new ListNode();
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode left = new ListNode(0);
+        ListNode right = new ListNode(0);
+        ListNode tail = new ListNode(0);
         for (int size = 1; size < len; size *= 2) {
-            cur = dummyHead.next;
-            tail = dummyHead;
+            cur = dummy.next;
+            tail = dummy;
             while (cur != null) {
                 left = cur;
                 right = split(left, size);
@@ -97,12 +99,11 @@ class Solution {
                 tail = merged.getValue();
             }
         }
-        return dummyHead.next;
+        return dummy.next;
     }
-
     // splits the list into two parts, first n elements and the rest, return the head of the rest.
     ListNode split(ListNode head, int n) {
-        while (n-- > 1 && head != null) {
+        while (--n > 0 && head != null) {
             head = head.next;
         }
         ListNode rest = head != null ? head.next : null;
@@ -111,11 +112,10 @@ class Solution {
         }
         return rest;
     }
-
     // Merge two lists, return the head and tail of the merged list.
     Pair<ListNode, ListNode> merge(ListNode list1, ListNode list2) {
-        ListNode dummyHead = new ListNode();
-        ListNode tail = dummyHead;
+        ListNode dummy = new ListNode(0);
+        ListNode tail = dummy;
         while (list1 != null && list2 != null) {
             if (list1.val < list2.val) {
                 tail.next = list1;
@@ -131,6 +131,6 @@ class Solution {
         while (tail.next != null) {
             tail = tail.next;
         }
-        return new Pair(dummyHead.next, tail);
+        return new Pair(dummy.next, tail);
     }
 }
