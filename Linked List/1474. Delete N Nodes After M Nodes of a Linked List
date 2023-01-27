@@ -12,10 +12,6 @@ Example 1:
 Input: head = [1,2,3,4,5,6,7,8,9,10,11,12,13], m = 2, n = 3
 Output: [1,2,6,7,11,12]
 
-Example 2:
-Input: head = [1,2,3,4,5,6,7,8,9,10,11], m = 1, n = 3
-Output: [1,5,9]
-
 Approach 1: Traverse linked list and delete in-place
 Time complexity: O(n)
 Space complexity: O(1)
@@ -25,18 +21,15 @@ class Solution {
         ListNode cur = head;
         ListNode lastM = head;
         while (cur != null) {
-            // initialize mCount to m and nCount to n
             int mCount = m, nCount = n;
             // traverse m nodes
-            while (cur != null && mCount > 0) {
+            while (cur != null && mCount-- > 0) {
                 lastM = cur;
                 cur = cur.next;
-                mCount--;
             }
             // traverse n nodes
-            while (cur != null && nCount > 0) {
+            while (cur != null && nCount-- > 0) {
                 cur = cur.next;
-                nCount--;
             }
             // delete n nodes
             lastM.next = cur;
