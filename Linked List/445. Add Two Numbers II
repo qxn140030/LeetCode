@@ -20,11 +20,11 @@ class Solution {
         ListNode head = null;
         int carry = 0;
         while (l1 != null || l2 != null) {
-            int x1 = l1 != null ? l1.val : 0;
-            int x2 = l2 != null ? l2.val : 0;
-            int val = (carry + x1 + x2) % 10;
-            carry = (carry + x1 + x2) / 10;
-            ListNode curr = new ListNode(val);
+            int val1 = l1 != null ? l1.val : 0;
+            int val2 = l2 != null ? l2.val : 0;
+            int sum = val1 + val2 + carry;
+            carry = sum / 10;
+            ListNode curr = new ListNode(sum % 10);
             curr.next = head;
             head = curr;
             l1 = l1 != null ? l1.next : null;
@@ -115,7 +115,7 @@ class Solution {
     }
 }
 
-Approach 3: Use stack
+Approach 3: Use stacks
 Time complexity: O(m + n)
 Space complexity: O(m + n)
 
