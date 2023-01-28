@@ -1,0 +1,162 @@
+You are given two non-empty linked lists representing two non-negative integers.
+The most significant digit comes first and each of their nodes contains a single digit.
+Add the two numbers and return the sum as a linked list.
+Follow up:
+Could you solve it without reversing the input lists?
+Example:
+7 -> 2 -> 4 -> 3
+     5 -> 6 -> 4
+------------------
+7 -> 8 -> 0 -> 7
+
+Approach 1: Reverse input + Construct output by adding to front
+Time complexity: O(m + n)
+Space complexity: O(1)
+
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        l1 = reverse(l1);
+        l2 = reverse(l2);
+        ListNode head = null;
+        int carry = 0;
+        while (l1 != null || l2 != null) {
+            int x1 = l1 != null ? l1.val : 0;
+            int x2 = l2 != null ? l2.val : 0;
+            int val = (carry + x1 + x2) % 10;
+            carry = (carry + x1 + x2) / 10;
+            ListNode curr = new ListNode(val);
+            curr.next = head;
+            head = curr;
+            l1 = l1 != null ? l1.next : null;
+            l2 = l2 != null ? l2.next : null;
+        }
+        if (carry > 0) {
+            ListNode curr = new ListNode(carry);
+            curr.next = head;
+            head = curr;
+        }
+        return head;
+    }
+    private ListNode reverse(ListNode head) {
+        ListNode last = null;
+        while (head != null) {
+            ListNode tmp = head.next;
+            head.next = last;
+            last = head;
+            head = tmp;    
+        }    
+        return last;
+    }
+}
+
+Approach 2: Follow up: do not reverse input
+Time complexity: O(m + n)
+Space complexity: O(n), we create the middle state linked list, which did not taking carry into account.
+
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        // find the length of both lists
+        int len1 = 0, len2 = 0;
+        ListNode curr1 = l1, curr2 = l2;
+        while (curr1 != null) {
+            len1++;
+            curr1 = curr1.next;      
+        }
+        while (curr2 != null) {
+            len2++;
+            curr2 = curr2.next;     
+        }
+        // parse both lists and sum the corresponding positions without taking carry into account
+        // 3->3->3 + 7->7 --> 3->10->10 --> 10->10->3
+        curr1 = l1;
+        curr2 = l2;
+        ListNode head = null;
+        while (len1 > 0 && len2 > 0) {
+            int val = 0;
+            if (len1 >= len2) {
+                val += curr1.val; 
+                curr1 = curr1.next; 
+                len1--;    
+            }
+            if (len1 < len2) {
+                val += curr2.val; 
+                curr2 = curr2.next;
+                len2--;    
+            } 
+            // update the result: add to front
+            ListNode curr = new ListNode(val);
+            curr.next = head;
+            head = curr;    
+        }
+        // take the carry into account to have all nodes containing a single digit
+        // 10->10->3 --> 0->1->4 --> 4->1->0
+        curr1 = head;
+        head = null;
+        int carry = 0;
+        while (curr1 != null) {
+            // current sum and carry
+            int sum = curr1.val + carry;
+            int val = sum % 10;
+            carry = sum / 10;
+            // update the result: add to front
+            ListNode curr = new ListNode(val);
+            curr.next = head;
+            head = curr;
+            // move to the next elements in the list
+            curr1 = curr1.next;    
+        }
+        // add the last carry
+        if (carry > 0) {
+            ListNode curr = new ListNode(carry);
+            curr.next = head;
+            head = curr;    
+        }
+        return head;
+    }
+}
+
+Approach 3: Use stack
+Time complexity: O(m + n)
+Space complexity: O(m + n)
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        Stack<ListNode> stack1 = new Stack<>();
+        Stack<ListNode> stack2 = new Stack<>();
+        while (l1 != null) {
+            stack1.push(l1);
+            l1 = l1.next;
+        }
+        while (l2 != null) {
+            stack2.push(l2);
+            l2 = l2.next;
+        }
+        int carry = 0;
+        ListNode head = null;
+        while (!stack1.isEmpty() || !stack2.isEmpty()) {
+            int val1 = stack1.isEmpty() ? 0 : stack1.pop().val;
+            int val2 = stack2.isEmpty() ? 0 : stack2.pop().val;
+            int sum = val1 + val2 + carry;
+            ListNode cur = new ListNode(sum % 10);
+            carry = sum / 10;
+            cur.next = head;
+            head = cur;
+        }
+        if (carry > 0) {
+            ListNode cur = new ListNode(carry);
+            cur.next = head;
+            head = cur;
+        }
+        return head;
+    }
+}
