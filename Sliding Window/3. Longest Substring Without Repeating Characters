@@ -1,0 +1,111 @@
+Given a string, find the length of the longest substring without repeating characters.
+Example 1: 
+Input: "abcabcbb"
+Output: the answer is "abc", which the length is 3.
+
+Example 2:
+Input: "bbbbb"
+Output: the answer is "b", with the length of 1.
+
+Example 3: 
+Input: "pwwkew"
+Output: the answer is "wke", with the length of 3. 
+
+Approach 1: Brute Force [Time Limit Exceeded]
+Check all the substring one by one to see if it has no duplicate character.
+Time complexity: O(n^3)
+Space complexity: O(min(n, m)), need O(k) space for checking a substring has no duplicate characters, 
+where k is the size of the Set. it is upper bounded by the size of the string n and the size of the charset/alphabet m.
+
+public class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        int n = s.length();
+        int rst = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = i; j < n; j++) {
+                if (uniqueSubstring(s, i, j)) {
+                    rst = Math.max(rst, j - i + 1);
+                } 
+            }
+        }
+        return rst;
+    }
+    private boolean uniqueSubstring(String s, int start, int end) {
+        Set<Character> hs = new HashSet<>();
+        for (int i = start; i <= end; i++) {
+            if (hs.contains(s.charAt(i))) {
+                return false;
+            } 
+            hs.add(s.charAt(i));
+        }
+        return true;
+    }
+}
+
+Approach 2: Sliding Window (HashSet)
+By using HashSet as a sliding window, checking a character can be done in O(1).
+Time complexity: O(n^2)
+Space complexity: O(min(n, m))
+
+public class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        int n = s.length();
+        int rst = 0;
+        for (int i = 0; i < n; i++) {
+            Set<Character> hs = new HashSet<>();
+            for (int j = i; j < n; j++) {
+                if (hs.contains(s.charAt(j))) {
+                    break;
+                }
+                hs.add(s.charAt(j));
+                rst = Math.max(rst, j - i + 1);
+            }
+        }
+        return rst;
+    }
+}
+
+Approach 3: Sliding Window (frequncy HashMap)
+Time complexity: O(n), in the worst case each character will be visited twice by i and j.
+Space complexity: O(min(n, m))
+
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        Map<Character, Integer> map = new HashMap<>();
+        int i = 0, j = 0, res = 0;
+        while (j < s.length()) {
+            char r = s.charAt(j);
+            map.put(r, map.getOrDefault(r, 0) + 1);  
+            while (map.get(r) > 1) {
+                char l = s.charAt(i);
+                map.put(l, map.get(l) - 1);
+                i++;
+            }
+            res = Math.max(res, j - i + 1);
+            j++;
+        }
+        return res;
+    }
+}
+
+Approach 4: Sliding Window Optimized (HashMap, key: Character, value: index)
+The above solution requires at most 2n steps, it could be optimized to require only n steps.
+We could define a mapping of the characters to its index, then skip the characters immediately when we found a repeated character.
+Time complexity: O(n)
+Space complexity: O(min(n, m))
+
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        Map<Character, Integer> map = new HashMap<>();
+        int res = 0;
+        for (int i = 0, j = 0; j < s.length(); j++) {
+            char r = s.charAt(j);
+            if (map.containsKey(r)) {
+                i = Math.max(map.get(r) + 1, i);       // Note
+            }
+            map.put(r, j);  
+            res = Math.max(res, j - i + 1);
+        }
+        return res;
+    }
+}
