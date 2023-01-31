@@ -1,0 +1,81 @@
+Given a string, find the length of the longest substring T that contains at most 2 distinct characters.
+Example 1: 
+Input: s = “eceba”
+Output: 3, "ece"
+
+Example 2:
+Input: s = "ccaabbb"
+Output: 5, "aabbb"
+
+Approach 1: Brute Force
+Time complexity: O(n^2)
+Space complexity: O(1)
+
+class Solution {
+    public int lengthOfLongestSubstringTwoDistinct(String s) {
+        int longest = 0;
+        for (int i = 0; i < s.length(); i++) {
+            Set<Character> hs = new HashSet<>();
+            for (int j = i; j < s.length(); j++) {
+                char c = s.charAt(j);
+                hs.add(c);
+                if (hs.size() > 2) {
+                    break;
+                }
+                longest = Math.max(longest, j - i + 1);
+            }
+        }
+        return longest;
+    }
+}
+
+Approach 2: Sliding Window
+Time complexity: O(n^2)
+Space complexity: O(1)
+
+public class Solution {
+    public int lengthOfLongestSubstringTwoDistinct(String s) {
+        Map<Character, Integer> map = new HashMap<>();
+        int len = 0;
+        for (int i = 0, start = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            map.put(c, map.getOrDefault(c, 0) + 1);
+            while (map.size() > 2) {
+                char ch = s.charAt(start);
+                if (map.containsKey(ch)) {
+                    map.put(ch, map.get(ch) - 1);
+                    if (map.get(ch) == 0) {
+                        map.remove(ch);           // Note: remove the character from map.
+                    }
+                }
+                start++;
+            }
+            len = Math.max(len, i - start + 1);
+        }
+        return len;
+    }
+}
+
+Approach 3: Sliding Window Optimized
+move sliding window along the string, to keep not more than 2 distinct characters in the window, and to update max substring length at each step.
+use hashmap containing all characters in the sliding window as keys and their rightmost positions as values.
+Time complexity: O(n)
+Space complexity: O(1)
+
+class Solution {
+    public int lengthOfLongestSubstringTwoDistinct(String s) {
+        Map<Character, Integer> map = new HashMap<>();
+        int longest = 0;
+        for (int i = 0, j = 0; j < s.length(); j++) {
+            char c = s.charAt(j);
+            map.put(c, j);
+            if (map.size() > 2) {
+                int index = Collections.min(map.values());
+                map.remove(s.charAt(index));
+                i = index + 1;
+            }
+            longest = Math.max(longest, j - i + 1);
+        }
+        return longest;
+    }
+}
