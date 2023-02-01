@@ -1,14 +1,31 @@
-Given a string S, find the longest palindromic substring in S. You may assume that the maximum length of S is 1000, and there exists
-one unique longest palindromic substring.
+Given a string S, find the longest palindromic substring in S. 
+Example 1:
+Input: s = "babad"
+Output: "bab" or "aba".
 
-Solution 1: Expand Around Center
+Example 2:
+Input: s = "cbbd"
+Output: "bb"
+
+Approach 1: Brute force
+pick all possible starting and ending positions for a substring, and verify if it is a palindrome.
+Time complexity: O(n^3)
+There are a total of (n choose 2) = n * (n - 1) / 2 substrings, verifying each substring takes O(n) time.
+Space complexity: O(1)
+
+Approach 2: Longest Common Substring
+Reverse the string and find the longest common substring between them. 
+But it fails when there exists a reversed copy of a non-palindromic substring in some other part of S.
+To rectify this, each time we find a longest common substring candidate, we check if the substring's indices are the same as the original indices.
+
+
+Approach 3: Expand Around Center
 palindrome mirrors around its center. there are 2n - 1 centers, n letters and (n - 1) slots between two letters.
-Time complexity: O(n^2). since expanding a palindrome around its center take O(n) time. Space complexity: O(1).
+Time complexity: O(n^2). since expanding a palindrome around its center take O(n) time. 
+Space complexity: O(1)
+
 public class Solution {
     public String longestPalindrome(String s) {
-        if (s == null || s.length() == 0) {
-            return null;
-        }
         String longest = "";
         for (int i = 0; i < s.length(); i++) {
             String tmp = expandAroundCenter(s, i, i);
@@ -31,12 +48,12 @@ public class Solution {
     }
 }
 
-Solution 2: Dynamic Programming. Time complexity: O(n^2). Space complexity: O(n^2).
+Approach 4: Dynamic Programming
+Time complexity: O(n^2)
+Space complexity: O(n^2)
+
 public class Solution {
     public String longestPalindrome(String s) {
-        if (s == null || s.length() == 0) {
-            return null;
-        }
         boolean[][] isPalindrome = new boolean[s.length()][s.length()];
         int start = 0;
         int end = 0;
