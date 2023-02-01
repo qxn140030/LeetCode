@@ -64,7 +64,7 @@ class TwoSum {
  * boolean param_2 = obj.find(value);
  */
 
-Approach 2: HashTable
+Approach 2: Hash Table
 Since the desired class need add and get operations, HashMap is a good option for this purpose.
 build a frequency hashtable with the number as key and the frequency of number as the value.
 Time complecity: 
