@@ -15,9 +15,8 @@ Output: 21
 
 Approach 1: Pop and Push Digits & Chenck before overflow
 build up the reverse integer one digit at a time, while doing so, check beforehand whether or not appending another digit would cause overflow.
-
 It is not necessary to check whether it is positive or negative. because in java, -11 / 10 = -1, -11 % 10 = -1.
-Time complexity: O(n), n is the digit number of the integer. 
+Time complexity: O(logx), there are roughly logx digits in x. 
 Space complexity: O(1)
 
 public class Solution {
