@@ -1,0 +1,101 @@
+The string "PAYPALISHIRING" is written in a zigzag pattern on a given number of rows like this: 
+(you may want to display this pattern in a fixed font for better legibility)
+          P   A   H   N
+          A P L S I I G
+          Y   I   R
+And then read line by line: "PAHNAPLSIIGYIR"
+Write the code that will take a string and make this conversion given a number of rows: string convert(string text, int nRows);
+Example 1:
+Input: s = "PAYPALISHIRING", numRows = 3
+Output: "PAHNAPLSIIGYIR"
+
+Example 2:
+Input: s = "PAYPALISHIRING", numRows = 4
+Output: "PINALSIGYAHRPI"
+P     I    N
+A   L S  I G
+Y A   H R
+P     I
+
+Example 3:
+Input: s = "A", numRows = 1
+Output: "A"
+
+Approach 1: Simulate Zig-Zag Movement
+Time complexity: O(numRows * n)
+initialize an empty 2-dimensional matrix of size numRows * numCols, where O(numCols) = O(n)
+then iterate on the input string, which takes O(n) time, and again traverse on the matrix to generate the final string.
+Space complexity: O(numRows * n)
+
+class Solution {
+    public String convert(String s, int numRows) {
+        if (numRows == 1) {
+            return s;
+        }
+        int n = s.length();
+        int sections = (int) Math.ceil(n / (2 * numRows - 2.0));
+        int numCols = sections * (numRows - 1);
+        char[][] matrix = new char[numRows][numCols];
+        for (char[] row: matrix) {
+            Arrays.fill(row, ' ');
+        }
+        int currRow = 0, currCol = 0;
+        int currStringIndex = 0; 
+        // Iterate in zig-zag pattern on matrix and fill it with string characters.
+        while (currStringIndex < n) {
+            // Move down.
+            while (currRow < numRows && currStringIndex < n) {
+                matrix[currRow][currCol] = s.charAt(currStringIndex);
+                currRow++;
+                currStringIndex++;
+            }
+            currRow -= 2;
+            currCol++;
+            // Move up (with moving right also).
+            while (currRow > 0 && currCol < numCols && currStringIndex < n) {
+                matrix[currRow][currCol] = s.charAt(currStringIndex);
+                currRow--;
+                currCol++;
+                currStringIndex++;
+            }
+        } 
+        StringBuilder rst = new StringBuilder();
+        for (char[] row: matrix) {
+            for (char character: row) {
+                if (character != ' ') {
+                    rst.append(character);
+                }
+            }
+        }
+        return rst.toString();
+    }
+}
+
+Approach 2: String Traversal
+there is a pattern between the distances between character in each row.
+if we analyze the jump pattern and traverse the input string using that pattern we can avoid the use of additional space.
+Time complexity: O(n)
+Space complexity: O(1)
+
+public class Solution { 
+    public String convert(String s, int numRows) {
+        if (numRows <= 1) {
+            return s;
+        }
+        int len = s.length();
+        StringBuilder sb = new StringBuilder();
+        int size = 2 * numRows - 2;
+        for (int i = 0; i < numRows; i++) {
+            for (int j = i; j < len; j += size) {
+                sb.append(s.charAt(j));
+                if (i != 0 && i != numRows - 1) {
+                    int tmp = j + size - 2 * i;
+                    if (tmp < len) {
+                        sb.append(s.charAt(tmp));
+                    }
+                }
+            }
+        }
+        return sb.toString();
+    }
+}
