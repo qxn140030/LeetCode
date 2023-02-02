@@ -39,24 +39,18 @@ class Solution {
         for (char[] row: matrix) {
             Arrays.fill(row, ' ');
         }
-        int currRow = 0, currCol = 0;
-        int currStringIndex = 0; 
+        int currRow = 0, currCol = 0, i = 0; 
         // Iterate in zig-zag pattern on matrix and fill it with string characters.
-        while (currStringIndex < n) {
+        while (i < n) {
             // Move down.
-            while (currRow < numRows && currStringIndex < n) {
-                matrix[currRow][currCol] = s.charAt(currStringIndex);
-                currRow++;
-                currStringIndex++;
+            while (currRow < numRows && i < n) {
+                matrix[currRow++][currCol] = s.charAt(i++);
             }
             currRow -= 2;
             currCol++;
             // Move up (with moving right also).
-            while (currRow > 0 && currCol < numCols && currStringIndex < n) {
-                matrix[currRow][currCol] = s.charAt(currStringIndex);
-                currRow--;
-                currCol++;
-                currStringIndex++;
+            while (currRow > 0 && currCol < numCols && i < n) {
+                matrix[currRow--][currCol++] = s.charAt(i++);
             }
         } 
         StringBuilder rst = new StringBuilder();
