@@ -1,0 +1,117 @@
+Given an array S of n integers, are there elements a, b, c in S such that a + b + c = 0? 
+Find all unique triplets in the array which gives the sum of zero.
+Note: 
+Elements in a triplet (a,b,c) must be in non-descending order. (ie, a = b = c)
+The solution set must not contain duplicate triplets.
+Example 1:
+Input: nums = [-1,0,1,2,-1,-4]
+Output: [[-1,-1,2],[-1,0,1]]
+Explanation: 
+nums[0] + nums[1] + nums[2] = (-1) + 0 + 1 = 0.
+nums[1] + nums[2] + nums[4] = 0 + 1 + (-1) = 0.
+nums[0] + nums[3] + nums[4] = (-1) + 2 + (-1) = 0.
+The distinct triplets are [-1,0,1] and [-1,-1,2].
+Notice that the order of the output and the order of the triplets does not matter.
+
+Example 2:
+Input: nums = [0,1,1]
+Output: []
+
+Example 3:
+Input: nums = [0,0,0]
+Output: [[0,0,0]]
+
+Approach 1: Two pointers
+After sorting, we move pivot element nums[i] and analyze elements to its right.
+Time complexity: O(n^2 + nlogn) = (n^2)
+Space complexity: from O(logn) to O(n), depending on the implementation of the sorting algorithm.
+
+class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+        Arrays.sort(nums);
+        List<List<Integer>> res = new ArrayList<>();
+        for (int i = 0; i < nums.length - 2; i++) {
+            if (nums[i] > 0) {
+                return res;
+            }
+            if (i == 0 || nums[i] > nums[i - 1]) {
+                int low = i + 1, high = nums.length - 1;
+                while (low < high) {
+                    int sum = nums[i] + nums[low] + nums[high];
+                    if (sum < 0) {
+                        low++;
+                    } else if (sum > 0) {
+                        high--;
+                    } else {
+                        res.add(Arrays.asList(nums[i], nums[low++], nums[high--]));
+                        while (low < high && nums[low] == nums[low - 1]) {
+                            low++;
+                        }
+                        while (low < high && nums[high] == nums[high + 1]) {
+                            high--;
+                        }
+                    }
+                }
+            }
+        }
+        return res;
+    }
+}
+
+Approach 2: using HashSet to avoid duplicates. 
+Time complexity: O(n^2 + nlogn) = (n^2). 
+Space complexity: O(n)
+
+class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+        Arrays.sort(nums);
+        List<List<Integer>> res = new ArrayList<>();
+        for (int i = 0; i < nums.length - 2; i++) {
+            if (nums[i] > 0) {
+                return res;
+            }
+            if (i == 0 || nums[i] > nums[i - 1]) {
+                Set<Integer> hs = new HashSet<>();
+                for (int j = i + 1; j < nums.length; j++) {
+                    int complement = 0 - nums[i] - nums[j];
+                    if (hs.contains(complement)) {
+                        res.add(Arrays.asList(nums[i], nums[j], complement));
+                        while (j + 1 < nums.length && nums[j] == nums[j + 1]) {
+                            j++;
+                        }
+                    }
+                    hs.add(nums[j]);
+                }
+            }
+        }
+        return res;
+    }
+}
+
+Approach 3: No-sort
+What if you cannot modify the input array, and you want to avoid copying it due to memory constraints?
+Time complexity: O(n^2) 
+Space complexity: O(n) for hashset/hashmap.
+
+class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+        Set<List<Integer>> res = new HashSet<>();
+        Set<Integer> dups = new HashSet<>();
+        // Values in the hashmap will indicate whether we have encounted that element in the current iteration.
+        Map<Integer, Integer> seen = new HashMap<>();  
+        for (int i = 0; i < nums.length; i++)
+            if (dups.add(nums[i])) {
+                for (int j = i + 1; j < nums.length; j++) {
+                    int complement = 0 - nums[i] - nums[j];
+                    if (seen.containsKey(complement) && seen.get(complement) == i) {
+                        List<Integer> triplet = Arrays.asList(nums[i], nums[j], complement);
+                        Collections.sort(triplet);
+                        res.add(triplet);
+                    }
+                    // This indicates that we can now use nums[j] as a complement for nums[i].
+                    seen.put(nums[j], i);
+                }
+            }
+        return new ArrayList<>(res);
+    }
+}
