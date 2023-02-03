@@ -1,4 +1,4 @@
-Question: Write a function to find the longest common prefix string amongst an array of strings.
+Write a function to find the longest common prefix string amongst an array of strings.
 
 Example 1:
 Input: strs = ["flower","flow","flight"]
@@ -87,7 +87,7 @@ public String longestCommonPrefix(String[] strs) {
     for (String str : strs) {
         minLen = Math.min(minLen, str.length());
     }
-    int low = 1;
+    int low = 0;
     int high = minLen;
     while (low <= high) {
         int middle = (low + high) / 2;
