@@ -80,7 +80,7 @@ public class Solution {
 
 Approach 2: Iterative
 Time complexity: O(n * 4 ^ n)
-Space complexity: O(n)
+Space complexity: O(1)
 
 public class Solution {
     public List<String> letterCombinations(String digits) {
