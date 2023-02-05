@@ -1,0 +1,126 @@
+Given an array nums of n integers, return an array of all the unique quadruplets such that nums[a] + nums[b] + nums[c] + nums[d] = target
+You may return the answer in any order.
+Example 1:
+Input: nums = [1,0,-1,0,-2,2], target = 0
+Output: [[-2,-1,1,2],[-2,0,0,2],[-1,0,0,1]]
+
+Example 2:
+Input: nums = [2,2,2,2,2], target = 8
+Output: [[2,2,2,2]]
+
+Approach 1: Two pointers - Iteration
+Time complexity: O(n^3)
+Space complexity: O(1)
+
+class Solution {
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        Arrays.sort(nums);
+        List<List<Integer>> rst = new ArrayList<>();
+        for (int i = 0; i < nums.length - 3; i++) {
+            if (i == 0 || nums[i] > nums[i - 1]) {
+                for (int j = i + 1; j < nums.length - 2; j++) {
+                    if (j == i + 1 || nums[j] > nums[j - 1]) {
+                        int start = j + 1;
+                        int end = nums.length - 1;
+                        while (start < end) {
+                            long sum = (long)nums[i] + (long)nums[j] + (long)nums[start] + (long)nums[end];    // to avoid overflow
+                            if (sum > target) {
+                                end--;
+                            } else if (sum < target) {
+                                start++;
+                            } else {
+                                rst.add(Arrays.asList(nums[i], nums[j], nums[start++], nums[end--]));
+                                while (start < end && nums[end + 1] == nums[end]) {
+                                    end--;
+                                }
+                                while (start < end && nums[start] == nums[start - 1]) {
+                                    start++;
+                                }
+                            } 
+                        }
+                    }
+                }
+            }
+        }
+        return rst;
+    }
+}
+
+Approach 2: Two pointers - Recursion
+Time complexity: O(n^3)
+Space complexity: O(n)
+
+class Solution {
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        Arrays.sort(nums);
+        return kSum(nums, target, 0, 4);
+    }
+	private List<List<Integer>> kSum(int[] nums, long target, int start, int k) {
+        List<List<Integer>> res = new ArrayList<>();
+        // If we have run out of numbers to add, return res.
+        if (start == nums.length) {
+            return res;
+        }
+        // There are k remaining values to add to the sum. The average of these values is at least target / k.
+        long average_value = target / k;
+        // We cannot obtain a sum of target if the smallest value in nums is greater than target / k 
+        // or if the largest value in nums is smaller than target / k.
+        if  (nums[start] > average_value || average_value > nums[nums.length - 1]) {
+            return res;
+        }
+        if (k == 2) {
+            return twoSum(nums, target, start);
+        }
+        for (int i = start; i < nums.length; i++) {
+            if (i == start || nums[i - 1] < nums[i]) {
+                for (List<Integer> subset : kSum(nums, target - nums[i], i + 1, k - 1)) {
+                    res.add(new ArrayList<>(Arrays.asList(nums[i])));
+                    res.get(res.size() - 1).addAll(subset);
+                }
+            }
+        }
+        return res;
+    }
+    private List<List<Integer>> twoSum(int[] nums, long target, int start) {
+        List<List<Integer>> res = new ArrayList<>();
+        int i = start, j = nums.length - 1;
+        while (i < j) {
+            int currSum = nums[i] + nums[j];
+            if (currSum < target || (i > start && nums[i] == nums[i - 1])) {
+                i++;
+            } else if (currSum > target || (j < nums.length - 1 && nums[j] == nums[j + 1])) {
+                j--;
+            } else {
+                res.add(Arrays.asList(nums[i++], nums[j--]));
+            }
+        }                                                
+        return res;
+    }
+}
+
+Approach 3: Two pointers - Recursion - Using Hash Set in twoSum()
+Time complexity: O(n^3)
+Space complexity: O(n)
+
+class Solution {
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        Arrays.sort(nums);
+        return kSum(nums, target, 0, 4);
+    }
+    private List<List<Integer>> kSum(int[] nums, long target, int start, int k) {
+        ...  // same
+    }
+    private List<List<Integer>> twoSum(int[] nums, long target, int start) {
+        List<List<Integer>> res = new ArrayList<>();
+        Set<Long> s = new HashSet<>();
+        for (int i = start; i < nums.length; i++) {
+            if (res.isEmpty() || res.get(res.size() - 1).get(1) != nums[i]) {
+                if (s.contains(target - nums[i])) {
+                    res.add(Arrays.asList((int)target - nums[i], nums[i]));
+                }
+            }
+            s.add((long)nums[i]);
+        }                                                      
+        return res;
+    }
+}
