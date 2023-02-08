@@ -39,8 +39,8 @@ Approach 2: Repeated Exponential Searches
 doubling the divisor until it no longer fits into the dividend.
 Time complexity: O(logn * logn)
 we started by performing an exponential search to find the biggest number that fits into the current dividend. this search took O(logn) operations.
-after doing this search, update hte dividend by subtracting the number we found. in the worst case, we were left with a dividend slightly less than
-half of the previous dividend. so we havev O(logn) searches with each search taking O(logn) time.
+after doing this search, update the dividend by subtracting the number we found. in the worst case, we were left with a dividend slightly less than
+half of the previous dividend. so we have O(logn) searches with each search taking O(logn) time.
 Space complexity: O(1)
 
 class Solution {
@@ -184,7 +184,7 @@ class Solution {
                 quotient -= (1 << bit);
                 dividend -= divisor;
             }
-            divisor = (divisor + 1) >> 1;
+            divisor = (divisor + 1) >> 1;   // divisor could be odd number, need to add 1 before right shift, otherwise, it could be off by 1.
         }
         return negatives == 1 ? quotient : -quotient;
     }
