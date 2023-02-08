@@ -1,0 +1,219 @@
+Return the quotient after dividing dividend by divisor without using multiplication, division and mod operator. 
+Example 1:
+Input: dividend = 10, divisor = 3
+Output: 3
+
+Example 2:
+Input: dividend = 7, divisor = -3
+Output: -2
+
+Approach 1: Repeated Subtraction
+convert both inputs to negative instead of positive numbers, allows us to use the largest possible range of numbers.
+Time complexity: O(n), n is the absolute value of dividend.
+Space complexity: O(1)
+
+class Solution {
+    public int divide(int dividend, int divisor) {
+        if (dividend == Integer.MIN_VALUE && divisor == -1) {
+            return Integer.MAX_VALUE;
+        }
+        int negatives = 2;
+        if (dividend > 0) {
+            negatives--;
+            dividend = -dividend;
+        }
+        if (divisor > 0) {
+            negatives--;
+            divisor = -divisor;
+        }
+        int quotient = 0;
+        while (dividend <= divisor) {
+            quotient--;
+            dividend -= divisor;
+        }
+        return negatives == 1 ? quotient : -quotient;
+    }
+}
+
+Approach 2: Repeated Exponential Searches
+doubling the divisor until it no longer fits into the dividend.
+Time complexity: O(logn * logn)
+we started by performing an exponential search to find the biggest number that fits into the current dividend. this search took O(logn) operations.
+after doing this search, update hte dividend by subtracting the number we found. in the worst case, we were left with a dividend slightly less than
+half of the previous dividend. so we havev O(logn) searches with each search taking O(logn) time.
+Space complexity: O(1)
+
+class Solution {
+    public int divide(int dividend, int divisor) {
+        if (dividend == Integer.MIN_VALUE && divisor == -1) {
+            return Integer.MAX_VALUE;
+        }
+        int negatives = 2;
+        if (dividend > 0) {
+            negatives--;
+            dividend = -dividend;
+        }
+        if (divisor > 0) {
+            negatives--;
+            divisor = -divisor;
+        }
+        int half = -1073741824;
+        int quotient = 0;
+        while (divisor >= dividend) {
+            int powerOfTwo = -1;
+            int value = divisor;
+            while (value >= half && value + value >= dividend) {
+                value += value;
+                powerOfTwo += powerOfTwo;
+            }
+            quotient += powerOfTwo;
+            dividend -= value;
+        }
+        return negatives != 1 ? -quotient : quotient;
+    }
+}
+
+Approach 3: Adding power of two
+work with negative numbers to elegantly avoid overflow issue.
+Time complexity: O(logn)
+Space complexity: O(logn)
+
+class Solution {
+    public int divide(int dividend, int divisor) {
+        if (dividend == Integer.MIN_VALUE && divisor == -1) {
+            return Integer.MAX_VALUE;
+        }
+        int negatives = 2;
+        if (dividend > 0) {
+            negatives--;
+            dividend = -dividend;
+        }
+        if (divisor > 0) {
+            negatives--;
+            divisor = -divisor;
+        }
+        ArrayList<Integer> doubles = new ArrayList<>();
+        ArrayList<Integer> powersOfTwo = new ArrayList<>();
+        int powerOfTwo = -1;
+        int half = -1073741824;
+        while (divisor >= dividend) {
+            doubles.add(divisor);
+            powersOfTwo.add(powerOfTwo);
+            if (divisor < half) {
+                break;
+            }
+            divisor += divisor;
+            powerOfTwo += powerOfTwo;
+        }
+        int quotient = 0;
+        for (int i = doubles.size() - 1; i >= 0; i--) {
+            if (doubles.get(i) >= dividend) {
+                quotient += powersOfTwo.get(i);
+                dividend -= doubles.get(i);
+            }
+        }
+        return negatives != 1 ? -quotient : quotient;
+    }
+}
+
+Approach 4: Adding powers of two with bit-shifting
+Time complexity: O(logn)
+Space complexity: O(1)
+
+class Solution {
+    public int divide(int dividend, int divisor) {
+        if (dividend == Integer.MIN_VALUE && divisor == -1) {
+            return Integer.MAX_VALUE;
+        }
+        int negatives = 2;
+        if (dividend > 0) {
+            negatives--;
+            dividend = -dividend;
+        }
+        if (divisor > 0) {
+            negatives--;
+            divisor = -divisor;
+        }
+        int half = -1073741824;
+        int highestDouble = divisor;
+        int highestPowerOfTwo = -1;
+        while (highestDouble >= half && dividend <= highestDouble + highestDouble) {
+            highestPowerOfTwo += highestPowerOfTwo;
+            highestDouble += highestDouble;
+        }
+        int quotient = 0;
+        while (dividend <= divisor) {
+            if (dividend <= highestDouble) {
+                quotient += highestPowerOfTwo;
+                dividend -= highestDouble;
+            }
+            highestPowerOfTwo >>= 1;
+            highestDouble >>= 1;
+        }
+        return negatives == 1 ? quotient : -quotient;
+    }
+}
+
+Approach 5: Binary Long Division
+Time complexity: O(logn)
+Space complexity: O(1)
+
+class Solution {
+    public int divide(int dividend, int divisor) {
+        if (dividend == Integer.MIN_VALUE && divisor == -1) {
+            return Integer.MAX_VALUE;
+        }
+        int negatives = 2;
+        if (dividend > 0) {
+            negatives--;
+            dividend = -dividend;
+        }
+        if (divisor > 0) {
+            negatives--;
+            divisor = -divisor;
+        }
+        int half = -1073741824;
+        int maxBit = 0;
+        while (divisor >= half && divisor + divisor >= dividend) {
+            maxBit += 1;
+            divisor += divisor;
+        }
+        int quotient = 0;
+        for (int bit = maxBit; bit >= 0; bit--) {
+            if (divisor >= dividend) {
+                quotient -= (1 << bit);
+                dividend -= divisor;
+            }
+            divisor = (divisor + 1) >> 1;
+        }
+        return negatives == 1 ? quotient : -quotient;
+    }
+}
+
+any number can be converted to the format: num = a_0*2^0 + a_1*2^1 +...+ a_n*2^n
+Time complexity: O(logn)
+Space complexity: O(1)
+
+public class Solution {
+    public int divide(int dividend, int divisor) {
+        if (dividend == Integer.MIN_VALUE && divisor == -1) {
+            return Integer.MAX_VALUE;
+        }
+        int sign = 1;
+        if ((dividend < 0) ^ (divisor < 0)) {
+            sign = -1;
+        }
+        long a = Math.abs((long)dividend);
+        long b = Math.abs((long)divisor);
+        int rst = 0;
+        while (a >= b) {
+            int shift = 0;
+            while (a >= (b << shift)) {
+                shift++;
+            }
+            a -= (b << (shift - 1));
+            rst += (1 << (shift - 1));
+        }
+        return sign * rst;
+    }
+}
