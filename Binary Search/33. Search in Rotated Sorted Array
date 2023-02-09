@@ -52,7 +52,7 @@ class Solution {
     }
 }
 
-Approach 1: One-pass Binary Search
+Approach 2: One-pass Binary Search
 Time complexity: O(logn)
 Space complexity: O(1)
 
