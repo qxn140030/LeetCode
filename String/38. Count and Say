@@ -8,7 +8,7 @@ Note: The sequence of integers will be represented as a string.
 Approach 1: Straightforward
 Time complexity: O(m * n), m is the length of string.
 Space complexity: O(m)
-Time/Space complexity: O(4^(n/3)). 
+Time/Space complexity: O(4^(n/3))
 each 3 iterations a single digit becomes 4 digits. If we treat every three iterations as a recursion, 
 since we have n iterations, we then have n/3 such recursions. during each recursion a digit becomes fourfold.
 
