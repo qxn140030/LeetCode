@@ -3,7 +3,10 @@ Your algorithm's runtime complexity must be in the order of O(log n).
 If the target is not found in the array, return [-1, -1].
 For example, Given [5, 7, 7, 8, 8, 10] and target value 8, return [3, 4].
 
-Time complexity: O(logn). Space complexity: O(1).
+Approach 1: Binary Search
+Time complexity: O(logn)
+Space complexity: O(1)
+
 public class Solution {
     public int[] searchRange(int[] nums, int target) {
         int[] result = {-1, -1};
