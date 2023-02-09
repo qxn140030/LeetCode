@@ -1,0 +1,78 @@
+Given an array of distinct integers candidates and a target integer, return a list of all unique combinations of candidates where the 
+chosen numbers sum to target.
+Example 1:
+Input: candidates = [2,3,6,7], target = 7
+Output: [[2,2,3],[7]]
+
+Example 2:
+Input: candidates = [2,3,5], target = 8
+Output: [[2,2,2,2],[2,3,3],[3,5]]
+
+Example 3:
+Input: candidates = [2], target = 1
+Output: []
+
+Approach 1: Backtracking
+backtracking is a general algorithm for finding all or some solutions to some computational problems. 
+it incrementally builds candidates to the solutions, and abandons a candidate (backtracking) 
+as soon as it determines that this candidate cannot lead to a final solution.
+Time complexity: NP, exponential, O(m^d). 
+branching factor m is the number of distinct elements in candidates[] which <= target, d = target / min element in candidate[].
+Space complexity: O(m). m is the size of array for the solution.
+
+Let n be the number of candidates, t be the target value, m be the minimal value among the candidates.
+Time complexity: O(n^(t/m + 1)
+the execution of the backtracking is unfolded as a DFS traversal in a n-ary tree. the total number of steps is the number of nodes in the tree.
+a loose upper bound on the number of nodes:
+- the fan-out of each node would be bounded to n - the total number of candidates.
+- the maximum depth of the tree - t/m, where we keep on adding the smallest element to the combination.
+- the maximum number of nodes in N-ary tree of t/m height would be n^(t/m + 1).
+Note: the actual number of nodes would be much smaller than the upper bound, since the fan-out of nodes are decreasing level by level.
+Space complexity: O(t/m)
+
+public class Solution {
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> rst = new ArrayList<>();
+        Arrays.sort(candidates);
+        List<Integer> path = new ArrayList<>();
+        dfs(candidates, target, 0, path, rst);
+        return rst;
+    }
+    private void dfs(int[] candidates, int target, int index, List<Integer> path, List<List<Integer>> rst) {
+        if (target == 0) {
+            rst.add(new ArrayList<>(path));
+            return;
+        }
+        for (int i = index; i < candidates.length; i++) {
+            if (candidates[i] > target) {
+                return;
+            }
+            path.add(candidates[i]);
+            dfs(candidates, target - candidates[i], i, path, rst);
+            path.remove(path.size() - 1);
+        }
+    }
+} 
+
+class Solution {
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> rst = new ArrayList<>();
+        List<Integer> path = new ArrayList<>();
+        dfs(candidates, target, 0, path, rst);
+        return rst;
+    }
+    private void dfs(int[] candidates, int target, int index, List<Integer> path, List<List<Integer>> rst) {
+        if (target == 0) {
+            rst.add(new ArrayList<>(path));
+            return;
+        }
+        if (target < 0) {
+            return;
+        }
+        for (int i = index; i < candidates.length; i++) {
+            path.add(candidates[i]);
+            dfs(candidates, target - candidates[i], i, path, rst);
+            path.remove(path.size() - 1);
+        }
+    }
+}
