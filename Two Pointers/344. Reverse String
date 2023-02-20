@@ -16,18 +16,18 @@ Time complexity: O(n) to perform N / 2 swaps.
 Space complexity: O(n) to keep the recursion stack.
 
 class Solution {
-  public void helper(char[] s, int left, int right) {
-    if (left >= right) {
-        return;
+    public void reverseString(char[] s) {
+        helper(s, 0, s.length - 1);
     }
-    char tmp = s[left];
-    s[left++] = s[right];
-    s[right--] = tmp;
-    helper(s, left, right);
-  }
-  public void reverseString(char[] s) {
-    helper(s, 0, s.length - 1);
-  }
+    private void helper(char[] s, int left, int right) {
+        if (left >= right) {
+            return;
+        }
+        char tmp = s[left];
+        s[left++] = s[right];
+        s[right--] = tmp;
+        helper(s, left, right);
+    }
 }
 
 Approach 2: Iteration
@@ -36,9 +36,6 @@ Space complexity: O(1)
 
 class Solution {
     public void reverseString(char[] s) {
-        if (s == null || s.length < 2) {
-            return;
-        }
         for (int i = 0, j = s.length - 1; i < j; i++, j--) {
             char tmp = s[i];
             s[i] = s[j];
