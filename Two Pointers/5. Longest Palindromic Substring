@@ -13,10 +13,11 @@ Time complexity: O(n^3)
 There are a total of (n choose 2) = n * (n - 1) / 2 substrings, verifying each substring takes O(n) time.
 Space complexity: O(1)
 
-Approach 2: Longest Common Substring
-Reverse the string and find the longest common substring between them. 
+Approach 2: Reverse and find Longest Common Substring
 But it fails when there exists a reversed copy of a non-palindromic substring in some other part of S.
 To rectify this, each time we find a longest common substring candidate, we check if the substring's indices are the same as the original indices.
+Time complexity: O(
+Space complexity: O(
 
 
 Approach 3: Expand Around Center
