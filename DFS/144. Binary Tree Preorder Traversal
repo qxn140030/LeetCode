@@ -13,28 +13,6 @@ Approach 1: Recursive
 Time complexity: O(n)
 Space complexity: O(logn) in average, O(n) in the worst case.
 
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode(int x) { val = x; }
- * }
- */
-public class Solution {
-    public List<Integer> preorderTraversal(TreeNode root) {
-        List<Integer> rst = new ArrayList<Integer>();
-        if (root == null) {
-            return rst;
-        }
-        rst.add(root.val);
-        rst.addAll(preorderTraversal(root.left));
-        rst.addAll(preorderTraversal(root.right));
-        return rst;
-    }
-}
-
 class Solution {
     public List<Integer> preorderTraversal(TreeNode root) {
         List<Integer> list = new ArrayList<>();
@@ -51,10 +29,33 @@ class Solution {
     }
 }
 
+Time complexity: O(n^2)
+public class Solution {
+    public List<Integer> preorderTraversal(TreeNode root) {
+        List<Integer> rst = new ArrayList<Integer>();
+        if (root == null) {
+            return rst;
+        }
+        rst.add(root.val);
+        rst.addAll(preorderTraversal(root.left));      // addAll() in Java: O(n)
+        rst.addAll(preorderTraversal(root.right));
+        return rst;
+    }
+}
+
 Approach 2: Iterative
 Time complexity: O(n)
 Space complexity: O(logn) in average, O(n) in the worst case when the tree is skewed.
 
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
 public class Solution {
     public List<Integer> preorderTraversal(TreeNode root) {
         List<Integer> rst = new ArrayList<Integer>();
