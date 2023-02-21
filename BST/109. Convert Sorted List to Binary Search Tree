@@ -1,0 +1,122 @@
+Given the head of a singly linked list where elements are sorted in ascending order, convert it to a height balanced BST.
+Input: -10 -> -3 -> 0 -> 5 -> 9
+Output:      0
+            / \
+          -3   9
+          /   /
+       -10   5
+
+Approach 1: Recursion
+Time compexity: O(nlogn)
+O(n) to find the mid, we do this for every half of the original linked list.
+From the looks of it, it seems to be O(n^2), on closed analysis, it turns out to be a bit more efficient than O(n^2)
+n/2 + 2 * n/4 + 4 * n/8 + 8 * n/16 ... = (n/2)logn
+Space complexity: O(logn)
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public TreeNode sortedListToBST(ListNode head) {
+        if (head == null) {
+            return null;
+        }
+        if (head.next == null) {              // Note: edge case
+            return new TreeNode(head.val);
+        }
+        ListNode pre = new ListNode(0);
+        pre.next = head;
+        ListNode fast = head;
+        ListNode slow = head;
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+            pre = pre.next;
+        }
+        ListNode right = slow.next;
+        pre.next = null;
+        TreeNode root = new TreeNode(slow.val);
+        root.left = sortedListToBST(head);
+        root.right = sortedListToBST(right);
+        return root;
+    }
+}
+
+Approach 2: Recursion + Conversion to Array
+convert the given linked list into an array and then use that array to form our binary search tree.
+get the time complexity down by using more space.
+Time compexity: O(n)
+Space complexity: O(n)
+
+class Solution {
+    public TreeNode sortedListToBST(ListNode head) {
+        if (head == null) {
+            return null;
+        }
+        ArrayList<Integer> list = new ArrayList<>();
+        while (head != null) {
+            list.add(head.val);
+            head = head.next;
+        }
+        return formBST(list, 0, list.size() - 1);
+    }
+    private TreeNode formBST(ArrayList<Integer> list, int i, int j) {
+        if (i > j) {
+            return null;
+        }
+        int mid = (i + j) / 2;
+        TreeNode root = new TreeNode(list.get(mid));
+        root.left = formBST(list, i, mid - 1);
+        root.right = formBST(list, mid + 1, j);
+        return root;
+    }
+}
+
+Approach 3: Inorder Simulation
+The invariance that we maintain is that whenever we are done building the left half of the BST, 
+the head pointer in the linked list will point to the root node or the middle node (which becomes the root).
+Time compexity: O(n)
+Space complexity: O(logn)
+
+public class Solution {
+    private ListNode cur;
+    public TreeNode sortedListToBST(ListNode head) {
+        if (head == null) {
+            return null;
+        }
+        cur = head;
+        int len = 0;
+        while (head != null) {
+            len++;
+            head = head.next;
+        }
+        return helper(0, len - 1);
+    }
+    private TreeNode helper(int i, int j) {       // build the tree bottom up.
+        if (i > j) {
+            return null;
+        }
+        int mid = (i + j) / 2;
+        TreeNode left = helper(i, mid - 1);
+        TreeNode root = new TreeNode(cur.val);
+        cur = cur.next;                             // maintain the invariance.
+        TreeNode right = helper(mid + 1, j);
+        root.left = left;
+        root.right = right;
+        return root;
+    }
+}
