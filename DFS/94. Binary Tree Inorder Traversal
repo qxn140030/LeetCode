@@ -22,20 +22,7 @@ Space complexity: O(logn) in average, O(n) in the worst case
  *     TreeNode(int x) { val = x; }
  * }
  */
-public class Solution {
-    public List<Integer> inorderTraversal(TreeNode root) {
-        List<Integer> rst = new ArrayList<>();
-        if (root == null) {
-            return rst;
-        }
-        rst.addAll(inorderTraversal(root.left));
-        rst.add(root.val);
-        rst.addAll(inorderTraversal(root.right));
-        return rst;
-    }
-}
-
-class Solution {
+ class Solution {
     public List<Integer> inorderTraversal(TreeNode root) {
         List<Integer> res = new ArrayList<>();
         helper(root, res);
@@ -47,6 +34,20 @@ class Solution {
             res.add(root.val);
             helper(root.right, res);
         }
+    }
+}
+
+Time complexity: O(n^2)
+public class Solution {
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> rst = new ArrayList<>();
+        if (root == null) {
+            return rst;
+        }
+        rst.addAll(inorderTraversal(root.left));      // addAll() in Java: O(n)
+        rst.add(root.val);
+        rst.addAll(inorderTraversal(root.right));
+        return rst;
     }
 }
 
