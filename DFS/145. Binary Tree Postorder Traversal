@@ -38,13 +38,14 @@ class Solution {
     }
 } 
 
+Time complexity: O(n^2)
 public class Solution {
     public List<Integer> postorderTraversal(TreeNode root) {
         List<Integer> rst = new ArrayList<Integer>();
         if (root == null) {
             return rst;
         }
-        rst.addAll(postorderTraversal(root.left));
+        rst.addAll(postorderTraversal(root.left));      // addAll() in Java: O(n)
         rst.addAll(postorderTraversal(root.right));
         rst.add(root.val);
         return rst;
