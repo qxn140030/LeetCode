@@ -3,7 +3,35 @@ You must do this in-place without altering the nodes' values.
 1 -> 2 -> 3 -> 4      1 -> 2 -> 3 -> 4 -> 5
 1 -> 4 -> 2 -> 3      1 -> 5 -> 2 -> 4 -> 3
 
-Approach 1: Reverse the second part and then merge two parts
+Approach 1: Using Stack to store the second half
+Time complexity: O(n)
+Space complexitu: O(n)
+
+class Solution {
+    public void reorderList(ListNode head) {
+        ListNode slow = head, fast = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        fast = slow.next;
+        slow.next = null;                       // Note: avoid cycle in the list.
+        Stack<ListNode> stack = new Stack<>();
+        while (fast != null) {
+            stack.push(fast);
+            fast = fast.next;
+        }
+        slow = head;
+        while (!stack.isEmpty()) {
+            ListNode cur = stack.pop();
+            cur.next = slow.next;
+            slow.next = cur;
+            slow = cur.next;
+        }
+    }
+}
+
+Approach 2: Reverse the second part and then merge two parts
 Time complexity: O(n)
 Space complexity: O(1)
 
@@ -24,8 +52,7 @@ class Solution {
             slow = slow.next;
             fast = fast.next.next;
         }
-        ListNode l1 = head;
-        ListNode l2 = reverse(slow);
+        ListNode l1 = head, l2 = reverse(slow);
         while (l2.next != null) {
             ListNode tmp1 = l1.next, tmp2 = l2.next;
             l1.next = l2;
