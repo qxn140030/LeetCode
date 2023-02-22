@@ -83,9 +83,6 @@ public class Solution {
             lenB++;
             tailB = tailB.next;
         }
-        if (tailA != tailB) {
-            return null;
-        }
         if (lenA < lenB) {
             for (int i = 0; i < lenB - lenA; i++) {
                 headB = headB.next;
