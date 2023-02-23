@@ -23,6 +23,10 @@ public class Solution {
     }
 }
 
+Approach 2: Traversal (DFS)
+Time complexity: O(n)
+Space complexity: O(logn)
+
 class Solution {
     int rst = 0;
     int depth = 0;
@@ -44,7 +48,7 @@ class Solution {
     }
 }
 
-Approach 2: Iteration (one Queue)
+Approach 3: Iteration (one Queue)
 Time complexity: O(n)
 Space complexity: O(n)
 
