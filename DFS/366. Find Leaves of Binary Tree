@@ -8,6 +8,77 @@ Example 1:    1
 Output: [[4,5,3],[2],[1]] or [[3,5,4],[2],[1]] or [[3,4,5],[2],[1]]
 
 Approach 1: DFS with sorting
-Time complexity: O(
-Space complexity: O(
+Time complexity: O(nlogn)
+Space complexity: O(n)
 
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    private List<Pair<Integer, Integer>> pairs;
+    public List<List<Integer>> findLeaves(TreeNode root) {
+        pairs = new ArrayList<>();
+        getHeight(root);
+        Collections.sort(pairs, Comparator.comparing(p -> p.getKey()));
+        int n = pairs.size(), height = 1, i = 0;
+        List<List<Integer>> rst = new ArrayList<>();
+        while (i < n) {
+            List<Integer> nums = new ArrayList<>();
+            while (i < n && pairs.get(i).getKey() == height) {
+                nums.add(pairs.get(i).getValue());
+                i++;
+            }
+            rst.add(nums);
+            height++;
+        }
+        return rst;
+    }
+    private int getHeight(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int leftHeight = getHeight(root.left);
+        int rightHeight = getHeight(root.right);
+        int currHeight = Math.max(leftHeight, rightHeight) + 1;
+        pairs.add(new Pair<Integer, Integer>(currHeight, root.val));
+        return currHeight;
+    }
+}
+
+Approach 2: DFS without sorting
+Time complexity: O(n)
+Space complexity: O(n)
+
+class Solution {
+    List<List<Integer>> rst;
+    public List<List<Integer>> findLeaves(TreeNode root) {
+        rst = new ArrayList<>();
+        getHeight(root);
+        return rst;
+    }
+    private int getHeight(TreeNode root) {
+        if (root == null) {
+            return -1;                     // Note.
+        }
+        int leftHeight = getHeight(root.left);
+        int rightHeight = getHeight(root.right);
+        int currHeight = Math.max(leftHeight, rightHeight) + 1;
+        if (rst.size() == currHeight) {
+            rst.add(new ArrayList<>());
+        }
+        rst.get(currHeight).add(root.val);
+        return currHeight;
+    }
+}
