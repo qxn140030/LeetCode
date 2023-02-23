@@ -1,0 +1,54 @@
+Given a binary tree, find the maximum path sum.
+For this problem, a path is defined as any sequence of nodes from some starting node to any node in the tree along the
+parent-child connections. The path does not need to go through the root.
+Example 1:     1
+              / \
+             2   3     Output: 6
+             
+Example 2:      -10
+                / \
+               9  20
+                  / \
+                 15  7     Output: 42 = 15 -> 20 -> 7
+                 
+Approach 1: Brute Force
+look at all possible paths, calculate their path sums, and then find the maximum path sum.
+Time complexity: O(n^2)
+Space complexity: O(n^2)
+
+Approach 2: Post Order DFS
+Time complexity: O(n)
+Space complexity: O(n)
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    int rst = Integer.MIN_VALUE;
+    public int maxPathSum(TreeNode root) {
+        maxSum(root);
+        return rst;
+    }
+    private int maxSum(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int left = maxSum(root.left);
+        int right = maxSum(root.right);
+        int cur = Math.max(root.val, Math.max(left + root.val, right + root.val));
+        rst = Math.max(rst, Math.max(cur, root.val + left + right));
+        return cur;                                                 
+    }
+}
