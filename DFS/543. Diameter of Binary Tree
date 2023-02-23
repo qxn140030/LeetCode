@@ -51,14 +51,13 @@ class Solution {
     }
 }
 
-Approach 2: Postorder traversal + max depth
+Approach 2: Postorder traversal + max depth (DFS)
 Time complexity: O(n)
 Space complexity: O(n)
 
 class Solution {
-    int rst;
+    int rst = 0;
     public int diameterOfBinaryTree(TreeNode root) {
-        rst = 0;
         maxDepth(root);
         return rst;
     }
