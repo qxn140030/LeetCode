@@ -10,9 +10,9 @@ coins = [2], amount = 3
 return -1.
 
 Approach 1: Brute Force
-Time complexity: O(n^amount), where n is the number of coins.
-total number of nodes: n^amount, foe each node, we have for loop: O(n), total time: n * n^amount.
-Space complexity: O(amount). height of tree is the amount in the worst case, using all coin = 1.
+Time complexity: O(n^a), where n is the number of coins, a is the amount.
+total number of nodes: n^a, foe each node, we have for loop: O(n), total time: n * n^a.
+Space complexity: O(a). height of tree is the amount in the worst case, when all coin = 1.
 
 class Solution {
     public int coinChange(int[] coins, int amount) {
@@ -34,9 +34,43 @@ class Solution {
     }
 }
 
-Approach 2:
-Time complexity: O(
-Space complexity: O(
+Approach 2: Top-Down Approach using Memoization
+Time complexity: O(a * n)
+Space complexity: O(a)
+
+class Solution {
+    int[] memo;
+    public int coinChange(int[] coins, int amount) {
+        memo = new int[amount + 1];
+        Arrays.fill(memo, -2);
+        return dp(coins, amount);
+    }
+    private int dp(int[] coins, int amount) {
+        if (amount == 0) {
+            return 0;
+        }
+        if (amount < 0) {
+            return -1;
+        }
+        if (memo[amount] != -2) {
+            return memo[amount];
+        }
+        int res = Integer.MAX_VALUE;
+        for (int coin : coins) {
+            int subProblem = dp(coins, amount - coin);
+            if (subProblem == -1) {
+                continue;   
+            }
+            res = Math.min(res, subProblem + 1);
+        }
+        memo[amount] = res == Integer.MAX_VALUE ? -1 : res;
+        return memo[amount];
+    }
+}
+
+Approach 3: Bottom-Up
+Time complexity: O(a * n)
+Space complexity: O(a)
 
 public class Solution {
     public int coinChange(int[] coins, int amount) {
@@ -51,5 +85,22 @@ public class Solution {
             }
         }
         return dp[amount] == Integer.MAX_VALUE ? -1 : dp[amount];
+    }
+}
+
+class Solution {
+    public int coinChange(int[] coins, int amount) {
+        int[] dp = new int[amount + 1];
+        Arrays.fill(dp, amount + 1);         // Note: initilize the value to amount + 1 to avoid overflow.
+        dp[0] = 0;
+        for (int i = 0; i < dp.length; i++) {
+            for (int coin : coins) {
+                if (i - coin < 0) {
+                    continue;
+                }
+                dp[i] = Math.min(dp[i], 1 + dp[i - coin]);   // Note: if we initialize the values to Integer.MAX_VALUE, might cause overflow.
+            }
+        }
+        return (dp[amount] == amount + 1) ? -1 : dp[amount];
     }
 }
