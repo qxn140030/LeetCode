@@ -1,0 +1,36 @@
+Given two integers n and k, return all possible combinations of k numbers out of 1 ... n.
+you may return the answer in any order.
+Example 1:
+Input: n = 4, k = 2
+Output: [[1,2],[1,3],[1,4],[2,3],[2,4],[3,4]]
+
+Example 2:
+Input: n = 1, k = 1
+Output: [[1]]
+
+Approach 1: Backtracking
+Time complexity: O(k * C(k, n)), where C(k, n) = n! / ((n - k)! * k!)
+Space complexity: O(n)
+
+class Solution {
+    public List<List<Integer>> combine(int n, int k) {
+        List<List<Integer>> rst = new ArrayList<>();
+        List<Integer> list = new ArrayList<>();
+        helper(rst, list, n, k, 1);
+        return rst;
+    }
+    private void helper(List<List<Integer>> rst, List<Integer> list, int n, int k, int start) {
+        if (list.size() == k) {
+            rst.add(new ArrayList<>(list));
+            return;
+        }
+        for (int i = start; i <= n; i++) {
+            if (list.contains(i)) {
+                continue;
+            }
+            list.add(i);
+            helper(rst, list, n, k, i + 1);
+            list.remove(list.size() - 1);
+        }
+    }
+}
