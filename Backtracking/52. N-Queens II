@@ -1,23 +1,26 @@
 Follow up for N-Queens problem.
 Now, instead outputting board configurations, return the total number of distinct solutions.
 
+Approach 1: Backtracking
+Time complexity: O(n * n!)
+Space complexity: O(n)
+
 public class Solution {
+int rst = 0;
     public int totalNQueens(int n) {
-        List<Integer> rst = new ArrayList<Integer>();
-        rst.add(0);
-        List<Integer> cols = new ArrayList<Integer>();
-        helper(rst, cols, n);
-        return rst.get(0);
+        List<Integer> cols = new ArrayList<>();
+        helper(cols, n);
+        return rst;
     }
     private void helper(List<Integer> rst, List<Integer> cols, int n) {
         if (cols.size() == n) {
-            rst.set(0, rst.get(0) + 1);
+            rst++;
             return;
         }
         for (int i = 0; i < n; i++) {
             if (isValid(cols, i)) {
                 cols.add(i);
-                helper(rst, cols, n);
+                helper(cols, n);
                 cols.remove(cols.size() - 1);
             }
         }
