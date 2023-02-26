@@ -1,4 +1,4 @@
-Question: Given the head of a singly linked list, return true if it is a palindrome.
+Given the head of a singly linked list, return true if it is a palindrome.
 Follow up:
 Could you do it in O(n) time and O(1) space?
 
