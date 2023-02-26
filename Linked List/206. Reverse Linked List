@@ -1,5 +1,6 @@
-Question: Given the head of a singly linked list, reverse and return the list.
-Hint: A linked list can be reversed either iteratively or recursively. Could you implement both?
+Given the head of a singly linked list, reverse and return the list.
+Follow up: 
+A linked list can be reversed either iteratively or recursively. Could you implement both?
 
 Approach 1: Iterative 
 Time complexity: O(n)
@@ -36,9 +37,9 @@ class Solution {
         if (head == null || head.next == null) {
             return head;
         }
-        ListNode p = reverseList(head.next);
+        ListNode last = reverseList(head.next);
         head.next.next = head;
         head.next = null;
-        return p;
+        return last;
     }
 }
