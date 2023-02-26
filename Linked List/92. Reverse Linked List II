@@ -1,9 +1,10 @@
-Question: Given the head of a singly linked list and two integers left and right where left <= right,
+Given the head of a singly linked list and two integers left and right where left <= right,
 reverse the node of the list from position left to right, and return the reversed list. 
-For example: 
-Given 1->2->3->4->5->NULL, left = 2 and right = 4, return 1->4->3->2->5->NULL.
+Example: 
+Input: 1 -> 2 -> 3 -> 4 -> 5, left = 2 and right = 4
+Output: 1 -> 4 -> 3 -> 2 -> 5
 Follow up:
-Do it in-place and in one-pass.
+Can you do it in one pass?
 
 Approach 1: Recursion
 two pointers at the left-th and right-th node from the beginning. Once we have such pointers in place, we can recursively reverse nodes between them.
