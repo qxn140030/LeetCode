@@ -86,7 +86,7 @@ Space complexity: O(k)
 
 class Solution {
     public ListNode mergeKLists(ListNode[] lists) {
-        PriorityQueue<ListNode> queue = new PriorityQueue<>((a, b) -> (a.val - b.val)); 
+        PriorityQueue<ListNode> queue = new PriorityQueue<>((a, b) -> a.val - b.val); 
         // Queue<ListNode> queue = new PriorityQueue<ListNode>(new Comparator<ListNode>() {
         //    @Override
         //    public int compare(ListNode l1, ListNode l2) {
