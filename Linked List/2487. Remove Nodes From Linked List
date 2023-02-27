@@ -1,0 +1,92 @@
+You are given the head of a linked list.
+Remove every node which has a node with a strictly greater value anywhere to the right side of it.
+Return the head of the modified linked list.
+Example 1:
+Input: head = [5 -> 2 -> 13 -> 3 -> 8], Output: [13 -> 8]
+Explanation: The nodes that should be removed are 5, 2 and 3.
+- Node 13 is to the right of node 5.
+- Node 13 is to the right of node 2.
+- Node 8 is to the right of node 3.
+
+Example 2:
+Input: head = [1 -> 1 -> 1 -> 1], Output: [1 -> 1 -> 1 -> 1]
+
+Approach 1: Recursion
+Time complexity: O(n)
+Space complexity: O(n)
+
+class Solution {
+    public ListNode removeNodes(ListNode head) {
+        if ( head == null) {
+            return null;
+        }
+        head.next = removeNodes(head.next);
+        return head.next != null && head.next.val > head.val ? head.next : head;
+    }
+}
+
+Approach 2: Reverse and check, then reverse back
+Time complexity: O(n)
+Space complexity: O(1) if reverse() is implemented iteratively.
+
+class Solution {
+    public ListNode removeNodes(ListNode head) {
+        ListNode reversed = reverse(head);
+        ListNode cur = reversed;
+        while (cur != null && cur.next != null) {
+            if (cur.val > cur.next.val) {
+                cur.next = cur.next.next;
+            } else {
+                cur = cur.next;
+            }
+        }
+        return reverse(reversed);
+    }
+    private ListNode reverse(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode node = reverse(head.next);
+        head.next.next = head;
+        head.next = null;
+        return node;
+    }
+}
+
+Approach 3: Copy to ArrayList, using Stack to remove elements
+Time complexity: O(n)
+Space complexity: O(n)
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode removeNodes(ListNode head) {
+        ArrayList<Integer> arr = new ArrayList<>();
+        ListNode cur = head;
+        while (cur != null) {
+            arr.add(cur.val);
+            cur = cur.next;
+        }
+        Stack<Integer> stack = new Stack<>();
+        for (int num : arr) {
+            while (!stack.isEmpty() && stack.peek() < num) {
+                stack.pop();
+            }
+            stack.push(num);
+        }
+        while (!stack.isEmpty()) {
+            ListNode pre = new ListNode(stack.pop());
+            pre.next = cur;
+            cur = pre;
+        }
+        return cur;
+    }
+}
