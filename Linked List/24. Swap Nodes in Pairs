@@ -37,14 +37,14 @@ public class Solution {
     public ListNode swapPairs(ListNode head) {
         ListNode dummy = new ListNode(0);
         dummy.next = head;
-        head = dummy;
-        while (head.next != null && head.next.next != null) {
-            ListNode n1 = head.next;
-            ListNode n2 = n1.next;
-            head.next = n2;
-            n1.next = n2.next;
-            n2.next = n1;
-            head = n1;
+        ListNode tail = dummy;
+        while (head != null && head.next != null) {
+            ListNode n2 = head.next;
+            tail.next = n2;
+            head.next = n2.next;
+            n2.next = head;
+            tail = head;
+            head = head.next;
         }
         return dummy.next;
     }
