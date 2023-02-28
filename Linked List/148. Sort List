@@ -1,16 +1,14 @@
-Question: Given the head of a linked list, retrun the list after sorting it in ascending order.
-Follow up: Sort a linked list in O(n log n) time using constant space complexity.
-Companies: Amazon, Apple, TikTok, Microsoft, Google.
+Given the head of a linked list, retrun the list after sorting it in ascending order.
+Follow up: 
+Sort a linked list in O(n log n) time using constant space complexity.
 
 Approach 1: Top Down Merge Sort (recursion)
 recursively splits the original list into two halves, the split continues until there is only one. 
 sorts each sublist independently, and eventually merge the sorted lists.
 Time complexity: O(nlogn)
-The recursion tree expands in form of a complete binary tree. The number of levels: log⁡2(n). 
+The recursion tree expands in form of a complete binary tree. The number of levels: log⁡n. 
 At each level, we merge n nodes which takes O(n) time. 
-Space complexity: O(logn)
-Since the problem is recursive, we need additional space to store the recursive call stack. 
-The maximum depth of the recursion tree is log⁡n.
+Space complexity: O(logn) to store the recursive call stack. The maximum depth of the recursion tree is log⁡n.
 
 /**
  * Definition for singly-linked list.
@@ -64,16 +62,6 @@ have to keep track of the previous merged list using pointer tail and the next s
 Time complexity: O(nlogn)
 Space complexity: O(1)
 
-/**
- * Definition for singly-linked list.
- * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode() {}
- *     ListNode(int val) { this.val = val; }
- *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
- * }
- */
 class Solution {
     public ListNode sortList(ListNode head) {
         int len = 0;
