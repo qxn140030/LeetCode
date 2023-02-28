@@ -39,10 +39,10 @@ public class Solution {
         dummy.next = head;
         ListNode tail = dummy;
         while (head != null && head.next != null) {
-            ListNode n2 = head.next;
-            tail.next = n2;
-            head.next = n2.next;
-            n2.next = head;
+            ListNode cur = head.next;
+            tail.next = cur;
+            head.next = cur.next;
+            cur.next = head;
             tail = head;
             head = head.next;
         }
