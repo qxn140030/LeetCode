@@ -5,7 +5,7 @@ Can you solve it using O(1) memory?
 Approach 1: Hash Table
 check whether a node had been visited before. record each node's reference (or memory address) in a hash table.
 Time complexity: O(n). visit each of the n elements in the list at most once. Adding a node to the hash table costs O(1) time.
-Space complexity: O(n).
+Space complexity: O(n)
 
 /**
  * Definition for singly-linked list.
@@ -40,8 +40,7 @@ Space complexity: O(1)
 
 public class Solution {
     public boolean hasCycle(ListNode head) {
-        ListNode slow = head;
-        ListNode fast = head;
+        ListNode slow = head, fast = head;
         while (fast != null && fast.next != null) {
             slow = slow.next;
             fast = fast.next.next;
