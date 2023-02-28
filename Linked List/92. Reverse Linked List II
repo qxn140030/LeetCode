@@ -16,31 +16,30 @@ class Solution {
     public ListNode reverseBetween(ListNode head, int left, int right) {
         ListNode dummy = new ListNode(0);
         dummy.next = head;
-        ListNode leftPre = dummy, leftNode = head, rightNode = head;
-        int p1 = left;
-        int p2 = right;
-        while (--p2 > 0) {
-            if (--p1 > 0) {
-                leftPre = leftPre.next;
-                leftNode = leftNode.next;
-            }
+        ListNode leftPre = dummy;
+        for (int i = 1; i < left; i++) {
+            leftPre = leftPre.next;
+        }
+        ListNode leftNode = leftPre.next, rightNode = leftNode;
+        int diff = right - left;
+        for (int i = 0; i < diff; i++) {
             rightNode = rightNode.next;
         }
         ListNode rightAfter = rightNode.next;
-        ListNode p = reverse(leftNode, right - left);
+        ListNode node = reverse(leftNode);
         ListNode reversedTail = leftPre.next;
-        leftPre.next = p;
+        leftPre.next = node;
         reversedTail.next = rightAfter;
-        return left == 1 ? p : head;
+        return dummy.next;
     }
-    private ListNode reverse(ListNode head, int n) {
-        if (head == null || head.next == null || n < 1) {
+    private ListNode reverse(ListNode head) {
+        if (head == null || head.next == null) {
             return head;
         }
-        ListNode p = reverse(head.next, n - 1);
+        ListNode node = reverse(head.next);
         head.next.next = head;
         head.next = null;
-        return p;
+        return node;
     }
 }
 
@@ -62,20 +61,20 @@ class Solution {
     public ListNode reverseBetween(ListNode head, int left, int right) {
         ListNode dummy = new ListNode(0);
         dummy.next = head;
-        ListNode pre = dummy;
-        while (--left > 0) {
-            pre = pre.next;
-            right--;
+        ListNode tail = dummy;
+        for (int i = 1; i < left; i++) {
+            tail = tail.next;
         }
-        ListNode beforeReverse = pre, cur = pre.next, reverseTail = cur, after = null;
-        while (right-- > 0 && cur != null) { 
-            after = cur.next;     
+        ListNode pre = tail.next, cur = pre.next, after = null;
+        int diff = right - left;
+        for (int i = 0; i < diff; i++) {
+            after = cur.next;
             cur.next = pre;
             pre = cur;
-            cur = after;
+            cur = after; 
         }
-        beforeReverse.next = pre;
-        reverseTail.next = cur;
+        tail.next.next = cur;
+        tail.next = pre;
         return dummy.next;
     }
 }
