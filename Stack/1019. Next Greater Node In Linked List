@@ -1,0 +1,67 @@
+You are given the head of a linked list with n nodes.
+For each node in the list, find the value of the next greater node. That is, 
+for each node, find the value of the first node that is next to it and has a strictly larger value than it.
+Return an integer array answer where answer[i] is the value of the next greater node of the ith node (1-indexed). 
+If the ith node does not have a next greater node, set answer[i] = 0.
+Example 1:
+Input: head = [2,1,5]
+Output: [5,5,0]
+
+Example 2:
+Input: head = [2,7,4,3,5]
+Output: [7,0,5,5,0]
+
+Approach 1: Monotonic Stack
+Time complexity: O(n)
+Space complexity: O(n)
+
+class Solution {
+    public int[] nextLargerNodes(ListNode head) {
+        List<Integer> values = new ArrayList<>();
+        while (head != null) {
+            values.add(head.val);
+            head = head.next;
+        }
+        int len = values.size();
+        int[] rst = new int[len];
+        Stack<Integer> stack = new Stack<>();
+        for (int i = 0; i < len; i++) {
+            while (!stack.isEmpty() && values.get(stack.peek()) < values.get(i)) {
+                rst[stack.pop()] = values.get(i);
+            }
+            stack.push(i);
+        }
+        return rst;
+    }
+}
+
+Approach 2: Monotonic Stack, One Pass
+Time complexity: O(n)
+Space complexity: O(n)
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public int[] nextLargerNodes(ListNode head) {
+        List<Integer> values = new ArrayList<>();
+        Stack<int[]> stack = new Stack<>();
+        int idx = 0;
+        while (head != null) {
+            values.add(0);                                              // Set the next greater value as 0 by default.
+            while (!stack.isEmpty() && stack.peek()[1] < head.val) {
+                values.set(stack.pop()[0], head.val);
+            }
+            stack.push(new int[]{idx++, head.val});                    // push the index and value to the stack.
+            head = head.next;
+        }
+        return values.stream().mapToInt(i -> i).toArray();
+    }
+}
