@@ -14,7 +14,7 @@ Space complexity: O(1), Note that data is a reference to nums and is not a copy 
 class NumArray {
     private int[] data;
     public NumArray(int[] nums) {
-        data = nums;
+        data = nums;        // array assignment refer to the same array, if you want to make a copy, use Arrays.copyOf(nums, nums.length);
     }   
     public int sumRange(int left, int right) {
         int sum = 0;
