@@ -1,8 +1,7 @@
-Question: Given an integer array nums and an integer val, remove all occurences of val in nums in-place. 
+Given an integer array nums and an integer val, remove all occurences of val in nums in-place. 
 The relative order of the elements may be changed.
 Do not allocate extra space for another array, you must do this by modifying the input array in place with constant memory.
 The order of elements can be changed. It doesn't matter what you leave beyond the new length.
-
 Example 1: 
 Input: nums = [3,2,2,3], val = 3
 Output: 2, nums = [2,2,_,_]
@@ -34,7 +33,7 @@ public class Solution {
 }
 
 Approach 2: Two pointers - when elements to remove are rare.
-Time complexity: O(n). 
+Time complexity: O(n)
 the number of assignment operation is equal to the number of elements to remove. So it is more efficient if elements to remove are rare.
 Space complexity: O(1)
 
