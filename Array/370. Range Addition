@@ -26,6 +26,31 @@ For each update operation, do you really need to update all elements between i a
 Update only the first and end element is sufficient.
 The optimal time complexity is O(k + n) and uses O(1) extra space.
 
+Approach 1: Brute Force
+Time complexity: O(n * k), where k is the number of update queries, n is the length of the array.
+Space complexity: O(1)
+
+class Solution {
+    public int[] getModifiedArray(int length, int[][] updates) {
+        int[] rst = new int[length];
+        for (int i = 0; i < updates.length; i++) {
+            for (int j = updates[i][0]; j < length && j <= updates[i][1]; j++) {
+                rst[j] += updates[i][2];
+            }
+        }
+        return rst;
+    }
+}
+
+Approach 2: Range Caching
+Two steps:
+1. for each update query on the array, we need to do two operations:
+1.1. update start boundary of the range: arr[start] += val
+1.2. update just beyond the end boundary of the range: arr[end] -= val
+2. final transformation: the cumulative sum of the arr is arr[i] += arr[i - 1]
+Time complexity: O(n + k)
+Space complexity: O(1)
+
 public class Solution {
     public int[] getModifiedArray(int length, int[][] updates) {
         int[] rst = new int[length];
@@ -38,10 +63,8 @@ public class Solution {
                 rst[end + 1] -= num;
             }
         }
-        int sum = 0;
-        for (int i = 0; i < length; i++) {
-            sum += rst[i];
-            rst[i] = sum;
+        for (int i = 1; i < length; i++) {
+            rst[i] += rst[i - 1];
         }
         return rst;
     }
