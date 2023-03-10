@@ -1,0 +1,79 @@
+You are given an n x n 2D matrix representing an image. Rotate the image by 90 degrees (clockwise).
+Follow up: 
+Could you do this in-place?
+
+Approach 1: Naive
+Time complexity: O(n^2)
+Space complexity: O(n^2)
+
+public class Solution {
+    public void rotate(int[][] matrix) {
+        int n = matrix.length;
+        int[][] tmp = new int[n][n];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                tmp[i][j] = matrix[n - 1 - j][i];
+            }
+        }
+        // because java pass by value, need loop to assign each element to the array referenced by "matrix".
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                matrix[i][j] = tmp[i][j];
+            }
+        }
+    }
+}
+
+Approach 2: Rotate Groups of Four Cells
+iterate over each group of four cells and rotate them.
+Time complexity: O(n^2), as each cell is getting read once and written once.
+Space complexity: O(1)
+
+public class Solution {
+    public void rotate(int[][] matrix) {
+        int n = matrix.length;
+        for (int i = 0; i < n / 2; i++) {
+            for (int j = i; j < n - 1 - i; j++) {
+                int tmp = matrix[i][j];
+                matrix[i][j] = matrix[n - 1 - j][i];
+                matrix[n - 1 - j][i] = matrix[n - 1 - i][n - 1 - j];
+                matrix[n - 1 - i][n - 1 - j] = matrix[j][n - 1 - i]; 
+                matrix[j][n - 1 - i] = tmp;
+            }
+        }
+    }
+}
+
+Approach 3: Reverse on Diagonal and then Reverse Left to Right
+These operations are called transpose and reflect in linear algebra.
+Even though this approach does twice as many reads and writes as approach 1, most people would consider it a better approach 
+because the code is simpler, and it is built with standard matrix operations that can be found in any matrix library.
+Time complexity: O(n^2)
+Space complexity: O(1)
+
+class Solution {
+    public void rotate(int[][] matrix) {
+        transpose(matrix);
+        reflect(matrix);
+    }
+    private void transpose(int[][] matrix) {
+        int n = matrix.length;
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                int tmp = matrix[j][i];
+                matrix[j][i] = matrix[i][j];
+                matrix[i][j] = tmp;
+            }
+        }
+    }
+    private void reflect(int[][] matrix) {
+        int n = matrix.length;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n / 2; j++) {
+                int tmp = matrix[i][j];
+                matrix[i][j] = matrix[i][n - j - 1];
+                matrix[i][n - j - 1] = tmp;
+            }
+        }
+    }
+}
