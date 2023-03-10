@@ -50,6 +50,7 @@ Space complexity: O(1)
 
 class Solution {
     public List<Integer> spiralOrder(int[][] matrix) {
+        // constraint: -100 <= matrix[i][j] <= 100
         int VISITED = 101;
         int rows = matrix.length, columns = matrix[0].length;
         // Four directions that we will move: right, down, left, up.
