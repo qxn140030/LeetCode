@@ -1,12 +1,26 @@
-Given an input string, reverse the string word by word.
-For example, Given s = "the sky is blue", return "blue is sky the".
-Clarification:
-What constitutes a word?
-A sequence of non-space characters constitutes a word.
-Could the input string contain leading or trailing spaces?
-Yes. However, your reversed string should not contain leading or trailing spaces.
-How about multiple spaces between two words?
-Reduce them to a single space in the reversed string.
+Given an input string, reverse the order of the words.
+A word is defined as a sequence of non-space characters. The words in s will be separated by at least one space.
+Return a string of the words in reverse order concatenated by a single space.
+Note:
+s may contain leading or trailing spaces or multiple spaces between two words. The returned string should only have a single space separating the words. 
+Do not include any extra spaces.
+Follow-up: 
+If the string data type is mutable in your language, can you solve it in-place with O(1) extra space?
+Example 1:
+Input: s = "the sky is blue"
+Output: "blue is sky the"
+
+Example 2:
+Input: s = "  hello world  "
+Output: "world hello"
+
+Example 3:
+Input: s = "a good   example"
+Output: "example good a"
+
+Approach 1: Built-in Split + Reverse
+Time complexity: O(n)
+Space complexity: O(n)
 
 public class Solution {
     public String reverseWords(String s) {
@@ -17,5 +31,96 @@ public class Solution {
         }
         sb.deleteCharAt(sb.length() - 1);
         return sb.toString();
+    }
+}
+
+class Solution {
+    public String reverseWords(String s) {
+        s = s.trim();
+        List<String> words = Arrays.asList(s.split("\\s+"));
+        Collections.reverse(words);
+        return String.join(" ", words);
+    }
+}
+
+Approach 2: Reverse the Whole String and Then Reverse Each Word
+Time complexity: O(n)
+Space complexity: O(n)
+
+class Solution {
+    public String reverseWords(String s) {
+        StringBuilder sb = trimSpaces(s);
+        reverse(sb, 0, sb.length() - 1);
+        reverseEachWord(sb);
+        return sb.toString();
+    }
+    private StringBuilder trimSpaces(String s) {
+        int left = 0, right = s.length() - 1;
+        while (left <= right && s.charAt(left) == ' ') {
+            left++;
+        }
+        while (left <= right && s.charAt(right) == ' ') {
+            right--;
+        }
+        StringBuilder sb = new StringBuilder();
+        while (left <= right) {
+            char c = s.charAt(left);
+            if (c != ' ') {
+                sb.append(c);
+            } else if (sb.charAt(sb.length() - 1) != ' ') {
+                sb.append(c);
+            }
+            left++;
+        }
+        return sb;
+    }
+    private void reverse(StringBuilder sb, int left, int right) {
+        while (left < right) {
+            char tmp = sb.charAt(left);
+            sb.setCharAt(left++, sb.charAt(right));
+            sb.setCharAt(right--, tmp);
+        }
+    }
+    private void reverseEachWord(StringBuilder sb) {
+        int n = sb.length();
+        int start = 0, end = 0;
+        while (start < n) {
+            while (end < n && sb.charAt(end) != ' ') {
+                end++;
+            }
+            reverse(sb, start, end - 1);
+            start = end + 1;
+            end++;
+        }
+    }
+}
+
+Approach 3: Deque of Words
+Time complexity: O(n)
+Space complexity: O(n)
+
+class Solution {
+    public String reverseWords(String s) {
+        int left = 0, right = s.length() - 1;
+        while (left <= right && s.charAt(left) == ' ') {
+            left++;
+        }
+        while (left <= right && s.charAt(right) == ' ') {
+            right--;
+        }
+        Deque<String> deque = new ArrayDeque();
+        StringBuilder word = new StringBuilder();
+        while (left <= right) {
+            char c = s.charAt(left);
+            if ((word.length() > 0) && (c == ' ')) {
+                deque.offerFirst(word.toString());
+                word.setLength(0);
+            } else if (c != ' ') {
+                word.append(c);
+            }
+            left++;
+        }
+        deque.offerFirst(word.toString());
+        return String.join(" ", deque);
     }
 }
