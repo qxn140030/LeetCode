@@ -1,0 +1,92 @@
+Given an integer n, generate a square matrix filled with elements from 1 to n^2 in spiral order.
+Example 1:
+Input: n = 3
+Output: [[1,2,3],[8,9,4],[7,6,5]]
+You should return the following matrix:
+[
+ [ 1, 2, 3 ],
+ [ 8, 9, 4 ],
+ [ 7, 6, 5 ]
+]
+
+Example 2:
+Input: n = 1
+Output: [[1]]
+
+Approach 1: Traverse Layer by Layer in Spiral Form
+Time complexity: O(n^2)
+Space complexity: O(1)
+
+public class Solution {
+    public int[][] generateMatrix(int n) {
+        int[][] rst = new int[n][n];
+        int num = 1, top = 0, left = 0, right = n - 1, bottom = n - 1;
+        while (num <= n * n) {
+            for (int i = left; i <= right; i++) {
+                rst[top][i] = num++;
+            }
+            top++;
+            for (int i = top; i <= bottom; i++) {
+                rst[i][right] = num++;
+            }
+            right--;
+            for (int i = right; i >= left; i--) {
+                rst[bottom][i] = num++;
+            }
+            bottom--;
+            for (int i = bottom; i >= top; i--) {
+                rst[i][left] = num++;
+            }
+            left++;
+        }
+        return rst;
+    }
+}
+
+class Solution {
+    public int[][] generateMatrix(int n) {
+        int[][] rst = new int[n][n];
+        int num = 1;
+        for (int layer = 0; layer < (n + 1) / 2; layer++) {
+            // direction 1 - traverse from left to right
+            for (int ptr = layer; ptr < n - layer; ptr++) {
+                rst[layer][ptr] = num++;
+            }
+            // direction 2 - traverse from top to bottom
+            for (int ptr = layer + 1; ptr < n - layer; ptr++) {
+                rst[ptr][n - layer - 1] = num++;
+            }
+            // direction 3 - traverse from right to left
+            for (int ptr = layer + 1; ptr < n - layer; ptr++) {
+                rst[n - layer - 1][n - ptr - 1] = num++;
+            }
+            // direction 4 - traverse from bottom to top
+            for (int ptr = layer + 1; ptr < n - layer - 1; ptr++) {
+                rst[n - ptr - 1][layer] = num++;
+            }
+        }
+        return rst;
+    }
+}
+
+Approach 2: Optimized spiral traversal
+Time complexity: O(n^2)
+Space complexity: O(1)
+
+class Solution {
+    public int[][] generateMatrix(int n) {
+        int[][] rst = new int[n][n];
+        int dir[][] = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+        int num = 1, d = 0, row = 0, col = 0;
+        while (num <= n * n) {
+            rst[row][col] = num++;
+            int r = Math.floorMod(row + dir[d][0], n);
+            int c = Math.floorMod(col + dir[d][1], n);
+            // change direction if next cell is non zero
+            if (rst[r][c] != 0) d = (d + 1) % 4;
+            row += dir[d][0];
+            col += dir[d][1];
+        }
+        return rst;
+    }
+}
