@@ -1,0 +1,146 @@
+Given an integer array nums and an integer k, split nums into k non-empty subarrays such that the largest sum of any subarray is minimized.
+Return the minimized largest sum of the split.
+A subarray is a contiguous part of the array.
+Example 1:
+Input: nums = [7,2,5,10,8], k = 2
+Output: 18
+Explanation: There are four ways to split nums into two subarrays.
+The best way is to split it into [7,2,5] and [10,8], where the largest sum among the two subarrays is only 18.
+
+Example 2:
+Input: nums = [1,2,3,4,5], k = 2
+Output: 9
+Explanation: There are four ways to split nums into two subarrays.
+The best way is to split it into [1,2,3] and [4,5], where the largest sum among the two subarrays is only 9.
+
+Approach 1: Top-Down Dynamic Programming
+Time complexity: O(k * n^2)
+Space complexity: O(k * n)
+
+class Solution {
+    // Defined it as per the maximum size of array and split count
+    // But can be defined with the input size as well
+    Integer[][] memo = new Integer[1001][51];
+    public int splitArray(int[] nums, int k) {
+        // Store the prefix sum of nums array.
+        int n = nums.length;
+        int[] prefixSum = new int[n + 1]; 
+        for (int i = 0; i < n; i++) {
+            prefixSum[i + 1] = prefixSum[i] + nums[i];
+        } 
+        return getMinimumLargestSplitSum(prefixSum, 0, k);
+    }
+    private int getMinimumLargestSplitSum(int[] prefixSum, int currIndex, int subarrayCount) {
+        int n = prefixSum.length - 1;
+        // We have already calculated the answer so no need to go into recursion
+        if (memo[currIndex][subarrayCount] != null) {
+            return memo[currIndex][subarrayCount];
+        }
+        // Base Case: If there is only one subarray left, then all of the remaining numbers
+        // must go in the current subarray. So return the sum of the remaining numbers.
+        if (subarrayCount == 1) {
+            return memo[currIndex][subarrayCount] = prefixSum[n] - prefixSum[currIndex];
+        }
+        // Otherwise, use the recurrence relation to determine the minimum largest subarray
+        // sum between currIndex and the end of the array with subarrayCount subarrays remaining.
+        int minimumLargestSplitSum = Integer.MAX_VALUE;
+        for (int i = currIndex; i <= n - subarrayCount; i++) {
+            // Store the sum of the first subarray.
+            int firstSplitSum = prefixSum[i + 1] - prefixSum[currIndex];
+            // Find the maximum subarray sum for the current first split.
+            int largestSplitSum = Math.max(firstSplitSum, 
+                                      getMinimumLargestSplitSum(prefixSum, i + 1, subarrayCount - 1));   
+            // Find the minimum among all possible combinations.
+            minimumLargestSplitSum = Math.min(minimumLargestSplitSum, largestSplitSum);   
+            if (firstSplitSum >= minimumLargestSplitSum) {
+                break;
+            }
+        }
+        return memo[currIndex][subarrayCount] = minimumLargestSplitSum;
+    }
+}
+
+Approach 2: Bottom-Up Dynamic Programming
+Time complexity: O(k * n^2)
+Space complexity: O(k * n)
+
+class Solution {
+    // Defined it as per the maximum size of array and split count
+    // But can be defined with the input size as well
+    Integer[][] memo = new Integer[1001][51];
+    public int splitArray(int[] nums, int k) {
+        // Store the prefix sum of nums array.
+        int n = nums.length;
+        int[] prefixSum = new int[n + 1]; 
+        for (int i = 0; i < n; i++) {
+            prefixSum[i + 1] = prefixSum[i] + nums[i];
+        } 
+        for (int subarrayCount = 1; subarrayCount <= k; subarrayCount++) {
+            for (int currIndex = 0; currIndex < n; currIndex++) {
+               // Base Case: If there is only one subarray left, then all of the remaining numbers
+               // must go in the current subarray. So return the sum of the remaining numbers.
+                if (subarrayCount == 1) {
+                    memo[currIndex][subarrayCount] = prefixSum[n] - prefixSum[currIndex];
+                    continue;
+                }
+                // Otherwise, use the recurrence relation to determine the minimum largest subarray
+                // sum between currIndex and the end of the array with subarrayCount subarray remaining.
+                int minimumLargestSplitSum = Integer.MAX_VALUE;
+                for (int i = currIndex; i <= n - subarrayCount; i++) {
+                    // Store the sum of the first subarray.
+                    int firstSplitSum = prefixSum[i + 1] - prefixSum[currIndex];
+                    // Find the maximum subarray sum for the current first split.
+                    int largestSplitSum = Math.max(firstSplitSum, memo[i + 1][subarrayCount - 1]);
+                    // Find the minimum among all possible combinations.
+                    minimumLargestSplitSum = Math.min(minimumLargestSplitSum, largestSplitSum);
+                    if (firstSplitSum >= minimumLargestSplitSum) {
+                        break;
+                    }
+                }
+                memo[currIndex][subarrayCount] = minimumLargestSplitSum;
+            }
+        }
+        return memo[0][k];
+    }
+}
+
+Approach 3: Binary Search
+if (m == 1) return the max value of the array; if (m == length) return the sum of the array.
+So the range: [max, sum]. Use greedy to narrow down left and right boundaries.
+Time complexity: O(nlogm), where n is the length of the array and m is the sum of integers in the array. 
+Space complexity: O(1)
+
+public class Solution {
+    public int splitArray(int[] nums, int m) {
+        int l = 0;
+        int r = 0;
+        for (int i : nums) {
+            l = Math.max(l, i);
+            r += i;
+        }
+        while (l < r) {
+            int mid = l + (r - l) / 2;
+            if (canSplit(nums, mid, m)) {
+                r = mid;
+            } else {
+                l = mid + 1;
+            }
+        }
+        return l;
+    }
+    private boolean canSplit(int[] nums, int mid, int m) {
+        int count = 1;
+        int curSum = 0;
+        for (int i : nums) {
+            curSum += i;
+            if (curSum > mid) {
+                curSum = i;
+                count++;
+                if (count > m) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+}
