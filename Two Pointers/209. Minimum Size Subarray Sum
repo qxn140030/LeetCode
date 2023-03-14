@@ -1,0 +1,114 @@
+Given an array of n positive integers and a positive integer s, find the minimal length of a subarray of which the sum ≥ s.
+If there isn't one, return 0 instead.
+Follow up:
+If you have figured out the O(n) solution, try coding another solution of which the time complexity is O(n log n).
+Example 1:
+Input: target = 7, nums = [2,3,1,2,4,3]
+Output: 2
+Explanation: The subarray [4,3] has the minimal length under the problem constraint.
+
+Example 2:
+Input: target = 4, nums = [1,4,4]
+Output: 1
+
+Example 3:
+Input: target = 11, nums = [1,1,1,1,1,1,1,1]
+Output: 0
+
+Approach 1: Brute Force
+Time complexity: O(n^3)
+Space complexity: O(1)
+
+class Solution {
+    public int minSubArrayLen(int target, int[] nums) {
+        int n = nums.length, rst = Integer.MAX_VALUE;
+        for (int i = 0; i < n; i++) {
+            for (int j = i; j < n; j++) {
+                int sum = 0;
+                for (int k = i; k <= j; k++) {
+                    sum += nums[k];
+                }
+                if (sum >= target) {
+                    rst = Math.min(rst, j - i + 1);
+                    break;                         //Found the smallest subarray with sum >= target starting with index i, hence move to next index.
+                }
+            }
+        }
+        return rst == Integer.MAX_VALUE ? 0 : rst;
+    }
+}
+
+Approach 2: Cumulative sum
+Time complexity: O(n^2)
+Space complexity: O(n)
+
+class Solution {
+    public int minSubArrayLen(int target, int[] nums) {
+        int n = nums.length, rst = Integer.MAX_VALUE;
+        int[] sums = new int[n];
+        sums[0] = nums[0];
+        for (int i = 1; i < n; i++) {
+            sums[i] = sums[i - 1] + nums[i];
+        }
+        for (int i = 0; i < n; i++) {
+            for (int j = i; j < n; j++) {
+                int sum = sums[j] - sums[i] + nums[i];
+                if (sum >= target) {
+                    rst = Math.min(rst, j - i + 1);
+                    break;                         //Found the smallest subarray with sum >= target starting with index i, hence move to next index.
+                }
+            }
+        }
+        return rst == Integer.MAX_VALUE ? 0 : rst;
+    }
+}
+
+Approach 3: Binary Search
+when meet an element, for example sum[i] is larger or equal to s, then find the largest element that smaller than sum[i] - target + 1 
+by using binary search. If find, the index j to index i - 1 is the subarray. length = i - j
+Time complexity: O(nlogn)
+Space complexity: O(n)
+
+class Solution {
+    public int minSubArrayLen(int target, int[] nums) {
+        int n = nums.length, len = n + 1;
+        int[] sum = new int[len];
+        for (int i = 0; i < n; i++) {
+            sum[i + 1] = sum[i] + nums[i];
+            if (sum[i + 1] >= target) {
+                int cur = search(sum, 0, i + 1, sum[i + 1] - target);   
+                len = Math.min(len, i + 1 - cur);
+            }
+        }
+        return len == n + 1 ? 0 : len;
+    }
+    private int search(int[] sum, int start, int end, int target) {
+        while (start + 1 < end) {
+            int mid = start + (end - start) / 2;
+            if (sum[mid] <= target) {
+                start = mid;
+            } else {
+                end = mid;
+            }
+        }
+        return sum[end] <= target ? end : start;
+    }
+}
+
+Approach 4: Two Pointers
+Time complexity: O(n)
+Space complexity: O(1)
+
+class Solution {
+    public int minSubArrayLen(int target, int[] nums) {
+        int start = 0, sum = 0, n = nums.length, len = n + 1;
+        for (int i = 0; i < n; i++) {
+            sum += nums[i];
+            while (sum >= target) {
+                len = Math.min(len, i - start + 1);
+                sum -= nums[start++];
+            }
+        }
+        return len == n + 1 ? 0 : len;
+    }
+}
