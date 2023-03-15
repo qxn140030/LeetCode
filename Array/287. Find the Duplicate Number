@@ -137,8 +137,71 @@ Approach 6: Sum of Set Bits
 Time complexity: O(nlogn)
 Space complexity: O(1)
 
+class Solution {
+    public int findDuplicate(int[] nums) {
+        int duplicate = 0, n = nums.length - 1;
+        int max_num = findMaxNum(nums);
+        int max_bit = calcMaxBit(max_num); 
+        // Iterate over each bit        
+        for (int bit = 0; bit < max_bit; bit++) {
+            int mask = (1 << bit);
+            int base_count = 0, nums_count = 0;
+            for (int i = 0; i <= n; i++) {
+                // If bit is set in number (i) then add 1 to base_count                
+                if ((i & mask) > 0) {
+                    base_count++;
+                }
+                // If bit is set in nums[i] then add 1 to nums_count
+                if ((nums[i] & mask) > 0) {
+                    nums_count++;
+                }
+            }
+            // If the current bit is more frequently set in nums than it is in 
+            // the range [1, 2, ..., n] then it must also be set in the duplicate number
+            if (nums_count > base_count) {
+                duplicate |= mask;
+            }
+        }
+        return duplicate;  
+    }
+    // Find the position of the Most Significant Bit in num    
+    private int calcMaxBit(int num) {
+        int bits = 0;
+        while (num > 0) {
+            num /= 2;
+            bits++;
+        }
+        return bits;
+    }
+    // Find the largest number in nums
+    private int findMaxNum(int[] nums) {
+        int max_num = 0;
+        for (int i = 0; i < nums.length; i++) {
+            max_num = Math.max(max_num, nums[i]);
+        }
+        return max_num;
+    }
+}
+
 Approach 7: Floyd's Tortoise and Hare (Cycle Detection)
 The idea is to reduce the problem to linked list cycle. Each new element in the sequence is an element in nums at the index of the previous element.
 The cycle appears because nums contains duplicates. The duplicate node is a cycle entrance.
 Time complexity: O(n)
 Space complexity: O(1)
+
+class Solution {
+    public int findDuplicate(int[] nums) {
+        int tortoise = nums[nums[0]];
+        int hare = nums[nums[nums[0]]];
+        while (tortoise != hare) {
+            tortoise = nums[tortoise];
+            hare = nums[nums[hare]];
+        }
+        tortoise = nums[0];
+        while (tortoise != hare) {
+            tortoise = nums[tortoise];
+            hare = nums[hare];
+        }
+        return hare;   
+    }
+}
