@@ -8,18 +8,17 @@ Example 2:
 Input: nums1 = [1, 2], nums2 = [3, 4]
 Output: 2.50000, (2 + 3) / 2 = 2.5
 
-Approach 1: Binary Search (Recursion)
-Time complexity: O(log(m + n)). 
-Space complexity: O(log(m + n)).
+Approach 1: Divide and Conquer (Recursion)
+Time complexity: O(log(m + n))
+Space complexity: O(log(m + n))
 
 public class Solution {
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
         int len = nums1.length + nums2.length;
         if (len % 2 == 1) {
             return findKth(nums1, 0, nums2, 0, len / 2 + 1);
-        } else {
-            return (findKth(nums1, 0, nums2, 0, len / 2) + findKth(nums1, 0, nums2, 0, len / 2 + 1)) / 2.0;
-        }
+        } 
+        return (findKth(nums1, 0, nums2, 0, len / 2) + findKth(nums1, 0, nums2, 0, len / 2 + 1)) / 2.0;
     }
     private int findKth(int[] nums1, int start1, int[] nums2, int start2, int k) {
         if (start1 >= nums1.length) {
@@ -35,9 +34,8 @@ public class Solution {
         int key2 = start2 + k / 2 - 1 < nums2.length ? nums2[start2 + k / 2 - 1] : Integer.MAX_VALUE;
         if (key1 < key2) {
             return findKth(nums1, start1 + k / 2, nums2, start2, k - k / 2);
-        } else {
-            return findKth(nums1, start1, nums2, start2 + k / 2, k - k / 2);
-        }
+        } 
+        return findKth(nums1, start1, nums2, start2 + k / 2, k - k / 2);
     }
 }
 
@@ -47,21 +45,14 @@ Space complexity: O(1)
 
 class Solution {
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
-        int n1 = nums1.length;
-        int n2 = nums2.length;
+        int n1 = nums1.length, n2 = nums2.length;
         if (n1 > n2) {
             return findMedianSortedArrays(nums2, nums1);
         }
-        // get the median - kth element when length is odd
-        // get the left element to calculate median when length is even 
         int k = (n1 + n2 + 1) / 2;   
-        int left = 0;
-        int right = n1;
-        // binary search the short array
+        int left = 0, right = n1;
         while (left < right) {
-            // the first m1 element in nums1 is in the left half of merged array
             int m1 = left + (right - left) / 2;
-            // the first m2 element in nums2 will be in the left half of merged array
             int m2 = k - m1;
             if (nums1[m1] < nums2[m2 - 1]) {
                 left = m1 + 1;
@@ -69,8 +60,9 @@ class Solution {
                 right = m1;
             }
         }
-        int m1 = left;
-        int m2 = k - left;
+        // the first m1 element in nums1 is in the left half of merged array
+        // the first m2 element in nums2 will be in the left half of merged array
+        int m1 = left, m2 = k - left;
         int median1 = Math.max(m1 <= 0 ? Integer.MIN_VALUE : nums1[m1 - 1], m2 <= 0 ? Integer.MIN_VALUE : nums2[m2 - 1]);
         if ((n1 + n2) % 2 == 1) {
             return median1;
