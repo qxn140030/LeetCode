@@ -1,6 +1,5 @@
-Question: Given two integer arrays nums1 and nums2, return an array of their intersection.
+Given two integer arrays nums1 and nums2, return an array of their intersection.
 Each element in the result must be unique and you many return the result in any order.
-
 Example 1:
 Input: nums1 = [1,2,2,1], nums2 = [2,2]
 Output: [2]
@@ -15,30 +14,30 @@ Time complexity: O(m + n) to convert array to set.
 Space complexity: O(m + n)
 
 class Solution {
-  public int[] set_intersection(HashSet<Integer> set1, HashSet<Integer> set2) {
-    int[] output = new int[set1.size()];
-    int idx = 0;
-    for (Integer s : set1) {
-        if (set2.contains(s)) {
-            output[idx++] = s;
+    public int[] intersection(int[] nums1, int[] nums2) {
+        Set<Integer> set1 = new HashSet<>();
+        for (Integer n : nums1) {
+            set1.add(n);
         }
+        Set<Integer> set2 = new HashSet<>();
+        for (Integer n : nums2) {
+            set2.add(n);
+        }
+        if (set1.size() < set2.size()) {
+            return setIntersection(set1, set2);
+        }
+        return setIntersection(set2, set1);
     }
-    return Arrays.copyOf(output, idx);
-  }
-  public int[] intersection(int[] nums1, int[] nums2) {
-    Set<Integer> set1 = new HashSet<>();
-    for (Integer n : nums1) {
-        set1.add(n);
+    private int[] setIntersection(Set<Integer> set1, Set<Integer> set2) {
+        int[] output = new int[set1.size()];
+        int idx = 0;
+        for (Integer num : set1) {
+            if (set2.contains(num)) {
+                output[idx++] = num;
+            }
+        }
+        return Arrays.copyOf(output, idx);
     }
-    HashSet<Integer> set2 = new HashSet<Integer>();
-    for (Integer n : nums2) {
-        set2.add(n);
-    }
-    if (set1.size() < set2.size()) {
-        return set_intersection(set1, set2);
-    }
-    return set_intersection(set2, set1);
-  }
 }
 
 Approach 2: Build-in Set intersection
@@ -46,41 +45,39 @@ There are built-in intersection facilities, which provide O(m + n) time complexi
 Space complexity: O(m + n)
 
 class Solution {
-  public int[] intersection(int[] nums1, int[] nums2) {
-    HashSet<Integer> set1 = new HashSet<Integer>();
-    for (Integer n : nums1) {
-        set1.add(n);
+    public int[] intersection(int[] nums1, int[] nums2) {
+        Set<Integer> set1 = new HashSet<>();
+        for (Integer n : nums1) {
+            set1.add(n);
+        }
+        Set<Integer> set2 = new HashSet<>();
+        for (Integer n : nums2) {
+            set2.add(n);
+        }
+        set1.retainAll(set2);                  // intersection
+        int[] output = new int[set1.size()];
+        int idx = 0;
+        for (int s : set1) {
+            output[idx++] = s;
+        }
+        return output;
     }
-    HashSet<Integer> set2 = new HashSet<Integer>();
-    for (Integer n : nums2) {
-        set2.add(n);
-    }
-    set1.retainAll(set2);                  // intersection
-    int[] output = new int[set1.size()];
-    int idx = 0;
-    for (int s : set1) {
-        output[idx++] = s;
-    }
-    return output;
-  }
 }
 
 Approach 3: Sort
 Time complexity: O(nlogn)
 Space complexity: O(m + n)
 
-public class Solution {
+class Solution {
     public int[] intersection(int[] nums1, int[] nums2) {
         Arrays.sort(nums1);
         Arrays.sort(nums2);
-        List<Integer> tmp = new ArrayList<>();
-        int i = 0;
-        int j = 0;
-        int index = 0;
+        List<Integer> list = new ArrayList<>();
+        int i = 0, j = 0, index = 0;
         while (i < nums1.length && j < nums2.length) {
             if (nums1[i] == nums2[j]) {
-                if (index == 0 || tmp.get(index - 1) != nums1[i]) {
-                    tmp.add(nums1[i]);
+                if (index == 0 || list.get(index - 1) != nums1[i]) {
+                    list.add(nums1[i]);
                     index++;
                 } 
                 i++;
@@ -91,10 +88,7 @@ public class Solution {
                 i++;
             }
         }
-        int[] rst = new int[index];
-        for (int k = 0; k < tmp.size(); k++) {
-            rst[k] = tmp.get(k);
-        }
+        int[] rst = list.stream().mapToInt(num -> num).toArray();
         return rst;
     }
 }
@@ -103,23 +97,24 @@ Approach 4: One Set
 Time complexity: O(m + n)
 Space complexity: O(m + n)
 
-public class Solution {
+class Solution {
     public int[] intersection(int[] nums1, int[] nums2) {
         Set<Integer> hs = new HashSet<>();
         for (int i : nums1) {
             hs.add(i);
         }
-        List<Integer> tmp = new ArrayList<>();
+        List<Integer> list = new ArrayList<>();
         for (int i : nums2) {
             if (hs.contains(i)) {
-                tmp.add(i);
+                list.add(i);
                 hs.remove(i);
             }
         }
-        int[] rst = new int[tmp.size()];
-        for (int i = 0; i < rst.length; i++) {
-            rst[i] = tmp.get(i);
-        }
+        int[] rst = list.stream().mapToInt(i -> i).toArray();
+        // int[] rst = new int[list.size()];
+        // for (int i = 0; i < rst.length; i++) {
+        //     rst[i] = tmp.get(i);
+        // }
         return rst;
     }
 }
