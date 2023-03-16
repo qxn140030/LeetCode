@@ -1,6 +1,5 @@
-Question: Given two integer arrays nums1 and nums2, return an array of their intersection.
+Given two integer arrays nums1 and nums2, return an array of their intersection.
 Each element in the result should appear as many times as it shows in both arrays in any order.
-
 Example 1:
 Input: nums1 = [1,2,2,1], nums2 = [2,2]
 Output: [2,2]
@@ -23,33 +22,26 @@ If neither of the arrays fit into the memory, we can apply some partial processi
 and call the method multiple times (for each subrange).
 > Use an external sort for both arrays. Modify approach 2 to load and process arrays sequentially.
 
-Approach 1: Hash Map
+Approach 1: Hash Table
 collect numbers and their counts from smaller array into a hash map (reduce memory usage).
 then iterate along the second array, check if the number exists in the hash map and its count is positive.
 Time complexity: O(m + n)
 Space complexity: O(m), use hash map to store numbers.
 
-public class Solution {
+class Solution {
     public int[] intersect(int[] nums1, int[] nums2) {
         Map<Integer, Integer> map = new HashMap<>();
         for (int i : nums1) {
-            if (map.containsKey(i)) {
-                map.put(i, map.get(i) + 1);
-            } else {
-                map.put(i, 1);
-            }
+            map.put(i, map.getOrDefault(i, 0) + 1);
         } 
-        List<Integer> tmp = new ArrayList<>();
+        List<Integer> list = new ArrayList<>();
         for (int i : nums2) {
             if (map.containsKey(i) && map.get(i) > 0) {
-                tmp.add(i);
+                list.add(i);
                 map.put(i, map.get(i) - 1);
             }
         }
-        int[] rst = new int[tmp.size()];
-        for (int i = 0; i < rst.length; i++) {
-            rst[i] = tmp.get(i);
-        }
+        int[] rst = list.stream().mapToInt(i -> i).toArray();
         return rst;
     }
 }
@@ -63,12 +55,11 @@ public class Solution {
     public int[] intersect(int[] nums1, int[] nums2) {
         Arrays.sort(nums1);
         Arrays.sort(nums2);
-        int i = 0;
-        int j = 0;
-        List<Integer> tmp = new ArrayList<>();
+        int i = 0, j = 0;
+        List<Integer> list = new ArrayList<>();
         while (i < nums1.length && j < nums2.length) {
             if (nums1[i] == nums2[j]) {
-                tmp.add(nums1[i]);
+                list.add(nums1[i]);
                 i++;
                 j++;
             } else if (nums1[i] < nums2[j]) {
@@ -77,10 +68,7 @@ public class Solution {
                 j++;
             }
         }
-        int[] rst = new int[tmp.size()];
-        for (int k = 0; k < rst.length; k++) {
-            rst[k] = tmp.get(k);
-        }
+        int[] rst = list.stream().mapToInt(num -> num).toArray();
         return rst;
     }
 }
