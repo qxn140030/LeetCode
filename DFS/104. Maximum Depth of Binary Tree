@@ -58,7 +58,7 @@ Space complexity: O(n)
             return 0;
         }
         int depth = 0;
-        Queue<TreeNode> queue = new LinkedList<TreeNode>();
+        Queue<TreeNode> queue = new LinkedList<>();
         queue.offer(root);
         while (!queue.isEmpty()) {
             int size = queue.size();
