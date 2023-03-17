@@ -1,7 +1,9 @@
 Given preorder and inorder traversal of a tree, construct the binary tree.
 Note: You may assume that duplicates do not exist in the tree.
 
-Time complexity: . Space complexity:
+Approach 1: Recursion
+Time complexity: O(n)
+Space complexity: O(n)
 /**
  * Definition for a binary tree node.
  * public class TreeNode {
