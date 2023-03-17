@@ -12,26 +12,35 @@ return its level order traversal as:
   [15,7]
 ]
 
-Solution 1: BFS + one Queue. Time complexity: O(n). Space complexity: O(n).
+Approach 1: BFS + one Queue
+Time complexity: O(n)
+Space complexity: O(n)
+
 /**
  * Definition for a binary tree node.
  * public class TreeNode {
  *     int val;
  *     TreeNode left;
  *     TreeNode right;
- *     TreeNode(int x) { val = x; }
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
  * }
  */
 public class Solution { 
     public List<List<Integer>> levelOrder(TreeNode root) {
-        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        List<List<Integer>> result = new ArrayList<>();
         if (root == null) {
             return result;
         }
         Queue<TreeNode> queue = new LinkedList<TreeNode>(); 
         queue.offer(root);
         while (!queue.isEmpty()) { 
-            List<Integer> level = new ArrayList<Integer>();
+            List<Integer> level = new ArrayList<>();
             int size = queue.size();
             for (int i = 0; i < size; i++) {
                 root = queue.poll();
@@ -49,10 +58,13 @@ public class Solution {
     }
 }
 
-Solution 2: DFS. Time complexity: O(n). Space complexity: O(logn).
+Approach 2: DFS
+Time complexity: O(n)
+Space complexity: O(logn)
+
 public class Solution {
     public List<List<Integer>> levelOrder(TreeNode root) {
-        List<List<Integer>> rst = new ArrayList<List<Integer>>();
+        List<List<Integer>> rst = new ArrayList<>();
         helper(root, rst, 0);
         return rst;
     }
@@ -61,7 +73,7 @@ public class Solution {
             return;
         }
         if (level >= rst.size()) {
-            rst.add(new ArrayList<Integer>());
+            rst.add(new ArrayList<>());
         }
         rst.get(level).add(root.val);
         helper(root.left, rst, level + 1);
@@ -69,10 +81,13 @@ public class Solution {
     }
 }
 
-Solution 3: BFS + two queues. Time complexity: O(n). Space complexity: O(n).
+Solution 3: BFS + two queues
+Time complexity: O(n)
+Space complexity: O(n)
+
 public class Solution {
     public List<List<Integer>> levelOrder(TreeNode root) {
-        List result = new ArrayList();
+        List result = new ArrayList<>();
         if (root == null) {
             return result;
         }
@@ -80,7 +95,7 @@ public class Solution {
         Queue<TreeNode> child = new LinkedList<TreeNode>();
         queue.offer(root);
         while (!queue.isEmpty()) { 
-            List<Integer> level = new ArrayList<Integer>();
+            List<Integer> level = new ArrayList<>();
             int size = queue.size();
             for (int i = 0; i < size; i++) {
                 TreeNode node = queue.poll();
@@ -100,10 +115,13 @@ public class Solution {
     }
 }
 
-Solution 4: BFS + one queue + dummy node. Time complexity: O(n). Space complexity: O(n).
+Solution 4: BFS + one queue + dummy node
+Time complexity: O(n)
+Space complexity: O(n)
+
 public class Solution {
     public List<List<Integer>> levelOrder(TreeNode root) {
-        List result = new ArrayList();
+        List result = new ArrayList<>();
         if (root == null) {
             return result;
         }
@@ -111,7 +129,7 @@ public class Solution {
         Queue<TreeNode> queue = new LinkedList<TreeNode>();
         queue.offer(root);
         queue.offer(dummy);
-        List<Integer> level = new ArrayList<Integer>();
+        List<Integer> level = new ArrayList<>();
         while (!queue.isEmpty()) { 
             TreeNode node = queue.poll();
             if (node == dummy) {
