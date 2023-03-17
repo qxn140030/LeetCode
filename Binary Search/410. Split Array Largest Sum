@@ -112,8 +112,7 @@ Space complexity: O(1)
 
 public class Solution {
     public int splitArray(int[] nums, int m) {
-        int l = 0;
-        int r = 0;
+        int l = 0, r = 0;
         for (int i : nums) {
             l = Math.max(l, i);
             r += i;
@@ -129,8 +128,7 @@ public class Solution {
         return l;
     }
     private boolean canSplit(int[] nums, int mid, int m) {
-        int count = 1;
-        int curSum = 0;
+        int count = 1, curSum = 0;
         for (int i : nums) {
             curSum += i;
             if (curSum > mid) {
