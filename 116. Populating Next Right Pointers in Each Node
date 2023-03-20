@@ -1,13 +1,15 @@
-Given a binary tree
+You are given a perfect binary tree where all leaves are on the same level, and every parent has two children. 
+The binary tree has the following definition:
     struct TreeLinkNode {
       TreeLinkNode *left;
       TreeLinkNode *right;
       TreeLinkNode *next;
     }
-Populate each next pointer to point to its next right node. If there is no next right node, the next pointer should be set
-to NULL. Initially, all next pointers are set to NULL.
-Note: You may only use constant extra space.
-You may assume that it is a perfect binary tree (ie, all leaves are at the same level, and every parent has two children).
+Populate each next pointer to point to its next right node. If there is no next right node, the next pointer should be set to NULL. 
+Initially, all next pointers are set to NULL.
+Follow-up: 
+You may only use constant extra space.
+The recursive approach is fine. You may assume implicit stack space does not count as extra space for this problem.
 For example, Given the following perfect binary tree,
          1
        /  \
@@ -21,19 +23,33 @@ After calling your function, the tree should look like:
      / \  / \
     4->5->6->7 -> NULL
 
-Solution 1: recursive. Time complexity: O(n). Space complexity: O(logn).
-/**
- * Definition for binary tree with next pointer.
- * public class TreeLinkNode {
- *     int val;
- *     TreeLinkNode left, right, next;
- *     TreeLinkNode(int x) { val = x; }
- * }
- */
-public class Solution {
-    public void connect(TreeLinkNode root) {
+Approach 1: Recursive
+Time complexity: O(n)
+Space complexity: O(n)
+
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public Node left;
+    public Node right;
+    public Node next;
+    public Node() {}
+    public Node(int _val) {
+        val = _val;
+    }
+    public Node(int _val, Node _left, Node _right, Node _next) {
+        val = _val;
+        left = _left;
+        right = _right;
+        next = _next;
+    }
+};
+*/
+class Solution {
+    public Node connect(Node root) {
         if (root == null) {
-            return;
+            return root;
         }
         if (root.left != null) {
             root.left.next = root.right;
@@ -43,30 +59,62 @@ public class Solution {
         }
         connect(root.left);
         connect(root.right);
+        return root;
     }
 }
 
-Solution 2: iterative. BFS. Time complexity: O(n). Space complexity: O(1).
-public class Solution {
-    public void connect(TreeLinkNode root) {
+Approach 2: BFS (Iterative) 
+Time complexity: O(n)
+Space complexity: O(n), this is a perfect binary tree which means the last level contains n/2 nodes.
+
+class Solution {
+    public Node connect(Node root) {
         if (root == null) {
-            return;
+            return root;
         }
-        TreeLinkNode parent = root;
-        TreeLinkNode child = root.left;
-        while (child != null) {
-            TreeLinkNode cur = child;
-            while (parent != null) {
-                if (cur == parent.left) {
-                    cur.next = parent.right;
-                    parent = parent.next;
-                } else {
-                    cur.next = parent.left;
+        Queue<Node> queue = new LinkedList<Node>(); 
+        queue.add(root);
+        while (queue.size() > 0) { 
+            int size = queue.size();
+            Node pre = null;
+            for(int i = 0; i < size; i++) {  
+                Node node = queue.poll();
+                if (i < size - 1) {
+                    node.next = queue.peek();
+                }
+                if (node.left != null) {
+                    queue.add(node.left);
+                }
+                if (node.right != null) {
+                    queue.add(node.right);
+                }
+            }
+        }
+        return root;
+    }
+}
+
+Approach 3: BFS (Using previously established next pointers) 
+Time complexity: O(n)
+Space complexity: O(1)
+
+class Solution {
+    public Node connect(Node root) {
+        if (root == null) {
+            return root;
+        }
+        Node parent = root;
+        while (parent.left != null) {
+            Node cur = parent;
+            while (cur != null) {
+                cur.left.next = cur.right;
+                if (cur.next != null) {
+                    cur.right.next = cur.next.left;
                 }
                 cur = cur.next;
             }
-            parent = child;
-            child = parent.left;
+            parent = parent.left;
         }
+        return root;
     }
 }
