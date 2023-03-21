@@ -1,0 +1,130 @@
+A transformation sequence from word beginWord to word endWord using a dictionary wordList is a sequence of words beginWord -> s1 -> s2 -> ... -> sk such that:
+- Every adjacent pair of words differs by a single letter.
+- Every si for 1 <= i <= k is in wordList. Note that beginWord does not need to be in wordList.
+- sk == endWord
+Given two words, beginWord and endWord, and a dictionary wordList, return the number of words in the shortest transformation sequence from beginWord 
+to endWord, or 0 if no such sequence exists.
+Example 1:
+Input: beginWord = "hit", endWord = "cog", wordList = ["hot","dot","dog","lot","log","cog"]
+Output: 5
+Explanation: One shortest transformation sequence is "hit" -> "hot" -> "dot" -> "dog" -> cog", which is 5 words long.
+
+Example 2:
+Input: beginWord = "hit", endWord = "cog", wordList = ["hot","dot","dog","lot","log"]
+Output: 0
+Explanation: The endWord "cog" is not in wordList, therefore there is no valid transformation sequence.
+
+Approach 1: BFS
+Time complexity: O(m^2 * n), where m is the length of each word and n is the total number of words in the input word list. 
+Space complexity: O(m^2 * n)
+
+class Solution {
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        int n = beginWord.length();
+        // Dictionary to hold combination of words that can be formed,
+        // from any given word. By changing one letter at a time.
+        Map<String, List<String>> allComboDict = new HashMap<>();
+        wordList.forEach (word -> {
+            for (int i = 0; i < n; i++) {
+                // Key is the generic word
+                // Value is a list of words which have the same intermediate generic word.
+                String newWord = word.substring(0, i) + '*' + word.substring(i + 1, n);
+                List<String> transformations = allComboDict.getOrDefault(newWord, new ArrayList<>());
+                transformations.add(word);
+                allComboDict.put(newWord, transformations);
+            }
+        });
+        Queue<Pair<String, Integer>> queue = new LinkedList<>();
+        queue.add(new Pair(beginWord, 1));
+        // Visited to make sure we don't repeat processing same word.
+        Map<String, Boolean> visited = new HashMap<>();
+        visited.put(beginWord, true);
+        while (!queue.isEmpty()) {
+            Pair<String, Integer> node = queue.remove();
+            String word = node.getKey();
+            int level = node.getValue();
+            for (int i = 0; i < n; i++) {
+                // Intermediate words for current word
+                String newWord = word.substring(0, i) + '*' + word.substring(i + 1, n);
+                // Next states are all the words which share the same intermediate state.
+                for (String adjacentWord : allComboDict.getOrDefault(newWord, new ArrayList<>())) {
+                    // If at any point if we find what we are looking for
+                    // i.e. the end word - we can return with the answer.
+                    if (adjacentWord.equals(endWord)) {
+                        return level + 1;
+                    }
+                    // Otherwise, add it to the BFS Queue. Also mark it visited
+                    if (!visited.containsKey(adjacentWord)) {
+                        visited.put(adjacentWord, true);
+                        queue.add(new Pair(adjacentWord, level + 1));
+                    }
+                }
+            }
+        }
+        return 0;
+    }
+}
+
+Approach 2: Bidirectional BFS
+Time complexity: O(m^2 * n), where m is the length of each word and n is the total number of words in the input word list. 
+Space complexity: O(m^2 * n)
+
+
+Search problem, BFS guarantees the optimal solution.
+Time complexity: O(25 * N * L). where L is the length of the word, N is the size of wordList. 
+Space complexity: O(n). because of the getNextWords function, dynamic search.
+
+public class Solution {
+    public int ladderLength(String beginWord, String endWord, Set<String> wordList) {
+        if (beginWord.equals(endWord)) {
+            return 1;
+        }
+        if (wordList == null || wordList.size() == 0) {
+            return 0;
+        }
+        wordList.add(beginWord);
+        wordList.add(endWord);
+        int steps = 2;
+        Queue<String> q = new LinkedList<>();
+        Set<String> hs = new HashSet<>();
+        hs.add(beginWord);
+        q.add(beginWord);
+        while (!q.isEmpty()) {
+            int size = q.size();
+            for (int i = 0; i < size; i++) {
+                String cur = q.remove();
+                for (String s : getNextWords(cur, wordList)) {
+                    if (hs.contains(s)) {
+                        continue;
+                    }
+                    if (s.equals(endWord)) {
+                        return steps;
+                    }
+                    q.add(s);
+                    hs.add(s);
+                }
+            }
+            steps++;
+        }
+        return 0;
+    }
+    private Set<String> getNextWords(String s, Set<String> wordList) {
+        Set<String> nextWords = new HashSet<>();
+        for (int i = 0; i < s.length(); i++) {
+            for (char c = 'a'; c <= 'z'; c++) {
+                if (s.charAt(i) != c) {
+                    String tmp = swap(s, i, c);
+                    if (wordList.contains(tmp)) {
+                        nextWords.add(tmp);
+                    }
+                }
+            }
+        }
+        return nextWords;
+    }
+    private String swap(String s, int i, char c) {
+        char[] arr = s.toCharArray();
+        arr[i] = c;
+        return new String(arr);
+    }
+}
