@@ -1,0 +1,156 @@
+Given a binary tree containing digits from 0-9 only, each root-to-leaf path could represent a number.
+An example is the root-to-leaf path 1->2->3 which represents the number 123.
+Find the total sum of all root-to-leaf numbers.
+For example,
+    1
+   / \
+  2   3
+The root-to-leaf path 1->2 represents the number 12.
+The root-to-leaf path 1->3 represents the number 13.
+Return the sum = 12 + 13 = 25.
+
+Approach 1: DFS (Recursive Preorder Traversal)
+Time complexity: O(n)
+Space complexity: O(n)
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public int sumNumbers(TreeNode root) {
+        return helper(root, 0);
+    }
+    private int helper(TreeNode root, int pre) {
+        if (root == null) {
+            return 0;
+        }
+        int sum = pre * 10 + root.val;
+        if (root.left == null && root.right == null) {
+            return sum;
+        }
+        return helper(root.left, sum) + helper(root.right, sum);
+    }
+}
+
+Approach 2: Iterative Preorder Traversal
+Time complexity: O(n)
+Space complexity: O(n)
+
+class Solution {
+    public int sumNumbers(TreeNode root) {
+        int rootToLeaf = 0, currNumber = 0;
+        Deque<Pair<TreeNode, Integer>> stack = new ArrayDeque();
+        stack.push(new Pair(root, 0));
+        while (!stack.isEmpty()) {
+            Pair<TreeNode, Integer> p = stack.pop();
+            root = p.getKey();
+            currNumber = p.getValue();
+            if (root != null) {
+                currNumber = currNumber * 10 + root.val;
+                // if it's a leaf, update root-to-leaf sum
+                if (root.left == null && root.right == null) {
+                    rootToLeaf += currNumber;
+                } else {
+                    stack.push(new Pair(root.right, currNumber));
+                    stack.push(new Pair(root.left, currNumber));
+                }
+            }
+        }
+        return rootToLeaf;
+    }
+}
+
+Approach 3: Morris Preorder Traversal
+Time complexity: O(n)
+Space complexity: O(1)
+
+class Solution {
+    public int sumNumbers(TreeNode root) {
+        int rootToLeaf = 0, currNumber = 0, steps;
+        TreeNode predecessor;
+        while (root != null) {
+            // If there is a left child, then compute the predecessor.
+            // If there is no link predecessor.right = root --> set it.
+            // If there is a link predecessor.right = root --> break it.
+            if (root.left != null) {
+                // Predecessor node is one step to the left and then to the right till you can.
+                predecessor = root.left;
+                steps = 1;
+                while (predecessor.right != null && predecessor.right != root) {
+                    predecessor = predecessor.right;
+                    steps++;
+                }
+                // Set link predecessor.right = root and go to explore the left subtree
+                if (predecessor.right == null) {
+                    currNumber = currNumber * 10 + root.val;
+                    predecessor.right = root;
+                    root = root.left;
+                }
+                // Break the link predecessor.right = root
+                // Once the link is broken, it's time to change subtree and go to the right
+                else {
+                    // If you're on the leaf, update the sum
+                    if (predecessor.left == null) {
+                        rootToLeaf += currNumber;
+                    }
+                    // This part of tree is explored, backtrack
+                    for (int i = 0; i < steps; i++) {
+                        currNumber /= 10;
+                    }
+                    predecessor.right = null;
+                    root = root.right;
+                }
+            } else {                                      // If there is no left child then just go right.
+                currNumber = currNumber * 10 + root.val;
+                // if you're on the leaf, update the sum
+                if (root.right == null) {
+                    rootToLeaf += currNumber;
+                }
+                root = root.right;
+            }
+        }
+        return rootToLeaf;
+    }
+}
+
+Approach 4: BFS
+Time complexity: O(n)
+Space complexity: O(n)
+
+public class Solution {
+    public int sumNumbers(TreeNode root) {
+        int rst = 0;
+        Queue<TreeNode> q1 = new LinkedList<>();
+        Queue<Integer> q2 = new LinkedList<>();
+        q1.add(root);
+        q2.add(root.val);
+        while (!q1.isEmpty() && !q2.isEmpty()) {
+            root = q1.remove();
+            int val = q2.remove();
+            if (root.left == null && root.right == null) {
+                rst += val;
+            }
+            if (root.left != null) {
+                q1.add(root.left);
+                q2.add(val * 10 + root.left.val);
+            }
+            if (root.right != null) {
+                q1.add(root.right);
+                q2.add(val * 10 + root.right.val);
+            }
+        }
+        return rst;
+    }
+}
