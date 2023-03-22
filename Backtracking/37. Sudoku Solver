@@ -2,6 +2,14 @@ Write a program to solve a Sudoku puzzle by filling the empty cells.
 Empty cells are indicated by the character '.'.
 You may assume that there will be only one unique solution.
 
+Approach 1: Brute Force
+generate all possible ways to fill the cells with numbers from 1 to 9, and then check them to keep the solution only. 
+That means 9^(81) operations to do.
+
+Approach 2: Backtracking
+Time complexity: O(
+Space complexity: O(
+
 public class Solution {
     public void solveSudoku(char[][] board) {
         helper(board);
