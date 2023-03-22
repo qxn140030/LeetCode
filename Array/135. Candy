@@ -1,0 +1,191 @@
+There are n children standing in a line. Each child is assigned a rating value given in the integer array ratings.
+You are giving candies to these children subjected to the following requirements:
+- Each child must have at least one candy.
+- Children with a higher rating get more candies than their neighbors.
+Return the minimum number of candies you need to have to distribute the candies to the children.
+Example 1:
+Input: ratings = [1,0,2]
+Output: 5
+Explanation: You can allocate to the first, second and third child with 2, 1, 2 candies respectively.
+
+Example 2:
+Input: ratings = [1,2,2]
+Output: 4
+You can allocate to the first, second and third child with 1, 2, 1 candies respectively.
+The third child gets 1 candy because it satisfies the above two conditions.
+
+Approach 1: Brute Force
+Time complexity: O(n^2)
+We need to traverse the array at most n times. This is because at most, a child will get n candies, 
+and their candy count will be update once on each traversal.
+Space complexity: O(n)
+
+class Solution {
+    public int candy(int[] ratings) {
+        int[] candies = new int[ratings.length];
+        Arrays.fill(candies, 1);
+        boolean hasChanged = true;
+        while (hasChanged) {
+            hasChanged = false;
+            for (int i = 0; i < ratings.length; i++) {
+                if (i != ratings.length - 1 && ratings[i] > ratings[i + 1] && candies[i] <= candies[i + 1]) {
+                    candies[i] = candies[i + 1] + 1;
+                    hasChanged = true;
+                }
+                if (i > 0 && ratings[i] > ratings[i - 1] && candies[i] <= candies[i - 1]) {
+                    candies[i] = candies[i - 1] + 1;
+                    hasChanged = true;
+                }
+            }
+        }
+        int sum = 0;
+        for (int candy : candies) {
+            sum += candy;
+        }
+        return sum;
+    }
+}
+
+Approach 2: Using two arrays
+Time complexity: O(n)
+Space complexity: O(n)
+
+class Solution {
+    public int candy(int[] ratings) {
+        int sum = 0;
+        int[] left2right = new int[ratings.length];
+        int[] right2left = new int[ratings.length];
+        Arrays.fill(left2right, 1);
+        Arrays.fill(right2left, 1);
+        for (int i = 1; i < ratings.length; i++) {
+            if (ratings[i] > ratings[i - 1]) {
+                left2right[i] = left2right[i - 1] + 1;
+            }
+        }
+        for (int i = ratings.length - 2; i >= 0; i--) {
+            if (ratings[i] > ratings[i + 1]) {
+                right2left[i] = right2left[i + 1] + 1;
+            }
+        }
+        for (int i = 0; i < ratings.length; i++) {
+            sum += Math.max(left2right[i], right2left[i]);
+        }
+        return sum;
+    }
+}
+
+Approach 3: Using one array
+Time complexity: O(n)
+Space complexity: O(n)
+
+class Solution {
+    public int candy(int[] ratings) {
+        int[] candies = new int[ratings.length];
+        Arrays.fill(candies, 1);
+        for (int i = 1; i < ratings.length; i++) {
+            if (ratings[i] > ratings[i - 1]) {
+                candies[i] = candies[i - 1] + 1;
+            }
+        }
+        int sum = candies[ratings.length - 1];
+        for (int i = ratings.length - 2; i >= 0; i--) {
+            if (ratings[i] > ratings[i + 1]) {
+                candies[i] = Math.max(candies[i], candies[i + 1] + 1);
+            }
+            sum += candies[i];
+        }
+        return sum;
+    }
+}
+
+Approach 4: Single Pass with Constant Space
+Time complexity: O(n)
+Space complexity: O(1)
+
+class Solution {
+    public int candy(int[] ratings) {
+        int n = ratings.length;
+        if (n <= 1) {
+            return n;
+        }
+        int candies = 0, up = 0, down = 0, oldSlope = 0;
+        for (int i = 1; i < n; i++) {
+            int newSlope = (ratings[i] > ratings[i - 1]) ? 1 
+                : (ratings[i] < ratings[i - 1] ? -1 
+                : 0);
+            if ((oldSlope > 0 && newSlope == 0) || (oldSlope < 0 && newSlope >= 0)) {
+                candies += count(up) + count(down) + Math.max(up, down);
+                up = 0;
+                down = 0;
+            }
+            if (newSlope > 0) {
+                up++;
+            } else if (newSlope < 0) {
+                down++;
+            } else {
+                candies++;
+            }
+            oldSlope = newSlope;
+        }
+        candies += count(up) + count(down) + Math.max(up, down) + 1;
+        return candies;
+    }
+    private int count(int n) {
+        return (n * (n + 1)) / 2;
+    }
+}
+
+
+class Solution {
+    public int candy(int[] ratings) {
+        int n = ratings.length;
+        int[] left = new int[n];
+        left[0] = 1;
+        for (int i = 1; i < n; i++) {
+            if (ratings[i] > ratings[i - 1]) {
+                left[i] = left[i - 1] + 1;
+            } else {
+                left[i] = 1;
+            }
+        }
+        int[] right = new int[n];
+        right[n - 1] = 1;
+        for (int i = n - 2; i >= 0; i--) {
+            if (ratings[i] > ratings[i + 1]) {
+                right[i] = right[i + 1] + 1;
+            } else {
+                right[i] = 1;
+            }
+        }
+        int max = 0;
+        for (int i = 0; i < n; i++) {
+            max += Math.max(left[i], right[i]);
+        }
+        return max;
+    }
+}
+
+class Solution {
+    public int candy(int[] ratings) {
+        int n = ratings.length;
+        int[] candy = new int[n];
+        candy[0] = 1;
+        for (int i = 1; i < n; i++) {
+            if (ratings[i] > ratings[i - 1]) {
+                candy[i] = candy[i - 1] + 1;
+            } else {
+                candy[i] = 1;
+            }
+        }
+        int rst = candy[n - 1];
+        for (int i = n - 2; i >= 0; i--) {
+            int cur = 1;                      // initialize cur to 1.
+            if (ratings[i] > ratings[i + 1]) {
+                cur = candy[i + 1] + 1;
+            } 
+            rst += Math.max(cur, candy[i]);
+            candy[i] = cur;                // update candy[i] to cur.
+        }
+        return rst;
+    }
+}
