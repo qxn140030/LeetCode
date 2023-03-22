@@ -1,0 +1,64 @@
+Implement pow(x, n).
+
+Approach 1: Brute Force
+Time complexity: O(n), We will multiply x for n times.
+Space complexity: O(1)
+
+public class Solution {                     // Time Limit Exceeded.
+    public double myPow(double x, int n) {
+        double rst = 1;
+        if (n > 0) {
+            while (n-- > 0) {
+                rst *= x;
+            }
+        } else {
+            while (n++ < 0) {
+                rst /= x;
+            }
+        }
+        return rst;
+    }
+}
+
+Approach 2: Fast Power Algorithm Recursive
+x^n = x^(n/2) * x^(n/2) * x^(n%2). 
+Time complexity: O(logn)
+Space complexity: O(logn)
+
+public class Solution {
+    public double myPow(double x, int n) {
+        if (n == 0) {
+            return 1;
+        }
+        double half = myPow(x, n / 2);
+        if (n % 2 == 0) {
+            return half * half;
+        } else if (n > 0) {
+            return half * half * x;
+        } else {
+            return half * half / x;
+        }
+    }
+}
+
+Approach 3: Fast Power Algorithm Iterative
+Time complexity: O(logn)
+Space complexity: O(1)
+
+class Solution {
+    public double myPow(double x, int n) {
+        long longN = n;
+        if (longN < 0) {
+            x = 1 / x;
+            longN = -longN;
+        }
+        double ans = 1, curProduct = x;
+        for (long i = longN; i > 0; i /= 2) {
+            if ((i % 2) == 1) {
+                ans = ans * curProduct;
+            }
+            curProduct *= curProduct;
+        }
+        return ans;
+    }
+}
