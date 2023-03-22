@@ -13,7 +13,17 @@ isMatch("aa", "a*") → true
 isMatch("ab", "?*") → true
 isMatch("aab", "c*a*b") → false
 
-Time complexity: O(m * n). Space complexity: O(m * n).
+Approach 1: Recursion with Memoization
+Time complexity: O(m * n * (m + n))
+Space complexity: O(m * n)
+
+
+
+
+Approach 2: DP
+Time complexity: O(m * n)
+Space complexity: O(m * n)
+
 public class Solution {
     public boolean isMatch(String s, String p) {
         boolean[][] dp = new boolean[s.length() + 1][p.length() + 1];
@@ -35,3 +45,7 @@ public class Solution {
         return dp[s.length()][p.length()];
     }
 }
+
+Approach 3: Backtracking
+Time complexity: O(m * n)
+Space complexity: O(m * n)
