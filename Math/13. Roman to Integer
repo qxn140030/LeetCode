@@ -1,4 +1,4 @@
-Question: Given a roman numeral, convert it to an integer. Input is guaranteed to be within the range from 1 to 3999.
+Given a roman numeral, convert it to an integer. Input is guaranteed to be within the range from 1 to 3999.
 
 Approach 1: Left-to-right pass
 each symbol adds its own value, except for when a smaller valued symbol is before a larger valued symbol.
