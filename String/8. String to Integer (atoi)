@@ -68,6 +68,3 @@ class Solution {
         return rst * sign;
     }
 }
-
-Approach 2: Deterministic Finite Automaton (DFA)
-a more generalized approach that can be applied to similar problems that would require writing many nested if else conditions.
