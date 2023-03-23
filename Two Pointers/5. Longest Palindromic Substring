@@ -52,9 +52,8 @@ Space complexity: O(n^2)
 
 public class Solution {
     public String longestPalindrome(String s) {
-        boolean[][] isPalindrome = new boolean[s.length()][s.length()];
-        int start = 0;
-        int end = 0;
+        int n = s.length(), start = 0, end = 0;
+        boolean[][] isPalindrome = new boolean[n][n];
         for (int i = s.length() - 1; i >= 0 ; i--) {
             for (int j = i; j < s.length(); j++) {
                 if (s.charAt(i) == s.charAt(j) && (j - i <= 2 || isPalindrome[i + 1][j - 1])) {
