@@ -1,0 +1,72 @@
+Given an array of strings, group anagrams together.
+For example, given: ["eat", "tea", "tan", "ate", "nat", "bat"], 
+Return: [
+          ["ate", "eat","tea"],
+          ["nat","tan"],
+          ["bat"]
+        ]
+
+Approach 1: Categorize by Sorted String
+Time complexity: O(nklogk), n is the size of array, k is the length of the longest string. 
+Space complexity: O(nk)
+
+class Solution {
+    public List<List<String>> groupAnagrams(String[] strs) {
+        Map<String, List> ans = new HashMap<>();
+        for (String s : strs) {
+            char[] ca = s.toCharArray();
+            Arrays.sort(ca);
+            String key = String.valueOf(ca);
+            if (!ans.containsKey(key)) ans.put(key, new ArrayList());
+            ans.get(key).add(s);
+        }
+        return new ArrayList(ans.values());
+    }
+}
+
+public class Solution {
+    public List<List<String>> groupAnagrams(String[] strs) {
+        List<List<String>> rst = new ArrayList<>();
+        Map<String, List<String>> map = new HashMap<>();
+        for (String s : strs) {
+            char[] charArr = s.toCharArray();
+            Arrays.sort(charArr);
+            String str = new String(charArr);
+            if (!map.containsKey(str)) {
+                map.put(str, new ArrayList<>());
+            }
+            map.get(str).add(s);
+        }
+        // each inner list's elements follow the lexicographic order.
+        // for (Map.Entryr<String, List<String>> entry : map.entrySet()) {
+        //     Collections.sort(entry.getValue());
+        // }
+        rst.addAll(map.values());        // Note
+        return rst;
+    }
+}
+
+Approach 2: Categorize by Count
+Time complexity: O(nk)
+Space complexity: O(nk)
+
+class Solution {
+    public List<List<String>> groupAnagrams(String[] strs) {
+        Map<String, List> ans = new HashMap<>();
+        int[] count = new int[26];
+        for (String s : strs) {
+            Arrays.fill(count, 0);
+            for (char c : s.toCharArray()) count[c - 'a']++;
+
+            StringBuilder sb = new StringBuilder("");
+            for (int i = 0; i < 26; i++) {
+                sb.append('#');
+                sb.append(count[i]);
+            }
+            String key = sb.toString();
+            if (!ans.containsKey(key)) ans.put(key, new ArrayList());
+            ans.get(key).add(s);
+        }
+        return new ArrayList(ans.values());
+    }
+}
