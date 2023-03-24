@@ -8,7 +8,7 @@ Input: strs = ["dog","racecar","car"]
 Output: ""
 Explanation: There is no common prefix among the input strings.
 
-Approach 1: Horizontal scanning
+Approach 1: Horizontal Scanning
 iterates through the strings, finding at each iteration the longest common prefix of strings.
 Time complexity: O(m * n), m is the length of string, n is array length. 
 Space complexity: O(1)
@@ -28,7 +28,7 @@ public class Solution {
     }
 }
 
-Approach 2: Vertical scanning
+Approach 2: Vertical Scanning
 if common prefix is very short, we can use vertical scanning to do less comparisons.
 compare characters from top to bottom on the same column (same character index of the strings) before moving to the next column.
 Time complexity: O(m * n), m is the length of string, n is array length. 
@@ -48,7 +48,7 @@ public class Solution {
     }
 }
 
-Approach 3: Divide and conquer
+Approach 3: Divide and Conquer
 Time complexity: O(m * n), where m * n is the number of all characters in the array.
 Space complexity: O(mlogn), where n is the length of array.
 there is a memory overhead since we store recursive calls in the execution stack.
@@ -86,8 +86,7 @@ public String longestCommonPrefix(String[] strs) {
     for (String str : strs) {
         minLen = Math.min(minLen, str.length());
     }
-    int low = 0;
-    int high = minLen;
+    int low = 0, high = minLen;
     while (low <= high) {
         int middle = (low + high) / 2;
         if (isCommonPrefix(strs, middle)) {
