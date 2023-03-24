@@ -13,7 +13,9 @@ Space complexity: O(n)
  * public class ListNode {
  *     int val;
  *     ListNode next;
- *     ListNode(int x) { val = x; }
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
  * }
  */
 public class Solution {
@@ -21,10 +23,10 @@ public class Solution {
         if (head == null || head.next == null) {
             return head;
         }
-        ListNode tmp = head.next;
-        head.next = swapPairs(tmp.next);
-        tmp.next = head;
-        return tmp;
+        ListNode second = head.next;
+        head.next = swapPairs(second.next);
+        second.next = head;
+        return second;
     }
 }
 
