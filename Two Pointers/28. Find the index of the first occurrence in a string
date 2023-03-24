@@ -17,16 +17,31 @@ class Solution {
     }
 }
 
-Approach 2: Sliding window
+Approach 2: Brute Force
+Time complexity: O(m * n)
+Space complexity: O(n)
+
+public class Solution {
+    public int strStr(String haystack, String needle) {
+        int m = haystack.length(), n = needle.length();
+        for (int i = 0; i <= m - n; i++) {
+            if (haystack.substring(i, i + n).equals(needle)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+}
+
+Approach 3: Sliding window
 Traverse each possible substring of length m in the haystack and check if it is equal to the needle.
 Time complexity: O(m * n)
 Space complexity: O(1)
 
 public class Solution {
     public int strStr(String haystack, String needle) {
-        int m = haystack.length();
-        int n = needle.length();
-        for (int i = 0; i < m - n + 1; i++) {
+        int m = haystack.length(), n = needle.length();
+        for (int i = 0; i <= m - n; i++) {
             int j = 0;
             for (j = 0; j < n; j++) {
                 if (haystack.charAt(i + j) != needle.charAt(j)) {
@@ -40,28 +55,3 @@ public class Solution {
         return -1;
     }
 }
-
-public class Solution {
-    public int strStr(String haystack, String needle) {
-        int m = haystack.length();
-        int n = needle.length();
-        for (int i = 0; i <= m - n; i++) {
-            if (haystack.substring(i, i + n).equals(needle)) {
-                return i;
-            }
-        }
-        return -1;
-    }
-}
-
-Approach 3: Rabin-Karp algorithm (Single Hash)
-Time complexity: O(m * n)
-Space complexity: O(1)
-
-Approach 4: Rabin-Karp algorithm (Double Hash)
-Time complexity: O(n)
-Space complexity: O(1)
-
-Approach 5: Knuth-Morris-Pratt algorithm
-Time complexity: O(n)
-Space complexity: O(m)
