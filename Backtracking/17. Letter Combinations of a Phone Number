@@ -15,20 +15,18 @@ Input: digits = "2"
 Output: ["a","b","c"]
 
 Approach 1: Backtracking (Recursion)
-Time complexity: O(n * 4 ^ n), 4 is referring to the maximum value length in the hash map.
+Time complexity: O(n * 4^n), 4 is referring to the maximum value length in the hash map.
 in the worst case, we have to explore 4 additional paths for every extra digit.
 then, for each combination, it costs up to n to buid the combination.
 Space complexity: O(n), where n is the length of digits.
 
 public class Solution {
     public List<String> letterCombinations(String digits) {
-        List<String> rst = new ArrayList<String>();
-        if (digits == null || digits.length() == 0) {
+        List<String> rst = new ArrayList<>();
+        if (digits.isEmpty()) {
             return rst;
         }
         HashMap<Character, char[]> map = new HashMap<>();
-        map.put('0', new char[] {});
-        map.put('1', new char[] {});
         map.put('2', new char[] {'a', 'b', 'c'});
         map.put('3', new char[] {'d', 'e', 'f'});
         map.put('4', new char[] {'g', 'h', 'i'});
@@ -56,8 +54,8 @@ public class Solution {
 
 public class Solution {
     public List<String> letterCombinations(String digits) {
-        List<String> rst = new ArrayList<String>();
-        if (digits == null || digits.length() == 0) {
+        List<String> rst = new ArrayList<>();
+        if (digits.isEmpty()) {
             return rst;
         }
         String[] keyboard = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
@@ -79,19 +77,19 @@ public class Solution {
 }
 
 Approach 2: Iterative
-Time complexity: O(n * 4 ^ n)
+Time complexity: O(n * 4^n)
 Space complexity: O(1)
 
 public class Solution {
     public List<String> letterCombinations(String digits) {
-        List<String> rst = new ArrayList<String>();
-        if (digits == null || digits.length() == 0) {
+        List<String> rst = new ArrayList<>();
+        if (digits.isEmpty()) {
             return rst;
         }
         String[] board = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
         rst.add("");
         for (int i = 0; i < digits.length(); i++) {
-            List<String> cur = new ArrayList<String>();
+            List<String> cur = new ArrayList<>();
             for (int k = 0; k < board[digits.charAt(i) - '0'].length(); k++) {
                 for (int j = 0; j < rst.size(); j++) {
                     cur.add(rst.get(j) + board[digits.charAt(i) - '0'].charAt(k));
