@@ -2,19 +2,23 @@ Given an absolute path for a file (Unix-style), simplify it.
 For example, path = "/home/", => "/home". path = "/a/./b/../../c/", => "/c"
 Corner Cases:
 1, Did you consider the case where path = "/../"?
-In this case, you should return "/".
+In this case, you should return "/". Going one level up from the root directory is a no-op, as the root level is the highest level you can go.
 2, Another corner case is the path might contain multiple slashes '/' together, such as "/home//foo/".
 In this case, you should ignore redundant slashes and return "/home/foo".
 
-Time complexity: O(n). Space complexity: O(n).
+Approch 1: Using Stack
+This directly translates to a part of the implementation of the cd command functionality in the Unix OS.
+Time complexity: O(n)
+Space complexity: O(n)
+
 public class Solution {
     public String simplifyPath(String path) {
-        Stack<String> stack = new Stack<String>();
+        Stack<String> stack = new Stack<>();
         String[] pathSplit = path.split("/");
-        for (String s : pathSplit) {
+        for (String s : pathSplit) {                  // no-op for a "." or an empty string
             if (s.equals("..") && !stack.empty()) {
                 stack.pop();
-            } else if (s.length() != 0 && !s.equals(".") && !s.equals("..")) {
+            } else if (!s.isEmpty() && !s.equals(".") && !s.equals("..")) {
                 stack.push(s);
             }
         }
