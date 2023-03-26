@@ -10,7 +10,7 @@ class Solution {
     public int longestValidParentheses(String s) {
         int maxlen = 0;
         for (int i = 0; i < s.length(); i++) {
-            for (int j = i + 2; j <= s.length(); j+=2) {
+            for (int j = i + 2; j <= s.length(); j += 2) {
                 if (isValid(s.substring(i, j))) {
                     maxlen = Math.max(maxlen, j - i);
                 }
@@ -19,7 +19,7 @@ class Solution {
         return maxlen;
     }
     private boolean isValid(String s) {
-        Stack<Character> stack = new Stack<Character>();
+        Stack<Character> stack = new Stack<>();
         for (int i = 0; i < s.length(); i++) {
             if (s.charAt(i) == '(') {
                 stack.push('(');
@@ -34,6 +34,8 @@ class Solution {
 }
 
 Approach 2: DP
+ith element of array represents the length of the longest valid substring ending at ith index.
+substrings ending with ‘(’ will always contain '0' at their corresponding dp indices. Thus, we update the array only when ‘)’ is encountered.
 Time complexity: O(n)
 Space cpmplexity: O(n)
 
@@ -44,8 +46,8 @@ class Solution {
         for (int i = 1; i < s.length(); i++) {
             if (s.charAt(i) == ')') {
                 if (s.charAt(i - 1) == '(') {
-                    dp[i] = (i >= 2 ? dp[i - 2] : 0) + 2;
-                } else if (i - dp[i - 1] > 0 && s.charAt(i - dp[i - 1] - 1) == '(') {
+                    dp[i] = (i >= 2 ? dp[i - 2] : 0) + 2;                                // string looks like ".......()"
+                } else if (i - dp[i - 1] > 0 && s.charAt(i - dp[i - 1] - 1) == '(') {    // string looks like ".......))"
                     dp[i] = dp[i - 1] + ((i - dp[i - 1]) >= 2 ? dp[i - dp[i - 1] - 2] : 0) + 2;
                 }
                 rst = Math.max(rst, dp[i]);
@@ -63,14 +65,14 @@ class Solution {
     public int longestValidParentheses(String s) {
         int rst = 0;
         Stack<Integer> stack = new Stack<>();
-        stack.push(-1);
+        stack.push(-1);                            // Find the length of the longest valid string.
         for (int i = 0; i < s.length(); i++) {
             if (s.charAt(i) == '(') {
-                stack.push(i);
+                stack.push(i);                     // For every ‘(’ encountered, we push its index onto the stack.          
             } else {
-                stack.pop();
+                stack.pop();                       // For every ‘)’ encountered, we pop the topmost element.
                 if (stack.empty()) {
-                    stack.push(i);
+                    stack.push(i);     
                 } else {
                     rst = Math.max(rst, i - stack.peek());
                 }
@@ -80,13 +82,43 @@ class Solution {
     }
 }
 
+class Solution {
+    public int longestValidParentheses(String s) {
+        int max = 0, start = 0;
+        Stack<Integer> stack = new Stack<>();
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == '(') {
+                stack.push(i);
+            } else {
+                if (stack.empty()) {
+                    start = i + 1;
+                } else {
+                    stack.pop();    
+                    if (stack.empty()) {
+                        max = Math.max(max, i - start + 1);
+                    } else {
+                        max = Math.max(max, i - stack.peek());
+                    } 
+                }
+            }
+        }
+        return max;
+    }
+}
+
 Approach 4: Without extra space
+Step 1: left to right scan
+Whenever left becomes equal to right, we calculate the length of the current valid string and keep track of maximum length substring found so far. 
+If right becomes greater than left we reset left and right to 0.
+Step 2: right to left scan
+Whenever left equals to right, calculate the length of the current valid string and keep track of maximum length substring found so far. 
+If left becomes greater than right we reset left and right to 0.
 Time complexity: O(n)
 Space cpmplexity: O(1)
 
 class Solution {
     public int longestValidParentheses(String s) {
-        int left = 0, right = 0, maxlength = 0;
+        int left = 0, right = 0, maxlength = 0;               // two counters, left and right.
         for (int i = 0; i < s.length(); i++) {
             if (s.charAt(i) == '(') {
                 left++;
@@ -95,7 +127,7 @@ class Solution {
             }
             if (left == right) {
                 maxlength = Math.max(maxlength, 2 * right);
-            } else if (right >= left) {
+            } else if (right > left) {                        // Note.
                 left = right = 0;
             }
         }
@@ -108,39 +140,10 @@ class Solution {
             }
             if (left == right) {
                 maxlength = Math.max(maxlength, 2 * left);
-            } else if (left >= right) {
+            } else if (left > right) {                       // Note.
                 left = right = 0;
             }
         }
         return maxlength;
-    }
-}
-
-
-
-Time complexity: O(n)
-Space cpmplexity: O(n)
-
-public class Solution {
-    public int longestValidParentheses(String s) {
-        if (s == null || s.length() < 2) {
-            return 0;
-        }
-        int max = 0;
-        int start = 0;
-        Stack<Integer> stack = new Stack<>();
-        for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) == '(') {
-                stack.push(i);
-            } else {
-                if (stack.empty()) {
-                    start = i + 1;
-                } else {
-                    stack.pop();             // Note: after pop, whether the stack is empty or not.
-                    max = stack.empty() ? Math.max(max, i - start + 1) : Math.max(max, i - stack.peek());
-                }
-            }
-        }
-        return max;
     }
 }
