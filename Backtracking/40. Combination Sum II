@@ -25,10 +25,9 @@ class Solution {
         for (int candidate : candidates) {
             counter.put(candidate, counter.getOrDefault(candidate, 0) + 1);
         }
-        // convert the counter table to a list of (num, count) tuples
         List<int[]> counterList = new ArrayList<>();
         counter.forEach((key, value) -> {
-            counterList.add(new int[]{key, value});
+            counterList.add(new int[]{key, value});      // convert the counter table to a list of (num, count) tuples
         });
         dfs(path, target, 0, counterList, rst);
         return rst;
@@ -36,8 +35,7 @@ class Solution {
     private void dfs(List<Integer> path, int remain, int idx, List<int[]> counter, List<List<Integer>> rst) {
         if (remain <= 0) {
             if (remain == 0) {
-                // make a deep copy of the current combination.
-                rst.add(new ArrayList<>(path));
+                rst.add(new ArrayList<>(path));      // make a deep copy of the current combination.
             }
             return;
         }
@@ -47,13 +45,10 @@ class Solution {
             if (freq <= 0) {
                 continue;
             }
-            // add a new element to the current combination
             path.add(candidate);
             counter.set(i, new int[]{candidate, freq - 1});
-            // continue the exploration with the updated combination
             dfs(path, remain - candidate, i, counter, rst);
-            // backtrack the changes, so that we can try another candidate
-            counter.set(i, new int[]{candidate, freq});
+            counter.set(i, new int[]{candidate, freq});       // backtrack the changes, so that we can try another candidate
             path.remove(path.size() - 1);
         }
     }
