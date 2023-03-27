@@ -9,23 +9,22 @@ Input: s = "barfoofoobarthefoobarman", words = ["bar","foo","the"]
 Output: [6,9,12]
 
 Approach 1: Check All Indices Using a Hash Table
+Time complexity: O(n * a * b - (a * b)^2)
+n is the length of s, a is the length of words, b is the length of each word.
+Space complexity: O(a + b)
 
 
 
 
-Time complexity: O(n)
-Space complexity: O(m * len). m is the number of length, len is the length of each word.
+
+
 public class Solution {
     public List<Integer> findSubstring(String s, String[] words) {
-        List<Integer> rst = new ArrayList<Integer>();
+        List<Integer> rst = new ArrayList<>();
         int len = words[0].length();        
         Map<String, Integer> map = new HashMap<>();
         for (String word : words) {
-            if (!map.containsKey(word)) {
-                map.put(word, 1);
-            } else {
-                map.put(word, map.get(word) + 1);
-            }
+            map.put(word, map.getOrDefault(word, 0) + 1);
         }
         for (int i = 0; i < len; i++) {
             int start = i, count = 0;
@@ -37,11 +36,7 @@ public class Solution {
                     count = 0;
                     cur = new HashMap<>();
                 } else {
-                    if (!cur.containsKey(word)) {
-                        cur.put(word, 1);                       
-                    } else {
-                        cur.put(word, cur.get(word) + 1);
-                    }
+                    cur.put(word, cur.getOrDefault(word, 0) + 1);
                     count++;
                     while (cur.get(word) > map.get(word)) {                        
                         String left = s.substring(start, start + len);
