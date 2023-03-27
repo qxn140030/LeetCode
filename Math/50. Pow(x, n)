@@ -4,7 +4,7 @@ Approach 1: Brute Force
 Time complexity: O(n), We will multiply x for n times.
 Space complexity: O(1)
 
-public class Solution {                     // Time Limit Exceeded.
+public class Solution {                    
     public double myPow(double x, int n) {
         double rst = 1;
         if (n > 0) {
