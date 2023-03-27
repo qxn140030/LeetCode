@@ -9,7 +9,7 @@ find out every possible permutation.
 Time complexity: O(n!)
 Space complexity: O(n), since an array will be used to store the permutations.
 
-Approach 2: Single pass
+Approach 2: Single Pass
 for any given sequence that is in descending order, no next larger permutation is possible.
 Time complexity: O(n)
 Space complexity: O(1)
@@ -17,9 +17,9 @@ Space complexity: O(1)
 public class Solution {
     public void nextPermutation(int[] nums) {  
         for (int i = nums.length - 2; i >= 0; i--) {
-            if (nums[i] < nums[i + 1]) {                         
+            if (nums[i] < nums[i + 1]) {                        // Find first decreasing element.                     
                 for (int j = nums.length - 1; j > i; j--) {
-                    if (nums[i] < nums[j]) {                     
+                    if (nums[i] < nums[j]) {                    // Find number just larger than nums[i]      
                         swap(nums, i, j);                       
                         reverse(nums, i + 1, nums.length - 1);  
                         return;
@@ -27,7 +27,7 @@ public class Solution {
                 }
             }
         }
-        reverse(nums, 0, nums.length - 1);
+        reverse(nums, 0, nums.length - 1);                      // If the input is in descending order, just reverse it.
     }
     private void swap(int[] nums, int i, int j) {
         int tmp = nums[i];
