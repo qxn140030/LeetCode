@@ -3,7 +3,7 @@ The Sudoku board could be partially filled, where empty cells are filled with th
 Note: A valid Sudoku board (partially filled) is not necessarily solvable. Only the filled cells need to be validated.
 
 Approach 1: HashSet
-Time complexity: O(3 * n ^ 2) = O(n^2). n = 9, is the board length.
+Time complexity: O(3 * n^2) = O(n^2). n = 9, is the board length.
 Space complexity: O(n)
 
 public class Solution {
@@ -18,9 +18,9 @@ public class Solution {
                     hs.add(board[i][j]);
                 }
             }
-            hs.clear();         // Note.
+            hs.clear();                              // Note.
         }        
-        for (int i = 0; i < 9; i++) {               // check columns.
+        for (int i = 0; i < 9; i++) {                // check columns.
             for (int j = 0; j < 9; j++) {
                 if (board[j][i] != '.') {
                     if (hs.contains(board[j][i])) {
@@ -63,19 +63,16 @@ class Solution {
                     continue;
                 }
                 int pos = board[r][c] - '1';
-                // Check the row
-                if (rows[r][pos] == 1) {
+                if (rows[r][pos] == 1) {         // Check the row
                     return false;
                 }
                 rows[r][pos] = 1;
-                // Check the column
-                if (cols[c][pos] == 1) {
+                if (cols[c][pos] == 1) {         // Check the column
                     return false;
                 }
                 cols[c][pos] = 1;
-                // Check the box
                 int idx = (r / 3) * 3 + c / 3;
-                if (boxes[idx][pos] == 1) {
+                if (boxes[idx][pos] == 1) {      // Check the box
                     return false;
                 }
                 boxes[idx][pos] = 1;
@@ -100,24 +97,20 @@ class Solution {
         int[] boxes = new int[9];
         for (int r = 0; r < 9; r++) {
             for (int c = 0; c < 9; c++) {
-                // Check if the position is filled with number
                 if (board[r][c] == '.') {
                     continue;
                 }
                 int val = board[r][c] - '0';
                 int pos = 1 << (val - 1);
-                // Check the row
-                if ((rows[r] & pos) > 0) {
+                if ((rows[r] & pos) > 0) {        // Check the row
                     return false;
                 }
                 rows[r] |= pos;
-                // Check the column
-                if ((cols[c] & pos) > 0) {
+                if ((cols[c] & pos) > 0) {        // Check the column
                     return false;
                 }
                 cols[c] |= pos;
-                // Check the box
-                int idx = (r / 3) * 3 + c / 3;
+                int idx = (r / 3) * 3 + c / 3;    // Check the box
                 if ((boxes[idx] & pos) > 0) {
                     return false;
                 }
