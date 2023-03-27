@@ -9,7 +9,7 @@ Output: -2
 
 Approach 1: Repeated Subtraction
 convert both inputs to negative instead of positive numbers, allows us to use the largest possible range of numbers.
-Time complexity: O(n), n is the absolute value of dividend.
+Time complexity: O(n), n is the absolute value of dividend. Consider the worst case where the divisor is 1.
 Space complexity: O(1)
 
 class Solution {
@@ -57,24 +57,23 @@ class Solution {
             negatives--;
             divisor = -divisor;
         }
-        int half = -1073741824;
-        int quotient = 0;
+        int quotient = 0, half = Integer.MIN_VALUE >> 1;
         while (divisor >= dividend) {
-            int powerOfTwo = -1;
-            int value = divisor;
+            int powerOfTwo = -1, value = divisor;
             while (value >= half && value + value >= dividend) {
-                value += value;
-                powerOfTwo += powerOfTwo;
+                value <<= 1;
+                powerOfTwo <<= 1;
             }
             quotient += powerOfTwo;
             dividend -= value;
         }
-        return negatives != 1 ? -quotient : quotient;
+        return negatives == 1 ? quotient : -quotient;
     }
 }
 
 Approach 3: Adding power of two
 work with negative numbers to elegantly avoid overflow issue.
+In the previous approach, we repeatedly go through the same doubles to find the largest.
 Time complexity: O(logn)
 Space complexity: O(logn)
 
@@ -94,29 +93,36 @@ class Solution {
         }
         ArrayList<Integer> doubles = new ArrayList<>();
         ArrayList<Integer> powersOfTwo = new ArrayList<>();
-        int powerOfTwo = -1;
-        int half = -1073741824;
+        int powerOfTwo = -1, half = Integer.MIN_VALUE >> 1;
         while (divisor >= dividend) {
             doubles.add(divisor);
             powersOfTwo.add(powerOfTwo);
             if (divisor < half) {
                 break;
             }
-            divisor += divisor;
-            powerOfTwo += powerOfTwo;
+            divisor <<= 1;
+            powerOfTwo <<= 1;
         }
         int quotient = 0;
+        // Go from largest to smallest, checking if the current fits into the remainder of the dividend.
         for (int i = doubles.size() - 1; i >= 0; i--) {
             if (doubles.get(i) >= dividend) {
                 quotient += powersOfTwo.get(i);
                 dividend -= doubles.get(i);
             }
         }
-        return negatives != 1 ? -quotient : quotient;
+        return negatives == 1 ? quotient : -quotient;
     }
 }
 
 Approach 4: Adding powers of two with bit-shifting
+In the previous approach, we put doubles of the divisor, and powers of two into lists. This was so that we could easily refer back to them.
+However, we don't need to save them—we can simply find the largest double, along with it's corresponding power of two, 
+and then generate the rest by dividing by two repeatedly.
+One potential pitfall with the right-shift operator is using it on negative odd numbers.
+Two's complement makes the result one-off what you would expect/probably wanted.
+The solution is to add 1 before doing the bit-shift on a negative number. 
+This way, it'll be "correct" regardless of whether the number was odd or even.
 Time complexity: O(logn)
 Space complexity: O(1)
 
@@ -134,12 +140,10 @@ class Solution {
             negatives--;
             divisor = -divisor;
         }
-        int half = -1073741824;
-        int highestDouble = divisor;
-        int highestPowerOfTwo = -1;
+        int highestPowerOfTwo = -1, highestDouble = divisor, half = Integer.MIN_VALUE >> 1;
         while (highestDouble >= half && dividend <= highestDouble + highestDouble) {
-            highestPowerOfTwo += highestPowerOfTwo;
-            highestDouble += highestDouble;
+            highestPowerOfTwo <<= 1;
+            highestDouble <<= 1;
         }
         int quotient = 0;
         while (dividend <= divisor) {
@@ -172,8 +176,7 @@ class Solution {
             negatives--;
             divisor = -divisor;
         }
-        int half = -1073741824;
-        int maxBit = 0;
+        int maxBit = 0, half = Integer.MIN_VALUE >> 1;
         while (divisor >= half && divisor + divisor >= dividend) {
             maxBit += 1;
             divisor += divisor;
