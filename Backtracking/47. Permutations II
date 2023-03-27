@@ -13,8 +13,8 @@ Space complexity: O(n)
 
 public class Solution {
     public List<List<Integer>> permuteUnique(int[] nums) {
-        List<List<Integer>> rst = new ArrayList<>();
         Arrays.sort(nums);
+        List<List<Integer>> rst = new ArrayList<>();
         List<Integer> path = new ArrayList<>();
         int[] visited = new int[nums.length];
         dfs(nums,  rst, path, visited);
@@ -22,7 +22,7 @@ public class Solution {
     }
     private void dfs(int[] nums, List<List<Integer>> rst, List<Integer> path, int[] visited) {
         if (path.size() == nums.length) {
-            rst.add(new ArrayList<Integer>(path));
+            rst.add(new ArrayList<>(path));
             return;
         }
         for (int i = 0; i < nums.length; i++) {
@@ -46,17 +46,17 @@ Space complexity: O(n)
 public class Solution {
     public List<List<Integer>> permuteUnique(int[] nums) {
         List<List<Integer>> rst = new ArrayList<List<Integer>>();
-        rst.add(new ArrayList<Integer>());        // start from an empty list
+        rst.add(new ArrayList<Integer>());                          // start from an empty list.
         for (int i = 0; i < nums.length; i++) {
-            Set<List<Integer>> cur = new HashSet<List<Integer>>();      // Note
+            Set<List<Integer>> cur = new HashSet<>();               // Note.
             for (List list : rst) {
                 for (int j = 0; j <= list.size(); j++) {
-                    list.add(j, nums[i]);                 // add the number to different locations
-                    cur.add(new ArrayList<Integer>(list));
+                    list.add(j, nums[i]);                           // add the number to different locations.
+                    cur.add(new ArrayList<>(list));
                     list.remove(j);
                 }
             }
-            rst = new ArrayList<List<Integer>>(cur);       // Note
+            rst = new ArrayList<>(cur);                             // Note.
         }
         return rst;
     }
