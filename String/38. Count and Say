@@ -6,9 +6,8 @@ Given an integer n, generate the nth sequence.
 Note: The sequence of integers will be represented as a string.
 
 Approach 1: Straightforward
-Time complexity: O(m * n), m is the length of string.
-Space complexity: O(m)
-Time/Space complexity: O(4^(n/3))
+Time complexity: O(4^(n/3))
+Space complexity: O(4^(n/3))
 each 3 iterations a single digit becomes 4 digits. If we treat every three iterations as a recursion, 
 since we have n iterations, we then have n/3 such recursions. during each recursion a digit becomes fourfold.
 
@@ -37,13 +36,12 @@ Space complexity: O(4^(n/3))
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 class Solution {
     public String countAndSay(int n) {
         String currentString = "1";
         // pattern to match the repetitive digits
         Pattern pattern = Pattern.compile("(.)\\1*");
-        for (int i = 1; i < n; ++i) {
+        for (int i = 1; i < n; i++) {
             Matcher m = pattern.matcher(currentString);
             StringBuffer nextString = new StringBuffer();
             // each group contains identical and adjacent digits
