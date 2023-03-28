@@ -20,10 +20,9 @@ class Solution {
             if (i == 0 || nums[i] > nums[i - 1]) {
                 for (int j = i + 1; j < nums.length - 2; j++) {
                     if (j == i + 1 || nums[j] > nums[j - 1]) {
-                        int start = j + 1;
-                        int end = nums.length - 1;
+                        int start = j + 1, end = nums.length - 1;
                         while (start < end) {
-                            long sum = (long)nums[i] + (long)nums[j] + (long)nums[start] + (long)nums[end];    // to avoid overflow
+                            long sum = (long)nums[i] + (long)nums[j] + (long)nums[start] + (long)nums[end];      // to avoid overflow.
                             if (sum > target) {
                                 end--;
                             } else if (sum < target) {
