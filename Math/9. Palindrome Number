@@ -54,12 +54,12 @@ public class Solution {
 Approach 3: Revert half of the number
 to avoid the overflow issue of the reverted number. how do we know that we've reached the half of the number?
 when the original number is less than the reversed number, it means we've processed half of the number digits.
-Time complexity: O(log10(n)). We divided the input by 10 for every iteration.
+Time complexity: O(logn)
 Space complexity: O(1)
 
 class Solution {
     public boolean isPalindrome(int x) {
-        if (x < 0 || (x % 10 == 0 && x != 0)) {
+        if (x < 0 || (x % 10 == 0 && x != 0)) {        // Note.
             return false;
         }
         int reverse = 0;
