@@ -39,7 +39,7 @@ class Solution {
                         low++;
                     } else if (sum > 0) {
                         high--;
-                    } else {         // Arrays.asList() returns fixed size list, cannot add another element to the list. 
+                    } else {                          // Arrays.asList() returns fixed size list, cannot add another element to the list. 
                         res.add(Arrays.asList(nums[i], nums[low++], nums[high--]));  
                         while (low < high && nums[low] == nums[low - 1]) {
                             low++;
@@ -56,7 +56,7 @@ class Solution {
 }
 
 Approach 2: using HashSet to avoid duplicates. 
-Time complexity: O(n^2 + nlogn) = O(n^2). 
+Time complexity: O(n^2 + nlogn) = O(n^2)
 Space complexity: O(n)
 
 class Solution {
@@ -97,7 +97,7 @@ class Solution {
         // Values in the hashmap will indicate whether we have encounted that element in the current iteration.
         Map<Integer, Integer> seen = new HashMap<>();  
         for (int i = 0; i < nums.length; i++)
-            if (dups.add(nums[i])) {         // HashSet.add() returns True if the element is not present in the HashSet otherwise False
+            if (dups.add(nums[i])) {                         // HashSet.add() returns True if the element is not present in the HashSet.
                 for (int j = i + 1; j < nums.length; j++) {
                     int complement = 0 - nums[i] - nums[j];
                     if (seen.containsKey(complement) && seen.get(complement) == i) {
