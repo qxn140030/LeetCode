@@ -29,7 +29,7 @@ Space complexity: O(numRows * n)
 
 class Solution {
     public String convert(String s, int numRows) {
-        if (numRows == 1) {
+        if (numRows <= 1) {
             return s;
         }
         int n = s.length();
@@ -52,9 +52,9 @@ class Solution {
         } 
         StringBuilder rst = new StringBuilder();
         for (char[] row: matrix) {
-            for (char character: row) {
-                if (character != ' ') {
-                    rst.append(character);
+            for (char ch: row) {
+                if (ch != ' ') {
+                    rst.append(ch);
                 }
             }
         }
