@@ -91,8 +91,8 @@ class Solution {
             negatives--;
             divisor = -divisor;
         }
-        ArrayList<Integer> doubles = new ArrayList<>();
-        ArrayList<Integer> powersOfTwo = new ArrayList<>();
+        List<Integer> doubles = new ArrayList<>();
+        List<Integer> powersOfTwo = new ArrayList<>();
         int powerOfTwo = -1, half = Integer.MIN_VALUE >> 1;
         while (divisor >= dividend) {
             doubles.add(divisor);
