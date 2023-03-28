@@ -37,19 +37,16 @@ class Solution {
         int numCols = sections * (numRows - 1);
         char[][] matrix = new char[numRows][numCols];
         for (char[] row: matrix) {
-            Arrays.fill(row, ' ');
+            Arrays.fill(row, ' ');                                // default value of char[] is '\u0000'.
         }
         int currRow = 0, currCol = 0, i = 0; 
-        // Iterate in zig-zag pattern on matrix and fill it with string characters.
-        while (i < n) {
-            // Move down.
-            while (currRow < numRows && i < n) {
+        while (i < n) {                                           // Iterate in zig-zag pattern on matrix and fill it with string characters.
+            while (currRow < numRows && i < n) {                  // Move down.
                 matrix[currRow++][currCol] = s.charAt(i++);
             }
             currRow -= 2;
             currCol++;
-            // Move up (with moving right also).
-            while (currRow > 0 && currCol < numCols && i < n) {
+            while (currRow > 0 && currCol < numCols && i < n) {   // Move up (with moving right also).
                 matrix[currRow--][currCol++] = s.charAt(i++);
             }
         } 
