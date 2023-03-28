@@ -98,7 +98,7 @@ class Solution {
         for (int j = 0; j < s.length(); j++) {
             char r = s.charAt(j);
             if (map.containsKey(r)) {
-                i = Math.max(map.get(r) + 1, i);       // Note
+                i = Math.max(map.get(r) + 1, i);       // Note.
             }
             map.put(r, j);  
             res = Math.max(res, j - i + 1);
