@@ -45,8 +45,7 @@ Space complexity: O(1)
 
 class Solution {
     public int myAtoi(String s) {
-        int n = s.length();
-        int i = 0, rst = 0, sign = 1;
+        int n = s.length(), i = 0, rst = 0, sign = 1;
         while (i < n && s.charAt(i) == ' ') {
             i++;
         }
@@ -59,7 +58,7 @@ class Solution {
         while (i < n && Character.isDigit(s.charAt(i))) {
             int digit = s.charAt(i) - '0';
             int tmp = rst * 10 + digit;
-            if (tmp / 10 != rst) {                                         // check overflow or underflow
+            if (tmp / 10 != rst) {                                           // Check overflow or underflow.
                 return sign == 1 ? Integer.MAX_VALUE : Integer.MIN_VALUE;
             }
             rst = tmp;
