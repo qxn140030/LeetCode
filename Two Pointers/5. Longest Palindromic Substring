@@ -16,6 +16,7 @@ Space complexity: O(1)
 Approach 2: Reverse and find Longest Common Substring
 But it fails when there exists a reversed copy of a non-palindromic substring in some other part of S.
 To rectify this, each time we find a longest common substring candidate, we check if the substring's indices are the same as the original indices.
+If it is, then we attempt to update the longest palindrome found so far; if not, we skip this and find the next candidate.
 
 Approach 3: Expand Around Center
 palindrome mirrors around its center. there are 2n - 1 centers, n letters and (n - 1) slots between two letters.
