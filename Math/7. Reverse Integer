@@ -24,7 +24,7 @@ public class Solution {
         int rst = 0;
         while (x != 0) {
             int tmp = rst * 10 + x % 10;
-            if (tmp / 10 != rst) {          // overflow
+            if (tmp / 10 != rst) {           // overflow.
                 return 0;
             }
             rst = tmp;
