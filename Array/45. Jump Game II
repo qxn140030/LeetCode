@@ -38,10 +38,7 @@ Space complexity: O(1)
 
 public class Solution {
     public int jump(int[] nums) {
-        if (nums == null || nums.length < 2) {
-            return 0;
-        }
-        int steps = 1, start = 0, furthest = nums[0], end = furthest;
+        int steps = 0, start = 0, end = 0, furthest = 0;
         while (furthest < nums.length - 1) {
             steps++;
             for (int i = start; i <= end; i++) {
