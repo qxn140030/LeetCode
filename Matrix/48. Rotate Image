@@ -85,14 +85,7 @@ class Solution {
         }
     }
     private void transpose(int[][] matrix) {
-        int n = matrix.length;
-        for (int i = 0; i < n; i++) {
-            for (int j = i + 1; j < n; j++) {
-                int tmp = matrix[j][i];
-                matrix[j][i] = matrix[i][j];
-                matrix[i][j] = tmp;
-            }
-        }
+        ... same as above
     }
     private void reflect(int[] arr) {
         int i = 0, j = arr.length - 1;
