@@ -16,7 +16,7 @@ class Solution {
         for (String s : strs) {
             char[] charArr = s.toCharArray();
             Arrays.sort(charArr);
-            String key = String.valueOf(ca);
+            String key = String.valueOf(charArr);
             if (!ans.containsKey(key)) {
                 ans.put(key, new ArrayList<>());
             }
