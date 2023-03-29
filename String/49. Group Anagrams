@@ -22,7 +22,7 @@ class Solution {
             }
             ans.get(key).add(s);
         }
-        return new ArrayList<>(ans.values());
+        return new ArrayList<>(ans.values());       // HashMap.values(): return a collection view containing all the values of the map.
     }
 }
 
@@ -41,8 +41,7 @@ class Solution {
             }
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < 26; i++) {
-                sb.append('#');
-                sb.append(count[i]);
+                sb.append('#').append(count[i]);
             }
             String key = sb.toString();
             if (!ans.containsKey(key)) {
