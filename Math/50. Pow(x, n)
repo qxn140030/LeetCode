@@ -42,8 +42,28 @@ public class Solution {
 }
 
 Approach 3: Fast Power Algorithm Iterative
+7^11, binary of n = 11 is (1011).
+7^11 = 7^8 * 7^2 * 7^1, 7^(8 + 2 + 1) = 7^11.
 Time complexity: O(logn)
 Space complexity: O(1)
+
+class Solution {
+    public double myPow(double x, int n) {
+        if (n < 0) {
+            n = -n;
+            x = 1 / x;
+        }
+        double pow = 1;
+        while (n != 0) {
+            if ((n & 1) != 0)  {
+                pow *= x;
+            } 
+            x *= x;
+            n >>>= 1; 
+        }
+        return pow;
+    }
+}
 
 class Solution {
     public double myPow(double x, int n) {
@@ -55,7 +75,7 @@ class Solution {
         double ans = 1, curProduct = x;
         for (long i = longN; i > 0; i /= 2) {
             if ((i % 2) == 1) {
-                ans = ans * curProduct;
+                ans *= curProduct;
             }
             curProduct *= curProduct;
         }
