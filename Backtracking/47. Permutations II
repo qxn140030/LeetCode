@@ -41,22 +41,22 @@ public class Solution {
 Approach 2: Iterative
 using HashSet to maintain uniqueness. 
 Time complexity: O(n * n!)
-Space complexity: O(n)
+Space complexity: O(1)
 
 public class Solution {
     public List<List<Integer>> permuteUnique(int[] nums) {
-        List<List<Integer>> rst = new ArrayList<List<Integer>>();
-        rst.add(new ArrayList<Integer>());                          // start from an empty list.
+        List<List<Integer>> rst = new ArrayList<>();
+        rst.add(new ArrayList<>());                            // start from an empty list.
         for (int i = 0; i < nums.length; i++) {
-            Set<List<Integer>> cur = new HashSet<>();               // Note.
+            Set<List<Integer>> cur = new HashSet<>();          // Note.
             for (List list : rst) {
                 for (int j = 0; j <= list.size(); j++) {
-                    list.add(j, nums[i]);                           // add the number to different locations.
+                    list.add(j, nums[i]);                      // add the number to different locations.
                     cur.add(new ArrayList<>(list));
                     list.remove(j);
                 }
             }
-            rst = new ArrayList<>(cur);                             // Note.
+            rst = new ArrayList<>(cur);                        // Note.
         }
         return rst;
     }
