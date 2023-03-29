@@ -7,6 +7,8 @@ You should NOT use internal library such as BigInteger.
 Approach 1: Elementary Math
 Time Complexity: O(m * (m + n)), where n and m are the number of digits in num1 and num2 respectively.
 Space complexity: O(m * (m + n))
+We store each result of multiplication for each digit of num2 with num1 in the results array. 
+Each multiplication result can have at most m + n length, and there will be m such results.
 
 class Solution {
     public String multiply(String num1, String num2) {
@@ -108,7 +110,7 @@ class Solution {
         }
         return ans;
     }
-    List<Integer> multiplyOneDigit(StringBuilder first, char secondNumDigit, int numZeros) {
+    private List<Integer> multiplyOneDigit(StringBuilder first, char secondNumDigit, int numZeros) {
         List<Integer> cur = new ArrayList<>();
         for (int i = 0; i < numZeros; i++) {
             cur.add(0);
