@@ -3,19 +3,49 @@ Each element in the array represents your maximum jump length at that position.
 Determine if you are able to reach the last index.
 For example: A = [2,3,1,1,4], return true. A = [3,2,1,0,4], return false.
 
-Solution 1: DP. Time Limit Exceeded. Time complexity: O(n^2). Space complexity: O(n).
-public class Solution {
+Approach 1: Backtracking
+We try every single jump pattern that takes us from the first position to the last. 
+We start from the first position and jump to every index that is reachable. We repeat the process until last index is reached. 
+When stuck, backtrack.
+Time complexity: O(2^n)
+There are 2^n (upper bound) ways of jumping from the first position to the last. 
+Space complexity: O(n)
+
+class Solution {
     public boolean canJump(int[] nums) {
-        if (nums == null || nums.length < 2) {
+        return canJumpFromPosition(0, nums);
+    }
+    private boolean canJumpFromPosition(int pos, int[] nums) {
+        if (pos >= nums.length - 1) {
             return true;
         }
+        int furthest = pos + nums[pos];
+        for (int i = pos + 1; i <= furthest; i++) {  
+            if (canJumpFromPosition(i, nums)) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+One quick optimization we can do for the code above is to check the nextPosition from right to left. 
+The theoretical worst case performance is the same, but in practice, the code might run faster. 
+Intuitively, this means we always try to make the biggest jump such that we reach the end as soon as possible.
+
+Approach 2: DP
+Time complexity: O(n^2)
+Space complexity: O(n)
+
+public class Solution {
+    public boolean canJump(int[] nums) {
         boolean[] can = new boolean[nums.length];
         can[0] = true;
         for (int i = 1; i < nums.length; i++) {
             for (int j = 0; j < i; j++) {
                 if (can[j] && nums[j] + j >= i) {
                     can[i] = true;
-                    break;            // Note
+                    break;                        // Note.
                 }
             }
         }
@@ -23,12 +53,12 @@ public class Solution {
     }
 }
 
-Solution 2: Greedy. Time Limit Exceeded. Time complexity: O(n). Space complexity: O(1).
+Approach 3: Greedy
+Time complexity: O(n)
+Space complexity: O(1)
+
 public class Solution {
     public boolean canJump(int[] nums) {
-        if (nums == null || nums.length < 2) {
-            return true;
-        }
         int furthest = nums[0];
         for (int i = 1; i < nums.length; i++) {
             if (furthest >= i && nums[i] + i > furthest) {
