@@ -1,6 +1,5 @@
-Question: Given a string s consisting of words and spaces, return the length of last word in the string.
+Given a string s consisting of words and spaces, return the length of last word in the string.
 Note: A word is defined as a character sequence consists of non-space characters only.
-
 Example 1:
 Input: s = "Hello World"
 Output: 5
@@ -19,11 +18,10 @@ Space complexity: O(1)
 
 class Solution {
     public int lengthOfLastWord(String s) {
-        int i = s.length() - 1;
+        int i = s.length() - 1, length = 0;
         while (i >= 0 && s.charAt(i) == ' ') {
             i--;
         }
-        int length = 0;
         while (i >= 0 && s.charAt(i--) != ' ') {
             length++;
         }
@@ -37,8 +35,7 @@ Space complexity: O(1)
 
 class Solution {
     public int lengthOfLastWord(String s) {
-        int i = s.length() - 1;
-        int len = 0;
+        int i = s.length() - 1, len = 0;
         while (i >= 0) {
             if (s.charAt(i--) != ' ') {
                 len++;
@@ -56,8 +53,7 @@ Space complexity: O(n)
 
 class Solution {
     public int lengthOfLastWord(String s) {
-    	// String.trim() returns a copy of the string, with the leading and trailing whitespaces trimmed.
-        s = s.trim();  
+    	s = s.trim();                     // String.trim() returns a copy of the string, with the leading and trailing whitespaces trimmed.
         return s.length() - s.lastIndexOf(" ") - 1;
     }
 }
