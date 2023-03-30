@@ -20,7 +20,7 @@ class Solution {
             return true;
         }
         int furthest = pos + nums[pos];
-        for (int i = pos + 1; i <= furthest; i++) {  
+        for (int i = pos + 1; i <= furthest; i++) {           // for (int i = furthest; i > pos; i--)
             if (canJumpFromPosition(i, nums)) {
                 return true;
             }
