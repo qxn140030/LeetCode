@@ -1,0 +1,114 @@
+Given a set of non-overlapping intervals, insert a new interval into the intervals (merge if necessary).
+You may assume that the intervals were initially sorted according to their start times.
+Example 1:
+Given intervals [1,3],[6,9], insert and merge [2,5] in as [1,5],[6,9].
+
+Example 2:
+Given [1,2],[3,5],[6,7],[8,10],[12,16], insert and merge [4,9] in as [1,2],[3,10],[12,16].
+This is because the new interval [4,9] overlaps with [3,5],[6,7],[8,10].
+
+Approach 1: Linear Search
+Time complexity: O(n)
+Space complexity: O(1)
+
+class Solution {
+    public int[][] insert(int[][] intervals, int[] newInterval) {
+        intervals = insertInterval(intervals, newInterval);
+        LinkedList<int[]> rst = new LinkedList<>();
+        for (int[] interval : intervals) {
+            if (rst.isEmpty() || rst.getLast()[1] < interval[0]) {
+                rst.add(interval);
+            } else {
+                rst.getLast()[1] = Math.max(rst.getLast()[1], interval[1]);
+            }
+        }
+        return rst.toArray(new int[rst.size()][]);
+    }
+    private int[][] insertInterval(int[][] intervals, int[] newInterval) {
+        boolean flag = false;
+        List<int[]> list = new ArrayList<>(Arrays.asList(intervals));
+        for (int i = 0; i < intervals.length; i++) {
+            if (newInterval[0] < intervals[i][0]) {
+                list.add(i, newInterval);
+                flag = true;
+                break;
+            }
+        }
+        if (!flag) {
+            list.add(newInterval);
+        }
+        return list.toArray(new int[list.size()][]);
+    }
+}
+
+class Solution {
+    public int[][] insert(int[][] intervals, int[] newInterval) {
+        LinkedList<int[]> rst = new LinkedList<>();
+        int index = 0;
+        for (int[] interval : intervals) {
+            if (newInterval[0] > interval[1]) {
+                rst.add(interval);
+                index++;
+            } else if (newInterval[1] < interval[0]) {
+                rst.add(interval);
+            } else {
+                newInterval[0] = Math.min(newInterval[0], interval[0]);
+                newInterval[1] = Math.max(newInterval[1], interval[1]);
+            }
+        }
+        rst.add(index, newInterval);
+        return rst.toArray(new int[rst.size()][]);
+    }
+}
+
+Approach 2: Binary Search
+Time complexity: O(n)
+Binary search will take O(log⁡n) time, but inserting into the list at the returned position will take O(n) time. 
+Then iterating over the intervals and merging them with intervals ahead of it will take another O(n) time.
+Space complexity: O(1)
+
+class Solution {
+    public int[][] insert(int[][] intervals, int[] newInterval) {
+        intervals = insertInterval(intervals, newInterval);
+        LinkedList<int[]> rst = new LinkedList<>();
+        for (int[] interval : intervals) {
+            if (rst.isEmpty() || rst.getLast()[1] < interval[0]) {
+                rst.add(interval);
+            } else {
+                rst.getLast()[1] = Math.max(rst.getLast()[1], interval[1]);
+            }
+        }
+        return rst.toArray(new int[rst.size()][]);
+    }
+    private int[][] insertInterval(int[][] intervals, int[] newInterval) {
+        List<int[]> list = new ArrayList<>(Arrays.asList(intervals));
+        int index = insertPosition(intervals, newInterval);
+        if (index == intervals.length) {
+            list.add(newInterval);
+        } else {
+            list.add(index, newInterval);
+        }
+        return list.toArray(new int[list.size()][]);
+    }
+    private int insertPosition(int[][] intervals, int[] newInterval) {
+        if (intervals.length == 0) {
+            return 0;
+        }
+        int start = 0, end = intervals.length - 1;
+        while (start + 1 < end) {
+            int mid = (start + end) / 2;
+            if (newInterval[0] < intervals[mid][0]) {
+                end = mid;
+            } else {
+                start = mid;
+            }
+        }
+        if (newInterval[0] < intervals[start][0]) {
+            return start;
+        }
+        if (newInterval[0] < intervals[end][0]) {
+            return end;
+        }
+        return end + 1;
+    }
+}
