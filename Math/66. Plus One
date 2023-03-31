@@ -1,4 +1,4 @@
-Question: You are given a large integer represented as an array digits, where each digits[i] is the ith digit of the integer.
+You are given a large integer represented as an array digits, where each digits[i] is the ith digit of the integer.
 The digits are ordered from most significant digit to least significant in left-to-right order.
 The large integer does not contain any leading 0's.
 Increment the large integer by one and return the resulting array of digits.
@@ -21,9 +21,6 @@ Space complexity: O(n) in worst case, O(1) in most time.
 
 public class Solution {
     public int[] plusOne(int[] digits) {
-        if (digits == null) {
-            return new int[]{1};
-        }
         int carry = 1;
         for (int i = digits.length - 1; i >= 0; i--) {
             int sum = digits[i] + carry;
