@@ -27,8 +27,7 @@ Space complexity: O(max(m, n)), length of result.
 public class Solution {
     public String addBinary(String a, String b) {
         int carries = 0;
-        int i = a.length() - 1;
-        int j = b.length() - 1;
+        int i = a.length() - 1, j = b.length() - 1;
         StringBuilder sb = new StringBuilder();
         while (i >= 0 || j >= 0) {
             int na = i >= 0 ? a.charAt(i) - '0' : 0;
@@ -69,4 +68,18 @@ class Solution {
     }
     return x.toString(2);
   }
+}
+
+If we assume the string will not be too long, in the range of Integer:
+class Solution {
+    public String addBinary(String a, String b) {
+        int x = Integer.parseInt(a, 2);
+        int y = Integer.parseInt(b, 2);
+        while (y != 0) {
+            int cur = x ^ y;
+            y = ((x & y) << 1);
+            x = cur;
+        }
+        return Integer.toBinaryString(x);
+    }
 }
