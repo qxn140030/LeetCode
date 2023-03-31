@@ -47,22 +47,18 @@ class Solution {
     public int[][] generateMatrix(int n) {
         int[][] rst = new int[n][n];
         int num = 1;
-        for (int layer = 0; layer < (n + 1) / 2; layer++) {
-            // direction 1 - traverse from left to right
-            for (int ptr = layer; ptr < n - layer; ptr++) {
-                rst[layer][ptr] = num++;
+        for (int i = 0; i < (n + 1) / 2; i++) {
+            for (int j = i; j < n - i; j++) {            // traverse from left to right
+                rst[i][j] = num++;
             }
-            // direction 2 - traverse from top to bottom
-            for (int ptr = layer + 1; ptr < n - layer; ptr++) {
-                rst[ptr][n - layer - 1] = num++;
+            for (int j = i + 1; j < n - i; j++) {        // traverse from top to bottom
+                rst[j][n - i - 1] = num++;
             }
-            // direction 3 - traverse from right to left
-            for (int ptr = layer + 1; ptr < n - layer; ptr++) {
-                rst[n - layer - 1][n - ptr - 1] = num++;
+            for (int j = i + 1; j < n - i; j++) {        // traverse from right to left
+                rst[n - i - 1][n - j - 1] = num++;
             }
-            // direction 4 - traverse from bottom to top
-            for (int ptr = layer + 1; ptr < n - layer - 1; ptr++) {
-                rst[n - ptr - 1][layer] = num++;
+            for (int j = i + 1; j < n - i - 1; j++) {    // traverse from bottom to top
+                rst[n - j - 1][i] = num++;
             }
         }
         return rst;
@@ -76,14 +72,15 @@ Space complexity: O(1)
 class Solution {
     public int[][] generateMatrix(int n) {
         int[][] rst = new int[n][n];
-        int dir[][] = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
-        int num = 1, d = 0, row = 0, col = 0;
+        int dir[][] = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};   // stores the changes in x and y co-ordinates in each direction.
+        int num = 1, d = 0, row = 0, col = 0;               // let d be the current direction index.
         while (num <= n * n) {
             rst[row][col] = num++;
-            int r = Math.floorMod(row + dir[d][0], n);
-            int c = Math.floorMod(col + dir[d][1], n);
-            // change direction if next cell is non zero
-            if (rst[r][c] != 0) d = (d + 1) % 4;
+            int r = Math.floorMod(row + dir[d][0], n);      // use floorMod in Java instead of modulo % to handle mod of negative numbers. 
+            int c = Math.floorMod(col + dir[d][1], n);      // required, row and column values might go negative and using % won't give desired results.
+            if (rst[r][c] != 0) {                           // change direction if next cell is non-zero.
+                d = (d + 1) % 4;                            // go to next direction in array dir. 
+            }
             row += dir[d][0];
             col += dir[d][1];
         }
