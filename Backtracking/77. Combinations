@@ -34,3 +34,30 @@ class Solution {
         }
     }
 }
+
+Approach 2: Lexicographic (binary sorted) combinations
+generate the combinations in a lexicographic sorted order.
+Time complexity: O(k * C(k, n)), where C(k, n) = n! / ((n - k)! * k!)
+Space complexity: O(1)
+
+class Solution {
+    public List<List<Integer>> combine(int n, int k) {
+        List<Integer> nums = new ArrayList<>();
+        for (int i = 1; i <= k; i++) {                           // Initialize the first combination.
+            nums.add(i);
+        }
+        nums.add(n + 1);                                         // Add n + 1 as a last element, it will serve as a sentinel. 
+        List<List<Integer>> rst = new ArrayList<>();
+        int j = 0;                                               // Set the pointer in the beginning of the list.
+        while (j < k) {
+            rst.add(new ArrayList<>(nums.subList(0, k)));        // Add current combination.
+            j = 0;
+            while (j < k && (nums.get(j) + 1) == nums.get(j + 1)) {
+                nums.set(j, j + 1);
+                j++;
+            }
+            nums.set(j, nums.get(j) + 1);                        // Increase it by one nums[j]++ to move to the next combination.
+        }
+        return rst;
+    }
+}
