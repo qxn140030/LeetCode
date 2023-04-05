@@ -8,6 +8,8 @@ For example, Given board =
   ['A','D','E','E']
 ]
 word = "ABCCED", -> returns true, word = "SEE", -> returns true, word = "ABCB", -> returns false.
+Follow up: 
+Could you use search pruning to make your solution faster with a larger board?
 
 Approach 1: Backtracking
 Time complexity: O(m * n * 4^k), where k is the length of the word. 
@@ -30,8 +32,7 @@ public class Solution {
         if (index >= word.length()) { 
             return true;
         }
-        if (row < 0 || col < 0 || row >= board.length || col >= board[0].length || visited[row][col] 
-		    || word.charAt(index) != board[row][col]) {
+        if (row < 0 || col < 0 || row >= board.length || col >= board[0].length || visited[row][col] || word.charAt(index) != board[row][col]) {
             return false;
         }
         visited[row][col] = true;
@@ -41,5 +42,38 @@ public class Solution {
 		   || search(board, word, index + 1, row, col - 1, visited);
         visited[row][col] = false;
         return rst;
+    }
+}
+
+Space complexity: O(1)
+class Solution {
+    public boolean exist(char[][] board, String word) {
+        int m = board.length, n = board[0].length;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (search(board, word, 0, i, j)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    private boolean search(char[][] board, String word, int index, int row, int col) {
+        if (index >= word.length()) {
+            return true;
+        }
+        if (row < 0 || col < 0 || row >= board.length || col >= board[0].length || word.charAt(index) != board[row][col]) {
+            return false;
+        }
+        board[row][col] = '#';                    // mark the path before the next exploration.
+        int[] rowOffsets = {0, 1, 0, -1};
+        int[] colOffsets = {1, 0, -1, 0};
+        for (int i = 0; i < 4; i++) {
+            if (search(board, word, index + 1, row + rowOffsets[i], col + colOffsets[i])) {
+                return true;                      // return without cleanup.
+            }
+        }
+        board[row][col] = word.charAt(index);     // cleanup.
+        return false;
     }
 }
