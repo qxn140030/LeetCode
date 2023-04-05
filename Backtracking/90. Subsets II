@@ -8,9 +8,65 @@ Example 2:
 Input: nums = [0]
 Output: [[],[0]]
 
-Approach 1: Backtracking
-Time complexity: O( 
-Space complexity: O(
+Approach 1: Bitmasking
+Time complexity: O(n * 2^n)
+Space complexity: O(n * 2^n)
+We need to store at most 2^n number of subsets in the HashSet. The maximum length of any subset can be n.
+
+class Solution {
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        List<List<Integer>> rst = new ArrayList<>();
+        Arrays.sort(nums);
+        int n = nums.length;
+        int len = (int)Math.pow(2, n);
+        Set<String> seen = new HashSet<>();
+        for (int i = 0; i < len; i++) {
+            List<Integer> cur = new ArrayList<>();
+            StringBuilder hashcode = new StringBuilder();
+            for (int j = 0; j < n; j++) {
+                int mask = 1 << j;
+                int isSet = mask & i;
+                if (isSet != 0) {
+                    cur.add(nums[j]);
+                    hashcode.append(nums[j]).append(",");
+                }
+            }
+            if (!seen.contains(hashcode.toString())) {
+                seen.add(hashcode.toString());
+                rst.add(cur);
+            }
+        }
+        return rst;
+    }
+}
+
+Approach 2: Cascading (Iterative)
+Time complexity: O(n * 2^n)
+Space complexity: O(logn)
+in Java, the Arrays.sort() for primitives is implemented as a variant of quicksort algorithm whose space complexity is O(log⁡n).
+
+class Solution {
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        Arrays.sort(nums);
+        List<List<Integer>> rst = new ArrayList<>();
+        rst.add(new ArrayList<>());
+        int size = 0;
+        for (int i = 0; i < nums.length; i++) {
+            int start = (i > 0 && nums[i] == nums[i - 1]) ? size : 0;
+            size = rst.size();
+            for (int j = start; j < size; j++) {
+                List<Integer> cur = new ArrayList<>(rst.get(j));
+                cur.add(nums[i]);
+                rst.add(cur);
+            }
+        }
+        return rst;
+    }
+}
+
+Approach 3: Backtracking
+Time complexity: O(n * 2^n)
+Space complexity: O(n)
 
 public class Solution {
     public List<List<Integer>> subsetsWithDup(int[] nums) {
