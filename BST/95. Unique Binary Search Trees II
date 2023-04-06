@@ -6,28 +6,37 @@ For example, Given n = 3, your program should return all 5 unique BST's shown be
     /     /       \                 \
    2     1         2                 3
 
-Time complexity: exponential. Space complexity: exponential.   
+Approach 1: Recursion
+Time complexity: exponential. 
+Space complexity: exponential. 
+
 /**
  * Definition for a binary tree node.
  * public class TreeNode {
  *     int val;
  *     TreeNode left;
  *     TreeNode right;
- *     TreeNode(int x) { val = x; }
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
  * }
  */
-public class Solution {
+class Solution {
     public List<TreeNode> generateTrees(int n) {
-        return n > 0 ? helper(1, n) : new ArrayList<TreeNode>();      // Note
+        return n > 0 ? helper(1, n) : new ArrayList<>();  
     }
     private List<TreeNode> helper(int start, int end) {
-        List<TreeNode> rst = new ArrayList<TreeNode>();
+        List<TreeNode> rst = new ArrayList<>();
         if (start > end) {
-            rst.add(null);          // Note
+            rst.add(null);          
             return rst;
         }
         for (int i = start; i <= end; i++) {
-            List<TreeNode> left = helper(start, i - 1);        // Note
+            List<TreeNode> left = helper(start, i - 1);        
             List<TreeNode> right = helper(i + 1, end);
             for (TreeNode l : left) {
                 for (TreeNode r : right) {
