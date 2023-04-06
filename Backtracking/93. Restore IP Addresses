@@ -1,0 +1,97 @@
+Given a string containing only digits, restore it by returning all possible valid IP address combinations.
+A valid IP address consists of exactly four integers separated by single dots. 
+Each integer is between 0 and 255 (inclusive) and cannot have leading zeros.
+Example 1:
+Input: s = "25525511135"
+Output: ["255.255.11.135","255.255.111.35"]
+
+Example 2:
+Input: s = "0000"
+Output: ["0.0.0.0"]
+
+Example 3:
+Input: s = "101023"
+Output: ["1.0.10.23","1.0.102.3","10.1.0.23","10.10.2.3","101.0.2.3"]
+
+Approach 1: Backtracking
+Time complexity: O(n * m^n). For this question, m = 3, n = 4.
+separate the input string into n integers, each integer is at most m digits.
+There are at most m^(n - 1) possibilities, and for each possibility checking whether all parts are valid takes O(m * n) time.
+Space complexity: O(m * n)
+For each possibility, we save (n - 1) numbers (the number of digits before each dot).
+we need temporary space to save a solution before putting it into the answer list. The length of each solution string is (m * n + m - 1).
+
+public class Solution {
+    public List<String> restoreIpAddresses(String s) {
+        List<String> rst = new ArrayList<>();
+        List<String> path = new ArrayList<>();
+        dfs(s, rst, path, 0);
+        return rst;
+    }
+    private void dfs(String s, List<String> rst, List<String> path, int pos) {
+        if (path.size() == 4) {
+            if (pos != s.length()) {
+                return;
+            }
+            StringBuilder sb = new StringBuilder();
+            for (String str : path) {
+                sb.append(str).append('.');
+            }
+            sb.deleteCharAt(sb.length() - 1);
+            rst.add(sb.toString());
+            return;
+        }
+        for (int i = pos; i < s.length() && i < pos + 3; i++) {
+            String sub = s.substring(pos, i + 1);
+            if (check(sub)) {
+                path.add(sub);
+                dfs(s, rst, path, i + 1);
+                path.remove(path.size() - 1);
+            }
+        }
+    }
+    private boolean check(String s) {
+        if (s.charAt(0) == '0') {
+            return s.equals("0");             // 001, 010, 03 are not valid.
+        }
+        int num = Integer.parseInt(s);        // or int num = Integer.valueOf(s);
+        return num >= 0 && num <= 255;        // the range of each part is [0, 255].
+    }
+}
+
+Approach 2: Iterative
+Time complexity: O(n * m^n)
+Space complexity: O(m * n)
+
+class Solution {
+    public List<String> restoreIpAddresses(String s) {
+        List<String> rst = new ArrayList<>();
+        int n = s.length();
+        for (int i = Math.max(1, n - 9); i <= Math.min(3, n - 3); i++) {
+            if (!isValid(s, 0, i)) {
+                continue;
+            }
+            for (int j = Math.max(1, n - i - 6); j <= Math.min(3, n - i - 2); j++) {
+                if (!isValid(s, i, j)) {
+                    continue;
+                }
+                for (int k = Math.max(1, n - i - j - 3); k <= Math.min(3, n - i - j - 1); k++) {
+                    if (isValid(s, i + j, k) && isValid(s, i + j + k, n - i - j - k)) {
+                        rst.add(String.join(".", s.substring(0, i), s.substring(i, i + j), s.substring(i + j, i + j + k), s.substring(i + j + k)));
+                    }
+                }
+            }
+        }
+        return rst;
+    }
+    private boolean isValid(String s, int start, int len) {
+        if (len == 1) {
+            return true;
+        }  
+        if (s.charAt(start) == '0') {
+            return false;   
+        }
+        int num = Integer.parseInt(s.substring(start, start + len));  
+        return num >= 0 && num <= 255;
+    }
+}
