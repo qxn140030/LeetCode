@@ -1,0 +1,118 @@
+A message containing letters from A-Z is being encoded to numbers using the following mapping:
+'A' -> 1
+'B' -> 2
+...
+'Z' -> 26
+Given an encoded message containing digits, determine the total number of ways to decode it.
+For example, 
+Given encoded message "12", it could be decoded as "AB" (1 2) or "L" (12). The number of ways decoding "12" is 2.
+      
+Approach 1: Recursive with Memoization
+Time complexity: O(n). Memoization helps in pruning the recursion tree and hence decoding for an index only once. 
+Space complexity: O(n). The dictionary used for memoization would take the space equal to the length of the string.
+
+class Solution {
+    public int numDecodings(String s) {
+        Map<Integer, Integer> map = new HashMap<>();
+        return helper(s, map, 0);
+    }
+    private int helper(String s, Map<Integer, Integer> map, int i) {
+        if (map.containsKey(i)) {
+            return map.get(i);
+        }
+        if (i == s.length()) {
+            return 1;
+        }
+        if (s.charAt(i) == '0') {
+            return 0;
+        }
+        if (i == s.length() - 1) {
+            return 1;
+        }
+        int rst = helper(s, map, i + 1);
+        if (Integer.parseInt(s.substring(i, i + 2)) <= 26) {
+            rst += helper(s, map, i + 2);
+        }
+        map.put(i, rst);
+        return rst;
+    }
+}
+
+Approach 2: Backtracking, using HashMap.
+Time complexity: O(n)
+Space complexity: O(n)
+
+public class Solution {
+    public int numDecodings(String s) {
+        Map<String, Integer> map = new HashMap<>();
+        return helper(s, map);
+    }
+    private int helper(String s, Map<String, Integer> map) {
+        if (s.length() == 0) {
+            return 1;
+        }
+        if (map.containsKey(s)) {
+            return map.get(s);
+        }
+        int rst = 0;
+        for (int i = 1; i <= s.length(); i++) {
+            int val = Integer.valueOf(s.substring(0, i));
+            if (val > 0 && val <= 26) {
+                rst += helper(s.substring(i), map);
+            } else {
+                break;
+            }
+        }
+        map.put(s, rst);
+        return rst;
+    }
+}
+
+Approach 3: DP
+Time complexity: O(n)
+Space complexity: O(n)
+
+public class Solution {
+    public int numDecodings(String s) {
+        int n = s.length();
+        int[] dp = new int[n + 1];      
+        dp[0] = 1;                               // to provide the baton to be passed.
+        dp[1] = s.charAt(0) == '0' ? 0 : 1;      // Ways to decode a string of size 1 is 1. Unless the string is '0'.
+        for (int i = 2; i <= n; i++) {
+            if (s.charAt(i - 1) > '0') {         // Check if successful single digit decode is possible.
+                dp[i] = dp[i - 1];
+            }
+            int twoDigit = (s.charAt(i - 2) - '0') * 10 + (s.charAt(i - 1) - '0');   // Check if successful two digit decode is possible.
+            if (twoDigit >= 10 && twoDigit <= 26) {
+                dp[i] += dp[i - 2];
+            }
+        }
+        return dp[n];
+    }
+}
+
+Approach 4: Iterative
+Time complexity: O(n)
+Space complexity: O(1)
+
+class Solution {
+    public int numDecodings(String s) {
+        if (s.charAt(0) == '0') {
+            return 0;
+        }
+        int n = s.length(), twoBack = 1, oneBack = 1;
+        for (int i = 1; i < n; i++) {
+            int cur = 0;
+            if (s.charAt(i) != '0') {
+                cur = oneBack;
+            }
+            int twoDigit = Integer.parseInt(s.substring(i - 1, i + 1));
+            if (twoDigit >= 10 && twoDigit <= 26) {
+                cur += twoBack;
+            } 
+            twoBack = oneBack;
+            oneBack = cur;
+        }
+        return oneBack;
+    }
+}
