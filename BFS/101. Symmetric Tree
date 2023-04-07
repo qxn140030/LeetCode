@@ -1,4 +1,4 @@
-Question: Given a binary tree, check whether it is a mirror of itself (ie, symmetric around its center).
+Given a binary tree, check whether it is a mirror of itself (ie, symmetric around its center).
 For example, this binary tree [1,2,2,3,4,4,3] is symmetric:
     1
    / \
@@ -11,7 +11,8 @@ But the following [1,2,2,null,3,null,3] is not:
   2   2
    \   \
    3    3
-Note: Bonus points if you could solve it both recursively and iteratively.
+Follow up: 
+Could you solve it both recursively and iteratively?
 
 Approach 1: Recursive
 A tree is symmetric if the left subtree is mirror reflection of the right subtree.
@@ -24,7 +25,13 @@ Space complexity: O(logn)
  *     int val;
  *     TreeNode left;
  *     TreeNode right;
- *     TreeNode(int x) { val = x; }
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
  * }
  */
 public class Solution {
@@ -59,8 +66,7 @@ public class Solution {
         q1.offer(root.left);
         q2.offer(root.right);
         while (!q1.isEmpty() && !q2.isEmpty()) {
-            TreeNode n1 = q1.poll();
-            TreeNode n2 = q2.poll();
+            TreeNode n1 = q1.poll(), n2 = q2.poll();
             if (n1 == null && n2 == null) {
                 continue;
             }
@@ -88,9 +94,8 @@ class Solution {
         Queue<TreeNode> queue = new LinkedList<>();
         queue.offer(root.left);
         queue.offer(root.right);
-        while(!queue.isEmpty()) {
-            TreeNode node1 = queue.poll();
-            TreeNode node2 = queue.poll();
+        while (!queue.isEmpty()) {
+            TreeNode node1 = queue.poll(), node2 = queue.poll();
             if (node1 == null && node2 == null) {
                 continue;
             }
