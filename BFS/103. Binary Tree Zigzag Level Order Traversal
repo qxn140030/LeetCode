@@ -87,8 +87,7 @@ class Solution {
         } else {
             if (level % 2 == 0) {
                 rst.get(level).add(node.val);
-            }
-            else {
+            } else {
                 rst.get(level).add(0, node.val);
             }
         }
