@@ -22,9 +22,6 @@ Space complexity: O(n)
  */
 public class Solution {
     public TreeNode buildTree(int[] inorder, int[] postorder) {
-        if (inorder == null || postorder == null || inorder.length != postorder.length) {
-            return null;
-        }
         return helper(inorder, 0, inorder.length - 1, postorder, 0, postorder.length - 1);
     }
     private TreeNode helper(int[] inorder, int inStart, int inEnd, int[] postorder, int postStart, int postEnd) {
