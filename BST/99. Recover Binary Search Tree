@@ -1,0 +1,185 @@
+Two elements of a binary search tree (BST) are swapped by mistake.
+Recover the tree without changing its structure.
+Follow up:
+A solution using O(n) space is pretty straight forward. Could you devise a constant space solution?
+
+Approach 1: Sort an Almost Sorted Array
+1. Construct inorder traversal of the tree. It should be an almost sorted list where only two elements are swapped.
+2. Identify two swapped elements x and y in an almost sorted array in linear time.
+3. Traverse the tree again. Change value x to y and value y to x.
+Time complexity: O(n)
+Space complexity: O(n)
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public void recoverTree(TreeNode root) {
+        List<Integer> nums = new ArrayList<>();
+        inorder(root, nums);
+        int[] swapped = findTwoSwapped(nums);
+        recover(root, 2, swapped[0], swapped[1]);
+    }
+    private void inorder(TreeNode root, List<Integer> nums) {
+        if (root == null) {
+            return;
+        }
+        inorder(root.left, nums);
+        nums.add(root.val);
+        inorder(root.right, nums);
+    }
+    private int[] findTwoSwapped(List<Integer> nums) {
+        int n = nums.size(), x = -1, y = -1;
+        boolean flag = false;
+        for (int i = 1; i < n; i++) {
+            if (nums.get(i) < nums.get(i - 1)) {
+                y = nums.get(i);
+                if (!flag) {                     // first swap occurrence
+                    x = nums.get(i - 1);
+                    flag = true;
+                } else {                         // second swap occurrence
+                    break;
+                }
+            }
+        }
+        return new int[]{x, y};
+    }
+    private void recover(TreeNode root, int count, int x, int y) {
+        if (root == null || count == 0) {
+            return;
+        }
+        if (root.val == x || root.val == y) {
+            root.val = root.val == x ? y : x;
+            count--;
+        }
+        recover(root.left, count, x, y);
+        recover(root.right, count, x, y);
+    }
+}
+
+Approach 2: Iterative Inorder Traversal
+construct inorder traversal by iterations and identify swapped nodes at the same time, in one pass.
+A more complete and consistent set of LIFO stack operations is provided by the Deque interface and its implementations, 
+which should be used in preference to Stack class.
+Time complexity: O(n)
+Space complexity: O(n)
+
+class Solution {
+    public void recoverTree(TreeNode root) {
+        Deque<TreeNode> stack = new ArrayDeque<>();       // use ArrayDeque instead of Stack in Java.
+        TreeNode x = null, y = null, pre = null;
+        while (!stack.isEmpty() || root != null) {
+            while (root != null) {
+                stack.add(root);                          // or stack.push(root);
+                root = root.left;
+            }
+            root = stack.removeLast();                    // or stack.pop();
+            if (pre != null && root.val < pre.val) {
+                y = root;
+                if (x == null) {
+                    x = pre;
+                } else {
+                    break;
+                }
+            }
+            pre = root;
+            root = root.right;
+        }
+        swap(x, y);
+    }
+    private void swap(TreeNode a, TreeNode b) {
+        int tmp = a.val;
+        a.val = b.val;
+        b.val = tmp;
+    }
+}
+
+Approach 3: Recursive Inorder Traversal
+Time complexity: O(n)
+Space complexity: O(n)
+
+public class Solution {
+    private TreeNode pre = null;
+    private TreeNode first = null;
+    private TreeNode second = null;
+    public void recoverTree(TreeNode root) {
+        helper(root);
+        swap(first, second);
+    }
+    private void helper(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        helper(root.left);
+        if (pre == null) {
+            pre = root;
+        } else {
+            if (pre.val >= root.val) {
+                if (first == null) {
+                    first = pre;
+                }
+                second = root;
+            }
+            pre = root;
+        }
+        helper(root.right);
+    }
+}
+
+Approach 4: Morris Inorder Traversal
+set the temporary link between the node and its predecessor: predecessor.right = root. So one starts from the node, 
+computes its predecessor and verifies if the link is present.
+- There is no link? Set it and go to the left subtree.
+- There is a link? Break it and go to the right subtree.
+Time complexity: O(n)
+Space complexity: O(1)
+
+class Solution {
+    public void recoverTree(TreeNode root) {
+        TreeNode x = null, y = null, pred = null, predecessor = null;
+        while (root != null) {
+            if (root.left != null) {                             // If there is a left child, then compute the predecessor.
+                predecessor = root.left;                         // Predecessor node is one step left, then right till you can.
+                while (predecessor.right != null && predecessor.right != root) {
+                    predecessor = predecessor.right;
+                }
+                if (predecessor.right == null) {                 // set link predecessor.right = root, and go to explore left subtree.
+                    predecessor.right = root;
+                    root = root.left;
+                }  else {                                        // link is broken: time to change subtree and go right.    
+                    if (pred != null && root.val < pred.val) {
+                        y = root;
+                        if (x == null) {
+                            x = pred;
+                        }
+                    }
+                    pred = root;
+                    predecessor.right = null;
+                    root = root.right;
+                }
+            } else {                                            // If there is no left child, then just go right.
+                if (pred != null && root.val < pred.val) {
+                    y = root;
+                    if (x == null) {
+                        x = pred;
+                    }
+                }
+                pred = root;
+                root = root.right;
+            }
+        }
+        swap(x, y);
+    }
+}
