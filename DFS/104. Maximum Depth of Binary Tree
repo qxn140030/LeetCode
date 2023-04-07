@@ -3,7 +3,7 @@ The maximum depth is the number of nodes along the longest path from the root no
 
 Approach 1: Recursion (DFS)
 Time complexity: O(n)
-Space complexity: O(logn)
+Space complexity: O(n)
 
 /**
  * Definition for a binary tree node.
@@ -11,7 +11,13 @@ Space complexity: O(logn)
  *     int val;
  *     TreeNode left;
  *     TreeNode right;
- *     TreeNode(int x) { val = x; }
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
  * }
  */
 public class Solution {
@@ -25,7 +31,7 @@ public class Solution {
 
 Approach 2: Traversal (DFS)
 Time complexity: O(n)
-Space complexity: O(logn)
+Space complexity: O(n)
 
 class Solution {
     int rst = 0;
