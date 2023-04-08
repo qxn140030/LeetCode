@@ -13,7 +13,7 @@ return its bottom-up level order traversal as:
             [3]
           ]
 
-Approach 1: DFS Preorder Traversal (Recursion)
+Approach 1: Recursion (DFS Preorder Traversal)
 Time complexity: O(n)
 Space complexity: O(n)
 
@@ -33,29 +33,22 @@ Space complexity: O(n)
  * }
  */
 class Solution {
-    List<List<Integer>> levels = new ArrayList<>();
     public List<List<Integer>> levelOrderBottom(TreeNode root) {
-        if (root == null) {
-            return levels;
-        }
-        helper(root, 0);
-        Collections.reverse(levels);
-        return levels;
+        List<List<Integer>> rst = new ArrayList<>();
+        helper(root, rst, 0);
+        Collections.reverse(rst);
+        return rst;
     }
-    private void helper(TreeNode node, int level) {
-        // start the current level
-        if (levels.size() == level) {
-            levels.add(new ArrayList<>());
+    private void helper(TreeNode root, List<List<Integer>> rst, int level) {
+        if (root == null) {
+            return;
         }
-        // append the current node value
-        levels.get(level).add(node.val);
-        // process child nodes for the next level
-        if (node.left != null) {
-            helper(node.left, level + 1);
+        if (rst.size() <= level) {      
+            rst.add(new ArrayList<>());
         }
-        if (node.right != null) {
-            helper(node.right, level + 1);
-        }
+        rst.get(level).add(root.val);
+        helper(root.left, rst, level + 1);
+        helper(root.right, rst, level + 1);
     }
 }
 
