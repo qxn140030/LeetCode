@@ -18,7 +18,9 @@ Space complexity: O(logn)
  * public class ListNode {
  *     int val;
  *     ListNode next;
- *     ListNode(int x) { val = x; }
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
  * }
  */
 /**
@@ -27,7 +29,13 @@ Space complexity: O(logn)
  *     int val;
  *     TreeNode left;
  *     TreeNode right;
- *     TreeNode(int x) { val = x; }
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
  * }
  */
 public class Solution {
@@ -35,13 +43,12 @@ public class Solution {
         if (head == null) {
             return null;
         }
-        if (head.next == null) {              // Note: edge case
+        if (head.next == null) {                 // Note: edge case
             return new TreeNode(head.val);
         }
         ListNode pre = new ListNode(0);
         pre.next = head;
-        ListNode fast = head;
-        ListNode slow = head;
+        ListNode slow = head, fast = head;
         while (fast != null && fast.next != null) {
             fast = fast.next.next;
             slow = slow.next;
@@ -67,14 +74,14 @@ class Solution {
         if (head == null) {
             return null;
         }
-        ArrayList<Integer> list = new ArrayList<>();
+        List<Integer> list = new ArrayList<>();
         while (head != null) {
             list.add(head.val);
             head = head.next;
         }
         return formBST(list, 0, list.size() - 1);
     }
-    private TreeNode formBST(ArrayList<Integer> list, int i, int j) {
+    private TreeNode formBST(List<Integer> list, int i, int j) {
         if (i > j) {
             return null;
         }
@@ -106,7 +113,7 @@ public class Solution {
         }
         return helper(0, len - 1);
     }
-    private TreeNode helper(int i, int j) {       // build the tree bottom up.
+    private TreeNode helper(int i, int j) {         // build the tree bottom up.
         if (i > j) {
             return null;
         }
