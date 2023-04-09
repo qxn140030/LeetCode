@@ -14,9 +14,9 @@ return
 ]
 
 Approach 1: DFS (Recursion)
-Time complexity: O(n^2)
-In the worst case, we could have a complete binary tree, then there would be N/2 leafs. 
-For every leaf, we perform a potential O(N) operation of copying over the path nodes to a new list to be added to the final list.
+Time complexity: O(n^2) where n are the number of nodes in a tree. 
+In the worst case, we could have a complete binary tree, then there would be n / 2 leafs. 
+For every leaf, we perform a potential O(n) operation of copying over the path nodes to a new list to be added to the final list.
 Space complexity: O(n)
 The only additional space that we use is the path list to keep track of nodes along a branch.
 
@@ -38,27 +38,48 @@ The only additional space that we use is the path list to keep track of nodes al
 public class Solution {
     public List<List<Integer>> pathSum(TreeNode root, int sum) {
         List<List<Integer>> rst = new ArrayList<>();
+        if (root == null) {
+            return rst;
+        }
         List<Integer> path = new ArrayList<>();
         dfs(root, sum, rst, path);
         return rst;
     }
     private void dfs(TreeNode root, int sum, List<List<Integer>> rst, List<Integer> path) {
-        if (root == null) {
-            return;
-        }
         path.add(root.val);
-        sum -= root.val;
-        if (root.left == null && root.right == null && sum == 0) {
+        if (sum == root.val && root.left == null && root.right == null) {
             rst.add(new ArrayList<>(path));
             return;
         }
         if (root.left != null) {
-            dfs(root.left, sum, rst, path);
+            dfs(root.left, sum - root.val, rst, path);
             path.remove(path.size() - 1);
         }
         if (root.right != null) {
-            dfs(root.right, sum, rst, path);
+            dfs(root.right, sum - root.val, rst, path);
             path.remove(path.size() - 1);
         }
+    }
+}
+
+class Solution {
+    public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
+        List<List<Integer>> rst = new ArrayList<>();
+        List<Integer> path = new ArrayList<>();
+        dfs(root, targetSum, path, rst);
+        return rst;
+    }
+    private void dfs(TreeNode root, int sum, List<Integer> path, List<List<Integer>> rst) {
+        if (root == null) {
+            return;
+        }
+        path.add(root.val);
+        if (sum == root.val && root.left == null && root.right == null) {
+            rst.add(new ArrayList<>(path));
+        } else { 
+            dfs(root.left, sum - root.val, path, rst);
+            dfs(root.right, sum - root.val, path, rst);
+        }
+        path.remove(path.size() - 1);
     }
 }
