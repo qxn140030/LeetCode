@@ -1,4 +1,4 @@
-Question: Given the root of a binary tree and an integer targetSum, return true if the tree has a root-to-leaf path 
+Given the root of a binary tree and an integer targetSum, return true if the tree has a root-to-leaf path 
 such that adding up all the values along the path equals targetSum.
 For example: Given the below binary tree and sum = 22,
               5
@@ -20,7 +20,13 @@ Space complexity: O(logn)
  *     int val;
  *     TreeNode left;
  *     TreeNode right;
- *     TreeNode(int x) { val = x; }
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
  * }
  */
 public class Solution {
