@@ -18,15 +18,12 @@ class Solution {
     public int minimumTotal(List<List<Integer>> triangle) {
         for (int row = 1; row < triangle.size(); row++) {
             for (int col = 0; col <= row; col++) {
-                int smallestAbove = Integer.MAX_VALUE;           
-                if (col > 0) {
-                    smallestAbove = triangle.get(row - 1).get(col - 1);
-                } 
+                int smallestAbove = col == 0 ? Integer.MAX_VALUE : triangle.get(row - 1).get(col - 1);
                 if (col < row) {
                     smallestAbove = Math.min(smallestAbove, triangle.get(row - 1).get(col));
                 }
-                int path = smallestAbove + triangle.get(row).get(col);
-                triangle.get(row).set(col, path);
+                int cur = smallestAbove + triangle.get(row).get(col);
+                triangle.get(row).set(col, cur);
             }
         }
         return Collections.min(triangle.get(triangle.size() - 1));
@@ -43,10 +40,7 @@ class Solution {
         for (int row = 1; row < triangle.size(); row++) {
             List<Integer> currRow = new ArrayList<>();
             for (int col = 0; col <= row; col++) {
-                int smallestAbove = Integer.MAX_VALUE;           
-                if (col > 0) {
-                    smallestAbove = prevRow.get(col - 1);
-                } 
+                int smallestAbove = col == 0 ? Integer.MAX_VALUE : prevRow.get(col - 1);
                 if (col < row) {
                     smallestAbove = Math.min(smallestAbove, prevRow.get(col));
                 }
@@ -66,46 +60,33 @@ class Solution {
     public int minimumTotal(List<List<Integer>> triangle) {
         for (int row = triangle.size() - 2; row >= 0; row--) {
             for (int col = 0; col <= row; col++) {
-                int bestBelow = Math.min(
-                    triangle.get(row + 1).get(col), 
-                    triangle.get(row + 1).get(col + 1));
-                triangle.get(row).set(col, bestBelow + triangle.get(row).get(col));
+                int smallest = Math.min(triangle.get(row + 1).get(col), triangle.get(row + 1).get(col + 1));
+                triangle.get(row).set(col, smallest + triangle.get(row).get(col));
             }
         }
         return triangle.get(0).get(0);
     }
 }
 
-Time complexity: O(n^2)
 Space complexity: O(n)
 
 class Solution {
     public int minimumTotal(List<List<Integer>> triangle) {
-        List<Integer> belowRow = triangle.get(triangle.size() - 1);
+        List<Integer> below = triangle.get(triangle.size() - 1);
         for (int row = triangle.size() - 2; row >= 0; row--) {
-            List<Integer> currRow = new ArrayList<>();
+            List<Integer> curr = new ArrayList<>();
             for (int col = 0; col <= row; col++) {
-                int bestBelow = Math.min(belowRow.get(col), belowRow.get(col + 1));
-                currRow.add(bestBelow + triangle.get(row).get(col));
+                int smallest = Math.min(below.get(col), below.get(col + 1));
+                currRow.add(smallest + triangle.get(row).get(col));
             }
-            belowRow = currRow;
+            below = curr;
         }
-        return belowRow.get(0);
+        return below.get(0);
     }
 }
 
-Approach 4: Memoization (Top-Down)
-Time complexity: O(n^2)
-Space complexity: O(n^2)
-
-...
-
-
-
-
 public class Solution {
     public int minimumTotal(List<List<Integer>> triangle) {
-        
         int n = triangle.size();
         int[] sum = new int[n];
         for (int i = 0; i < n; i++) {
@@ -117,5 +98,28 @@ public class Solution {
             }
         }
         return sum[0];
+    }
+}
+
+Approach 4: Memoization (Top-Down)
+Time complexity: O(n^2)
+Space complexity: O(n^2)
+
+class Solution {
+    public int minimumTotal(List<List<Integer>> triangle) {
+        Map<String, Integer> map = new HashMap<>();
+        return minPath(0, 0, map, triangle);
+    }
+    private int minPath(int row, int col, Map<String, Integer> map, List<List<Integer>> triangle) {
+        String params = row + ":" + col;
+        if (map.containsKey(params)) {
+            return map.get(params);
+        } 
+        int path = triangle.get(row).get(col);
+        if (row < triangle.size() - 1) {
+            path += Math.min(minPath(row + 1, col, map, triangle), minPath(row + 1, col + 1, map, triangle));
+        }
+        map.put(params, path);
+        return path;
     }
 }
