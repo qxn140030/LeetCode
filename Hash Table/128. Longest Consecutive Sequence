@@ -26,9 +26,9 @@ class Solution {
         }
         return longestStreak;
     }
-    private boolean arrayContains(int[] arr, int num) {
-        for (int i = 0; i < arr.length; i++) {
-            if (arr[i] == num) {
+    private boolean arrayContains(int[] arr, int target) {
+        for (int num : arr) {
+            if (target == num) {
                 return true;
             }
         }
@@ -53,8 +53,7 @@ class Solution {
             if (nums[i] != nums[i - 1]) {
                 if (nums[i] == nums[i - 1] + 1) {
                     currentStreak++;
-                }
-                else {
+                } else {
                     longestStreak = Math.max(longestStreak, currentStreak);
                     currentStreak = 1;
                 }
@@ -66,6 +65,9 @@ class Solution {
 
 Approach 3: HashSet and Intelligent Sequence Building
 Using HashSet, given a number, find up and down, if exist, remove from HashSet.
+We only attempt to build sequences from numbers that are not already part of a longer sequence. 
+This is accomplished by first ensuring that the number that would immediately precede the current number in a sequence is not present, 
+as that number would necessarily be part of a longer sequence.
 Time complexity: O(n)
 Space complexity: O(n)
 
