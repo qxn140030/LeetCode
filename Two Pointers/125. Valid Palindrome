@@ -1,4 +1,4 @@
-Question: Given a string, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases.
+Given a string, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases.
 For example, 
 "A man, a plan, a canal: Panama" is a palindrome. 
 "race a car" is not a palindrome.
@@ -28,9 +28,6 @@ Space complexity: O(1)
 
 class Solution {
     public boolean isPalindrome(String s) {
-        if (s == null || s.length() < 2) {
-            return true;
-        }
         for (int i = 0, j = s.length() - 1; i < j; i++, j--) {
             while (i < j && !Character.isLetterOrDigit(s.charAt(i))) {
                 i++;
@@ -52,10 +49,9 @@ Space complexity: O(n)
 
 public class Solution {
     public boolean isPalindrome(String s) {
-        s = s.toLowerCase().replaceAll("[^a-z0-9]", "");      // replaceAll()
-        Stack<Character> stack = new Stack<>();
-        int len = s.length();
-        int index = 0;
+        s = s.toLowerCase().replaceAll("[^a-z0-9]", "");      
+        Deque<Character> stack = new ArrayDeque<>();
+        int len = s.length(), index = 0;
         while (index < len / 2) {
             stack.push(s.charAt(index++));
         }
