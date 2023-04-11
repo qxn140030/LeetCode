@@ -45,7 +45,7 @@ public class Solution {
 
 Approach 2: Backtracking with DP
 Time complexity: O(n * 2^n)
-Space complexity: O(n * n)
+Space complexity: O(n^2)
 
 class Solution {
     public List<List<String>> partition(String s) {
@@ -56,7 +56,9 @@ class Solution {
         return result;
     }
     private void dfs(List<List<String>> result, String s, int start, List<String> currentList, boolean[][] dp) {
-        if (start >= s.length()) result.add(new ArrayList<>(currentList));
+        if (start >= s.length()) {
+            result.add(new ArrayList<>(currentList));
+        }
         for (int end = start; end < s.length(); end++) {
             if (s.charAt(start) == s.charAt(end) && (end - start <= 2 || dp[start + 1][end - 1])) {
                 dp[start][end] = true;
