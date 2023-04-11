@@ -37,12 +37,14 @@ class Solution {
             for (int i = start + 1; i < prices.length; i++) {
                 if (prices[start] < prices[i]) {
                     int profit = calculate(prices, i + 1) + prices[i] - prices[start];
-                    if (profit > maxprofit)
+                    if (profit > maxprofit) {
                         maxprofit = profit;
+                    }
                 }
             }
-            if (maxprofit > max)
+            if (maxprofit > max) {
                 max = maxprofit;
+            }
         }
         return max;
     }
@@ -54,8 +56,7 @@ Space complexity: O(1)
 
 class Solution {
     public int maxProfit(int[] prices) {
-        int i = 0, maxprofit = 0;
-        int valley = prices[0], peak = prices[0];
+        int i = 0, maxprofit = 0, valley = prices[0], peak = prices[0];
         while (i < prices.length - 1) {
             while (i < prices.length - 1 && prices[i] >= prices[i + 1]) {
                 i++;
