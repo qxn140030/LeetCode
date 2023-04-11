@@ -10,6 +10,9 @@ X X X X
 X X X X
 X X X X
 X O X X
+Explanation: Notice that an 'O' should not be flipped if:
+- It is on the border, or
+- It is adjacent to an 'O' that should not be flipped.
 
 Approach 1: DFS
 The goal of this problem is to mark those captured cells.
@@ -22,8 +25,8 @@ public class Solution {
         int m = board.length, n = board[0].length;
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
-                if (i == 0 || i == m - 1 || j == 0 || j == n - 1) {
-                    search(board, i, j);
+                if (i == 0 || i == m - 1 || j == 0 || j == n - 1) {   // Step 1). select all the cells that are located on the borders of the board.
+                    search(board, i, j);                              // Step 2). Start from each of the selected cell, perform the DFS traversal.
                 }
             }
         }
@@ -41,7 +44,7 @@ public class Solution {
         if (i < 0 || i >= board.length || j < 0 || j >= board[0].length || board[i][j] != 'O') {
             return;
         }
-        board[i][j] = '#';
+        board[i][j] = '#';                // mark out all those connected O cells that is originated from the border.
         search(board, i - 1, j);
         search(board, i + 1, j);
         search(board, i, j - 1);
@@ -51,7 +54,7 @@ public class Solution {
 
 Approach 2: BFS
 Time complexity: O(m * n). Use "Flood fill" algorithm for the four edges. because only 'O' will be replaced.
-Space complexity: O(m + n)
+Space complexity: O(m * n)
 
 public class Solution {
     public void solve(char[][] board) {
@@ -93,11 +96,11 @@ public class Solution {
                 board[row + 1][col] = '#';
             }
             if (col > 0 && board[row][col - 1] == 'O') {
-                q.add((row) * n + col - 1);
+                q.add(row * n + col - 1);
                 board[row][col - 1] = '#';
             }
             if (col < n - 1 && board[row][col + 1] == 'O') {
-                q.add((row) * n + col + 1);
+                q.add(row * n + col + 1);
                 board[row][col + 1] = '#';
             }
         }
