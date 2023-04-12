@@ -1,4 +1,4 @@
-Question: Given the root of a binary tree, return the preorder traversal of its nodes' values.
+Given the root of a binary tree, return the preorder traversal of its nodes' values.
 For example: Given binary tree {1,#,2,3},
    1
     \
@@ -62,9 +62,9 @@ public class Solution {
         if (root == null) {
             return rst;
         }
-        Stack<TreeNode> stack = new Stack<>();
+        Deque<TreeNode> stack = new ArrayDeque<>();
         stack.push(root);
-        while (!stack.empty()) {
+        while (!stack.isEmpty()) {
             root = stack.pop();
             rst.add(root.val);
             if (root.right != null) {
