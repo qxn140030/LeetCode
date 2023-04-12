@@ -8,8 +8,8 @@ Example 2:
 Input: nums = [0,1,0,1,0,1,99]
 Output: 99
 
-Approach 1: HashSet
-3×(a+b+c)−(a+a+a+b+b+b+c)=2c
+Approach 1: Math
+3 * (a + b + c) − (a + a + a + b + b + b + c) = 2c
 Time complexity: O(n)
 Space complexity: O(n)
 
@@ -34,7 +34,7 @@ Space complexity: O(n)
 
 class Solution {
     public int singleNumber(int[] nums) {
-        HashMap<Integer, Integer> map = new HashMap<>();
+        Map<Integer, Integer> map = new HashMap<>();
         for (int num : nums) {
             map.put(num, map.getOrDefault(num, 0) + 1);
         }
@@ -68,12 +68,12 @@ class Solution {
 public class Solution {
     public int singleNumber(int[] nums) {
         int rst = 0;
-        for (int j = 0; j < 32; j++) {
+        for (int i = 0; i < 32; i++) {
             int tmp = 0;
-            for (int i = 0; i < nums.length; i++) {
-                tmp += (nums[i] >> j) & 1;
+            for (int num : nums) {
+                tmp += (num >> i) & 1;
             }
-            rst |= (tmp % 3) << j;
+            rst |= (tmp % 3) << i;
         }
         return rst;
     }
