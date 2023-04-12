@@ -19,112 +19,54 @@ class Node {
 }
 */
 class Solution {
-    // HashMap which holds old nodes as keys and new nodes as its values.
-    HashMap<Node, Node> visited = new HashMap<>();
+    Map<Node, Node> visited = new HashMap<>();
     public Node copyRandomList(Node head) {
         if (head == null) {
             return null;
         }
-        // If we have already processed the current node, then we simply return the cloned version of it.
         if (visited.containsKey(head)) {
             return visited.get(head);
         }
-        // Create a new node with the value same as old node. (i.e. copy the node)
-        Node node = new Node(head.val, null, null);
-        // Save this value in the hash map. This is needed since there might be
+        Node node = new Node(head.val);      // Create a new node with the value same as old node. (i.e. copy the node)
+        // Save old nodes as keys and new nodes as its values in the hash map. This is needed since there might be
         // loops during traversal due to randomness of random pointers and this would help us avoid them.
-        visited.put(head, node);
-        // Recursively copy the remaining linked list starting once from the next pointer and then from the random pointer.
-        // Thus we have two independent recursive calls.
-        // Finally we update the next and random pointers for the new node created.
+        visited.put(head, node);    
         node.next = copyRandomList(head.next);
         node.random = copyRandomList(head.random);
         return node;
     }
 }
 
-Approach 2: Iterative with O(N) Space
+Approach 2: Iterative with O(n) Space
 Time complexity: O(n)
 Space complexity: O(n)
 
 class Solution {
-    // HashMap which holds old nodes as keys and new nodes as its values.
-    HashMap<Node, Node> visited = new HashMap<>();
+    Map<Node, Node> visited = new HashMap<>();
     public Node copyRandomList(Node head) {
         if (head == null) {
             return null;
         }
-        Node oldNode = head;
-        Node newNode = new Node(oldNode.val);
+        Node oldNode = head, newNode = new Node(oldNode.val);
         visited.put(oldNode, newNode);
         while (oldNode != null) {
-            // Get the clones of the nodes referenced by random and next pointers.
-            newNode.random = getClonedNode(oldNode.random);
             newNode.next = getClonedNode(oldNode.next);
+            newNode.random = getClonedNode(oldNode.random);
             oldNode = oldNode.next;
             newNode = newNode.next;
         }
-        return this.visited.get(head);
+        return visited.get(head);
     }
     private Node getClonedNode(Node node) {
         if (node == null) {
             return null;
         }
-        // Check if the node is in the visited dictionary
-        if (visited.containsKey(node)) {
-            // If its in the visited dictionary then return the new node reference from the dictionary
-            return visited.get(node);
-        } else {
-            // Otherwise create a new node, add to the dictionary and return it
-            visited.put(node, new Node(node.val, null, null));
-            return visited.get(node);
+        if (!visited.containsKey(node)) {
+            visited.put(node, new Node(node.val));
         }
+        return visited.get(node);
     }
 }
-
-Approach 3: Iterative with O(1) Space
-step 1: copy every node and insert; 
-step 2: copy random pointers; 
-step 3: break the list.
-Time complexity: O(n)
-Space complexity: O(1)
-
-class Solution {
-    public Node copyRandomList(Node head) {
-        if (head == null) {
-            return null;
-        }
-        Node cur = head;
-        while (cur != null) {                           // step 1                          
-            Node copy = new Node(cur.val);
-            copy.next = cur.next;
-            cur.next = copy;
-            cur = copy.next;
-        }
-        cur = head;
-        while (cur != null) {                           // step 2                        
-            if (cur.random != null) {                   // Note: check the random pointer first.
-                cur.next.random = cur.random.next;
-            }
-            cur = cur.next.next;
-        }
-        Node dummy = new Node(0);
-        cur = dummy;
-        while (head != null) {                          // step 3  
-            cur.next = head.next;
-            head.next = head.next.next;
-            head = head.next;
-            cur = cur.next;
-        }
-        return dummy.next;
-    }
-}
-
-
-
-Approach 1: using a HashMap. map the old node to copy node.
-Time complexity: O(n)
-Space complexity: O(n)
 
 class Solution {
     public Node copyRandomList(Node head) {
@@ -142,11 +84,48 @@ class Solution {
             cur2 = cur2.next;
         }
         cur1 = head;
-        cur2 = dummy;
+        cur2 = dummy.next;
         while (cur1 != null) {                          // second loop, random pointers.
-            cur2.next.random = map.get(cur1.random);
+            cur2.random = map.get(cur1.random);
             cur1 = cur1.next;
             cur2 = cur2.next;
+        }
+        return dummy.next;
+    }
+}
+
+Approach 3: Iterative with O(1) Space
+tweak the original linked list and keep every cloned node next to its original node.
+This interleaving of old and new nodes allows us to solve this problem without any extra space.
+Time complexity: O(n)
+Space complexity: O(1)
+
+class Solution {
+    public Node copyRandomList(Node head) {
+        if (head == null) {
+            return null;
+        }
+        Node cur = head;
+        while (cur != null) {                           // step 1: copy every node and insert into the original linked list;                          
+            Node copy = new Node(cur.val);
+            copy.next = cur.next;
+            cur.next = copy;
+            cur = copy.next;
+        }
+        cur = head;
+        while (cur != null) {                           // step 2: copy random pointers;                        
+            if (cur.random != null) {                   // Note: check the random pointer first.
+                cur.next.random = cur.random.next;
+            }
+            cur = cur.next.next;
+        }
+        Node dummy = new Node(0);
+        cur = dummy;
+        while (head != null) {                          // step 3: break the list.  
+            cur.next = head.next;
+            head.next = head.next.next;
+            head = head.next;
+            cur = cur.next;
         }
         return dummy.next;
     }
