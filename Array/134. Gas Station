@@ -24,20 +24,25 @@ You cannot travel back to station 2, as it requires 4 unit of gas but you only h
 Therefore, you can't travel around the circuit once no matter where you start.
 
 Approach 1: One Pass
+The first idea is to check every single station: that means O(n^2) time complexity.
+Choose the station as starting point.
+Perform the road trip and check how much gas we have in tank at each station.
+1. It's impossible to perform the road trip if sum(gas) < sum(cost).
+2. It's impossible to start at a station i if gas[i] - cost[i] < 0.
 Time complexity: O(n)
 Space complexity: O(1)
 
 public class Solution {
     public int canCompleteCircuit(int[] gas, int[] cost) {
-        int local = 0, global = 0, index = -1;
+        int local = 0, global = 0, index = 0;
         for (int i = 0; i < gas.length; i++) {
             global += gas[i] - cost[i];
             local += gas[i] - cost[i];
-            if (local < 0) {
-                local = 0;
-                index = i;
+            if (local < 0) {            // If one couldn't get here,
+                index = i + 1;          // Pick up the next station as the starting one.
+                local = 0;              // Start with an empty tank.
             }
         }
-        return global >= 0 ? index + 1 : -1;
+        return global >= 0 ? index : -1;
     }
 }
