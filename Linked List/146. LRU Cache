@@ -1,0 +1,97 @@
+Design and implement a data structure for Least Recently Used (LRU) cache. 
+It should support the following operations: get and set.
+get(key) - Get the value (will always be positive) of the key if the key exists in the cache, otherwise return -1.
+set(key, value) - Set or insert the value if the key is not already present. When the cache reached its capacity, it should
+invalidate the least recently used item before inserting a new item.
+
+Approach 1: Ordered dictionary (LinkedHashMap)
+There is a structure called ordered dictionary, it combines behind both hashmap and linked list. 
+In Java this structure is called LinkedHashMap.
+Time complexity: O(1) both for put and get.
+Space complexity: O(n), where n is the capacity.
+
+import java.util.LinkedHashMap;
+class LRUCache {
+    private LinkedHashMap<Integer, Integer> map;
+    private final int CAPACITY;
+    public LRUCache(int capacity) {
+        CAPACITY = capacity;          // Setting capacity with 0.75 loadFactor will let your map stores only up to 0.75 * capacity elements.
+        map = new LinkedHashMap<>(capacity, 0.75f, true) { 
+            protected boolean removeEldestEntry(Map.Entry eldest) {        // or Map.Entry<Integer, Integer>
+                return size() > CAPACITY;
+            }
+        };
+    }
+    public int get(int key) {
+        return map.getOrDefault(key, -1);
+    }
+    public void put(int key, int value) {
+        map.put(key, value);
+    }
+}
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache obj = new LRUCache(capacity);
+ * int param_1 = obj.get(key);
+ * obj.put(key,value);
+ */
+
+Approach 2: Hashmap + DoubleLinkedList
+Time complexity: O(1) both for put and get.
+Space complexity: O(n)
+
+class LRUCache {
+    private class DLinkedNode{ 
+        int key; 
+        int value; 
+        DLinkedNode prev; 
+        DLinkedNode next; 
+        public DLinkedNode(int key, int value) { 
+            this.key = key; 
+            this.value = value; 
+            this.prev = null; 
+            this.next = null; 
+        } 
+    } 
+    private int capacity; 
+    private Map<Integer, DLinkedNode> map = new HashMap<>(); 
+    private DLinkedNode head = new DLinkedNode(-1, -1); 
+    private DLinkedNode tail = new DLinkedNode(-1, -1);   
+    public LRUCache(int capacity) {
+        this.capacity = capacity; 
+        tail.prev = head; 
+        head.next = tail;
+    }
+    public int get(int key) {
+        if (!map.containsKey(key)) { 
+            return -1; 
+        }  
+        DLinkedNode curr = map.get(key); 
+        removeNode(curr); 
+        moveToHead(curr); 
+        return curr.value; 
+    }
+    public void put(int key, int value) {
+        if (get(key) != -1) { 
+            map.get(key).value = value; 
+            return; 
+        }  
+        if (map.size() == capacity) { 
+            map.remove(tail.prev.key); 
+            removeNode(tail.prev);     
+        } 
+        DLinkedNode newNode = new DLinkedNode(key, value); 
+        moveToHead(newNode); 
+        map.put(key, newNode); 
+    }
+    private void removeNode(DLinkedNode node) { 
+        node.prev.next = node.next; 
+        node.next.prev = node.prev; 
+    } 
+    private void moveToHead(DLinkedNode node) { 
+        node.next = head.next; 
+        head.next.prev = node; 
+        head.next = node; 
+        node.prev = head; 
+    } 
+}
