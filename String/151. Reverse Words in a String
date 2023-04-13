@@ -65,9 +65,7 @@ class Solution {
         StringBuilder sb = new StringBuilder();
         while (left <= right) {
             char c = s.charAt(left);
-            if (c != ' ') {
-                sb.append(c);
-            } else if (sb.charAt(sb.length() - 1) != ' ') {
+            if (c != ' ' || sb.charAt(sb.length() - 1) != ' ') {
                 sb.append(c);
             }
             left++;
@@ -108,19 +106,19 @@ class Solution {
         while (left <= right && s.charAt(right) == ' ') {
             right--;
         }
-        Deque<String> deque = new ArrayDeque();
-        StringBuilder word = new StringBuilder();
+        Deque<String> stack = new ArrayDeque<>();
+        StringBuilder sb = new StringBuilder();
         while (left <= right) {
             char c = s.charAt(left);
-            if ((word.length() > 0) && (c == ' ')) {
-                deque.offerFirst(word.toString());
-                word.setLength(0);
+            if (sb.length() > 0 && c == ' ') {
+                stack.offerFirst(sb.toString());
+                sb.setLength(0);
             } else if (c != ' ') {
-                word.append(c);
+                sb.append(c);
             }
             left++;
         }
-        deque.offerFirst(word.toString());
-        return String.join(" ", deque);
+        stack.offerFirst(sb.toString());
+        return String.join(" ", stack);
     }
 }
