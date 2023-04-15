@@ -9,6 +9,46 @@ No scary math, just apply elementary math knowledge. Still remember how to perfo
 Try a long division on 4/9, the repeating part is obvious. Now try 4/333. Do you see a pattern?
 Be wary of edge cases! List out as many test cases as you can think of and test your code thoroughly.
 
+Approach 1: Long Division
+Time complexity: O(n)
+Space complexity: O(n)
+
+class Solution {
+    public String fractionToDecimal(int numerator, int denominator) {
+        if (denominator == 0) {
+            return "";
+        }
+        if (numerator == 0) {
+            return "0";
+        }
+        StringBuilder fraction = new StringBuilder();
+        if (numerator < 0 ^ denominator < 0) {
+            fraction.append("-");
+        }
+        long dividend = Math.abs(Long.valueOf(numerator));
+        long divisor = Math.abs(Long.valueOf(denominator));
+        fraction.append(String.valueOf(dividend / divisor));
+        long remainder = dividend % divisor;
+        if (remainder == 0) {
+            return fraction.toString();
+        }
+        fraction.append(".");
+        Map<Long, Integer> map = new HashMap<>();
+        while (remainder != 0) {
+            if (map.containsKey(remainder)) {
+                fraction.insert(map.get(remainder), "(");
+                fraction.append(")");
+                break;
+            }
+            map.put(remainder, fraction.length());
+            remainder *= 10;
+            fraction.append(String.valueOf(remainder / divisor));
+            remainder %= divisor;
+        }
+        return fraction.toString();
+    }
+}
+
 public class Solution {
     public String fractionToDecimal(int numerator, int denominator) {
         if (denominator == 0) {
@@ -18,13 +58,13 @@ public class Solution {
             return "0";
         }
         String rst = "";
-        if ((numerator < 0) ^ (denominator < 0)) {                         // use of ^
+        if (numerator < 0 ^ denominator < 0) {                           // use of ^
             rst += "-";
         }
-        long a = Math.abs((long)numerator);                                // convert from int to long.
+        long a = Math.abs((long)numerator);                              // Convert to Long or else abs(-2147483648) overflows
         long b = Math.abs((long)denominator);
         rst += String.valueOf(a / b);
-        long remainder = (a % b) * 10;                                     // long remainder. 
+        long remainder = (a % b) * 10;                                   // long remainder. 
         if (remainder == 0) {
             return rst;
         }
