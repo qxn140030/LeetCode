@@ -3,6 +3,11 @@ number. The function twoSum should return indices of the two numbers such that t
 than index2.
 Please note that your returned answers (both index1 and index2) are not zero-based.
 You may assume that each input would have exactly one solution.
+Follow up:
+What if we needed to consider integer overflow when adding two elements?
+to prevent an overflow error, we could cast our numbers from int data type to long data type.
+Alternatively, if we cannot use long integers, then we can check if numbers[low] > (1 << 31) - 1 - numbers[high] at the beginning of each iteration. 
+If this condition is true, then numbers[low] + numbers[high] will result in integer overflow, and so we would move the larger index to the left.
 Example 1:
 Input: numbers = [2,7,11,15], target = 9
 Output: [1,2], index1 = 1, index2 = 2. We return [1, 2].
@@ -23,10 +28,10 @@ class Solution {
     public int[] twoSum(int[] numbers, int target) {
         int i = 0, j = numbers.length - 1;
         while (i < j) {
-            if (numbers[i] + numbers[j] == target) {
+            int sum = numbers[i] + numbers[j];
+            if (sum == target) {
                return new int[]{i + 1, j + 1}; 
-            } 
-            if (numbers[i] + numbers[j] < target) {
+            } else if (sum < target) {
                 i++;
             } else {
                 j--;
@@ -42,7 +47,7 @@ Space complexity: O(n)
 
 class Solution {
     public int[] twoSum(int[] numbers, int target) {
-        HashMap<Integer, Integer> map = new HashMap<>();
+        Map<Integer, Integer> map = new HashMap<>();
         for (int i = 0; i < numbers.length; i++) {
             if (map.containsKey(target - numbers[i])) {
                 return new int[]{map.get(target - numbers[i]) + 1, i + 1};
