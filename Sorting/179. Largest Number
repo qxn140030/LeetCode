@@ -1,6 +1,5 @@
-Question: Given a list of non-negative integers nums, arrange them such that they form the largest number and return it.
-Note: The result may be very large, so you need to return a string instead of an integer.
-
+Given a list of non-negative integers nums, arrange them such that they form the largest number and return it.
+The result may be very large, so you need to return a string instead of an integer.
 Example 1: 
 Input: nums = [10,2]
 Output: "210"
@@ -14,22 +13,18 @@ To construct the largest number, we want to ensure that the most significant dig
 convert each integer to a string, sort the array of strings.
 Time complexity: O(nlogn)
 overall runtime is donimated by the complexity of sort, although we are doing extra work in comparator, only a constant factor.
-Space complexity: O(n)
-allocate O(n) space for the final return string.
+Space complexity: O(n), we allocate additional space to store the copy of nums.
 
 public class Solution {
     public String largestNumber(int[] nums) {
-        if (nums == null || nums.length == 0) {
-            return "";
-        }
         String[] arr = new String[nums.length];
         for (int i = 0; i < nums.length; i++) {
             arr[i] = String.valueOf(nums[i]);
         }
         Arrays.sort(arr, new Comparator<String>() {
            public int compare(String s1, String s2) {
-               return (s2 + s1).compareTo(s1 + s2);   // in descending order.
-           }       // (s1 + s2).compareTo(s2 + s1);         ascending order.
+               return (s2 + s1).compareTo(s1 + s2);      // in descending order.
+           }       // (s1 + s2).compareTo(s2 + s1);             ascending order.
         });
         if (arr[0].equals("0")) {
             return "0";
