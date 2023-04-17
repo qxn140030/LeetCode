@@ -1,0 +1,79 @@
+Implement an iterator over a binary search tree (BST). Your iterator will be initialized with the root node of a BST.
+Calling next() will return the next smallest number in the BST.
+Note: 
+next() and hasNext() should run in average O(1) time and uses O(h) memory, where h is the height of the tree.
+
+Approach 1: Flattening the BST
+Time complexity: O(n) is the time taken by the constructor for the iterator. next() would take O(1), hasNext() would take O(1).
+Space complexity: O(n) since we create a new array to contain all the nodes of the BST.
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class BSTIterator {
+    List<Integer> nodesSorted = new ArrayList<>();
+    int index = -1;
+    public BSTIterator(TreeNode root) {
+        inorderTraversal(root);
+    }
+    private void inorderTraversal(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        inorderTraversal(root.left);
+        nodesSorted.add(root.val);
+        inorderTraversal(root.right);
+    }
+    public int next() {
+        return nodesSorted.get(++index);
+    }
+    
+    public boolean hasNext() {
+        return index < nodesSorted.size() - 1;
+    }
+}
+/**
+ * Your BSTIterator object will be instantiated and called as such:
+ * BSTIterator obj = new BSTIterator(root);
+ * int param_1 = obj.next();
+ * boolean param_2 = obj.hasNext();
+ */
+
+Approach 2: Controlled Recursion
+Time complexity: the amortized (average) time complexity for this function would still be O(1).
+Space complexity: O(n)
+
+public class BSTIterator {
+    Deque<TreeNode> stack = new ArrayDeque<>();
+    public BSTIterator(TreeNode root) {
+        while (root != null) {
+            stack.push(root);
+            root = root.left;
+        }
+    }
+    public int next() {
+        TreeNode node = stack.pop();
+        int rst = node.val;
+        node = node.right;
+        while (node != null) {
+            stack.push(node);
+            node = node.left;
+        }
+        return rst;
+    }
+    public boolean hasNext() {
+        return !stack.isEmpty();
+    }
+}
