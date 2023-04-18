@@ -15,8 +15,8 @@ Space complexity: O(n), O(l * (n - l)) to keep the hash table.
 
 class Solution {
     public List<String> findRepeatedDnaSequences(String s) {
-        HashSet<String> seen = new HashSet<>();
-        HashSet<String> res = new HashSet<>();
+        Set<String> seen = new HashSet<>();
+        Set<String> res = new HashSet<>();
         for (int i = 0; i + 10 <= s.length(); i++) {
             String subStr = s.substring(i, i + 10);
             if (seen.contains(subStr)){
@@ -25,7 +25,7 @@ class Solution {
                 seen.add(subStr);
             }
         }
-        return new ArrayList<String>(res);
+        return new ArrayList<>(res);
     }
 }
 
@@ -52,13 +52,11 @@ Approach 2: Constant-time Slice Using Rolling Hash (Rabin-Karp)
 Rabin-Karp algorithm is used to perform a multiple pattern search. 
 It's used for plagiarism detection and in bioinformatics to look for similarities in two or more proteins.
 First, convert string to integer array: 'A' -> 0, 'C' -> 1, 'G' -> 2, 'T' -> 3.
-Time complexity: O(n), O(l * (n - l)), where l = 10.
-Space complexity: O(n) to keep the hash table.
+Time complexity: O(n)
+Space complexity: O(n - l) to keep the hash table.
 
 class Solution {
     public List<String> findRepeatedDnaSequences(String s) {
-        // rolling hash parameters: base a
-        int a = 4, aL = (int)Math.pow(a, 10);
         Map<Character, Integer> map = new HashMap<>(){{
             put('A', 0);
             put('C', 1);
@@ -69,26 +67,24 @@ class Solution {
         int[] nums = new int[n];
         for (int i = 0; i < n; i++) {
             nums[i] = map.get(s.charAt(i));
-        }   
-        int h = 0;
+        } 
         Set<Integer> seen = new HashSet<>();
         Set<String> rst = new HashSet<>();
+        int hash = 0, a = 4, aL = (int)Math.pow(a, 10);
         for (int start = 0; start + L - 1 < n; start++) {
-            // compute hash of the current sequence in O(1) time
             if (start != 0) {
-                h = h * a - nums[start - 1] * aL + nums[start + L - 1];
-            } else {  // compute hash of the first sequence in O(L) time
+                hash = hash * a - nums[start - 1] * aL + nums[start + L - 1];       // compute hash of the current sequence in O(1) time.
+            } else {  
                 for (int i = 0; i < L; i++) {
-                    h = h * a + nums[i];
+                    hash = hash * a + nums[i];                                      // compute hash of the first sequence in O(L) time.
                 }
             }        
-            // update output and hashset of seen sequences
-            if (seen.contains(h)) {
-                rst.add(s.substring(start, start + L));
+            if (seen.contains(hash)) {
+                rst.add(s.substring(start, start + L));    
             }   
-            seen.add(h);
+            seen.add(hash);
         }
-        return new ArrayList<String>(rst);
+        return new ArrayList<>(rst);
     }
 }
 
@@ -110,11 +106,9 @@ class Solution {
         Set<String> rst = new HashSet<>();
         int num = 0;
         for (int i = 0; i < s.length(); i++) {
-            if (i < 9) {
-                num = (num << 2) + map.get(s.charAt(i));      // each ACGT fit 2 bits, so left shift 2.
-            } else {
-                num = (num << 2) + map.get(s.charAt(i));
-                num = (num & ((1 << 20) - 1));                // make length of num to be 20.
+            num = (num << 2) + map.get(s.charAt(i));        // each ACGT fit 2 bits, so left shift 2.
+            if (i >= 9) {
+                num = (num & ((1 << 20) - 1));              // make length of num to be 20.
                 if (hs.contains(num)) {
                     rst.add(s.substring(i - 9, i + 1));
                 } else {
@@ -122,6 +116,6 @@ class Solution {
                 }
             }
         }
-        return new ArrayList<String>(rst);
+        return new ArrayList<>(rst);
     }
 }
