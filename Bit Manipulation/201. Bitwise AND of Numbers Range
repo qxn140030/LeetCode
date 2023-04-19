@@ -1,0 +1,41 @@
+Given a range [m, n] where 0 <= m <= n <= 2147483647, return the bitwise AND of all numbers in this range, inclusive.
+For example, given the range [5, 7], you should return 4.
+
+Approach 1: Bit Shift
+Time complexity: O(1)
+Space complexity: O(1）
+
+public class Solution {
+    public int rangeBitwiseAnd(int m, int n) {
+        int shift = 0;
+        while (m != n) {
+            m >>= 1;
+            n >>= 1;
+            shift++;
+        }
+        return m << shift;
+    }
+}
+
+public class Solution {
+    public int rangeBitwiseAnd(int m, int n) {
+        int mask = Integer.MAX_VALUE;                 // use 32-bit 1 as a mask;
+        while ((mask & m) != (mask & n)) {
+            mask <<= 1;
+        }
+        return mask & n;
+    }
+}
+
+Approach 2: Brian Kernighan's Algorithm
+Time complexity: O(1)
+Space complexity: O(1）
+
+public class Solution {
+    public int rangeBitwiseAnd(int m, int n) {
+        while (n > m) {
+            n &= (n - 1);            // the rightmost bit of one in the original number would be turned off (from one to zero).
+        }
+        return m & n;
+    }
+}
