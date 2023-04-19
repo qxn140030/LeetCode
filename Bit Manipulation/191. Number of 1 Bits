@@ -1,36 +1,35 @@
-Question: Write a function that takes an unsigned integer and returns the number of ’1' bits it has (also known as the Hamming weight).
+Write a function that takes an unsigned integer and returns the number of ’1' bits it has (also known as the Hamming weight).
 For example, the 32-bit integer ’11' has binary representation 00000000000000000000000000001011, so the function should
 return 3.
 Note:
 in some languages, such as Java, there is no unsigned integer type. 
 
 Approach 1: Loop and Flip
-Time complexity: O(1), the run time depends on the number of bits in n. 
+Time complexity: O(1) 
 Space complexity is O(1)
 
 public class Solution {
     // you need to treat n as an unsigned value
     public int hammingWeight(int n) {
-        int bits = 0;
-        int mask = 1;
+        int bits = 0, mask = 1;
         for (int i = 0; i < 32; i++) {
-            if ((n & mask) != 0) {            // Note.
+            if ((n & mask) != 0) {     
                 bits++;
             }
-            mask <<= 1;                       // mask.
+            mask <<= 1;       
         }
         return bits;
     }
 }
+
 public class Solution {
-    // you need to treat n as an unsigned value
     public int hammingWeight(int n) {
         int bits = 0;
-        while (n != 0) {                      // Note.
+        while (n != 0) {                   
             if ((n & 1) == 1) {
                 bits++;
             }
-            n >>>= 1;                         // >>>
+            n >>>= 1;          
         }
         return bits;
     }
@@ -42,7 +41,6 @@ Time complexity: O(1), the run time depends on the number of 1-bits in n.
 Space complexity is O(1)
 
 public class Solution {
-    // you need to treat n as an unsigned value
     public int hammingWeight(int n) {
         int bits = 0;
         while (n != 0) {
@@ -55,7 +53,6 @@ public class Solution {
 
 Recursion:
 public class Solution {
-    // you need to treat n as an unsigned value
     public int hammingWeight(int n) {
         if (n == 0) {
             return 0;
