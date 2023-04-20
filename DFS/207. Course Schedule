@@ -178,10 +178,9 @@ Space complexity:
 
 public class Solution {
     public boolean canFinish(int numCourses, int[][] prerequisites) {
-        int m = prerequisites.length;
         int[] pres = new int[numCourses];
-        for (int i = 0; i < m; i++) {
-            pres[prerequisites[i][0]]++;
+        for (int[] p : prerequisites) {
+            pres[p[0]]++;
         }
         Queue<Integer> q = new LinkedList<>();
         for (int i = 0; i < numCourses; i++) {
@@ -191,11 +190,11 @@ public class Solution {
         }
         while (!q.isEmpty()) {
             int cur = q.poll();
-            for (int i = 0; i < m; i++) {
-                if (prerequisites[i][1] == cur) {
-                    pres[prerequisites[i][0]]--;
-                    if (pres[prerequisites[i][0]] == 0) {
-                        q.offer(prerequisites[i][0]);
+            for (int[] p : prerequisites) {
+                if (p[1] == cur) {
+                    pres[p[0]]--;
+                    if (pres[p[0]] == 0) {
+                        q.offer(p[0]);
                     }
                 }
             }
