@@ -1,0 +1,210 @@
+There are a total of numCourses courses you have to take, labeled from 0 to numCourses - 1. 
+You are given an array prerequisites where prerequisites[i] = [ai, bi] indicates that you must take course bi first if you want to take course ai.
+For example, the pair [0, 1], indicates that to take course 0 you have to first take course 1.
+Return true if you can finish all courses. Otherwise, return false.
+Example 1:
+Input: numCourses = 2, prerequisites = [[1,0]]
+Output: true
+Explanation: There are a total of 2 courses to take. To take course 1 you should have finished course 0. So it is possible.
+
+Example 2:
+Input: numCourses = 2, prerequisites = [[1,0],[0,1]]
+Output: false
+Explanation: There are a total of 2 courses to take. 
+To take course 1 you should have finished course 0, and to take course 0 you should also have finished course 1. So it is impossible.
+
+Note:
+The input prerequisites is a graph represented by a list of edges, not adjacency matrices. Read more about how a graph is represented.
+Hints:
+This problem is equivalent to finding if a cycle exists in a directed graph. If a cycle exists, no topological ordering exists 
+and therefore it will be impossible to take all courses. Topological sort could also be done via BFS.
+
+Approach 1: Backtracking
+The problem could be modeled as yet another graph traversal problem, where each course can be represented as a vertex in a graph and 
+the dependency between the courses can be modeled as a directed edge between two vertex.
+would be equivalent to determine if the corresponding graph is a DAG (Directed Acyclic Graph).
+Time complexity: O(e + v^2), where e is the number of dependencies, v is the number of courses.
+it would take us e steps to build a graph in the first step. For a single round of backtracking, in the worst case where all the nodes 
+chained up in a line, it would take us maximum v steps to terminate the backtracking.
+Space complexity: O(e + v)
+
+class Solution {
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        Map<Integer, List<Integer>> courseDict = new HashMap<>();     // course -> list of next courses.
+        for (int[] relation : prerequisites) {                        // build the graph first, relation[0] depends on relation[1].
+            if (courseDict.containsKey(relation[1])) {
+                courseDict.get(relation[1]).add(relation[0]);
+            } else {
+                List<Integer> nextCourses = new LinkedList<>();
+                nextCourses.add(relation[0]);
+                courseDict.put(relation[1], nextCourses);
+            }
+        }
+        boolean[] path = new boolean[numCourses];
+        for (int i = 0; i < numCourses; i++) {
+            if (isCyclic(i, courseDict, path)) {
+                return false;
+            }
+        }
+        return true;
+    }                                                       // backtracking method to check that no cycle would be formed starting from currCourse.
+    private boolean isCyclic(int curr, Map<Integer, List<Integer>> courseDict, boolean[] path) { 
+        if (path[curr]) {                                          // come across a previously visited node, i.e. detect the cycle.
+            return true;
+        }
+        if (!courseDict.containsKey(curr)) {                       // no following courses, no loop.
+            return false;
+        }
+        path[curr] = true;                                         // before backtracking, mark the node in the path.
+        boolean ret = false;
+        for (int next : courseDict.get(curr)) {
+            ret = isCyclic(next, courseDict, path);
+            if (ret) {
+                break;
+            }
+        }
+        path[curr] = false;                                       // after backtracking, remove the node from the path.
+        return ret;
+    }
+}
+
+Approach 2: Postorder DFS
+Time complexity: O(e + v)
+Space complexity: O(e + v)
+
+class Solution {
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        Map<Integer, List<Integer>> courseDict = new HashMap<>();
+        for (int[] relation : prerequisites) {
+            if (courseDict.containsKey(relation[1])) {
+                courseDict.get(relation[1]).add(relation[0]);
+            } else {
+                List<Integer> nextCourses = new LinkedList<>();
+                nextCourses.add(relation[0]);
+                courseDict.put(relation[1], nextCourses);
+            }
+        }
+        boolean[] checked = new boolean[numCourses];             // if the current node has been checked before.
+        boolean[] path = new boolean[numCourses];
+        for (int i = 0; i < numCourses; i++) {
+            if (isCyclic(i, courseDict, checked, path)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    private boolean isCyclic(int curr, Map<Integer, List<Integer>> courseDict, boolean[] checked, boolean[] path) {
+        if (checked[curr] || !courseDict.containsKey(curr)) {  
+            return false;                                       // this node has been checked, no cycle would be formed with this node.
+        }
+        if (path[curr]) {
+            return true;
+        }
+        path[curr] = true;
+        boolean ret = false;
+        for (int child : courseDict.get(curr)) {
+            ret = isCyclic(child, courseDict, checked, path);
+            if (ret) {
+                break;
+            }
+        }
+        path[curr] = false;
+        checked[curr] = true;
+        return ret;
+    }
+}
+
+Approach 3: Topological Sort
+to find a global order for all nodes in a DAG (Directed Acyclic Graph) with regarding to their dependencies.
+Time complexity: O(e + v)
+Space complexity: O(e + v)
+
+class GNode {
+    public int inDegrees = 0;
+    public List<Integer> outNodes = new LinkedList<>();
+}
+class Solution {
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        Map<Integer, GNode> graph = new HashMap<>();
+        for (int[] relation : prerequisites) {
+            GNode prev = getCreateGNode(graph, relation[1]);
+            GNode next = getCreateGNode(graph, relation[0]);
+            prev.outNodes.add(relation[0]);
+            next.inDegrees++;
+        }
+        // We start from courses that have no prerequisites.
+        int totalDeps = prerequisites.length;
+        LinkedList<Integer> nodepCourses = new LinkedList<Integer>();
+        for (Map.Entry<Integer, GNode> entry : graph.entrySet()) {
+            GNode node = entry.getValue();
+            if (node.inDegrees == 0) {
+                nodepCourses.add(entry.getKey());
+            }
+        }
+        int removedEdges = 0;
+        while (nodepCourses.size() > 0) {
+            int course = nodepCourses.pop();
+            for (int next : graph.get(course).outNodes) {
+                GNode childNode = graph.get(next);
+                childNode.inDegrees -= 1;
+                removedEdges++;
+                if (childNode.inDegrees == 0) {
+                    nodepCourses.add(next);
+                }
+            }
+        }
+        if (removedEdges != totalDeps) {
+            // if there are still some edges left, then there exist some cycles
+            // Due to the dead-lock (dependencies), we cannot remove the cyclic edges
+            return false;
+        }
+        return true;
+    }
+    private GNode getCreateGNode(Map<Integer, GNode> graph, int course) {
+        GNode node = null;
+        if (graph.containsKey(course)) {
+            node = graph.get(course);
+        } else {
+            node = new GNode();
+            graph.put(course, node);
+        }
+        return node;
+    }
+}
+
+Approach 4: BFS
+Time complexity: 
+Space complexity: 
+
+public class Solution {
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        int m = prerequisites.length;
+        int[] pres = new int[numCourses];
+        for (int i = 0; i < m; i++) {
+            pres[prerequisites[i][0]]++;
+        }
+        Queue<Integer> q = new LinkedList<>();
+        for (int i = 0; i < numCourses; i++) {
+            if (pres[i] == 0) {
+                q.offer(i);                         // start from nodes which do not have any prerequisites.
+            }
+        }
+        while (!q.isEmpty()) {
+            int cur = q.poll();
+            for (int i = 0; i < m; i++) {
+                if (prerequisites[i][1] == cur) {
+                    pres[prerequisites[i][0]]--;
+                    if (pres[prerequisites[i][0]] == 0) {
+                        q.offer(prerequisites[i][0]);
+                    }
+                }
+            }
+        }
+        for (int i : pres) {
+            if (i != 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
