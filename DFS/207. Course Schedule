@@ -30,15 +30,11 @@ Space complexity: O(e + v)
 
 class Solution {
     public boolean canFinish(int numCourses, int[][] prerequisites) {
-        Map<Integer, List<Integer>> courseDict = new HashMap<>();     // course -> list of next courses.
-        for (int[] relation : prerequisites) {                        // build the graph first, relation[0] depends on relation[1].
-            if (courseDict.containsKey(relation[1])) {
-                courseDict.get(relation[1]).add(relation[0]);
-            } else {
-                List<Integer> nextCourses = new LinkedList<>();
-                nextCourses.add(relation[0]);
-                courseDict.put(relation[1], nextCourses);
-            }
+        Map<Integer, List<Integer>> courseDict = new HashMap<>();          // course -> list of next courses.
+        for (int[] relation : prerequisites) {                             // build the graph first, relation[0] depends on relation[1].
+            List<Integer> nextCourses = courseDict.getOrDefault(relation[1], new ArrayList<>());
+            nextCourses.add(relation[0]);
+            courseDict.put(relation[1], nextCourses);
         }
         boolean[] path = new boolean[numCourses];
         for (int i = 0; i < numCourses; i++) {
@@ -76,13 +72,9 @@ class Solution {
     public boolean canFinish(int numCourses, int[][] prerequisites) {
         Map<Integer, List<Integer>> courseDict = new HashMap<>();
         for (int[] relation : prerequisites) {
-            if (courseDict.containsKey(relation[1])) {
-                courseDict.get(relation[1]).add(relation[0]);
-            } else {
-                List<Integer> nextCourses = new LinkedList<>();
-                nextCourses.add(relation[0]);
-                courseDict.put(relation[1], nextCourses);
-            }
+            List<Integer> nextCourses = courseDict.getOrDefault(relation[1], new ArrayList<>());
+            nextCourses.add(relation[0]);
+            courseDict.put(relation[1], nextCourses);
         }
         boolean[] checked = new boolean[numCourses];             // if the current node has been checked before.
         boolean[] path = new boolean[numCourses];
