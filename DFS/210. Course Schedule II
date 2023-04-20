@@ -18,7 +18,11 @@ This problem is equivalent to finding the topological order in a directed graph.
 and therefore it will be impossible to take all courses.
 Topological sort could also be done via BFS.
 
-BFS.
+Approach 1: DFS
+Time complexity: O(
+Space complexity: O(
+
+Approach 2: Using Node Indegree (BFS)
 public class Solution {
     public int[] findOrder(int numCourses, int[][] prerequisites) {
         int[] indegrees = new int[numCourses];
@@ -48,6 +52,6 @@ public class Solution {
         if (index == numCourses) {
             return order;
         }
-        return new int[0];         // return [].
+        return new int[0];         // return [] an empty array.
     }
 }
