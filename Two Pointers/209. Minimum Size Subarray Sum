@@ -30,7 +30,7 @@ class Solution {
                 }
                 if (sum >= target) {
                     rst = Math.min(rst, j - i + 1);
-                    break;                         //Found the smallest subarray with sum >= target starting with index i, hence move to next index.
+                    break;                            // Found the smallest subarray starting with index i, hence move to next index.
                 }
             }
         }
@@ -55,7 +55,7 @@ class Solution {
                 int sum = sums[j] - sums[i] + nums[i];
                 if (sum >= target) {
                     rst = Math.min(rst, j - i + 1);
-                    break;                         //Found the smallest subarray with sum >= target starting with index i, hence move to next index.
+                    break;               
                 }
             }
         }
