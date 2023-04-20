@@ -22,6 +22,47 @@ Approach 1: DFS
 Time complexity: O(
 Space complexity: O(
 
+public boolean canFinish(int numCourses, int[][] prerequisites) {
+        Map<Integer, List<Integer>> courseDict = new HashMap<>();
+        for (int[] relation : prerequisites) {
+            if (courseDict.containsKey(relation[1])) {
+                courseDict.get(relation[1]).add(relation[0]);
+            } else {
+                List<Integer> nextCourses = new LinkedList<>();
+                nextCourses.add(relation[0]);
+                courseDict.put(relation[1], nextCourses);
+            }
+        }
+        boolean[] checked = new boolean[numCourses];             // if the current node has been checked before.
+        boolean[] path = new boolean[numCourses];
+        for (int i = 0; i < numCourses; i++) {
+            if (isCyclic(i, courseDict, checked, path)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    private boolean isCyclic(int curr, Map<Integer, List<Integer>> courseDict, boolean[] checked, boolean[] path) {
+        if (checked[curr] || !courseDict.containsKey(curr)) {  
+            return false;                                       // this node has been checked, no cycle would be formed with this node.
+        }
+        if (path[curr]) {
+            return true;
+        }
+        path[curr] = true;
+        boolean ret = false;
+        for (int child : courseDict.get(curr)) {
+            ret = isCyclic(child, courseDict, checked, path);
+            if (ret) {
+                break;
+            }
+        }
+        path[curr] = false;
+        checked[curr] = true;
+        return ret;
+    }
+}
+
 Approach 2: Using Node Indegree (BFS)
 public class Solution {
     public int[] findOrder(int numCourses, int[][] prerequisites) {
