@@ -15,7 +15,15 @@ Note:
 You may assume that all words are consist of lowercase letters a-z.
 You should be familiar with how a Trie works. If not, please work on this problem: Implement Trie (Prefix Tree) first.
 
-Solution 1: using HashMap.
+Approach 1: Trie
+
+
+
+
+Approach 1: using HashMap
+Time complexity:
+Space complexity: 
+
 public class WordDictionary {
     private TrieNode root;
     public WordDictionary(){
@@ -87,7 +95,10 @@ class TrieNode{
 // wordDictionary.addWord("word");
 // wordDictionary.search("pattern");
 
-Solution 2: using Array.
+Approach 2: using Array
+Time complexity:
+Space complexity:
+
 public class WordDictionary {
     private TrieNode root; 
     public WordDictionary(){
