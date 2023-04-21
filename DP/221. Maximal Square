@@ -1,0 +1,90 @@
+Given a 2D binary matrix filled with 0's and 1's, find the largest square containing only 1's and return its area.
+For example, given the following matrix:
+1 0 1 0 0
+1 0 1 1 1
+1 1 1 1 1
+1 0 0 1 0    Return 4.
+
+Approach 1: Brute force
+Time complexity: O((m * n)^2). In worst case, we need to traverse the complete matrix for every 1.
+Space complexity: O(1)
+
+class Solution {
+    public int maximalSquare(char[][] matrix) {
+        int rst = 0, m = matrix.length, n = matrix[0].length;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (matrix[i][j] == '0') {
+                    continue;
+                }
+                boolean flag = true;
+                int delta = 1;
+                while (i + delta < m && j + delta < n && flag) {
+                    for (int k = j; k <= j + delta; k++) {
+                        if (matrix[i + delta][k] == '0') {
+                            flag = false;
+                            break;
+                        }
+                    }
+                    for (int k = i; k <= i + delta; k++) {
+                        if (matrix[k][j + delta] == '0') {
+                            flag = false;
+                            break;
+                        }
+                    }
+                    if (flag) {
+                        delta++;
+                    }
+                }
+                if (delta > rst) {
+                    rst = delta;
+                }
+            }
+        }
+        return rst * rst;
+    }
+}
+
+Approach 2: DP
+Time complexity: O(m * n)
+Space complexity: O(m * n)
+
+public class Solution {
+    public int maximalSquare(char[][] matrix) {
+        int rst = 0, m = matrix.length, n = matrix[0].length;
+        int[][] dp = new int[m + 1][n + 1];                   // for convenience, we add an extra all zero column and row
+        for (int i = 1; i <= m; i++) {                        // outside of the actual dp table, to simpify the transition.
+            for (int j = 1; j <= n; j++) {      
+                if (matrix[i - 1][j - 1] == '1') {
+                    dp[i][j] = Math.min(dp[i - 1][j - 1], Math.min(dp[i - 1][j], dp[i][j - 1])) + 1;
+                    rst = Math.max(rst, dp[i][j]);
+                }
+            }
+        }
+        return rst * rst;
+    }
+}
+
+Approach 3: Better DP
+Time complexity: O(m * n)
+Space complexity: O(n)
+
+class Solution {
+    public int maximalSquare(char[][] matrix) {
+        int rst = 0, prev = 0, m = matrix.length, n = matrix[0].length;
+        int[] dp = new int[n + 1]; 
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                int temp = dp[j];
+                if (matrix[i - 1][j - 1] == '1') {
+                    dp[j] = Math.min(Math.min(dp[j - 1], prev), dp[j]) + 1;
+                    rst = Math.max(rst, dp[j]);
+                } else {
+                    dp[j] = 0;
+                }
+                prev = temp;
+            }
+        }
+        return rst * rst;
+    }
+}
