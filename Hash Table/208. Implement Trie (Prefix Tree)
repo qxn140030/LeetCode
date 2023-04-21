@@ -26,7 +26,7 @@ Trie (we pronounce "try") or prefix tree is a tree data structure, which is used
 
 class TrieNode {
     Map<Character, TrieNode> children = new HashMap<>();
-    boolean isLeaf;
+    boolean isWord;
     public TrieNode() {} 
 }
 public class Trie {
@@ -44,13 +44,13 @@ public class Trie {
             trie = children.get(c);
             children = trie.children;
             if (i == word.length() - 1) {
-                trie.isLeaf = true;
+                trie.isWord = true;
             }
         }
     }    
     public boolean search(String word) {
         TrieNode node = searchHelper(word);
-        if (node != null && node.isLeaf) {
+        if (node != null && node.isWord) {
             return true;
         }
         return false;
@@ -86,7 +86,7 @@ Each trie node can only contains 'a'-'z' characters. So we can use a small array
 
 class TrieNode {
     TrieNode[] children;
-    boolean isLeaf;
+    boolean isWord;
     public TrieNode() {
         children = new TrieNode[26];
     }
@@ -107,11 +107,11 @@ public class Trie {
             }
             p = p.children[index];
         }
-        p.isLeaf = true;
+        p.isWord = true;
     }        
     public boolean search(String word) {
         TrieNode node = searchHelper(word);
-        if (node != null && node.isLeaf) {
+        if (node != null && node.isWord) {
             return true;
         }
         return false;
