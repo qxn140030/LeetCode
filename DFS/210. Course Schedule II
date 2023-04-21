@@ -19,51 +19,65 @@ and therefore it will be impossible to take all courses.
 Topological sort could also be done via BFS.
 
 Approach 1: DFS
-Time complexity: O(
-Space complexity: O(
+Time complexity: O(e + v)
+Space complexity: O(e + v)
 
-public boolean canFinish(int numCourses, int[][] prerequisites) {
-        Map<Integer, List<Integer>> courseDict = new HashMap<>();
+class Solution {
+    int order[], pos = 0;
+    Set<Integer> visited = new HashSet<>();
+    Map<Integer, List<Integer>> map = new HashMap<>();
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
         for (int[] relation : prerequisites) {
-            if (courseDict.containsKey(relation[1])) {
-                courseDict.get(relation[1]).add(relation[0]);
-            } else {
-                List<Integer> nextCourses = new LinkedList<>();
-                nextCourses.add(relation[0]);
-                courseDict.put(relation[1], nextCourses);
-            }
+            List<Integer> pre = map.getOrDefault(relation[0], new ArrayList<>());
+            pre.add(relation[1]);
+            map.put(relation[0], pre);
         }
-        boolean[] checked = new boolean[numCourses];             // if the current node has been checked before.
-        boolean[] path = new boolean[numCourses];
+        order = new int[numCourses];
         for (int i = 0; i < numCourses; i++) {
-            if (isCyclic(i, courseDict, checked, path)) {
-                return false;
+            if (!map.containsKey(i)){
+                order[pos++] = i;
+                visited.add(i);
             }
         }
-        return true;
-    }
-    private boolean isCyclic(int curr, Map<Integer, List<Integer>> courseDict, boolean[] checked, boolean[] path) {
-        if (checked[curr] || !courseDict.containsKey(curr)) {  
-            return false;                                       // this node has been checked, no cycle would be formed with this node.
+        for (int[] p : prerequisites) {
+            if (!visited.contains(p[0])){
+                if (!dfs(p[0], new HashSet<>())) {
+                    return new int[0];
+                }
+            }
         }
-        if (path[curr]) {
+        return order;
+    }
+    private boolean dfs(int cur, Set<Integer> set) {
+        if (visited.contains(cur)) {
             return true;
         }
-        path[curr] = true;
-        boolean ret = false;
-        for (int child : courseDict.get(curr)) {
-            ret = isCyclic(child, courseDict, checked, path);
-            if (ret) {
-                break;
+        if (!map.containsKey(cur) || map.get(cur).size() == 0) {
+            order[pos++] = cur;
+        } else {
+            for(int node : map.get(cur)){
+                if (set.contains(node)) {
+                    return false;
+                }
+                set.add(node);
+                if (!visited.contains(node)) {
+                    if (!dfs(node, set)) {
+                        return false;
+                    }
+                }
+                set.remove(node);
             }
+            order[pos++] = cur;    
         }
-        path[curr] = false;
-        checked[curr] = true;
-        return ret;
+        visited.add(cur);
+        return true;
     }
 }
 
 Approach 2: Using Node Indegree (BFS)
+Time complexity: O(e + v)
+Space complexity: O(e + v)
+
 public class Solution {
     public int[] findOrder(int numCourses, int[][] prerequisites) {
         int[] indegrees = new int[numCourses];
