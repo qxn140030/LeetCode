@@ -1,0 +1,163 @@
+Design a data structure that supports the following two operations:
+void addWord(word)
+bool search(word)
+search(word) can search a literal word or a regular expression string containing only letters a-z or .. A . means it can represent
+any one letter.
+For example:
+addWord("bad")
+addWord("dad")
+addWord("mad")
+search("pad") -> false
+search("bad") -> true
+search(".ad") -> true
+search("b..") -> true
+Note:
+You may assume that all words are consist of lowercase letters a-z.
+You should be familiar with how a Trie works. If not, please work on this problem: Implement Trie (Prefix Tree) first.
+
+Approach 1: Trie
+
+class TrieNode {
+    Map<Character, TrieNode> children = new HashMap<>();
+    boolean isWord = false;
+    public TrieNode() {}
+}
+class WordDictionary {
+    TrieNode trie = new TrieNode();
+    public WordDictionary() {} 
+    public void addWord(String word) {
+        TrieNode node = trie;
+        for (char ch : word.toCharArray()) {
+            if (!node.children.containsKey(ch)) {
+                node.children.put(ch, new TrieNode());
+            }
+            node = node.children.get(ch);
+        }
+        node.isWord = true;
+    }
+    public boolean search(String word) {
+        return searchInNode(word, trie);
+    }
+    private boolean searchInNode(String word, TrieNode node) {
+        for (int i = 0; i < word.length(); i++) {
+            char ch = word.charAt(i);
+            if (!node.children.containsKey(ch)) {
+                if (ch == '.') {                                         // if the current character is '.'
+                    for (char x : node.children.keySet()) {              // check all possible nodes at this level.
+                        TrieNode child = node.children.get(x);
+                        if (searchInNode(word.substring(i + 1), child)) {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            } else {                              // if the character is found,
+                node = node.children.get(ch);     // go down to the next level in trie.
+            }
+        }
+        return node.isWord;
+    }
+}
+/**
+ * Your WordDictionary object will be instantiated and called as such:
+ * WordDictionary obj = new WordDictionary();
+ * obj.addWord(word);
+ * boolean param_2 = obj.search(word);
+ */
+
+Approach 2: using HashMap
+
+class TrieNode{
+    Map<Character, TrieNode> children = new HashMap<>();
+    boolean isWord;
+    public TrieNode() {}
+}
+public class WordDictionary {
+    private TrieNode root = new TrieNode();
+    public WordDictionary() {}
+    public void addWord(String word) {
+        Map<Character, TrieNode> children = root.children;
+        TrieNode node = null;
+        for (char c : word.toCharArray()) {
+            if (!children.containsKey(c)) {
+                children.put(c, new TrieNode());
+            }
+            node = children.get(c);
+            children = node.children;
+        }
+	node.isWord = true;
+    }
+    public boolean search(String word) {
+        return dfsSearch(root.children, word, 0);
+    }    
+    private boolean dfsSearch(Map<Character, TrieNode> children, String word, int start) {
+        if (start == word.length()) {
+            return children.size() == 0;
+        }
+        char c = word.charAt(start);    
+        if (children.containsKey(c)) {
+            if (start == word.length() - 1 && children.get(c).isWord) {
+                return true;
+            }
+            return dfsSearch(children.get(c).children, word, start + 1);
+        } else if (c == '.') {
+            for (Map.Entry<Character, TrieNode> child : children.entrySet()) {   // if any path is true.
+	        if ((start == word.length() - 1 && child.getValue().isWord) || (dfsSearch(child.getValue().children, word, start + 1))) {
+                    return true;                                                
+                }
+            }
+            return false;
+        }
+        return false;
+    }
+}
+
+Approach 3: using Array
+
+class TrieNode{
+    TrieNode[] children = new TrieNode[26];
+    boolean isWord;
+    public TrieNode() {}
+}
+public class WordDictionary {
+    private TrieNode root = new TrieNode(); 
+    public WordDictionary() {}
+    public void addWord(String word) {
+        TrieNode p = root;
+        for (char c : word.toCharArray()) {
+            int idx = c - 'a';
+            if (p.children[idx] == null) {
+                p.children[idx] = new TrieNode();
+            }
+            p = p.children[idx];
+        }
+        p.isWord = true;
+    }
+    public boolean search(String word) {
+        return dfsSearch(root, word, 0);
+    }    
+    public boolean dfsSearch(TrieNode p, String word, int start) {
+        if (start == word.length()) {
+            return p.isWord;
+        }
+        char c = word.charAt(start);  
+        if (c == '.') {
+            boolean rst = false;
+            for (int j = 0; j < 26; j++) {
+	        if (p.children[j] != null) {
+		    if (dfsSearch(p.children[j], word, start + 1)) {
+		        rst = true;
+			break;
+		    }
+		}
+	    }
+            return rst;
+        } else {
+            int idx = c - 'a';
+            if (p.children[idx] == null) {
+		return false;
+	    }
+	    return dfsSearch(p.children[idx], word, start + 1);
+        }
+    }
+}
