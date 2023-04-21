@@ -40,7 +40,7 @@ class Solution {
             }
         }
         for (int[] p : prerequisites) {
-            if (!visited.contains(p[0])){
+            if (!visited.contains(p[0])) {
                 if (!dfs(p[0], new HashSet<>())) {
                     return new int[0];
                 }
@@ -55,7 +55,7 @@ class Solution {
         if (!map.containsKey(cur) || map.get(cur).size() == 0) {
             order[pos++] = cur;
         } else {
-            for(int node : map.get(cur)){
+            for (int node : map.get(cur)) {
                 if (set.contains(node)) {
                     return false;
                 }
