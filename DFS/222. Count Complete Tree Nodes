@@ -1,0 +1,110 @@
+Given the root of a complete binary tree, return the number of the nodes in the tree.
+According to Wikipedia, every level, except possibly the last, is completely filled in a complete binary tree, and all nodes in the last level 
+are as far left as possible. It can have between 1 and 2^h nodes inclusive at the last level h.
+Design an algorithm that runs in less than O(n) time complexity.
+Example:
+              1
+            /    \
+           2      3
+          / \    /
+         4   5  6           Output: 6
+
+Approach 1: Recursion
+Time complexity: O(n)
+Space complexity: O(logn)
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public int countNodes(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        return countNodes(root.left) + countNodes(root.right) + 1;
+    }
+}
+
+Approach 2: Recursive
+Time complexity: O((logn)^2)
+Space complexity: O(logn)
+
+class Solution {
+    public int countNodes(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int left = depth(root.left);
+        int right = depth(root.right);
+        if (left == right) {                                // which means the left subtree is perfect, 
+            return (1 << left) + countNodes(root.right);    // we only need to count nodes of right subtree recursively.
+        }
+        return (1 << left - 1) + countNodes(root.left);     // the right subtree is perfect, only need to count nodes of left subtree recursively.
+    }
+    private int depth(TreeNode node) {
+        if (node == null) {
+            return 0;
+        }
+        return depth(node.left) + 1;          // For each node, count the height of it’s left and right subtree by going left only.
+    }
+}
+
+Approach 3: Binary search
+Time complexity: O((logn)^2)
+Space complexity: O(1)
+
+class Solution {
+    public int countNodes(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int depth = depth(root);
+        if (depth == 0) {
+            return 1;
+        } 
+        int left = 1, right = (int)Math.pow(2, depth) - 1;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (exists(mid, depth, root)) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            } 
+        }
+        return (int)Math.pow(2, depth) - 1 + left;
+    }
+    private int depth(TreeNode node) {
+        int depth = 0;
+        while (node.left != null) {
+            node = node.left;
+            depth++;
+        }
+        return depth;
+    }
+    private boolean exists(int idx, int depth, TreeNode node) {
+        int left = 0, right = (int)Math.pow(2, depth) - 1;
+        for (int i = 0; i < depth; i++) {
+            int mid = left + (right - left) / 2;
+            if (idx <= mid) {
+                node = node.left;
+                right = mid;
+            } else {
+                node = node.right;
+                left = mid + 1;
+            }
+        }
+        return node != null;
+    }
+}
