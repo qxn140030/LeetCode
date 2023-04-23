@@ -9,45 +9,73 @@ Try to utilize the property of a BST.
 What if you could modify the BST node's structure?
 The optimal runtime complexity is O(height of BST).
 
-Solution 1: Inorder traversal.
-Time complexity: O(n). Space complexity: O(h).
+Approach 1: Recursive Inorder Traversal
+Time complexity: O(n)
+Space complexity: O(n)
+
 /**
  * Definition for a binary tree node.
  * public class TreeNode {
  *     int val;
  *     TreeNode left;
  *     TreeNode right;
- *     TreeNode(int x) { val = x; }
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
  * }
  */
-public class Solution {
+class Solution {
     public int kthSmallest(TreeNode root, int k) {
-        Stack<TreeNode> stack = new Stack<>();
-        int rst = 0;
-        while (root != null || !stack.isEmpty()) {
+        List<Integer> nums = inorder(root, new ArrayList<Integer>());
+        return nums.get(k - 1);
+    }
+    private List<Integer> inorder(TreeNode root, List<Integer> arr) {
+        if (root == null) {
+            return arr;
+        }
+        inorder(root.left, arr);
+        arr.add(root.val);
+        inorder(root.right, arr);
+        return arr;
+    }
+}
+
+Approach 2: Iterative Inorder Traversal
+Time complexity: O(n)
+defined by the stack, which contains at least h + k elements, since before starting to pop out one has to go down to a leaf. 
+Space complexity: O(h)
+
+class Solution {
+    public int kthSmallest(TreeNode root, int k) {
+        Deque<TreeNode> stack = new ArrayDeque<>();
+        while (true) {
             while (root != null) {
                 stack.push(root);
                 root = root.left;
             }
             root = stack.pop();
-            k--;
-            if (k == 0) {
-                rst = root.val;
-                break;
+            if (--k == 0) {
+                return root.val;
             }
             root = root.right;
         }
-        return rst;
     }
 }
 
-Solution 2: Time complexity: O(h).
+Approach 3: Binary Search
+Time complexity: O(n)
+Space complexity: O(h)
+
 public class Solution {
     public int kthSmallest(TreeNode root, int k) {
         if (root == null) {
             return 0;
         }
-        int leftNo = noOfNodes(root.left);           // get the no. of nodes in the left subtree of the root.
+        int leftNo = noOfNodes(root.left);                    // get the no. of nodes in the left subtree of the root.
         if (k == leftNo + 1) {
             return root.val;
         } else if (k > leftNo + 1) {
@@ -56,7 +84,7 @@ public class Solution {
             return kthSmallest(root.left, k);
         }
     }
-    private int noOfNodes(TreeNode root) {            // get the no. of nodes in this subtree.
+    private int noOfNodes(TreeNode root) {                    // get the no. of nodes in this subtree.
         if (root == null) {
             return 0;
         }
