@@ -46,10 +46,10 @@ class Solution {
         for (int i = 1; i < n; i++) {
             if (nums.get(i) < nums.get(i - 1)) {
                 y = nums.get(i);
-                if (!flag) {                     // first swap occurrence
+                if (!flag) {                     // first swap occurrence.
                     x = nums.get(i - 1);
                     flag = true;
-                } else {                         // second swap occurrence
+                } else {                         // second swap occurrence.
                     break;
                 }
             }
