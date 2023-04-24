@@ -1,0 +1,78 @@
+Given an array of unique integers preorder, return true if it is the correct preorder traversal sequence of a binary search tree.
+Follow up: 
+Could you do it using only constant space complexity?
+Example 1:
+            5
+           / \
+          2   6
+         / \
+        1   3 
+Input: preorder = [5,2,1,3,6]
+Output: true
+
+Example 2:
+Input: preorder = [5,2,6,1,3]
+Output: false
+
+Approach 1: Recursive
+Time complexity: O(n)
+Space complexity: O(n)
+
+class Solution {
+    int idx = 0;
+    public boolean verifyPreorder(int[] preorder) {
+        return verify(preorder, Integer.MIN_VALUE, Integer.MAX_VALUE);
+    }
+    private boolean verify(int[] preorder, int min, int max) {
+        if (idx >= preorder.length) {
+            return true;
+        }
+        int val = preorder[idx];
+        if (min > val || val > max) {
+            return false;
+        }
+        idx++;
+        return verify(preorder, min, val) || verify(preorder, val, max);       
+    }
+}
+
+Approach 2: Using Stack
+Time complexity: O(n)
+Space complexity: O(n)
+
+class Solution {
+    public boolean verifyPreorder(int[] preorder) {
+        Deque<Integer> stack = new ArrayDeque<>();
+        int low = Integer.MIN_VALUE;
+        for (int cur : preorder) {
+            if (cur < low) {
+                return false;
+            }
+            while (!stack.isEmpty() && cur > stack.peek()) {
+                low = stack.pop();
+            }
+            stack.push(cur);
+        }
+        return true;
+    }
+}
+
+Approach 3: Follow Up - Constant Space
+Time complexity: O(n)
+Space complexity: O(1)
+
+class Solution {
+    public boolean verifyPreorder(int[] preorder) {
+        int low = Integer.MIN_VALUE, i = -1;
+        for (int cur : preorder) {
+            if (cur < low) {
+                return false;
+            }
+            while (i >= 0 && cur > preorder[i]) {
+                low = preorder[i--];
+            }
+            preorder[++i] = cur;
+        }
+        return true;
+    }
+}
