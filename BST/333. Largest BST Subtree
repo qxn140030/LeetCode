@@ -17,6 +17,52 @@ Input: root = [10,5,15,1,8,null,7]
 Output: 3
 
 Approach 1: Pre-Order Traversal
-Time complexity: O(
-Space complexity: O(
+Time complexity: O(n^2)
+Space complexity: O(n)
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public int largestBSTSubtree(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        if (isValidBST(root, null, null)) {
+            return countNodes(root);
+        }
+        return Math.max(largestBSTSubtree(root.left), largestBSTSubtree(root.right));
+    }
+    private boolean isValidBST(TreeNode root, Integer low, Integer high) {
+        if (root == null) {
+            return true;
+        }
+        if (low != null && root.val <= low || high != null && root.val >= high) {
+            return false;
+        }
+        return isValidBST(root.left, low, root.val) && isValidBST(root.right, root.val, high);
+    }
+    private int countNodes(TreeNode root) {
+        if (root == null) {
+             return 0;
+        }
+        return 1 + countNodes(root.left) + countNodes(root.right);
+    }
+}
+
+Approach 2: Pre-Order Traversal Optimized
+Time complexity: O(n^2)
+Space complexity: O(n)
 
