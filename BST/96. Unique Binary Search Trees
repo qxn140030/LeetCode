@@ -25,6 +25,7 @@ public class Solution {
 }
 
 Approach 2: Mathematical Deduction
+the number of possible BST is actually a Catalan number.
 Time complexity: O(n)
 Space complexity: O(1)
 
