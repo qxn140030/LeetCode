@@ -40,7 +40,7 @@ class Solution {
         if (root == null) {
             return true;
         }
-        if ((low != null && root.val <= low) || (high != null && root.val >= high)) {
+        if (low != null && root.val <= low || high != null && root.val >= high) {
             return false;
         }
         return check(root.left, low, root.val) && check(root.right, root.val, high);
@@ -124,8 +124,8 @@ Space complexity: O(n)
 public class Solution {
     public boolean isValidBST(TreeNode root) {
         long pre = Long.MIN_VALUE;
-        Stack<TreeNode> stack = new Stack<>();
-        while (root != null || !stack.empty()) {
+        Deque<TreeNode> stack = new ArrayDeque<>();
+        while (root != null || !stack.isEmpty()) {
             while (root != null) {
                 stack.push(root);
                 root = root.left;
