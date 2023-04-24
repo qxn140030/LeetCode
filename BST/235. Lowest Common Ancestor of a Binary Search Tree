@@ -11,6 +11,10 @@ lowest node in T that has both v and w as descendants (where we allow a node to 
 For example, the lowest common ancestor (LCA) of nodes 2 and 8 is 6. Another example is LCA of nodes 2 and 4 is 2, since a
 node can be a descendant of itself according to the LCA definition.
 
+Approach 1: Recursive
+Time complexity: O(n)
+Space complexity: O(n)
+
 /**
  * Definition for a binary tree node.
  * public class TreeNode {
@@ -20,13 +24,25 @@ node can be a descendant of itself according to the LCA definition.
  *     TreeNode(int x) { val = x; }
  * }
  */
+class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        int rootVal = root.val, pVal = p.val, qVal = q.val;
+        if (pVal > rootVal && qVal > rootVal) {
+            return lowestCommonAncestor(root.right, p, q);
+        } else if (pVal < rootVal && qVal < rootVal) {
+            return lowestCommonAncestor(root.left, p, q);
+        } else {
+            return root;
+        }
+    }
+}
+
 public class Solution {
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
         if (!contain(root, p) || !contain(root, q)) {
             return null;
         }
-        int min = Math.min(p.val, q.val);
-        int max = Math.max(p.val, q.val);
+        int min = Math.min(p.val, q.val), max = Math.max(p.val, q.val);
         if (max < root.val) {
             return lowestCommonAncestor(root.left, p, q);
         } 
@@ -46,5 +62,27 @@ public class Solution {
             return contain(root.right, p);
         } 
         return contain(root.left, p);
+    }
+}
+
+Approach 2: Iterative
+Time complexity: O(n)
+Space complexity: O(1)
+
+class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        int pVal = p.val, qVal = q.val;
+        TreeNode node = root;
+        while (node != null) {
+            int parentVal = node.val;
+            if (pVal > parentVal && qVal > parentVal) {
+                node = node.right;
+            } else if (pVal < parentVal && qVal < parentVal) {
+                node = node.left;
+            } else {
+                return node;
+            }
+        }
+        return null;
     }
 }
