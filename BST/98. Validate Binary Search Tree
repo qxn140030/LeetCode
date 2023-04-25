@@ -81,7 +81,7 @@ class Solution {
                 continue;
             }
             val = root.val;
-            if ((low != null && val <= low) || (high != null && val >= high)) {
+            if (low != null && val <= low || high != null && val >= high) {
                 return false;
             }
             update(root.right, val, high);
@@ -109,7 +109,7 @@ class Solution {
         if (root == null) {
             return true;
         }
-        if (!inorder(root.left) || (pre != null && root.val <= pre)) {
+        if (!inorder(root.left) || pre != null && root.val <= pre) {
             return false;
         }
         pre = root.val;
