@@ -27,7 +27,7 @@ Space complexity: exponential
  */
 class Solution {
     public List<TreeNode> generateTrees(int n) {
-        return n > 0 ? helper(1, n) : new ArrayList<>();  
+        return helper(1, n);  
     }
     private List<TreeNode> helper(int start, int end) {
         List<TreeNode> rst = new ArrayList<>();
