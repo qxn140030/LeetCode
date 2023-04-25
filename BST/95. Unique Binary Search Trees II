@@ -40,13 +40,43 @@ class Solution {
             List<TreeNode> right = helper(i + 1, end);
             for (TreeNode l : left) {
                 for (TreeNode r : right) {
-                    TreeNode root = new TreeNode(i);
-                    root.left = l;
-                    root.right = r;
-                    rst.add(root);
+                    TreeNode node = new TreeNode(i, l, r);
+                    rst.add(node);
                 }
             }
         }
         return rst;
+    }
+}
+
+Approach 2: with Memoization
+Time complexity: exponential
+Space complexity: exponential
+
+class Solution {
+    Map<Pair<Integer, Integer>, List<TreeNode>> memo = new HashMap<>();
+    public List<TreeNode> generateTrees(int n) {
+        return helper(1, n);
+    }
+    private List<TreeNode> helper(int start, int end) {
+        if (start > end) {
+            return new ArrayList<>() {{
+                add(null);
+            }};
+        }
+        List<TreeNode> list = new ArrayList<>();
+        Pair<Integer, Integer> pair = new Pair(start, end);
+        if (memo.containsKey(pair)) {
+            return memo.get(pair);
+        }
+        for (int i = start; i <= end; i++) {
+            for (TreeNode left : helper(start, i - 1)) {
+                for (TreeNode right : helper(i + 1, end)) {
+                    list.add(new TreeNode(i, left, right));
+                }
+            }     
+        }
+        memo.put(pair, list);
+        return list;
     }
 }
