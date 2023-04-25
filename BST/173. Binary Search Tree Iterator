@@ -55,25 +55,24 @@ Approach 2: Controlled Recursion
 Time complexity: the amortized (average) time complexity for this function would still be O(1).
 Space complexity: O(n)
 
-public class BSTIterator {
+class BSTIterator {
     Deque<TreeNode> stack = new ArrayDeque<>();
     public BSTIterator(TreeNode root) {
+        findLeftMost(root);
+    }
+    public int next() {
+        TreeNode node = stack.pop();
+        int next = node.val;
+        findLeftMost(node.right);
+        return next;
+    }
+    public boolean hasNext() {
+        return !stack.isEmpty();
+    }
+    private void findLeftMost(TreeNode root) {
         while (root != null) {
             stack.push(root);
             root = root.left;
         }
-    }
-    public int next() {
-        TreeNode node = stack.pop();
-        int rst = node.val;
-        node = node.right;
-        while (node != null) {
-            stack.push(node);
-            node = node.left;
-        }
-        return rst;
-    }
-    public boolean hasNext() {
-        return !stack.isEmpty();
     }
 }
