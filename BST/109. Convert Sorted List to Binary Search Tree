@@ -43,7 +43,7 @@ public class Solution {
         if (head == null) {
             return null;
         }
-        if (head.next == null) {                 // Note: edge case
+        if (head.next == null) {                 // Note: edge case.
             return new TreeNode(head.val);
         }
         ListNode pre = new ListNode(0);
