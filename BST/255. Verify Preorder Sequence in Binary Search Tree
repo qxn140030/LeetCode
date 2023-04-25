@@ -49,7 +49,7 @@ class Solution {
                 return false;
             }
             while (!stack.isEmpty() && cur > stack.peek()) {
-                low = stack.pop();
+                low = stack.pop();                             // find the new lower bound.
             }
             stack.push(cur);
         }
@@ -57,18 +57,18 @@ class Solution {
     }
 }
 
-Approach 3: Follow Up - Constant Space
+Approach 3: Follow Up - Constant Space by using pointer
 Time complexity: O(n)
 Space complexity: O(1)
 
 class Solution {
     public boolean verifyPreorder(int[] preorder) {
-        int low = Integer.MIN_VALUE, i = -1;
+        int low = Integer.MIN_VALUE, i = -1;   
         for (int cur : preorder) {
             if (cur < low) {
                 return false;
             }
-            while (i >= 0 && cur > preorder[i]) {
+            while (i >= 0 && cur > preorder[i]) {     // trace back to the parent node on which cur node based to the right.
                 low = preorder[i--];
             }
             preorder[++i] = cur;
