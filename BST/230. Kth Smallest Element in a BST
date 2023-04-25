@@ -2,8 +2,14 @@ Given a binary search tree, write a function kthSmallest to find the kth smalles
 Note: 
 You may assume k is always valid, 1 ≤ k ≤ BST's total elements.
 Follow up:
-What if the BST is modified (insert/delete operations) often and you need to find the kth smallest frequently? How would you
-optimize the kthSmallest routine?
+What if the BST is modified (insert/delete operations) often and you need to find the kth smallest frequently? 
+How would you optimize the kthSmallest routine?
+- without any optimisation insert/delete + search of kth element has O(2h + k) complexity.
+- use the same logic as for LRU cache design, and combine an indexing structure (we could keep BST here) with a double linked list.
+- Such a structure would provide:
+-- O(h) time for the insert and delete.
+-- O(k) for the search of kth smallest.
+- The overall time complexity for insert/delete + search of kth smallest is O(h + k) instead of O(2h + k).
 Hint:
 Try to utilize the property of a BST.
 What if you could modify the BST node's structure?
@@ -30,7 +36,7 @@ Space complexity: O(n)
  */
 class Solution {
     public int kthSmallest(TreeNode root, int k) {
-        List<Integer> nums = inorder(root, new ArrayList<Integer>());
+        List<Integer> nums = inorder(root, new ArrayList<>());
         return nums.get(k - 1);
     }
     private List<Integer> inorder(TreeNode root, List<Integer> arr) {
@@ -70,24 +76,24 @@ Approach 3: Binary Search
 Time complexity: O(n)
 Space complexity: O(h)
 
-public class Solution {
+class Solution {
     public int kthSmallest(TreeNode root, int k) {
         if (root == null) {
             return 0;
         }
-        int leftNo = noOfNodes(root.left);                    // get the no. of nodes in the left subtree of the root.
-        if (k == leftNo + 1) {
+        int left = countNodes(root.left);    
+        if (k == left + 1) {
             return root.val;
-        } else if (k > leftNo + 1) {
-            return kthSmallest(root.right, k - leftNo - 1);
+        } else if (k > left + 1) {
+            return kthSmallest(root.right, k - left - 1);
         } else {
             return kthSmallest(root.left, k);
         }
     }
-    private int noOfNodes(TreeNode root) {                    // get the no. of nodes in this subtree.
+    private int countNodes(TreeNode root) {       
         if (root == null) {
             return 0;
         }
-        return noOfNodes(root.left) + 1 + noOfNodes(root.right);
+        return countNodes(root.left) + countNodes(root.right) + 1;
     }
 }
