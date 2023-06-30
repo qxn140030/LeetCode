@@ -1,0 +1,99 @@
+There is a ball in a maze with empty spaces (represented as 0) and walls (represented as 1). The ball can go through the empty spaces by rolling up, down, left or right, 
+but it won't stop rolling until hitting a wall. When the ball stops, it could choose the next direction.
+Given the m x n maze, the ball's start position and the destination, where start = [startrow, startcol] and destination = [destinationrow, destinationcol], 
+return true if the ball can stop at the destination, otherwise return false.
+You may assume that the borders of the maze are all walls (see examples).
+Example 1:
+Input: maze = [[0,0,1,0,0],[0,0,0,0,0],[0,0,0,1,0],[1,1,0,1,1],[0,0,0,0,0]], start = [0,4], destination = [4,4]
+Output: true
+Explanation: One possible way is : left -> down -> left -> down -> right -> down -> right.
+
+Example 2:
+Input: maze = [[0,0,1,0,0],[0,0,0,0,0],[0,0,0,1,0],[1,1,0,1,1],[0,0,0,0,0]], start = [0,4], destination = [3,2]
+Output: false
+Explanation: There is no way for the ball to stop at the destination. Notice that you can pass through the destination but you cannot stop there.
+
+Example 3:
+Input: maze = [[0,0,0,0,0],[1,1,0,0,1],[0,0,0,0,0],[0,1,0,0,1],[0,1,0,0,0]], start = [4,3], destination = [0,1]
+Output: false
+
+Approach 1: DFS
+Time complexity: O(m * n * (m + n))
+Initializing the visit array takes O(m * n) time.
+The function dfs visits each node at most once, resulting in O(m * n) calls. For each call, we loop through the node's neighbors. To discover neighboring nodes for a node, 
+we check in each direction with a while loop and it would take O(m) steps for vertical directions or O(n) steps for horizontal directions to reach a wall, 
+resulting in O(m + n) operations. It would take O(m * n * (m + n)) in total for all the nodes.
+
+Space complexity: O(m * n)
+The visit array takes O(m * n) space.
+The recursion stack used by dfs can have no more than O(m * n) elements in the worst-case scenario. It would take up O(m * n) space in that case.
+
+class Solution {
+    public boolean hasPath(int[][] maze, int[] start, int[] destination) {
+        int m = maze.length, n = maze[0].length;
+        boolean[][] visit = new boolean[m][n];
+        return dfs(m, n, maze, start, destination, visit);
+    }
+    private boolean dfs(int m, int n, int[][] maze, int[] curr, int[] destination, boolean[][] visit) {
+        if (visit[curr[0]][curr[1]]) {
+            return false;
+        }
+        if (curr[0] == destination[0] && curr[1] == destination[1]) {
+            return true;
+        }
+        visit[curr[0]][curr[1]] = true;
+        int[] dirX = {0, 1, 0, -1};
+        int[] dirY = {-1, 0, 1, 0};
+        for (int i = 0; i < 4; i++) {
+            int r = curr[0], c = curr[1];
+            // Move the ball in the chosen direction until it can.
+            while (r >= 0 && r < m && c >= 0 && c < n && maze[r][c] == 0) {
+                r += dirX[i];
+                c += dirY[i];
+            }
+            // Revert the last move to get the cell to which the ball rolls.
+            if (dfs(m, n, maze, new int[]{r - dirX[i], c - dirY[i]}, destination, visit)) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+Approach 2: BFS
+Time complexity: O(m * n * (m + n))
+Space complexity: O(m * n)
+
+class Solution {
+    public boolean hasPath(int[][] maze, int[] start, int[] destination) {
+        int m = maze.length, n = maze[0].length;
+        boolean[][] visit = new boolean[m][n];
+        int[] dirX = {0, 1, 0, -1};
+        int[] dirY = {-1, 0, 1, 0};
+        Queue<int[]> queue = new LinkedList<>();
+        queue.offer(start);
+        visit[start[0]][start[1]] = true;
+        while (!queue.isEmpty()) {
+            int[] curr = queue.poll();
+            if (curr[0] == destination[0] && curr[1] == destination[1]) {
+                return true;
+            }
+            for (int i = 0; i < 4; i++) {
+                int r = curr[0], c = curr[1];
+                // Move the ball in the chosen direction until it can.
+                while (r >= 0 && r < m && c >= 0 && c < n && maze[r][c] == 0) {
+                    r += dirX[i];
+                    c += dirY[i];
+                }
+                // Revert the last move to get the cell to which the ball rolls.
+                r -= dirX[i];
+                c -= dirY[i];
+                if (!visit[r][c]) {
+                    queue.offer(new int[]{r, c});
+                    visit[r][c] = true;
+                }
+            }
+        }
+        return false;
+    }
+}
