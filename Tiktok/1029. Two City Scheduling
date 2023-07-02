@@ -22,7 +22,7 @@ Approach 1: Greedy
 Sort the persons in the ascending order by cost_A - cost_B parameter, which indicates the company additional costs.
 To minimise the costs, send n persons with the smallest cost_A - cost_B to the city A, and the others to the city B.
 Time complexity: O(nlogn)
-Space complexity: O(nlogn). In Java, Arrays.sort() is implemented using a variant of the Quick Sort algorithm which has a space complexity of O(log⁡n).
+Space complexity: O(logn). In Java, Arrays.sort() is implemented using a variant of the Quick Sort algorithm which has a space complexity of O(log⁡n).
 
 class Solution {
     public int twoCitySchedCost(int[][] costs) {
