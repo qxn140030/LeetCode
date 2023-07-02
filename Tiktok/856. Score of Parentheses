@@ -1,0 +1,85 @@
+Given a balanced parentheses string s, return the score of the string.
+The score of a balanced parentheses string is based on the following rule:
+"()" has score 1.
+AB has score A + B, where A and B are balanced parentheses strings.
+(A) has score 2 * A, where A is a balanced parentheses string.
+Example 1:
+Input: s = "()"
+Output: 1
+
+Example 2:
+Input: s = "(())"
+Output: 2
+
+Example 3:
+Input: s = "()()"
+Output: 2
+
+Approach 1: Divide and Conquer
+Time Complexity: O(n^2), where n is the length of s. An example worst case is (((((((....))))))).
+Space Complexity: O(n), the size of the implied call stack.
+
+class Solution {
+    public int scoreOfParentheses(String s) {
+        return helper(s, 0, s.length());
+    }
+    private int helper(String s, int i, int j) {
+        //Score of balanced string S[i:j]
+        int ans = 0, bal = 0;
+        // Split string into primitives
+        for (int k = i; k < j; k++) {
+            bal += s.charAt(k) == '(' ? 1 : -1;
+            if (bal == 0) {
+                if (k - i == 1) {
+                    ans++;
+                } else {
+                    ans += 2 * helper(s, i + 1, k);
+                }
+                i = k + 1;
+            }
+        }
+        return ans;
+    }
+}
+
+Approach 2: Stack
+Time Complexity: O(n), where n is the length of s.
+Space Complexity: O(n), the size of the stack.
+
+class Solution {
+    public int scoreOfParentheses(String s) {
+        Stack<Integer> stack = new Stack();
+        stack.push(0);      // The score of the current frame
+        for (char c: s.toCharArray()) {
+            if (c == '(') {
+                stack.push(0);
+            } else {
+                int v = stack.pop();
+                int w = stack.pop();
+                stack.push(w + Math.max(2 * v, 1));
+            }
+        }
+        return stack.pop();
+    }
+}
+
+Approach 3: Count Cores
+Time Complexity: O(n), where n is the length of s.
+Space Complexity: O(1)
+
+class Solution {
+    public int scoreOfParentheses(String s) {
+        int ans = 0, bal = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == '(') {
+                bal++;
+            } else {
+                bal--;
+                if (s.charAt(i-1) == '(') {
+                    ans += 1 << bal;
+                }
+            }
+        }
+        return ans;
+    }
+}
