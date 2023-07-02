@@ -1,0 +1,169 @@
+Given an encoded string, return its decoded string.
+The encoding rule is: k[encoded_string], where the encoded_string inside the square brackets is being repeated exactly k times. 
+Note that k is guaranteed to be a positive integer.
+You may assume that the input string is always valid; there are no extra white spaces, square brackets are well-formed, etc. 
+Furthermore, you may assume that the original data does not contain any digits and that digits are only for those repeat numbers, k. 
+For example, there will not be input like 3a or 2[4].
+The test cases are generated so that the length of the output will never exceed 105.
+Example 1:
+Input: s = "3[a]2[bc]"
+Output: "aaabcbc"
+
+Example 2:
+Input: s = "3[a2[c]]"
+Output: "accaccacc"
+
+Example 3:
+Input: s = "2[abc]3[cd]ef"
+Output: "abcabccdcdcdef"
+
+Approach 1: Using Stack
+Time Complexity: O(n * maxK^countK), where maxK is the maximum value of k, countK is the count of nested k values and n is the maximum length of encoded string.
+Example, for s = 20[a10[bc]], maxK is 20, countK is 2 as there are 2 nested k values (20 and 10). 
+Also, there are 2 encoded strings a and bc with maximum length of encoded string, n as 2
+The worst case scenario would be when there are multiple nested patterns. Let's assume that all the k values(maxK) are 10 and all encoded string(n) are of size 2.
+For, s = 10[ab10[cd]]10[ef], time complexity would be roughly equivalent to 10*cd*10*ab + 10*2 = 10^2 * 2
+Hence, for an encoded pattern of form maxK[nmaxK[n]], the time complexity to decode the pattern can be given as
+
+Space Complexity: O(sum(n * maxK^countK)), where maxK is the maximum value of k, countK is the count of nested k values and n is the maximum length of encoded string.
+The maximum stack size would be equivalent to the sum of all the decoded strings in the form maxK[nmaxK[n]]
+
+class Solution {
+    public String decodeString(String s) {
+        Stack<Character> stack = new Stack<>();
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == ']') {
+                List<Character> decodedString = new ArrayList<>();
+                // get the encoded string
+                while (stack.peek() != '[') {
+                    decodedString.add(stack.pop());
+                }
+                // pop [ from the stack
+                stack.pop();
+                int base = 1, k = 0;
+                // get the number k
+                while (!stack.isEmpty() && Character.isDigit(stack.peek())) {
+                    k = k + (stack.pop() - '0') * base;
+                    base *= 10;
+                }
+                // decode k[decodedString], by pushing decodedString k times into stack
+                while (k != 0) {
+                    for (int j = decodedString.size() - 1; j >= 0; j--) {
+                        stack.push(decodedString.get(j));
+                    }
+                    k--;
+                }
+            } else {    // push the current character to stack
+                stack.push(s.charAt(i));
+            }
+        }      
+        // get the result from stack
+        char[] result = new char[stack.size()];
+        for (int i = result.length - 1; i >= 0; i--) {
+            result[i] = stack.pop();
+        }
+        return new String(result);
+    }
+}
+
+Approach 2: Using 2 Stack
+Time Complexity: O(n * maxK)
+Space Complexity: O(m + n)
+
+class Solution {
+    public String decodeString(String s) {
+        Stack<Integer> countStack = new Stack<>();
+        Stack<StringBuilder> stringStack = new Stack<>();
+        StringBuilder currentString = new StringBuilder();
+        int k = 0;
+        for (char ch : s.toCharArray()) {
+            if (Character.isDigit(ch)) {
+                k = k * 10 + ch - '0';
+            } else if (ch == '[') {
+                // push the number k to countStack
+                countStack.push(k);
+                // push the currentString to stringStack
+                stringStack.push(currentString);
+                // reset currentString and k
+                currentString = new StringBuilder();
+                k = 0;
+            } else if (ch == ']') {
+                StringBuilder decodedString = stringStack.pop();
+                // decode currentK[currentString] by appending currentString k times
+                for (int currentK = countStack.pop(); currentK > 0; currentK--) {
+                    decodedString.append(currentString);
+                }
+                currentString = decodedString;
+            } else {
+                currentString.append(ch);
+            }
+        }
+        return currentString.toString();
+    }
+}
+
+Approach 3: Using Recursion
+Time Complexity: O(n * maxK)
+Space Complexity: O(n)
+
+class Solution {
+    int index = 0;
+    public String decodeString(String s) {
+        StringBuilder result = new StringBuilder();
+        while (index < s.length() && s.charAt(index) != ']') {
+            if (!Character.isDigit(s.charAt(index))) {
+                result.append(s.charAt(index++));
+            } else {
+                int k = 0;
+                // build k while next character is a digit
+                while (index < s.length() && Character.isDigit(s.charAt(index))) {
+                    k = k * 10 + s.charAt(index++) - '0';
+                }
+                // ignore the opening bracket '['    
+                index++;
+                String decodedString = decodeString(s);
+                // ignore the closing bracket ']'
+                index++;
+                // build k[decodedString] and append to the result
+                while (k-- > 0) {
+                    result.append(decodedString);
+                }
+            }
+        }
+        return new String(result);
+    }
+}
+
+public class Solution {
+    public String decodeString(String s) {
+        if (s == null) {
+            return null;
+        }
+        Stack<StringBuilder> s1 = new Stack<>();
+        Stack<Integer> s2 = new Stack<>();
+        StringBuilder sb = new StringBuilder();
+        int count = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c == '[') {
+                s1.push(sb);
+                s2.push(count);
+                sb = new StringBuilder();
+                count = 0;
+            } else if (c == ']') {
+                StringBuilder tmp = sb;
+                sb = s1.pop();
+                count = s2.pop();
+                while (count > 0) {
+                    sb.append(tmp);
+                    count--;
+                }
+            } else if (c >= '0' && c <= '9') {
+                count = count * 10 + (c - '0');
+            } else {
+                sb.append(c);
+            }
+        }
+        return sb.toString();
+    }
+}
