@@ -18,7 +18,7 @@ Input: s = "))(("
 Output: ""
 Explanation: An empty string is also valid.
 
-Approach 1: Using a Stack and String Builder
+Approach 1: Using a Stack and StringBuilder
 The parentheses in a string are balanced if and only if these 2 conditions are met:
 1. There are the same number of "(" and ")" in the string.
 2. Scanning through the string from left to right and counting how many "(" and ")" there are so far, there should never be a time where there are more ")" than "(".
@@ -53,7 +53,7 @@ class Solution {
     }
 }
 
-Approach 2: Two Pass String Builder
+Approach 2: Two Pass StringBuilder
 Time complexity: O(n)
 Space complexity: O(n)
 
@@ -82,16 +82,15 @@ class Solution {
     }
 }
 
-Approach 3: Shortened Two Pass String Builder
+Approach 3: Shortened Two Pass StringBuilder
 Time complexity: O(n)
 Space complexity: O(n)
 
 class Solution {
     public String minRemoveToMakeValid(String s) {
         StringBuilder sb = new StringBuilder();
-        // Pass 1: Remove all invalid ")"
         int openSeen = 0, balance = 0;
-        for (int i = 0; i < s.length(); i++) {
+        for (int i = 0; i < s.length(); i++) {      // Pass 1: Remove all invalid ")"
             char c = s.charAt(i);
             if (c == '(') {
                 openSeen++;
@@ -104,10 +103,9 @@ class Solution {
             }
             sb.append(c);
         }
-        // Pass 2: Remove the rightmost "("
         StringBuilder rst = new StringBuilder();
         int openToKeep = openSeen - balance;
-        for (int i = 0; i < sb.length(); i++) {
+        for (int i = 0; i < sb.length(); i++) {     // Pass 2: Remove the rightmost "("
             char c = sb.charAt(i);
             if (c == '(') {
                 openToKeep--;
