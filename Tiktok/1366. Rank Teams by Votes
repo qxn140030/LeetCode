@@ -28,13 +28,10 @@ Explanation: Only one voter, so their votes are used for the ranking.
 Approach 1:
 use example1 to explain this solution.
 we have candidates A, B, C. So we can record the number of votes in every position for each candidate.
-A: 5, 0, 0
-B: 0, 2, 3
-C: 0, 3, 2
+A: 5, 0, 0            A: 5, 0, 0
+B: 0, 2, 3     ->     C: 0, 3, 2
+C: 0, 3, 2            B: 0, 2, 3
 we imagine it is a 2D array. we try to sort the array. After sorting, we should make the array like this:
-A: 5, 0, 0
-C: 0, 3, 2
-B: 0, 2, 3
 Obviously, ACB is the result we want.
 1. define an array, every row denote a candidate, every column denotes a position.
 2. add an extra column to identify which candidate the row is.
