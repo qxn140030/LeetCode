@@ -19,6 +19,9 @@ Output: ""
 Explanation: An empty string is also valid.
 
 Approach 1: Using a Stack and String Builder
+The parentheses in a string are balanced if and only if these 2 conditions are met:
+1. There are the same number of "(" and ")" in the string.
+2. Scanning through the string from left to right and counting how many "(" and ")" there are so far, there should never be a time where there are more ")" than "(".
 Time complexity: O(n)
 Space complexity: O(n)
 
