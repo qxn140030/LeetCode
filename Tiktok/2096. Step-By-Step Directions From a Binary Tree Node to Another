@@ -29,9 +29,6 @@ We remove "L", and now start direction is "LRRL", and destination - "RR"
 3. Replace all steps in the start direction to "U" and add destination direction.
 The result is "UUUU" + "RR".
 
-Time complexity: O(
-Space complexity: O(
-
 /**
  * Definition for a binary tree node.
  * public class TreeNode {
@@ -47,32 +44,6 @@ Space complexity: O(
  *     }
  * }
  */
-class Solution {
-    public String getDirections(TreeNode root, int startValue, int destValue) {
-        StringBuilder sb_start = new StringBuilder();
-        StringBuilder sb_dest = new StringBuilder();
-        find(root, startValue, sb_start);
-        find(root, destValue, sb_dest);
-        int i = 0;
-        int max_i = Math.min(sb_dest.length(), sb_start.length());
-        while (i < max_i && sb_start.charAt(sb_start.length() - i - 1) == sb_dest.charAt(sb_dest.length() - i - 1)) {
-            i++;
-        }
-        return "U".repeat(sb_start.length() - i) + sb_dest.reverse().toString().substring(i);
-    }
-    private boolean find(TreeNode node, int val, StringBuilder sb) {
-        if (node.val == val) {
-            return true;
-        }
-        if (node.left != null && find(node.left, val, sb)) {
-            sb.append("L");
-        } else if (node.right != null && find(node.right, val, sb)) {
-            sb.append("R");
-        }
-        return sb.length() > 0;
-    }
-}
-
 class Solution {
     public String getDirections(TreeNode root, int startValue, int destValue) {
         StringBuilder sbStart = new StringBuilder(), sbDest = new StringBuilder();
