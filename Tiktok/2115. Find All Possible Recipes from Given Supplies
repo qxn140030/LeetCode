@@ -33,6 +33,29 @@ Repeated BFS till no any more finding.
 
 class Solution {
     public List<String> findAllRecipes(String[] recipes, List<List<String>> ingredients, String[] supplies) {
+        Set<String> supple = new HashSet<>(Arrays.asList(supplies));
+        Set<String> ans = new HashSet<>();
+        for (int i = 0; i < ingredients.size(); i++) {
+            outer:
+            for (int j = 0; j < ingredients.size(); j++) {
+                if (ans.contains(recipes[j])) {
+                    continue;                               // recipe has already been made.
+                }
+                for (String ingre : ingredients.get(j)) {
+                    if (!supple.contains(ingre)) {
+                        continue outer;                     // As all ingredients are not present in supplies.
+                    }
+                }
+                ans.add(recipes[j]);                        // add it to the answer.
+                supple.add(recipes[j]);                     // add it to the supplies list so that another recipe can use this recipe.
+            }
+        }
+        return new ArrayList<>(ans);
+    }
+}
+
+class Solution {
+    public List<String> findAllRecipes(String[] recipes, List<List<String>> ingredients, String[] supplies) {
         Set<String> seen = new HashSet<>();
         for (String sup : supplies) {
             seen.add(sup);
@@ -59,5 +82,52 @@ class Solution {
             }
         }
         return ans;
+    }
+}
+
+Approach 2: Topological sort
+1. For each recipe, count its non-available ingredients as in degree; Store (non-available ingredient, dependent recipes) as HashMap;
+2. Store all 0-in-degree recipes into a list as the starting points of topological sort;
+3. Use topogical sort to decrease the in degree of recipes, whenever the in-degree reaches 0, add it to return list.
+
+class Solution {
+    public List<String> findAllRecipes(String[] recipes, List<List<String>> ingredients, String[] supplies) {
+        Set<String> sup = new HashSet<>(Arrays.asList(supplies));
+        Map<String, Integer> index = new HashMap<>();
+        Map<String, List<String>> map = new HashMap<>();
+        for (int i = 0; i < recipes.length; i++) {
+            index.put(recipes[i], i);              // store index of all recipes.
+        }
+        int[] indegree = new int[recipes.length];
+        for (int i = 0; i < recipes.length; i++) {
+            for (String need : ingredients.get(i)) {
+                if (sup.contains(need)) {
+                    continue;
+                }
+                map.putIfAbsent(need, new ArrayList<String>());
+                map.get(need).add(recipes[i]);
+                indegree[i]++;
+            }
+        }
+        Queue<Integer> q = new LinkedList<>();
+        for (int i = 0; i < recipes.length; i++) {
+            if (indegree[i] == 0) {
+                q.add(i);                         // add all the recipes with indegree 0 to the queue.
+            }
+        }
+        List<String> cooked = new ArrayList<>();
+        while (!q.isEmpty()) {
+            int i = q.poll();
+            cooked.add(recipes[i]);
+            if (!map.containsKey(recipes[i])) {    // if the map does not contain this recipe, means this recipe is not an ingredient for any other recipe,
+                continue;                          // and no further processing is required.
+            } 
+            for (String recipe : map.get(recipes[i])) {
+                if (--indegree[index.get(recipe)] == 0) {
+                    q.add(index.get(recipe));
+                }
+            }
+        }
+        return cooked;
     }
 }
