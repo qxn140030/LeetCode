@@ -30,117 +30,44 @@ The maximum stack size would be equivalent to the sum of all the decoded strings
 
 class Solution {
     public String decodeString(String s) {
-        Stack<Character> stack = new Stack<>();
+        Deque<Character> stack = new ArrayDeque<>();
         for (int i = 0; i < s.length(); i++) {
             if (s.charAt(i) == ']') {
                 List<Character> decodedString = new ArrayList<>();
-                // get the encoded string
                 while (stack.peek() != '[') {
                     decodedString.add(stack.pop());
                 }
-                // pop [ from the stack
-                stack.pop();
+                stack.pop();           // pop [ from the stack.
                 int base = 1, k = 0;
-                // get the number k
                 while (!stack.isEmpty() && Character.isDigit(stack.peek())) {
-                    k = k + (stack.pop() - '0') * base;
+                    k += (stack.pop() - '0') * base;
                     base *= 10;
                 }
-                // decode k[decodedString], by pushing decodedString k times into stack
-                while (k != 0) {
+                while (k-- > 0) {
                     for (int j = decodedString.size() - 1; j >= 0; j--) {
                         stack.push(decodedString.get(j));
                     }
-                    k--;
                 }
-            } else {    // push the current character to stack
+            } else {    
                 stack.push(s.charAt(i));
             }
         }      
-        // get the result from stack
-        char[] result = new char[stack.size()];
-        for (int i = result.length - 1; i >= 0; i--) {
-            result[i] = stack.pop();
+        char[] rst = new char[stack.size()];
+        for (int i = rst.length - 1; i >= 0; i--) {
+            rst[i] = stack.pop();
         }
-        return new String(result);
+        return new String(rst);
     }
 }
 
 Approach 2: Using 2 Stack
-Time Complexity: O(n * maxK)
-Space Complexity: O(m + n)
+Time Complexity: O(n * maxK), where maxK is the maximum value of count, n is the length of the string.
+Space Complexity: O(m + n), where m is the number of letters, n is the number of digits.
 
 class Solution {
     public String decodeString(String s) {
-        Stack<Integer> countStack = new Stack<>();
-        Stack<StringBuilder> stringStack = new Stack<>();
-        StringBuilder currentString = new StringBuilder();
-        int k = 0;
-        for (char ch : s.toCharArray()) {
-            if (Character.isDigit(ch)) {
-                k = k * 10 + ch - '0';
-            } else if (ch == '[') {
-                // push the number k to countStack
-                countStack.push(k);
-                // push the currentString to stringStack
-                stringStack.push(currentString);
-                // reset currentString and k
-                currentString = new StringBuilder();
-                k = 0;
-            } else if (ch == ']') {
-                StringBuilder decodedString = stringStack.pop();
-                // decode currentK[currentString] by appending currentString k times
-                for (int currentK = countStack.pop(); currentK > 0; currentK--) {
-                    decodedString.append(currentString);
-                }
-                currentString = decodedString;
-            } else {
-                currentString.append(ch);
-            }
-        }
-        return currentString.toString();
-    }
-}
-
-Approach 3: Using Recursion
-Time Complexity: O(n * maxK)
-Space Complexity: O(n)
-
-class Solution {
-    int index = 0;
-    public String decodeString(String s) {
-        StringBuilder result = new StringBuilder();
-        while (index < s.length() && s.charAt(index) != ']') {
-            if (!Character.isDigit(s.charAt(index))) {
-                result.append(s.charAt(index++));
-            } else {
-                int k = 0;
-                // build k while next character is a digit
-                while (index < s.length() && Character.isDigit(s.charAt(index))) {
-                    k = k * 10 + s.charAt(index++) - '0';
-                }
-                // ignore the opening bracket '['    
-                index++;
-                String decodedString = decodeString(s);
-                // ignore the closing bracket ']'
-                index++;
-                // build k[decodedString] and append to the result
-                while (k-- > 0) {
-                    result.append(decodedString);
-                }
-            }
-        }
-        return new String(result);
-    }
-}
-
-public class Solution {
-    public String decodeString(String s) {
-        if (s == null) {
-            return null;
-        }
-        Stack<StringBuilder> s1 = new Stack<>();
-        Stack<Integer> s2 = new Stack<>();
+        Deque<StringBuilder> s1 = new ArrayDeque<>();
+        Deque<Integer> s2 = new ArrayDeque<>();
         StringBuilder sb = new StringBuilder();
         int count = 0;
         for (int i = 0; i < s.length(); i++) {
@@ -148,7 +75,7 @@ public class Solution {
             if (c == '[') {
                 s1.push(sb);
                 s2.push(count);
-                sb = new StringBuilder();
+                sb = new StringBuilder();      // reset StringBuilder and count.
                 count = 0;
             } else if (c == ']') {
                 StringBuilder tmp = sb;
@@ -165,5 +92,33 @@ public class Solution {
             }
         }
         return sb.toString();
+    }
+}
+
+Approach 3: Using Recursion
+Time Complexity: O(n * maxK)
+Space Complexity: O(n)
+
+class Solution {
+    int index = 0;
+    public String decodeString(String s) {
+        StringBuilder result = new StringBuilder();
+        while (index < s.length() && s.charAt(index) != ']') {
+            if (!Character.isDigit(s.charAt(index))) {
+                result.append(s.charAt(index++));
+            } else {
+                int k = 0;
+                while (index < s.length() && Character.isDigit(s.charAt(index))) {
+                    k = k * 10 + s.charAt(index++) - '0';
+                }
+                index++;                                // ignore the opening bracket '['    
+                String decodedString = decodeString(s);
+                index++;                                // ignore the closing bracket ']'
+                while (k-- > 0) {
+                    result.append(decodedString);
+                }
+            }
+        }
+        return new String(result);
     }
 }
