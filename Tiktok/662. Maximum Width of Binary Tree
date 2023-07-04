@@ -62,7 +62,7 @@ class Solution {
         LinkedList<Pair<TreeNode, Integer>> queue = new LinkedList<>();
         int maxWidth = 0;
         queue.addLast(new Pair<>(root, 0));
-        while (queue.size() > 0) {                            // while (!queue.isEmpty())
+        while (!queue.isEmpty()) {   
             Pair<TreeNode, Integer> head = queue.getFirst();
             int currLevelSize = queue.size();
             Pair<TreeNode, Integer> elem = null;
