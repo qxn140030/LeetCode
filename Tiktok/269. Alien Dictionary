@@ -1,0 +1,68 @@
+There is a new alien language that uses the English alphabet. However, the order among the letters is unknown to you.
+You are given a list of strings words from the alien language's dictionary, where the strings in words are sorted lexicographically by the rules of this new language.
+Return a string of the unique letters in the new alien language sorted in lexicographically increasing order by the new language's rules. 
+If there is no solution, return "". If there are multiple solutions, return any of them.
+Example 1:
+Input: words = ["wrt","wrf","er","ett","rftt"]
+Output: "wertf"
+
+Example 2:
+Input: words = ["z","x"]
+Output: "zx"
+
+Example 3:
+Input: words = ["z","x","z"]
+Output: ""
+Explanation: The order is invalid, so return "".
+
+Approach 1: BFS
+Time complexity: O(c), where c is the total length of all the words in the input list.
+Space complexity : O(1)
+
+class Solution {
+    public String alienOrder(String[] words) {
+        Map<Character, List<Character>> adjList = new HashMap<>();
+        Map<Character, Integer> counts = new HashMap<>();
+        for (String word : words) {                               // Step 0: Create data structures and find all unique letters.
+            for (char c : word.toCharArray()) {
+                counts.put(c, 0);
+                adjList.put(c, new ArrayList<>());
+            }
+        } 
+        for (int i = 0; i < words.length - 1; i++) {              // Step 1: Find all edges.
+            String word1 = words[i], word2 = words[i + 1];
+            if (word1.length() > word2.length() && word1.startsWith(word2)) {    // Check that word2 is not a prefix of word1.
+                return "";
+            }
+            int len = Math.min(word1.length(), word2.length());
+            for (int j = 0; j < len; j++) {
+                if (word1.charAt(j) != word2.charAt(j)) {                // Find the first non match and insert the corresponding relation.
+                    adjList.get(word1.charAt(j)).add(word2.charAt(j));
+                    counts.put(word2.charAt(j), counts.get(word2.charAt(j)) + 1);
+                    break;
+                }
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        Queue<Character> queue = new LinkedList<>();
+        for (Character c : counts.keySet()) {
+            if (counts.get(c).equals(0)) {
+                queue.add(c);
+            }
+        }
+        while (!queue.isEmpty()) {                  // Step 2: BFS.
+            Character c = queue.remove();
+            sb.append(c);
+            for (Character next : adjList.get(c)) {
+                counts.put(next, counts.get(next) - 1);
+                if (counts.get(next).equals(0)) {
+                    queue.add(next);
+                }
+            }
+        }
+        if (sb.length() < counts.size()) {
+            return "";
+        }
+        return sb.toString();
+    }
+}
