@@ -18,31 +18,30 @@ class Solution {
         if (s == null || s.isEmpty() || k > s.length()) {
             return 0;
         }
-        int[] countMap = new int[26];
-        int n = s.length(), result = 0;
-        for (int start = 0; start < n; start++) {
-            // reset the count map
-            Arrays.fill(countMap, 0);
-            for (int end = start; end < n; end++) {
-                countMap[s.charAt(end) - 'a']++;
-                if (isValid(s, start, end, k, countMap)) {
-                    result = Math.max(result, end - start + 1);
+        int[] count = new int[26];
+        int n = s.length(), rst = 0;
+        for (int i = 0; i < n; i++) {
+            Arrays.fill(count, 0);         // reset the count map.
+            for (int j = i; j < n; j++) {
+                count[s.charAt(j) - 'a']++;
+                if (isValid(s, i, j, k, count)) {
+                    rst = Math.max(rst, j - i + 1);
                 }
             }
         }
-        return result;
+        return rst;
     }
-    private boolean isValid(String s, int start, int end, int k, int[] countMap) {
-        int countLetters = 0, countAtLeastK = 0;
-        for (int freq : countMap) {
+    private boolean isValid(String s, int i, int j, int k, int[] count) {
+        int unique = 0, countAtLeastK = 0;
+        for (int freq : count) {
             if (freq > 0) {
-                countLetters++;
+                unique++;
             }
             if (freq >= k) {
                 countAtLeastK++;
             }
         }
-        return countAtLeastK == countLetters;
+        return unique == countAtLeastK;
     }
 }
 
@@ -58,17 +57,16 @@ class Solution {
         if (end < k) {
             return 0;
         }
-        int[] countMap = new int[26];
-        // update the countMap with the count of each character
-        for (int i = start; i < end; i++) {
-            countMap[s.charAt(i) - 'a']++;
+        int[] count = new int[26];
+        for (int i = start; i < end; i++) {       // update count array with the count of each character.
+            count[s.charAt(i) - 'a']++;
         }
         for (int mid = start; mid < end; mid++) {
-            if (countMap[s.charAt(mid) - 'a'] >= k) {
+            if (count[s.charAt(mid) - 'a'] >= k) {
                 continue;
             }
             int midNext = mid + 1;
-            while (midNext < end && countMap[s.charAt(midNext) - 'a'] < k) {
+            while (midNext < end && count[s.charAt(midNext) - 'a'] < k) {
                 midNext++;
             }
             return Math.max(helper(s, start, mid, k), helper(s, midNext, end, k));
@@ -88,12 +86,10 @@ class Solution {
         int maxUnique = getMaxUniqueLetters(s);
         int result = 0;
         for (int currUnique = 1; currUnique <= maxUnique; currUnique++) {
-            // reset countMap
-            Arrays.fill(countMap, 0);
+            Arrays.fill(countMap, 0);                                     // reset countMap.
             int windowStart = 0, windowEnd = 0, idx = 0, unique = 0, countAtLeastK = 0;
             while (windowEnd < str.length) {
-                // expand the sliding window
-                if (unique <= currUnique) {
+                if (unique <= currUnique) {       // expand the sliding window.
                     idx = str[windowEnd] - 'a';
                     if (countMap[idx] == 0) {
                         unique++;
@@ -103,7 +99,7 @@ class Solution {
                         countAtLeastK++;
                     }
                     windowEnd++;
-                } else {     // shrink the sliding window
+                } else {                          // shrink the sliding window.
                     idx = str[windowStart] - 'a';
                     if (countMap[idx] == k) {
                         countAtLeastK--;
@@ -121,8 +117,7 @@ class Solution {
         }
         return result;
     }
-    // get the maximum number of unique letters in the string s
-    private int getMaxUniqueLetters(String s) {
+    private int getMaxUniqueLetters(String s) {    // get the maximum number of unique letters in the string s.
         boolean map[] = new boolean[26];
         int maxUnique = 0;
         for (int i = 0; i < s.length(); i++) {
