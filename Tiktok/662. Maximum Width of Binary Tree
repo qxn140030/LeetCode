@@ -61,9 +61,9 @@ class Solution {
         }
         LinkedList<Pair<TreeNode, Integer>> queue = new LinkedList<>();
         int maxWidth = 0;
-        queue.addLast(new Pair<>(root, 0));
+        queue.addLast(new Pair<>(root, 0));     // hold elements of tuple as (node, col_index), where col_index is the corresponding index of the level.
         while (!queue.isEmpty()) {   
-            Pair<TreeNode, Integer> head = queue.getFirst();
+            Pair<TreeNode, Integer> leftMost = queue.getFirst();
             int currLevelSize = queue.size();
             Pair<TreeNode, Integer> elem = null;
             for (int i = 0; i < currLevelSize; ++i) {
@@ -76,8 +76,7 @@ class Solution {
                     queue.addLast(new Pair<>(node.right, 2 * elem.getValue() + 1));
                 }
             }
-            // calculate the length of the current level, by comparing the first and last col_index.
-            maxWidth = Math.max(maxWidth, elem.getValue() - head.getValue() + 1);
+            maxWidth = Math.max(maxWidth, elem.getValue() - leftMost.getValue() + 1);
         }
         return maxWidth;
     }
