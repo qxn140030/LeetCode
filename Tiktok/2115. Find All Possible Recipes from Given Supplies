@@ -33,17 +33,17 @@ Repeated BFS till no any more finding.
 
 class Solution {
     public List<String> findAllRecipes(String[] recipes, List<List<String>> ingredients, String[] supplies) {
-        Set<String> supple = new HashSet<>(Arrays.asList(supplies));
+        Set<String> supple = new HashSet<>(Arrays.asList(supplies));       // Put all supplies into a HashSet for checking the availability in O(1) time.
         Set<String> ans = new HashSet<>();
-        for (int i = 0; i < ingredients.size(); i++) {
+        for (int i = 0; i < recipes.length; i++) {
             outer:
             for (int j = 0; j < ingredients.size(); j++) {
-                if (ans.contains(recipes[j])) {
-                    continue;                               // recipe has already been made.
+                if (ans.contains(recipes[j])) {             // recipe has already been made.
+                    continue;                               
                 }
                 for (String ingre : ingredients.get(j)) {
-                    if (!supple.contains(ingre)) {
-                        continue outer;                     // As all ingredients are not present in supplies.
+                    if (!supple.contains(ingre)) {          // As all ingredients are not present in supplies.
+                        continue outer;                     
                     }
                 }
                 ans.add(recipes[j]);                        // add it to the answer.
