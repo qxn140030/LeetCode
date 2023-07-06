@@ -7,6 +7,10 @@ Some examples:
 "(1+(4+5+2)-3)+(6+8)" = 23
 Note: Do not use the eval built-in library function.
 
+Approach 1: Using stack
+Time complexity: O(n)
+Space complexity: O(n)
+
 public class Solution {
     public int calculate(String s) {
         Stack<Integer> stack = new Stack<>();
