@@ -49,7 +49,7 @@ Space Complexity: O(n), the size of the stack.
 class Solution {
     public int scoreOfParentheses(String s) {
         Stack<Integer> stack = new Stack();
-        stack.push(0);      // The score of the current frame
+        stack.push(0);               // score of the current frame.
         for (char c: s.toCharArray()) {
             if (c == '(') {
                 stack.push(0);
