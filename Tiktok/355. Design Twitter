@@ -62,7 +62,7 @@ class Twitter {
         Collections.reverse(ans);
         return ans;
     }
-    public void follow(int followerId, int followeeId) {
+    public void follow(int followerId, int followeeId) {                       // followerId started following the user with ID followeeId.
         Set<Integer> set = followers.getOrDefault(followerId, new HashSet<>());
         set.add(followeeId);
         followers.put(followerId, set);
