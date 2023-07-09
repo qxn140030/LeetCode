@@ -164,7 +164,43 @@ class Solution {
     }
 }
 
-Approach 4: BFS
+Approach 4: Topological Sort Using Kahn's Algorithm
+Time complexity: O(m + n), where n is the number of courses, m is the size of prerequisites.
+Space complexity: O(m + n)
+
+class Solution {
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        List<List<Integer>> adj = new ArrayList<>(numCourses);
+        for (int i = 0; i < numCourses; i++) {
+            adj.add(new ArrayList<>());
+        }
+        int[] indegree = new int[numCourses];
+        for (int[] pre : prerequisites) {
+            adj.get(pre[1]).add(pre[0]);
+            indegree[pre[0]]++;
+        }
+        Queue<Integer> q = new LinkedList<>();
+        for (int i = 0; i < numCourses; i++) {
+            if (indegree[i] == 0) {
+                q.offer(i);
+            }
+        }
+        int nodesVisited = 0;
+        while (!q.isEmpty()) {
+            int cur = q.poll();
+            nodesVisited++;
+            for (int neighbor : adj.get(cur)) {
+                indegree[neighbor]--;
+                if (indegree[neighbor] == 0) {
+                    q.offer(neighbor);
+                }
+            }
+        }
+        return nodesVisited == numCourses;
+    }
+}
+
+Approach 5: BFS
 Time complexity: 
 Space complexity: O(n)
 
