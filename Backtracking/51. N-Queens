@@ -67,7 +67,6 @@ public class Solution {
             if (cols.get(i) == col || row - i == Math.abs(col - cols.get(i))) {
                 return false;
             }
-            
         }
         return true;
     }
