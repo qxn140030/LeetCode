@@ -10,7 +10,10 @@ by exactly one path. In other words, any connected graph without simple cycles i
 Note: you can assume that no duplicate edges will appear in edges. Since all edges are undirected, [0, 1] is the same as
 [1, 0] and thus will not appear together in edges.
 
-Solution 1: DFS. Time complexity: O(n). Space complexity: O(n).
+Approach 1: DFS
+Time complexity: O(n)
+Space complexity: O(n)
+
 public class Solution {
     public boolean validTree(int n, int[][] edges) {
         Map<Integer, List<Integer>> map = new HashMap<>();
@@ -47,7 +50,8 @@ public class Solution {
     }
 }
 
-Solution 2: BFS.
+Approach 2: BFS
+
 public class Solution {
     public boolean validTree(int n, int[][] edges) {
         Map<Integer, List<Integer>> map = new HashMap<>();     // key - node, value - neighbors of the node(parent, children).
