@@ -14,3 +14,71 @@ Example 2:
 Input: nums = [1,2,3,4]
 Output: 0
 Explanation: There exists only one quadruplet with i = 0, j = 1, k = 2, l = 3, but since nums[j] < nums[k], we return 0.
+
+Approach 1: Brute Force (TLE)
+countLarger[i][j] means how many numbers between index i and index j (both inclusive) that is larger than nums[i];
+countSmaller[i][j] means how many numbers between index i and index j (both inclusive) that is smaller than nums[j].
+// find the count how many numbers smaller than nums[k] and index smaller than j, 
+and how many numbers larger than nums[j] and index larger than k， 
+then add the product of them into res
+Time complexity: O(n^4)
+Space complexity: O(1)
+
+class Solution {
+    public long countQuadruplets(int[] nums) {
+        int count = 0;
+        for (int i = 0; i < nums.length - 3; i++) {
+            for (int j = i + 1; j < nums.length - 2; j++) {
+                for (int k = j + 1; k < nums.length - 1; k++) {
+                    for (int l = k + 1; l < nums.length; l++) {
+                        if (nums[i] < nums[k] && nums[k] < nums[j] && nums[j] < nums[l]) {
+                            count++;
+                        }
+                    }
+                }
+            }
+        }
+        return count;
+    }
+}
+
+Approach 2:
+Time complexity: O(n^2)
+Space complexity: O(n)
+
+class Solution {
+    public long countQuadruplets(int[] nums) {
+        int n = nums.length;
+        int[][] countLarger = new int[n][n], countSmaller = new int[n][n];
+        for (int i = 0; i < n; i++) {
+            int cnt = 0;
+            for (int j = i + 1; j < n; j++) {
+                if (nums[j] > nums[i]) {
+                    countLarger[i][j] = ++cnt;
+                } else {
+                    countLarger[i][j] = cnt;
+                }
+            }
+        }
+        for (int i = n - 1; i >= 0; i--) {
+            int cnt = 0;
+            for (int j = i - 1; j >= 0; j--) {
+                if (nums[j] < nums[i]) {
+                    countSmaller[j][i] = ++cnt;
+                } else {
+                    countSmaller[j][i] = cnt;
+                }
+            }
+        } 
+        long res = 0;
+        for (int j = 1; j < n - 2; j++) {
+            for (int k = j + 1; k < n - 1; k++) {
+                if (nums[k] > nums[j]) {
+                    continue;
+                }
+                res += (countSmaller[0][k] - countSmaller[j][k]) * (countLarger[j][n - 1] - countLarger[j][k]);
+            }
+        }
+        return res;
+    }
+}
