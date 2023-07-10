@@ -94,8 +94,7 @@ class Solution {
     public List<List<Integer>> threeSum(int[] nums) {
         Set<List<Integer>> res = new HashSet<>();
         Set<Integer> dups = new HashSet<>();
-        // Values in the hashmap will indicate whether we have encounted that element in the current iteration.
-        Map<Integer, Integer> seen = new HashMap<>();  
+        Map<Integer, Integer> seen = new HashMap<>();     // Values in the hashmap will indicate whether we have encounted that element in the current iteration.
         for (int i = 0; i < nums.length; i++)
             if (dups.add(nums[i])) {                         // HashSet.add() returns True if the element is not present in the HashSet.
                 for (int j = i + 1; j < nums.length; j++) {
@@ -105,8 +104,7 @@ class Solution {
                         Collections.sort(triplet);
                         res.add(triplet);
                     }
-                    // This indicates that we can now use nums[j] as a complement for nums[i].
-                    seen.put(nums[j], i);
+                    seen.put(nums[j], i);       // This indicates that we can now use nums[j] as a complement for nums[i].
                 }
             }
         return new ArrayList<>(res);
