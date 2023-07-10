@@ -18,3 +18,44 @@ Input: grid = [[0,1,1],
                [1,0,0]], k = 1
 Output: -1
 Explanation: We need to eliminate at least two obstacles to find such a walk.
+
+Approach 1: BFS
+Time complexity: O(m * n)
+Space complexity: O(m * n * k)
+
+class Solution {
+    public int shortestPath(int[][] grid, int k) {
+        int m = grid.length, n = grid[0].length, step = 0;
+        boolean[][][] visit = new boolean[m][n][k + 1];
+        Queue<int[]> q = new LinkedList<>();
+        q.offer(new int[]{0, 0 , k});
+        while (!q.isEmpty()) {
+            int size = q.size();
+            for (int i = 0; i < size; i++) {
+                int[] cur = q.poll();
+                int row = cur[0], col = cur[1], obs = cur[2];
+                if (obs < 0 || visit[row][col][obs]) {
+                    continue;
+                }
+                if (row == m - 1 && col == n - 1 && obs >= 0) {
+                    return step;
+                }
+                visit[row][col][obs] = true;
+                if (row + 1 < m) {
+                    q.offer(new int[]{row + 1, col, obs - grid[row + 1][col]});
+                }
+                if (row > 0) {
+                    q.offer(new int[]{row - 1, col, obs - grid[row - 1][col]});
+                }
+                if (col + 1 < n) {
+                    q.offer(new int[]{row, col + 1, obs - grid[row][col + 1]});
+                }
+                if (col > 0) {
+                    q.offer(new int[]{row, col - 1, obs - grid[row][col - 1]});
+                } 
+            }
+            step++;
+        }
+        return -1;
+    }
+}
