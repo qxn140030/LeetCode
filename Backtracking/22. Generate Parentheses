@@ -17,12 +17,12 @@ class Solution {
     private void generateAll(char[] cur, int pos, List<String> rst) {
         if (pos == cur.length) {
             if (valid(cur)) {
-                result.add(new String(cur));
+                rst.add(new String(cur));
             }
         } else {
-            current[pos] = '(';
+            cur[pos] = '(';
             generateAll(cur, pos + 1, rst);
-            current[pos] = ')';
+            cur[pos] = ')';
             generateAll(cur, pos + 1, rst);
         }
     }
