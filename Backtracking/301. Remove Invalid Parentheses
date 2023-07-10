@@ -1,0 +1,57 @@
+Given a string s that contains parentheses and letters, remove the minimum number of invalid parentheses to make the input string valid.
+Return a list of unique strings that are valid with the minimum number of removals. You may return the answer in any order.
+Example 1:
+Input: s = "()())()"
+Output: ["(())()","()()()"]
+
+Example 2:
+Input: s = "(a)())()"
+Output: ["(a())()","(a)()()"]
+
+Example 3:
+Input: s = ")("
+Output: [""]
+
+Approach 1: Backtracking
+Time complexity : O(2^n), in the worst case we will have only left parentheses in the expression and for every bracket we will have two options 
+i.e. whether to remove it or consider it.
+Space complexity : O(n), because we are resorting to a recursive solution, stack space used as internal function states are saved onto a stack during recursion. 
+The maximum depth of recursion decides the stack space used. 
+Since we process one character at a time and the base case for the recursion is when we have processed all of the characters of the expression string, 
+the size of the stack would be O(n). 
+
+public class Solution {
+    int max = 0;
+    List<String> rst = new ArrayList<>();
+    public List<String> removeInvalidParentheses(String s) {
+        helper(s, "", 0, 0);
+        if (rst.size() == 0) {
+            rst.add("");
+        }
+        return rst;
+    }
+    private void helper(String left, String right, int leftCount, int leftMax) {
+        if (left.length() == 0) {
+            if (leftCount == 0 && right.length() > 0) {
+                if (leftMax > max) {
+                    max = leftMax;
+                }   
+                if (leftMax == max && !rst.contains(right)) {         // Note
+                    rst.add(right);
+                }
+            }
+            return;
+        }
+        if (left.charAt(0) == '(') {                    // note the order of two sentences, to make sure we can get the longest one at first.
+            helper(left.substring(1), right + '(', leftCount + 1, leftMax + 1);       // keep '('
+            helper(left.substring(1), right, leftCount, leftMax);                     // drop '('
+        } else if (left.charAt(0) == ')') {
+            if (leftCount > 0) {
+                helper(left.substring(1), right + ')', leftCount - 1, leftMax);
+            }
+            helper(left.substring(1), right, leftCount, leftMax);
+        } else {                                                                  // letters other than the parentheses
+            helper(left.substring(1), right + left.charAt(0), leftCount, leftMax);
+        }
+    }
+}
