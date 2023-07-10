@@ -15,17 +15,11 @@ After running your function, the 2D grid should be:
   1  -1   2  -1
   0  -1   3   4
 
-Solution 1: DFS.
+Approach 1: DFS (TLE)
+
 public class Solution {
     public void wallsAndGates(int[][] rooms) {
-        if (rooms == null || rooms.length == 0) {
-            return;
-        }
-        if (rooms[0] == null || rooms[0].length == 0) {
-            return;
-        }
-        int m = rooms.length;
-        int n = rooms[0].length;
+        int m = rooms.length, n = rooms[0].length;
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
                 if (rooms[i][j] == 0) {
@@ -35,8 +29,7 @@ public class Solution {
         }
     }
     private void helper(int[][] rooms, int i, int j, int step) {
-        int m = rooms.length;
-        int n = rooms[0].length;
+        int m = rooms.length, n = rooms[0].length;
         if (i < 0 || i >= m || j < 0 || j >= n || rooms[i][j] < step) {
             return;
         }
@@ -48,14 +41,11 @@ public class Solution {
     }
 }
 
-Solution 2: BFS.
+Approach 2: BFS
+
 public class Solution {
     public void wallsAndGates(int[][] rooms) {
-        if (rooms == null || rooms.length == 0 || rooms[0].length == 0) {
-            return;
-        }
-        int m = rooms.length;
-        int n = rooms[0].length;
+        int m = rooms.length, n = rooms[0].length;
         Queue<Integer> q = new LinkedList<>();
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
@@ -66,8 +56,7 @@ public class Solution {
         }
         while (!q.isEmpty()) {
             int code = q.poll();
-            int row = code / n;
-            int col = code % n;
+            int row = code / n, col = code % n;
             if (row > 0 && rooms[row - 1][col] == Integer.MAX_VALUE) {
                 q.offer((row - 1) * n + col);
                 rooms[row - 1][col] = rooms[row][col] + 1;
