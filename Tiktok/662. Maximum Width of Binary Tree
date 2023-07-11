@@ -64,9 +64,9 @@ class Solution {
         queue.addLast(new Pair<>(root, 0));     // hold elements of tuple as (node, col_index), where col_index is the corresponding index of the level.
         while (!queue.isEmpty()) {   
             Pair<TreeNode, Integer> leftMost = queue.getFirst();
-            int currLevelSize = queue.size();
+            int size = queue.size();
             Pair<TreeNode, Integer> elem = null;
-            for (int i = 0; i < currLevelSize; i++) {
+            for (int i = 0; i < size; i++) {
                 elem = queue.removeFirst();
                 TreeNode node = elem.getKey();
                 if (node.left != null) {
