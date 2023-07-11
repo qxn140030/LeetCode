@@ -20,13 +20,10 @@ Output: false
 Approach 1: DFS
 Time complexity: O(m * n * (m + n))
 Initializing the visit array takes O(m * n) time.
-The function dfs visits each node at most once, resulting in O(m * n) calls. For each call, we loop through the node's neighbors. To discover neighboring nodes for a node, 
-we check in each direction with a while loop and it would take O(m) steps for vertical directions or O(n) steps for horizontal directions to reach a wall, 
-resulting in O(m + n) operations. It would take O(m * n * (m + n)) in total for all the nodes.
-
+The function dfs visits each node at most once, resulting in O(m * n) calls. For each call, we loop through the node's neighbors. 
+To discover neighboring nodes for a node, we check in each direction with a while loop and it would take O(m) steps for vertical directions 
+or O(n) steps for horizontal directions to reach a wall, resulting in O(m + n) operations. 
 Space complexity: O(m * n)
-The visit array takes O(m * n) space.
-The recursion stack used by dfs can have no more than O(m * n) elements in the worst-case scenario. It would take up O(m * n) space in that case.
 
 class Solution {
     public boolean hasPath(int[][] maze, int[] start, int[] destination) {
@@ -46,13 +43,11 @@ class Solution {
         int[] dirY = {-1, 0, 1, 0};
         for (int i = 0; i < 4; i++) {
             int r = curr[0], c = curr[1];
-            // Move the ball in the chosen direction until it can.
-            while (r >= 0 && r < m && c >= 0 && c < n && maze[r][c] == 0) {
+            while (r >= 0 && r < m && c >= 0 && c < n && maze[r][c] == 0) {     // Move the ball in the chosen direction until it can.
                 r += dirX[i];
                 c += dirY[i];
             }
-            // Revert the last move to get the cell to which the ball rolls.
-            if (dfs(m, n, maze, new int[]{r - dirX[i], c - dirY[i]}, destination, visit)) {
+            if (dfs(m, n, maze, new int[]{r - dirX[i], c - dirY[i]}, destination, visit)) {    // Revert the last move to get the cell to which the ball rolls.
                 return true;
             }
         }
@@ -63,40 +58,6 @@ class Solution {
 Approach 2: BFS
 Time complexity: O(m * n * (m + n))
 Space complexity: O(m * n)
-
-class Solution {
-    public boolean hasPath(int[][] maze, int[] start, int[] destination) {
-        int m = maze.length, n = maze[0].length;
-        boolean[][] visited = new boolean[m][n];
-        int[] dirX = {0, 1, 0, -1};
-        int[] dirY = {1, 0, -1, 0};
-        Queue<int[]> q = new LinkedList<>();
-        q.offer(start);
-        visited[start[0]][start[1]] = true;
-        while (!q.isEmpty()) {
-            int[] cur = q.poll();
-            int row = cur[0], col = cur[1];
-            if (row == destination[0] && col == destination[1]) {
-                return true;
-            }
-            for (int i = 0; i < 4; i++) {
-                while (row >= 0 && row < m && col >= 0 && col < n && maze[row][col] == 0) {
-                    row += dirX[i];
-                    col += dirY[i];
-                }
-                row -= dirX[i];
-                col -= dirY[i];
-                if (!visited[row][col]) {
-                    q.offer(new int[]{row, col});
-                    visited[row][col] = true;
-                }
-            }
-        }
-        return false;
-    }
-}
-
-
 
 class Solution {
     public boolean hasPath(int[][] maze, int[] start, int[] destination) {
@@ -114,12 +75,10 @@ class Solution {
             }
             for (int i = 0; i < 4; i++) {
                 int r = curr[0], c = curr[1];
-                // Move the ball in the chosen direction until it can.
                 while (r >= 0 && r < m && c >= 0 && c < n && maze[r][c] == 0) {
                     r += dirX[i];
                     c += dirY[i];
                 }
-                // Revert the last move to get the cell to which the ball rolls.
                 r -= dirX[i];
                 c -= dirY[i];
                 if (!visit[r][c]) {
