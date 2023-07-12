@@ -42,7 +42,7 @@ class Solution {
     }
 }
 
-Approach 2:
+Approach 2: Prefix and Suffix
 Time complexity: O(n^2)
 Space complexity: O(n)
 
@@ -54,9 +54,9 @@ class Solution {
             int cnt = 0;
             for (int j = i + 1; j < n; j++) {
                 if (nums[j] > nums[i]) {
-                    countLarger[i][j] = ++cnt;
+                    countLarger[i][j] = ++cnt; 
                 } else {
-                    countLarger[i][j] = cnt;
+                    countLarger[i][j] = cnt;      // how many numbers between index i and index j (both inclusive) that is larger than nums[i].
                 }
             }
         }
