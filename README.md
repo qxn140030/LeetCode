@@ -1,3 +1,4 @@
+先根据list把每种数据结构都熟悉一下：https://seanprashad.com/leetcode-patterns/
 # LeetCode高频知识点
 花花酱的讲解，YouTube 博主：Huifeng Guan, 山景城一姐
 ## 排序类（Sort）
