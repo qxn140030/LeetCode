@@ -104,20 +104,15 @@ class Solution {
         }
         Queue<String> q = new LinkedList<>();
         Map<String, Double> val = new HashMap<>();
-        Set<String> hs = new HashSet<>();
         q.offer(first);
         val.put(first, 1.0);
-        hs.add(first);
         while (!q.isEmpty()) {
             String cur = q.poll();
             for (Map.Entry<String, Double> entry : graph.get(cur).entrySet()) {
                 String next = entry.getKey();
-                val.put(next, val.get(cur) * entry.getValue());
-                if (next.equals(second)) {
-                    return val.get(next);
-                } else if (!hs.contains(next)) {
+                if (!vals.containsKey(next)) {
+                    vals.put(next, vals.get(cur) * entry.getValue());
                     q.offer(next);
-                    hs.add(next);
                 }
             }
         }
