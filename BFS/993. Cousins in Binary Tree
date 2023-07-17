@@ -1,0 +1,86 @@
+Given the root of a binary tree with unique values and the values of two different nodes of the tree x and y, 
+return true if the nodes corresponding to the values x and y in the tree are cousins, or false otherwise.
+Two nodes of a binary tree are cousins if they have the same depth with different parents.
+Note that in a binary tree, the root node is at the depth 0, and children of each depth k node are at the depth k + 1.
+Example 1:
+           1
+          / \
+         2   3
+        /
+       4
+Input: root = [1,2,3,4], x = 4, y = 3
+Output: false
+
+Example 2:
+           1
+          / \
+         2   3
+          \   \
+           4   5
+Input: root = [1,2,3,null,4,null,5], x = 5, y = 4
+Output: true
+
+Example 3:
+           1
+          / \
+         2   3
+          \
+           4
+Input: root = [1,2,3,null,4], x = 2, y = 3
+Output: false
+
+Approach 1: BFS
+Time complexity: O(n)
+Space complexity: O(n)
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public boolean isCousins(TreeNode root, int x, int y) {
+        Queue<TreeNode> q = new LinkedList<>();
+        q.offer(root);
+        while (!q.isEmpty()) {
+            boolean siblings = false, cousins = false;
+            int size = q.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode node = q.poll();
+                if (node == null) {            // Encountered the marker.
+                    siblings = false;          // Siblings should be set to false as we are crossing the boundary.
+                } else {
+                    if (node.val == x || node.val == y) {
+                        if (cousins) {  
+                            return !siblings;
+                        } else {               // Set both flags to be true for a potential first sibling/cousin found.
+                            siblings = true;
+                            cousins = true;
+                        }
+                    }
+                    if (node.left != null) {
+                        q.offer(node.left);
+                    }
+                    if (node.right != null) {
+                        q.offer(node.right);
+                    }
+                    q.offer(null);            // Add the null marker for the siblings.
+                }
+            }
+            if (cousins) {                    // At the end of the level if cousins flag is true, means we only found one node at this level.
+                return false;
+            }
+        }
+        return false;
+    }
+}
