@@ -54,7 +54,7 @@ class Solution {
         Map<TreeNode, TreeNode> parent = new HashMap<>();
         parent.put(root, null);
         stack.push(root);
-        while (!parent.containsKey(p) || !parent.containsKey(q)) {
+        while (!parent.containsKey(p) || !parent.containsKey(q)) {     // Iterate until we find both the nodes p and q.
             TreeNode node = stack.pop();
             if (node.left != null) {
                 parent.put(node.left, node);
@@ -65,13 +65,13 @@ class Solution {
                 stack.push(node.right);
             }
         }
-        Set<TreeNode> ancestors = new HashSet<>();
+        Set<TreeNode> ancestors = new HashSet<>();    // Ancestors set() for node p.
         while (p != null) {
             ancestors.add(p);
             p = parent.get(p);
         }
-        while (!ancestors.contains(q)) {
-            q = parent.get(q);
+        while (!ancestors.contains(q)) {             // The first ancestor of q which appears in p's ancestor set() is their lowest common ancestor.
+            q = parent.get(q);               
         }
         return q;
     }
