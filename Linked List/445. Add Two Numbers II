@@ -57,10 +57,8 @@ class Solution {
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
         int len1 = getLength(l1);
         int len2 = getLength(l2);
-        ListNode curr1 = l1, curr2 = l2, head = null;
-        // parse both lists and sum the corresponding positions without taking carry into account
-        // 3->3->3 + 7->7 --> 3->10->10 --> 10->10->3
-        while (len1 > 0 && len2 > 0) {
+        ListNode curr1 = l1, curr2 = l2, head = null;      // parse both lists and sum the corresponding positions without taking carry into account.
+        while (len1 > 0 && len2 > 0) {                     // 3->3->3 + 7->7 --> 3->10->10 --> 10->10->3
             int val = 0;
             if (len1 >= len2) {
                 val += curr1.val; 
@@ -72,29 +70,23 @@ class Solution {
                 curr2 = curr2.next;
                 len2--;    
             } 
-            // update the result: add to front
             ListNode curr = new ListNode(val);
-            curr.next = head;
+            curr.next = head;                             // update the result: add to front.
             head = curr;    
         }
-        // take the carry into account to have all nodes containing a single digit
-        // 10->10->3 --> 0->1->4 --> 4->1->0
         curr1 = head;
         head = null;
-        int carry = 0;
-        while (curr1 != null) {
+        int carry = 0;                                   // take the carry into account to have all nodes containing a single digit.
+        while (curr1 != null) {                          // 10->10->3 --> 0->1->4 --> 4->1->0
             int sum = curr1.val + carry;
             int val = sum % 10;
             carry = sum / 10;
-            // update the result: add to front
             ListNode curr = new ListNode(val);
             curr.next = head;
             head = curr;
-            // move to the next elements in the list
             curr1 = curr1.next;    
         }
-        // add the last carry
-        if (carry > 0) {
+        if (carry > 0) {                
             ListNode curr = new ListNode(carry);
             curr.next = head;
             head = curr;    
