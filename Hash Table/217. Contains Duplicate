@@ -28,7 +28,7 @@ public boolean containsDuplicate(int[] nums) {
 
 Approach 2: Sorting
 Time complexity: O(nlogn)
-Space complexity: O(1), Space depends on the sorting implementation which, usually, costs O(1) auxiliary space if heapsort is used.
+Space complexity: O(logn)
 
 public class Solution {
     public boolean containsDuplicate(int[] nums) {
