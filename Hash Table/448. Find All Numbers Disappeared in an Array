@@ -11,7 +11,36 @@ Example 2:
 Input: nums = [1,1]
 Output: [2]
 
-Approach 1: Hash Table
+Approach 1: Sorting
+Time complexity: O(nlogn)
+Space complexity: O(n)
+
+class Solution {
+    public List<Integer> findDisappearedNumbers(int[] nums) {
+        Arrays.sort(nums);
+        List<Integer> rst = new ArrayList<>();
+        for (int i = 1; i < nums[0]; i++) {
+            rst.add(i);
+        }
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i - 1] + 1 < nums[i]) {
+                int count = nums[i - 1] + 1;
+                while (count < nums[i]) {
+                    rst.add(count++);
+                }
+            } else {
+                continue;
+            }
+        }
+        int n = nums.length;
+        for (int i = nums[n - 1] + 1; i <= n; i++) {
+            rst.add(i);
+        }
+        return rst;
+    }
+}
+
+Approach 2: Hash Table
 Time complexity: O(n)
 Space complexity: O(n)
 
@@ -21,7 +50,7 @@ class Solution {
         for (int num : nums) {
             hs.add(num);
         }
-        List<Integer> result = new LinkedList<Integer>();
+        List<Integer> result = new LinkedList<>();
         for (int i = 1; i <= nums.length; i++) {
             if (!hs.contains(i)) {
                 result.add(i);
@@ -31,7 +60,7 @@ class Solution {
     }
 }
 
-Approach 2: InPlace Modification
+Approach 3: InPlace Modification
 We will be negating the numbers seen in the array and use the sign of each of the numbers for finding our missing numbers.
 We will be treating numbers in the array as indices and mark corresponding locations in the arrays as negative.
 Time complexity: O(n)
