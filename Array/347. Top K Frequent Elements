@@ -1,0 +1,56 @@
+Given an integer array nums and an integer k, return the k most frequent elements. You may return the answer in any order.
+Example 1:
+Input: nums = [1,1,1,2,2,3], k = 2
+Output: [1,2]
+
+Example 2:
+Input: nums = [1], k = 1
+Output: [1]
+
+Follow up: Your algorithm's time complexity must be better than O(n log n), where n is the array's size.
+
+Approach 1: Heap
+Time complexity: O(nlogk)
+Space complexity: O(n + k)
+
+class Solution {
+    public int[] topKFrequent(int[] nums, int k) {
+        if (k == nums.length) {
+            return nums;
+        }
+        Map<Integer, Integer> count = new HashMap<>();
+        for (int n: nums) {
+          count.put(n, count.getOrDefault(n, 0) + 1);
+        }
+        Queue<Integer> heap = new PriorityQueue<>((n1, n2) -> count.get(n1) - count.get(n2));      // Min Heap.
+        for (int n: count.keySet()) {
+            heap.add(n);
+            if (heap.size() > k) {                                                                 // keep k top frequent elements in the heap.
+                heap.poll();
+            }    
+        }
+        int[] top = new int[k];
+        for (int i = k - 1; i >= 0; i--) {
+            top[i] = heap.poll();                                                                 // O(klogk) time.
+        }
+        return top;
+    }
+}
+
+class Solution {
+    public int[] topKFrequent(int[] nums, int k) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int num : nums) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
+        PriorityQueue<Map.Entry<Integer, Integer>> queue = new PriorityQueue<>(Map.Entry.comparingByValue(Comparator.reverseOrder()));
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            queue.offer(entry);
+        }
+        int[] rst = new int[k];
+        for (int i = 0; i < k; i++) {
+            rst[i] = queue.poll().getKey();
+        }
+        return rst;
+    }
+}
