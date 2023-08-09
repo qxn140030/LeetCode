@@ -49,7 +49,7 @@ class Solution {
         }
         List<List<String>> rst = new ArrayList<>();
         for (String key: map.keySet()) {               // for (Map.Entry<String, List<String>> entry: map.entrySet()) {
-            if (map.get(key).size() > 1) {             // if (entry.getValue().size() > 1) {
+            if (map.get(key).size() > 1) {             // if (entry.getValue().size() > 1)
                 rst.add(map.get(key));                 // rst.add(new ArrayList<>(entry.getValue()));
             }
         }
