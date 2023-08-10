@@ -12,8 +12,8 @@ An adjacency list is a collection of unordered lists used to represent a finite 
 The given node will always be the first node with val = 1. You must return the copy of the given node as a reference to the cloned graph.
 
 Approach 1: DFS
-Time complexity: O(m + n), where n is a number of nodes (vertices) and m is a number of edges.
-Space complexity: O(n)
+Time complexity: O(V + E)
+Space complexity: O(V)
 
 /*
 // Definition for a Node.
@@ -45,7 +45,7 @@ class Solution {
         }
         Node cloneNode = new Node(node.val, new ArrayList<>());     // Create a clone. Note that we don't have cloned neighbors as of now.
         visited.put(node, cloneNode);
-        for (Node neighbor: node.neighbors) {                       // Iterate through the neighbors
+        for (Node neighbor: node.neighbors) {                       // Iterate through the neighbors.
             cloneNode.neighbors.add(cloneGraph(neighbor));          // to generate their clones and prepare a list of cloned neighbors to be added.
         }
         return cloneNode;
@@ -53,13 +53,13 @@ class Solution {
 }
 
 Approach 2: BFS
-Time complexity: O(m + n)
-Space complexity: O(n)
+Time complexity: O(V + E)
+Space complexity: O(V)
 
 class Solution {
     public Node cloneGraph(Node node) {
         if (node == null) {
-            return node;
+            return null;
         }
         Node newHead = new Node(node.val);
         Queue<Node> q = new LinkedList<>();
