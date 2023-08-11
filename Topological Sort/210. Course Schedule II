@@ -82,8 +82,8 @@ This approach is much easier to think about intuitively.
 We first process all the nodes/course with 0 in-degree implying no prerequisite courses required. 
 If we remove all these courses from the graph, along with their outgoing edges, we can find out the courses/nodes that should be processed next. 
 These would again be the nodes with 0 in-degree. We can continuously do this until all the courses have been accounted for.
-Time complexity: O(e + v)
-Space complexity: O(e + v)
+Time complexity: O(V + E)
+Space complexity: O(V + E)
 
 class Solution {
     public int[] findOrder(int numCourses, int[][] prerequisites) {
