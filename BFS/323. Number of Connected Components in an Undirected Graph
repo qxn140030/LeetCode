@@ -1,0 +1,124 @@
+You have a graph of n nodes. You are given an integer n and an array edges where edges[i] = [ai, bi] indicates that there is an edge between ai and bi in the graph.
+Return the number of connected components in the graph.
+Example 1:
+           0 -- 1    3
+                |    |
+                2    4
+Input: n = 5, edges = [[0,1],[1,2],[3,4]]
+Output: 2
+
+Example 2:
+           0 -- 1     3
+                |  /  |
+                2     4
+Input: n = 5, edges = [[0,1],[1,2],[2,3],[3,4]]
+Output: 1
+
+Approach 1: DFS
+Time complexity: O(V + E)
+Building the adjacency list will take O(E) operations, as we iterate over the list of edges once, and insert each edge into two lists.
+During the DFS traversal, each vertex will only be visited once. In addition, when we iterate over the edge list of each vertex, we look at each edge once. 
+Space complexity: O(V + E)
+Building the adjacency list will take O(E) space. To keep track of visited vertices, an array of size O(V) is required. Also, the run-time stack for DFS will use O(V) space.
+
+class Solution {
+    public int countComponents(int n, int[][] edges) {
+        int components = 0;
+        int[] visited = new int[n];
+        List<List<Integer>> adj = new ArrayList<>(); 
+        for (int i = 0; i < n; i++) {
+            adj.add(new ArrayList<>());
+        }
+        for (int[] e : edges) {
+            adj.get(e[0]).add(e[1]);
+            adj.get(e[1]).add(e[0]);
+        }
+        for (int i = 0; i < n; i++) {
+            if (visited[i] == 0) {
+                components++;
+                dfs(adj, visited, i);
+            }
+        }
+        return components;
+    }
+    private void dfs(List<List<Integer>> adj, int[] visited, int start) {
+        visited[start] = 1;
+        for (int i = 0; i < adj.get(start).size(); i++) {
+            if (visited[adj.get(start).get(i)] == 0) {
+                dfs(adj, visited, adj.get(start).get(i));
+            }
+        }
+    }
+}
+
+Approach 2: BFS
+Time complexity: O(V + E)
+Space complexity: O(V + E)
+
+class Solution {
+    public int countComponents(int n, int[][] edges) {
+        if (n < 1) {
+            return 0;
+        }
+        List<List<Integer>> adj = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            adj.add(new ArrayList<>());
+        }  
+        for (int[] e : edges) {
+            adj.get(e[0]).add(e[1]);
+            adj.get(e[1]).add(e[0]);
+        }
+        boolean[] visit = new boolean[n];
+        Queue<Integer> q = new LinkedList<>();
+        int cnt = 0;
+        for (int i = 0; i < n; i++) {
+            if (!visit[i]) {
+                cnt++;
+                q.offer(i);
+                visit[i] = true;
+                while (!q.isEmpty()) {
+                    int cur = q.poll();
+                    for (int next : adj.get(cur)) {
+                        if (!visit[next]) {
+                            q.offer(next);
+                            visit[next] = true;
+                        }
+                    }
+                }
+            }
+        }
+        return cnt;
+    }
+}
+
+Approach 3: Union-find
+Initially, there are n nodes. The nodes that are involved in each edge is merged.
+There are k loops and each loop processing the root array costs log(n). 
+time complexity is O(k*log(n))
+
+public int countComponents(int n, int[][] edges) {     // not run yet.
+    int count = n;  
+    int[] root = new int[n];
+    // initialize each node is an island
+    for (int i = 0; i < n; i++) {
+        root[i] = i;        
+    } 
+    for (int i = 0; i < edges.length; i++) {
+        int x = edges[i][0];
+        int y = edges[i][1]; 
+        int xRoot = getRoot(root, x);
+        int yRoot = getRoot(root, y); 
+        if (xRoot != yRoot) {
+            count--;
+            root[xRoot] = yRoot;
+        } 
+    }
+    return count;
+}
+public int getRoot(int[] arr, int i) {
+    while (arr[i] != i) {
+        arr[i] = arr[arr[i]];
+        i = arr[i];
+    }
+    return i;
+}
