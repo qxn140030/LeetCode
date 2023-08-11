@@ -26,8 +26,8 @@ class Solution {
         Map<Integer, List<Integer>> adj = new HashMap<>();
         for (int[] e : edges) {
             if (adj.containsKey(e[0]) && adj.containsKey(e[1])) {
-                visit.clear();
-                if (dfs(adj, e[0], e[1])) {
+                visit.clear();                                    // Note.
+                if (dfs(adj, e[0], e[1])) {                       // we already have a path connect these two vertices.
                     return new int[]{e[0], e[1]};
                 }
             }
