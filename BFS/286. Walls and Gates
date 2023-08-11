@@ -15,7 +15,38 @@ After running your function, the 2D grid should be:
   1  -1   2  -1
   0  -1   3   4
 
-Approach 1: DFS (TLE)
+Approach 1: BFS
+Time complexity: O(m * n)
+Space complexity: O(m * n)
+
+class Solution {
+    public void wallsAndGates(int[][] rooms) {
+        int m = rooms.length, n = rooms[0].length;
+        Queue<int[]> q = new LinkedList<>();
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (rooms[i][j] == 0) {
+                    q.offer(new int[]{i, j});
+                }
+            }
+        }
+        int[][] dir = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+        while (!q.isEmpty()) {
+            int[] cur = q.poll();
+            for (int j = 0; j < 4; j++) {
+                int r = cur[0] + dir[j][0], c = cur[1] + dir[j][1];
+                if (r >= 0 && c >= 0 && r < m && c < n && rooms[r][c] != -1 && rooms[cur[0]][cur[1]] + 1 < rooms[r][c]) {
+                    rooms[r][c] = rooms[cur[0]][cur[1]] + 1;
+                    q.offer(new int[]{r, c});
+                } 
+            }
+        }
+    }
+}
+
+Approach 2: DFS (TLE)
+Time complexity: O()
+Space complexity: O()
 
 public class Solution {
     public void wallsAndGates(int[][] rooms) {
@@ -38,41 +69,5 @@ public class Solution {
         helper(rooms, i - 1, j, step + 1);
         helper(rooms, i, j + 1, step + 1);
         helper(rooms, i, j - 1, step + 1);
-    }
-}
-
-Approach 2: BFS
-
-public class Solution {
-    public void wallsAndGates(int[][] rooms) {
-        int m = rooms.length, n = rooms[0].length;
-        Queue<Integer> q = new LinkedList<>();
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (rooms[i][j] == 0) {
-                    q.offer(i * n + j);
-                }
-            }
-        }
-        while (!q.isEmpty()) {
-            int code = q.poll();
-            int row = code / n, col = code % n;
-            if (row > 0 && rooms[row - 1][col] == Integer.MAX_VALUE) {
-                q.offer((row - 1) * n + col);
-                rooms[row - 1][col] = rooms[row][col] + 1;
-            }
-            if (row < m - 1 && rooms[row + 1][col] == Integer.MAX_VALUE) {
-                q.offer((row + 1) * n + col);
-                rooms[row + 1][col] = rooms[row][col] + 1;
-            }
-            if (col > 0 && rooms[row][col - 1] == Integer.MAX_VALUE) {
-                q.offer(row * n + col - 1);
-                rooms[row][col - 1] = rooms[row][col] + 1;
-            }
-            if (col < n - 1 && rooms[row][col + 1] == Integer.MAX_VALUE) {
-                q.offer(row * n + col + 1);
-                rooms[row][col + 1] = rooms[row][col] + 1;
-            }
-        }
     }
 }
