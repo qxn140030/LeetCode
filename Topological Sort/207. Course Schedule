@@ -201,8 +201,8 @@ class Solution {
 }
 
 Approach 5: BFS
-Time complexity: 
-Space complexity: O(n)
+Time complexity: O(V + E)
+Space complexity: O(V)
 
 public class Solution {
     public boolean canFinish(int numCourses, int[][] prerequisites) {
