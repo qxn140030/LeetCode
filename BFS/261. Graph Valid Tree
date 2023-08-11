@@ -51,17 +51,18 @@ public class Solution {
 }
 
 Approach 2: BFS
+Time complexity: O(V + E)
+Space complexity: O(V + E)
 
-public class Solution {
+class Solution {
     public boolean validTree(int n, int[][] edges) {
-        Map<Integer, List<Integer>> map = new HashMap<>();     // key - node, value - neighbors of the node(parent, children).
+        List<List<Integer>> adj = new ArrayList<>(); 
         for (int i = 0; i < n; i++) {
-            List<Integer> list = new ArrayList<Integer>();
-            map.put(i, list);
+            adj.add(new ArrayList<>());
         }
         for (int[] edge : edges) {
-            map.get(edge[0]).add(edge[1]);
-            map.get(edge[1]).add(edge[0]);
+            adj.get(edge[0]).add(edge[1]);
+            adj.get(edge[1]).add(edge[0]);
         }
         boolean[] visited = new boolean[n];
         Queue<Integer> q = new LinkedList<>();
@@ -72,7 +73,7 @@ public class Solution {
                 return false;
             }
             visited[num] = true;
-            for (int i : map.get(num)) {
+            for (int i : adj.get(num)) {
                 if (!visited[i]) {
                     q.offer(i);
                 }
