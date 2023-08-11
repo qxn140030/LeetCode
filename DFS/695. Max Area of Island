@@ -1,0 +1,106 @@
+You are given an m x n binary matrix grid. An island is a group of 1's (representing land) connected 4-directionally (horizontal or vertical.) You may assume all four edges of the grid are surrounded by water.
+The area of an island is the number of cells with a value 1 in the island.
+Return the maximum area of an island in grid. If there is no island, return 0.
+Example 1:
+Input: grid = [[0,0,1,0,0,0,0,1,0,0,0,0,0],
+               [0,0,0,0,0,0,0,1,1,1,0,0,0],
+               [0,1,1,0,1,0,0,0,0,0,0,0,0],
+               [0,1,0,0,1,1,0,0,1,0,1,0,0],
+               [0,1,0,0,1,1,0,0,1,1,1,0,0],
+               [0,0,0,0,0,0,0,0,0,0,1,0,0],
+               [0,0,0,0,0,0,0,1,1,1,0,0,0],
+               [0,0,0,0,0,0,0,1,1,0,0,0,0]]
+Output: 6
+Explanation: The answer is not 11, because the island must be connected 4-directionally.
+
+Example 2:
+Input: grid = [[0,0,0,0,0,0,0,0]]
+Output: 0
+
+Approach 1: DFS
+Time complexity: O(m * n)
+Space complexity: O(m * n)
+
+class Solution {
+    public int maxAreaOfIsland(int[][] grid) {
+        int max = 0, m = grid.length, n = grid[0].length;
+        boolean[][] visit = new boolean[m][n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == 1 && !visit[i][j]) {
+                    int tmp = dfs(grid, i, j, visit);
+                    if (tmp > max) {
+                        max = tmp;
+                    }
+                }
+            }
+        } 
+        return max;
+    }
+    private int dfs(int[][] grid, int i, int j, boolean[][] visit) {
+        int m = grid.length, n = grid[0].length, cnt = 0;
+        if (i < 0 || j < 0 || i == m || j == n || grid[i][j] == 0 || visit[i][j]) {
+            return cnt;
+        }
+        cnt++;
+        visit[i][j] = true;
+        cnt += dfs(grid, i + 1, j, visit);
+        cnt += dfs(grid, i - 1, j, visit);
+        cnt += dfs(grid, i, j + 1, visit);
+        cnt += dfs(grid, i, j - 1, visit);
+        return cnt;
+    }
+}
+
+Approach 2: BFS
+Time complexity: O(m * n)
+Space complexity: O(m * n)
+
+class Solution {
+    public int maxAreaOfIsland(int[][] grid) {
+        int max = 0, m = grid.length, n = grid[0].length;
+        boolean[][] visit = new boolean[m][n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == 1 && !visit[i][j]) {
+                    int tmp = bfs(grid, i, j, visit);
+                    if (tmp > max) {
+                        max = tmp;
+                    }
+                }
+            }
+        } 
+        return max;
+    }
+    private int bfs(int[][] grid, int i, int j, boolean[][] visit) {
+        int m = grid.length, n = grid[0].length, cnt = 1;
+        Queue<Integer> q = new LinkedList<>();
+        q.offer(i * n + j);
+        visit[i][j] = true;
+        while (!q.isEmpty()) {
+            int cur = q.poll();
+            int r = cur / n, c = cur % n;
+            if (r + 1 < m && !visit[r + 1][c] && grid[r + 1][c] == 1) {
+                cnt++;
+                visit[r + 1][c] = true;
+                q.offer((r + 1) * n + c);
+            }
+            if (r - 1 >= 0 && !visit[r - 1][c] && grid[r - 1][c] == 1) {
+                cnt++;
+                visit[r - 1][c] = true;
+                q.offer((r - 1) * n + c);
+            }
+            if (c + 1 < n && !visit[r][c + 1] && grid[r][c + 1] == 1) {
+                cnt++;
+                visit[r][c + 1] = true;
+                q.offer(r * n + c + 1);
+            }
+            if (c - 1 >= 0 && !visit[r][c - 1] && grid[r][c - 1] == 1) {
+                cnt++;
+                visit[r][c - 1] = true;
+                q.offer(r * n + c - 1);
+            }
+        }
+        return cnt;
+    }
+}
