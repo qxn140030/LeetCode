@@ -29,7 +29,10 @@ Note:
 exactly one path. In other words, any connected graph without simple cycles is a tree.”
 (2) The height of a rooted tree is the number of edges on the longest downward path between the root and a leaf.
 
-Time complexity: O(n). Space complexity: O(n).
+Approach 1:
+Time complexity: O(n)
+Space complexity: O(n)
+
 public class Solution {
     public List<Integer> findMinHeightTrees(int n, int[][] edges) {
         List<Integer> result = new ArrayList<>();
