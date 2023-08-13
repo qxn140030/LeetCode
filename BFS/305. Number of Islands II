@@ -28,7 +28,10 @@ We return the result as an array: [1, 1, 2, 3]
 Challenge:
 Can you do it in time complexity O(k log mn), where k is the length of the positions?
 
-union-find. Use an array to track the parent node for each cell.
+Appraoch 1: union-find. Use an array to track the parent node for each cell.
+Time complexity: O()
+Space complexity: O()
+
 public List<Integer> numIslands2(int m, int n, int[][] positions) {
     int[] rootArray = new int[m*n];
     Arrays.fill(rootArray,-1);
