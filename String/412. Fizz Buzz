@@ -21,6 +21,9 @@ n = 15, Return:
     "FizzBuzz"
 ]
 
+Time complexity: O()
+Space complexity: O()
+
 public class Solution {
     public List<String> fizzBuzz(int n) {
         List<String> rst = new ArrayList<String>();
