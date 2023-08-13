@@ -15,16 +15,14 @@ active area encroaches the border of the array. How would you address these prob
 
 public class Solution {
     public void gameOfLife(int[][] board) {
-        int m = board.length;
-        int n = board[0].length;
+        int m = board.length, n = board[0].length;
         int[] x = {-1, 0, 1, 1, 1, 0, -1, -1};
         int[] y = {1, 1, 1, 0, -1, -1, -1, 0};
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
                 int live = 0;
                 for (int k = 0; k < 8; k++) {
-                    int xx = i + x[k];
-                    int yy = j + y[k];
+                    int xx = i + x[k], yy = j + y[k];
                     if (xx >= 0 && xx < m && yy >= 0 && yy < n && (board[xx][yy] & 1) == 1) {
                         live++;
                     }
