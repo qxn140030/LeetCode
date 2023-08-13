@@ -16,8 +16,7 @@ Space complexity: O(1)
  */
 public class Solution {
     public ListNode reverseList(ListNode head) {
-        ListNode pre = null;
-        ListNode cur = head;
+        ListNode pre = null, cur = head;
         while (cur != null) {
             ListNode tmp = cur.next;
             cur.next = pre;
