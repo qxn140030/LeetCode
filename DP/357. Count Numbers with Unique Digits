@@ -10,6 +10,10 @@ This problem can also be solved using a dynamic programming approach and some kn
 Let f(k) = count of numbers with unique digits with length equals k.
 f(1) = 10, ..., f(k) = 9 * 9 * 8 * ... (9 - k + 2) [The first factor is 9 because a number cannot start with 0].
 
+Approach 1:
+Time complexity: O()
+Space complexity: O()
+
 public class Solution {
     public int countNumbersWithUniqueDigits(int n) {
         n = Math.min(n, 10);
