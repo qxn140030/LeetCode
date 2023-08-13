@@ -17,6 +17,9 @@ What if negative numbers are allowed in the given array?
 How does it change the problem?
 What limitation we need to add to the question to allow negative numbers?
 
+Time complexity: O()
+Space complexity: O()
+
 public class Solution {
     public int combinationSum4(int[] nums, int target) {
         if (nums == null || nums.length == 0) {
