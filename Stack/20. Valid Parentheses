@@ -3,7 +3,7 @@ The brackets must close in the correct order, "()" and "()[]{}" are all valid bu
 
 Approach 1: HashMap + Stack
 Time complexity: O(n)
-Space complexity: O(n) as we push all opening brackets onto the stack.
+Space complexity: O(n), as we push all opening brackets onto the stack.
 
 public class Solution {
     public boolean isValid(String s) {
