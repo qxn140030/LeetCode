@@ -16,8 +16,7 @@ public class Solution {
             return true;
         }
         Map<Integer, Set<Integer>> map = new HashMap<>();     // key - y coordinate, value - x coordinates.
-        int min = Integer.MAX_VALUE;
-        int max = Integer.MIN_VALUE;
+        int min = Integer.MAX_VALUE, max = Integer.MIN_VALUE;
         for (int[] p : points) {
             min = Math.min(min, p[0]);        // the most left of x coordinate.
             max = Math.max(max, p[0]);
