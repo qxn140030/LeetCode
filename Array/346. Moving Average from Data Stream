@@ -6,6 +6,10 @@ m.next(10) = (1 + 10) / 2
 m.next(3) = (1 + 10 + 3) / 3
 m.next(5) = (10 + 3 + 5) / 3
 
+Approach 1:
+Time complexity: O()
+Space complexity: O()
+
 public class MovingAverage {
     int size;
     Queue<Integer> q;
