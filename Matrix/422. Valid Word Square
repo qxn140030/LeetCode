@@ -48,6 +48,9 @@ Explanation:
 The third row reads "read" while the third column reads "lead".
 Therefore, it is NOT a valid word square.
 
+Time complexity: O()
+Space complexity: O()
+
 public class Solution {
     public boolean validWordSquare(List<String> words) {
         int n = words.size();
