@@ -11,9 +11,13 @@ A solution is:
   ["a","z"]
 ]
 
+Approach 1:
+Time complexity: O()
+Space complexity: O()
+
 public class Solution {
     public List<List<String>> groupStrings(String[] strings) {
-        List<List<String>> rst = new ArrayList<List<String>>();
+        List<List<String>> rst = new ArrayList<>();
         Map<String, List<String>> map = new HashMap<>();
         for (String s : strings) {
             StringBuilder sb = new StringBuilder();
