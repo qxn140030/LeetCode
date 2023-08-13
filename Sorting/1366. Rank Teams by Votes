@@ -25,7 +25,7 @@ Input: votes = ["ZMNAGUEDSJYLBOPHRQICWFXTVK"]
 Output: "ZMNAGUEDSJYLBOPHRQICWFXTVK"
 Explanation: Only one voter, so their votes are used for the ranking.
 
-Approach 1:
+Approach 1: Sorting
 use example1 to explain this solution.
 we have candidates A, B, C. So we can record the number of votes in every position for each candidate.
 A: 5, 0, 0            A: 5, 0, 0
