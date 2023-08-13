@@ -9,6 +9,9 @@ Input:
 Output:
 [[5,0], [7,0], [5,2], [6,1], [4,4], [7,1]]
 
+Time complexity: O()
+Space complexity: O()
+
 public class Solution {
     public int[][] reconstructQueue(int[][] people) {
         Arrays.sort(people, new Comparator<int[]>() {
