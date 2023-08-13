@@ -13,13 +13,13 @@ Input: [2, 2, 3, 1], Output: 1
 Explanation: Note that the third maximum here means the third maximum distinct number.
 Both numbers with value 2 are both considered as second maximum.
 
-Solution 1: three variables. 
-Time complexity: O(n). Space complexity: O(1).
+Approach 1: three variables
+Time complexity: O(n)
+Space complexity: O(1)
+
 public class Solution {
     public int thirdMax(int[] nums) {
-        long p1 = Long.MIN_VALUE;
-        long p2 = Long.MIN_VALUE;
-        long p3 = Long.MIN_VALUE;       // should be long, for corner cases.
+        long p1 = Long.MIN_VALUE, p2 = Long.MIN_VALUE, p3 = Long.MIN_VALUE;       // should be long, for corner cases.
         for (int i : nums) {
             if (i > p1) {
                 p3 = p2;
@@ -39,8 +39,10 @@ public class Solution {
     }
 }
 
-Solution 2: using a PriorityQueue and HashSet.
-Time complexity: O(n). Space complexity: O(n).
+Approach 2: using a PriorityQueue and HashSet.
+Time complexity: O(n)
+Space complexity: O(n)
+
 public class Solution {
     public int thirdMax(int[] nums) {
         PriorityQueue<Integer> q = new PriorityQueue<>(3);
