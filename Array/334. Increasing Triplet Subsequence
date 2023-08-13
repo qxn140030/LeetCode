@@ -7,6 +7,10 @@ Examples:
 Given [1, 2, 3, 4, 5], return true.
 Given [5, 4, 3, 2, 1], return false.
 
+Approach 1:
+Time complexity: O()
+Space complexity: O()
+
 public class Solution {
     public boolean increasingTriplet(int[] nums) {
         if (nums == null || nums.length < 3) {
