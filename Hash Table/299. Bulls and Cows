@@ -15,11 +15,13 @@ Friend's guess: "0111"
 In this case, the 1st 1 in friend's guess is a bull, the 2nd or 3rd 1 is a cow, and your function should return "1A1B".
 You may assume that the secret number and your friend's guess only contain digits, and their lengths are always equal.
 
-Solution 1: using one HashMap.
+Approach 1: using one HashMap
+Time complexity: O()
+Space complexity: O()
+
 public class Solution {
     public String getHint(String secret, String guess) {
-        int bulls = 0;
-        int cows = 0;
+        int bulls = 0, cows = 0;
         Map<Character, Integer> map = new HashMap<>();
         for (int i = 0; i < secret.length(); i++) {
             char cs = secret.charAt(i);
@@ -48,11 +50,13 @@ public class Solution {
     }
 }
 
-Solution 2: using two arrays.
+Approach 2: using two arrays
+Time complexity: O()
+Space complexity: O()
+
 public class Solution {
     public String getHint(String secret, String guess) {
-        int bulls = 0;
-        int cows = 0;
+        int bulls = 0, cows = 0;
         int[] ds = new int[10];
         int[] dg = new int[10];
         for (int i = 0; i < secret.length(); i++) {
