@@ -6,6 +6,10 @@ Example:
 nums = [-4, -2, 2, 4], a = 1, b = 3, c = 5, Result: [3, 9, 15, 33]
 nums = [-4, -2, 2, 4], a = -1, b = 3, c = 5, Result: [-23, -5, 1, 7]
 
+Approach 1:
+Time complexity: O()
+Space complexity: O()
+
 public class Solution {
     public int[] sortTransformedArray(int[] nums, int a, int b, int c) {
         int[] rst = new int[nums.length];
@@ -56,6 +60,10 @@ public class Solution {
         return a * num * num + b * num + c;
     }
 }
+
+Approach 2:
+Time complexity: O()
+Space complexity: O()
 
 public class Solution {
     public int[] sortTransformedArray(int[] nums, int a, int b, int c) {
