@@ -39,9 +39,7 @@ class Solution {
                     return step;
                 }
                 for (int j = 0; j < dir.length; j++) {
-                    int r = cur[0], c = cur[1];
-                    r += dir[j][0];
-                    c += dir[j][1];
+                    int r = cur[0] + dir[j][0], c = cur[1] + dir[j][1];
                     if (r >= 0 && r < m && c >= 0 && c < n && grid[r][c] == 0 && !visit[r][c]) {
                         visit[r][c] = true;
                         q.offer(new int[]{r, c});
