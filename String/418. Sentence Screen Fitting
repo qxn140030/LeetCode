@@ -41,9 +41,7 @@ public class Solution {
             }
             sentenceLen += s.length() + 1;
         }
-        int rst = 0;
-        int index = 0;
-        int len = sentence.length;
+        int rst = 0, index = 0, len = sentence.length;
         for (int i = 0; i < rows; i++) {
             int location = cols + 1;
             rst += location / sentenceLen;
