@@ -22,7 +22,10 @@ counter.getHits(301);
 Follow up:
 What if the number of hits per second could be very large? Does your design scale?
 
-Solution 1: using a queue to store timestamp.
+Approach 1: using a queue to store timestamp.
+Time complexity: O()
+Space complexity: O()
+
 public class HitCounter {
     Queue<Integer> q;
     /** Initialize your data structure here. */
@@ -44,7 +47,10 @@ public class HitCounter {
     }
 }
 
-Solution 2: Follow up. using two arrays.
+Approach 2: Follow up. using two arrays.
+Time complexity: O()
+Space complexity: O()
+
 public class HitCounter {
     int[] time;
     int[] hits;
