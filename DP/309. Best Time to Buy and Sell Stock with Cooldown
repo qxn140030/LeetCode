@@ -8,6 +8,10 @@ prices = [1, 2, 3, 0, 2]
 maxProfit = 3
 transactions = [buy, sell, cooldown, buy, sell]
 
+Appraoch 1:
+Time complexity: O()
+Space complexity: O()
+
 public class Solution {
     public int maxProfit(int[] prices) {
         if (prices == null || prices.length < 2) {
