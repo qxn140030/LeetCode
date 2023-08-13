@@ -24,6 +24,10 @@ Example 3:
 "9,#,#,1"
 Return false
 
+Approach 1:
+Time complexity: O()
+Space complexity: O()
+
 public class Solution {
     public boolean isValidSerialization(String preorder) {
         String s = preorder;
