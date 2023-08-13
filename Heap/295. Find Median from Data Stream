@@ -13,6 +13,10 @@ findMedian() -> 1.5
 add(3) 
 findMedian() -> 2
 
+Appraoch 1:
+Time complexity: O()
+Space complexity: O()
+
 public class MedianFinder {
     PriorityQueue<Integer> minHeap = new PriorityQueue<>();
     PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder());
