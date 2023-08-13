@@ -46,7 +46,10 @@ Hint:
 Could you trade extra space such that move() operation can be done in O(1)?
 You need two arrays: int rows[n], int cols[n], plus two variables: diagonal, anti_diagonal.
 
-Solution 1: naive.
+Approach 1: naive
+Time complexity: O()
+Space complexity: O()
+
 public class TicTacToe {
     int[][] matrix;
     /** Initialize your data structure here. */
@@ -112,7 +115,10 @@ public class TicTacToe {
  * int param_1 = obj.move(row,col,player);
  */
  
- Solution 2: 
+Approach 2: 
+Time complexity: O()
+Space complexity: O()
+
  public class TicTacToe {
     int[] rows;
     int[] cols;
