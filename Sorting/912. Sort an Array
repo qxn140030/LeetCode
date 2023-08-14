@@ -10,7 +10,74 @@ Input: nums = [5,1,1,2,0,0]
 Output: [0,0,1,1,2,5]
 Explanation: Note that the values of nums are not necessairly unique.
 
-Approach 1: Quick Sort
+Approach 1: Merge Sort
+Time complexity: O(nlogn)
+Space complexity: O(n)
+
+class Solution {
+    public int[] sortArray(int[] nums) {
+        mergeSort(nums, 0, nums.length - 1);
+        return nums;
+    }
+    private void mergeSort(int[] nums, int left, int right) {
+        if (left < right) {
+            int mid = (left + right) / 2;
+            mergeSort(nums, left, mid);
+            mergeSort(nums, mid + 1, right);
+            merge(nums, left, mid, right);
+        }
+    }
+    private void merge(int[] nums, int left, int mid, int right) {
+        int i = left, j = mid + 1, k = 0;
+        int[] tmp = new int[right - left + 1];
+        while (i <= mid && j <= right) {
+            if (nums[i] < nums[j]) {
+                tmp[k++] = nums[i++];
+            } else {
+                tmp[k++] = nums[j++];
+            }
+        }
+        while (i <= mid) {
+            tmp[k++] = nums[i++];
+        }
+        while (j <= right) {
+            tmp[k++] = nums[j++];
+        }
+        for (i = left, k = 0; k < tmp.length; i++, k++) {
+            nums[i] = tmp[k];
+        }
+    }
+}
+
+Approach 2: Counting Sort
+Time complexity: O(n + k), where k is the range of value of its elements (minimum value to maximum value).
+Space complexity: O(n)
+
+class Solution {
+    public int[] sortArray(int[] nums) {
+        countingSort(nums);
+        return nums;
+    }
+    private void countingSort(int[] arr) {
+        Map<Integer, Integer> counts = new HashMap<>();
+        int minVal = arr[0], maxVal = arr[0];
+        for (int i = 0; i < arr.length; i++) {
+            minVal = Math.min(minVal, arr[i]);
+            maxVal = Math.max(maxVal, arr[i]);
+            counts.put(arr[i], counts.getOrDefault(arr[i], 0) + 1);
+        }
+        int index = 0;
+        for (int val = minVal; val <= maxVal; val++) {
+            while (counts.getOrDefault(val, 0) > 0) {
+                arr[index] = val;
+                index++;
+                counts.put(val, counts.get(val) - 1);
+            }
+        }
+    }
+}
+
+Approach 3: Quick Sort
 Time complexity: O(nlogn)
 Space complexity: O(1)
 
@@ -29,7 +96,7 @@ class Solution {
         }
     }
     private int partition(int[] nums, int start, int end) {
-        int pivotIndex = start + random.nextInt(end - start + 1);    // use random to get average 
+        int pivotIndex = start + random.nextInt(end - start + 1);    // use random to avoid worst case. 
         int pivot = nums[pivotIndex], left = start;
         swap(nums, pivotIndex, end);
         for (int i = start; i < end; i++) {
