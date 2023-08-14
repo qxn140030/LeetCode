@@ -15,7 +15,58 @@ Example 3:
 Input: piles = [30,11,23,4,20], h = 6
 Output: 23
 
-Approach 1:
-Time complexity: O(
-Space complexity: O(
+Approach 1: Brute Force (TLE)
+Time complexity: O(m * n). Let n be the length of input array piles and m be the upper bound of elements in piles.
+Space complexity: O(1)
 
+class Solution {
+    public int minEatingSpeed(int[] piles, int h) {
+        int speed = 1;
+        while (true) {
+            int hourSpent = 0;
+            for (int pile : piles) {
+                hourSpent += Math.ceil((double)pile / speed);
+                if (hourSpent > h) {
+                    break;
+                }
+            }
+            if (hourSpent <= h) {
+                return speed;
+            } else {
+                speed++;
+            }
+        }
+    }
+}
+
+Approach 2: Binary Search
+Time complexity: O(nlogm)
+Space complexity: O(1)
+
+class Solution {
+    public int minEatingSpeed(int[] piles, int h) {
+        int min = 1, max = 1;
+        for (int pile : piles) {
+            max = Math.max(max, pile);
+        }
+        while (min < max) {
+            int mid = min + (max - min) / 2;
+            if (check(piles, h, mid)) {
+                max = mid;
+            } else {
+                min = mid + 1;
+            }
+        }
+        return max;
+    }
+    private boolean check(int[] piles, int h, int speed) {
+        int hourSpent = 0;
+        for (int pile : piles) {
+            hourSpent += Math.ceil((double)pile / speed);
+            if (hourSpent > h) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
