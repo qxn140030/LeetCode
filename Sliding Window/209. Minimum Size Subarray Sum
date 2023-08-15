@@ -95,7 +95,7 @@ class Solution {
     }
 }
 
-Approach 4: Two Pointers
+Approach 4: Sliding Window
 Time complexity: O(n)
 Space complexity: O(1)
 
