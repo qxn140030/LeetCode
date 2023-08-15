@@ -146,8 +146,7 @@ public class WordDictionary {
             for (int j = 0; j < 26; j++) {
 	        if (p.children[j] != null) {
 		    if (dfsSearch(p.children[j], word, start + 1)) {
-		        rst = true;
-			break;
+		        return true;
 		    }
 		}
 	    }
