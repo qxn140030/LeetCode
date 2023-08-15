@@ -1,0 +1,105 @@
+You are given a string s and an integer k. You can choose any character of the string and change it to any other uppercase English character. You can perform this operation at most k times.
+Return the length of the longest substring containing the same letter you can get after performing the above operations.
+Example 1:
+Input: s = "ABAB", k = 2
+Output: 4
+Explanation: Replace the two 'A's with two 'B's or vice versa.
+
+Example 2:
+Input: s = "AABABBA", k = 1
+Output: 4
+Explanation: Replace the one 'A' in the middle with 'B' and form "AABBBBA".
+The substring "BBBB" has the longest repeating letters, which is 4.
+There may exists other ways to achive this answer too.
+
+Approach 1: Sliding Window + Binary Search
+Time complexity: O(nlogn)
+Space complexity: O(1)
+
+class Solution {
+    public int characterReplacement(String s, int k) {
+        int low = 1, high = s.length() + 1;              // low contains the valid value, and high contains the invalid value. 
+        while (low + 1 < high) {
+            int mid = low + (high - low) / 2;
+            if (canMakeValidSubstring(s, mid, k)) {
+                low = mid;
+            } else {
+                high = mid;
+            }
+        }
+        return low;
+    }
+    private boolean canMakeValidSubstring(String s, int substringLength, int k) {
+        int[] freqMap = new int[26];
+        int maxFrequency = 0, start = 0;
+        for (int end = 0; end < s.length(); end++) {
+            freqMap[s.charAt(end) - 'A']++;
+            if (end + 1 - start > substringLength) {
+                freqMap[s.charAt(start) - 'A']--;
+                start++;
+            }
+            maxFrequency = Math.max(maxFrequency, freqMap[s.charAt(end) - 'A']);
+            if (substringLength - maxFrequency <= k) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+Approach 2: Sliding Window (Slow)
+Time complexity: O(n * m), Let n be the number of characters in the string and m be the number of unique characters
+Space complexity: O(m)
+
+class Solution {
+    public int characterReplacement(String s, int k) {
+        Set<Character> uniqueChars = new HashSet();
+        for (int i = 0; i < s.length(); i++) {
+            uniqueChars.add(s.charAt(i));
+        }
+        int maxLength = 0;
+        for (Character c : uniqueChars) {
+            int start = 0, count = 0;
+            for (int end = 0; end < s.length(); end++) {
+                if (s.charAt(end) == c) {
+                    count++;
+                }
+                while (!isWindowValid(start, end, count, k)) {
+                    if (s.charAt(start) == c) {
+                        count--;
+                    }
+                    start++;
+                }
+                maxLength = Math.max(maxLength, end + 1 - start);
+            }
+        }
+        return maxLength;
+    }
+    private boolean isWindowValid(int start, int end, int count, int k) {
+        return end + 1 - start - count <= k;
+    }
+}
+
+Approach 3: Sliding Window (Fast)
+Time complexity: O(n)
+Space complexity: O(1)
+
+class Solution {
+    public int characterReplacement(String s, int k) {
+        int[] frequencyMap = new int[26];
+        int start = 0, maxFrequency = 0, maxLen = 0;
+        for (int end = 0; end < s.length(); end++) {
+            int c = s.charAt(end) - 'A';
+            frequencyMap[c]++;
+            maxFrequency = Math.max(maxFrequency, frequencyMap[c]);
+            boolean isValid = (end + 1 - start - maxFrequency <= k);
+            if (!isValid) {
+                int startChar = s.charAt(start) - 'A';
+                frequencyMap[startChar]--;
+                start++;
+            }
+            maxLen = end + 1 - start;
+        }
+        return maxLen;
+    }
+}
