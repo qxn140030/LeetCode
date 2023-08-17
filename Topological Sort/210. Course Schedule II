@@ -20,10 +20,9 @@ Input: numCourses = 1, prerequisites = []
 Output: [0]
 
 Approach 1: DFS
-This problem is equivalent to finding the topological order in a directed graph. If a cycle exists, no topological ordering exists
-and therefore it will be impossible to take all courses.
-Time complexity: O(e + v)
-Space complexity: O(e + v)
+This problem is equivalent to finding the topological order in a directed graph. If a cycle exists, no topological ordering exists and therefore it will be impossible to take all courses.
+Time complexity: O(E + V)
+Space complexity: O(E + V)
 
 class Solution {
     int order[], pos = 0;
@@ -77,8 +76,7 @@ class Solution {
     }
 }
 
-Approach 2: Using Node Indegree (BFS)
-This approach is much easier to think about intuitively.
+Approach 2: Using Node Indegree
 We first process all the nodes/course with 0 in-degree implying no prerequisite courses required. 
 If we remove all these courses from the graph, along with their outgoing edges, we can find out the courses/nodes that should be processed next. 
 These would again be the nodes with 0 in-degree. We can continuously do this until all the courses have been accounted for.
@@ -89,7 +87,7 @@ class Solution {
     public int[] findOrder(int numCourses, int[][] prerequisites) {
         List<List<Integer>> adj = new ArrayList<>(numCourses);
         for (int i = 0; i < numCourses; i++) {
-            adj.add(new ArrayList<>());
+            adj.add(new ArrayList<>());                             // Note.
         }
         int[] indegrees = new int[numCourses];
         for (int[] pre : prerequisites) {
