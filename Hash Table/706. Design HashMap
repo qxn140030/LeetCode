@@ -61,3 +61,23 @@ class MyHashMap {
  * int param_2 = obj.get(key);
  * obj.remove(key);
  */
+
+Approach 2: Using Array int[]
+Time complexity: O(1)
+Space complexity: O(1)
+
+class MyHashMap {
+    int[] ans;
+    public MyHashMap() {
+        ans = new int[1000001];
+    }
+    public void put(int key, int value) {
+        ans[key] = value + 1;
+    }
+    public int get(int key) {
+        return ans[key] == 0 ? -1 : ans[key] - 1;
+    }
+    public void remove(int key) {
+        ans[key] = 0;
+    }
+}
