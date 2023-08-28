@@ -53,25 +53,25 @@ public class Solution {
 }
 
 public class Solution {
+    String[] keyboard = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
     public List<String> letterCombinations(String digits) {
         List<String> rst = new ArrayList<>();
         if (digits.isEmpty()) {
             return rst;
         }
-        String[] keyboard = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
         StringBuilder sb = new StringBuilder();
-        helper(digits, keyboard, sb, rst);
+        helper(digits, sb, rst);
         return rst;
     }
-    private void helper(String digits, String[] keyboard, StringBuilder sb, List<String> rst) {
+    private void helper(String digits, StringBuilder sb, List<String> rst) {
         if (sb.length() == digits.length()) {
             rst.add(sb.toString());
             return;
         }
-        String tmp = keyboard[digits.charAt(sb.length()) - '0'];
-        for (int i = 0; i < tmp.length(); i++) {
-            sb.append(tmp.charAt(i));
-            helper(digits, keyboard, sb, rst);
+        String str = keyboard[digits.charAt(sb.length()) - '0'];
+        for (int i = 0; i < str.length(); i++) {
+            sb.append(str.charAt(i));
+            helper(digits, sb, rst);
             sb.deleteCharAt(sb.length() - 1);
         }
     }
