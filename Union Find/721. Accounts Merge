@@ -23,6 +23,7 @@ Approach 1: DFS
 represent emails as nodes, and an edge will signify that two emails are connected and hence belong to the same person.
 Initially, we are given n accounts, where each account's emails make up a connected component.
 Suppose an account has k emails, we can create an acyclic graph using only k - 1 edges, with the first email as the internal node of the star and all other emails as the leaves.
+
 Time complexity: O(nklog(nk)), n is the number of accounts and k is the maximum length of an account.
 In the worst case, all the emails will end up belonging to a single person. The total number of emails will be n * k, 
 and we need to sort these emails. DFS traversal will take n * k operations as no email will be traversed more than once.
@@ -64,15 +65,14 @@ class Solution {
             String firstEmail = account.get(1);
             for (int i = 2; i < account.size(); i++) {
                 String email = account.get(i);
-                if (!adj.containsKey(firstEmail)) {
-                    adj.put(firstEmail, new ArrayList<>());
-                }
+                adj.putIfAbsent(firstEmail, new ArrayList<>());
                 adj.get(firstEmail).add(email);
-                if (!adj.containsKey(email)) {
-                    adj.put(email, new ArrayList<>());
-                }
+                adj.put(email, new ArrayList<>());
                 adj.get(email).add(firstEmail);
             }
         }
     }
 }
+
+Approach 2: Disjoint Set Union (DSU)
+Any problem that involves merging connected components is a natural fit for the Disjoint Set Union (DSU) data structure.
