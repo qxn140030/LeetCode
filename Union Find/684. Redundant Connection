@@ -31,13 +31,9 @@ class Solution {
                     return new int[]{e[0], e[1]};
                 }
             }
-            if (!adj.containsKey(e[0])) {
-                adj.put(e[0], new ArrayList<>());
-            }
+            adj.putIfAbsent(e[0], new ArrayList<>());
             adj.get(e[0]).add(e[1]);
-            if (!adj.containsKey(e[1])) {
-                adj.put(e[1], new ArrayList<>());
-            }
+            adj.putIfAbsent(e[1], new ArrayList<>());
             adj.get(e[1]).add(e[0]);
         }
         return new int[0];
@@ -107,16 +103,17 @@ class UnionFind {
         }
     }
     public int find(int x) {
-        if (parent[x] != x) {
-            parent[x] = find(parent[x]);
+        while (parent[x] != x) {
+            parent[x] = parent[parent[x]];        // path compression.
+            x = parent[x];
         }
-        return parent[x];
+        return x;
     }
     public boolean union(int x, int y) {
         int xr = find(x), yr = find(y);
         if (xr == yr) {
             return false;
-        } else if (rank[xr] < rank[yr]) {
+        } else if (rank[xr] < rank[yr]) {         // union-by-rank.
             parent[xr] = yr;
         } else if (rank[xr] > rank[yr]) {
             parent[yr] = xr;
@@ -132,7 +129,7 @@ class Solution {
         int n = edges.length;
         UnionFind uf = new UnionFind(n + 1);
         for (int[] e : edges) {
-            if (!uf.union(e[0], e[1])) {
+            if (!uf.union(e[0], e[1])) {         // loop detected.
                 return e;
             }
         }
