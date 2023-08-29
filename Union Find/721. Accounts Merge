@@ -76,3 +76,71 @@ class Solution {
 
 Approach 2: Disjoint Set Union (DSU)
 Any problem that involves merging connected components is a natural fit for the Disjoint Set Union (DSU) data structure.
+
+
+class DSU {
+    int[] parent;
+    int[] size;
+    public DSU(int sz) {
+        parent = new int[sz];
+        size = new int[sz];
+        for (int i = 0; i < sz; i++) {
+            parent[i] = i;
+            size[i] = 1;               // Intialize the size of all groups to 1.
+        }
+    }
+    public int find(int x) {
+        while (x != parent[x]) {
+            parent[x] = parent[parent[x]];
+            x = parent[x];
+        }
+        return x;
+    }
+    public void union(int a, int b) {        // Unite the group that contains "a" with the group that contains "b".
+        int pa = find(a), pb = find(b);
+        if (pa == pb) {
+            return;
+        }
+        if (size[pa] >= size[pb]) {          // Union by size: point the representative of the smaller group to the representative of the larger group.
+            size[pa] += size[pb];
+            parent[pb] = pa;
+        } else {
+            size[pb] += size[pa];
+            parent[pa] = pb;
+        }
+    }
+}
+class Solution {
+    public List<List<String>> accountsMerge(List<List<String>> accounts) {
+        int accountSize = accounts.size();
+        DSU dsu = new DSU(accountSize);
+        Map<String, Integer> groups = new HashMap<>();
+        for (int i = 0 ; i < accountSize; i++) {
+            for (int j = 1; j < accounts.get(i).size(); j++) {
+                String email = accounts.get(i).get(j);
+                if (!groups.containsKey(email)) {
+                    groups.put(email, i);                    // Maps email to their component index.
+                } else {
+                    dsu.union(i, groups.get(email));
+                }
+            }
+        }
+        Map<Integer, List<String>> comp = new HashMap<>();
+        for (String email : groups.keySet()) {
+            int group = groups.get(email);
+            int groupParent = dsu.find(group);
+            if (!comp.containsKey(groupParent)) {
+                comp.put(groupParent, new ArrayList<>());
+            }
+            comp.get(groupParent).add(email);
+        }
+        List<List<String>> rst = new ArrayList<>();
+        for (int group : comp.keySet()) {
+            List<String> component = comp.get(group);
+            Collections.sort(component);
+            component.add(0, accounts.get(group).get(0));     // Add account name.
+            rst.add(component);
+        }
+        return rst;
+    }
+}
