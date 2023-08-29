@@ -76,7 +76,8 @@ class Solution {
 
 Approach 2: Disjoint Set Union (DSU)
 Any problem that involves merging connected components is a natural fit for the Disjoint Set Union (DSU) data structure.
-
+Time complexity: O(nklog(nk))
+Space complexity: O(nk)
 
 class DSU {
     int[] parent;
