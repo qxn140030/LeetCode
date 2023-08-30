@@ -1,36 +1,42 @@
-Suppose you have a random list of people standing in a queue. Each person is described by a pair of integers (h, k), where h is the
-height of the person and k is the number of people in front of this person who have a height greater than or equal to h. Write an
-algorithm to reconstruct the queue.
-Note:
-The number of people is less than 1,100.
-Example:
-Input:
-[[7,0], [4,4], [7,1], [5,0], [6,1], [5,2]]
-Output:
-[[5,0], [7,0], [5,2], [6,1], [4,4], [7,1]]
+You are given an array of people, people, which are the attributes of some people in a queue (not necessarily in order). 
+Each people[i] = [hi, ki] represents the ith person of height hi with exactly ki other people in front who have a height greater than or equal to hi.
+Reconstruct and return the queue that is represented by the input array people. The returned queue should be formatted as an array queue, 
+where queue[j] = [hj, kj] is the attributes of the jth person in the queue (queue[0] is the person at the front of the queue).
 
-Time complexity: O()
-Space complexity: O()
+Example 1:
+Input: people = [[7,0],[4,4],[7,1],[5,0],[6,1],[5,2]]
+Output: [[5,0],[7,0],[5,2],[6,1],[4,4],[7,1]]
+Explanation:
+Person 0 has height 5 with no other people taller or the same height in front.
+Person 1 has height 7 with no other people taller or the same height in front.
+Person 2 has height 5 with two persons taller or the same height in front, which is person 0 and 1.
+Person 3 has height 6 with one person taller or the same height in front, which is person 1.
+Person 4 has height 4 with four people taller or the same height in front, which are people 0, 1, 2, and 3.
+Person 5 has height 7 with one person taller or the same height in front, which is person 1.
+Hence [[5,0],[7,0],[5,2],[6,1],[4,4],[7,1]] is the reconstructed queue.
 
-public class Solution {
+Example 2:
+Input: people = [[6,0],[5,0],[4,0],[3,2],[2,2],[1,4]]
+Output: [[4,0],[5,0],[2,2],[3,2],[1,4],[6,0]]
+
+Approach 1: Greedy
+Time complexity: O(n^2), sorting takes O(nlogn), each insert operation takes up to O(k), k is the current number of elements in the list.
+Space complexity: O(logn)
+
+class Solution {
     public int[][] reconstructQueue(int[][] people) {
-        Arrays.sort(people, new Comparator<int[]>() {
-            public int compare(int[] a, int[] b) {
-                if (a[0] == b[0]) {           // same hight, sort acording to k.
-                    return a[1] - b[1];
-                }
-                return b[0] - a[0];           // tall -> short.
-            } 
+        // Arrays.sort(people, (p1, p2) -> p1[0] == p2[0] ? p1[1] - p2[1] : p2[0] - p1[0]);
+        Arrays.sort(people, new Comparator<int[]>() {                 
+            @Override
+            public int compare(int[] p1, int[] p2) {
+                return p1[0] == p2[0] ? p1[1] - p2[1] : p2[0] - p1[0];
+            }
         });
-        List<int[]> list = new ArrayList<>();
+        List<int[]> rst = new ArrayList<>();
         for (int[] p : people) {
-            list.add(p[1], p);           // insert them to their k position.
+            rst.add(p[1], p);                 // insert them to their k position.
         }
-        int[][] rst = new int[people.length][2];
-        int i = 0;
-        for (int[] p : list) {
-            rst[i++] = p;
-        }
-        return rst;
+        int n = people.length;
+        return rst.toArray(new int[n][2]);
     }
 }
