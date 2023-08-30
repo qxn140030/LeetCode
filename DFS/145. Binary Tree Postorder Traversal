@@ -19,7 +19,13 @@ Space complexity: O(logn)
  *     int val;
  *     TreeNode left;
  *     TreeNode right;
- *     TreeNode(int x) { val = x; }
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
  * }
  */
 class Solution {
@@ -77,6 +83,41 @@ public class Solution {
                 if (root.left != null) {
                     stack.push(root.left);             // then push left child to stack.
                     root.left = null;                  // set the left child as null!
+                }
+            }
+        }
+        return rst;
+    }
+}
+
+Approach 3: Iterative using two Stacks
+we don't need to modify the original tree structure.
+Time complexity: O(n)
+Space complexity: O(logn)
+
+class Solution {
+    public List<Integer> postorderTraversal(TreeNode root) {
+        List<Integer> rst = new ArrayList<>();
+        if (root == null) {
+            return rst;
+        }
+        Stack<TreeNode> stack = new Stack<>();
+        Stack<Boolean> visit = new Stack<>();
+        stack.push(root);
+        visit.push(false);                    // first time visit this node, we mark it as unvisited.
+        while (!stack.isEmpty()) {
+            TreeNode cur = stack.pop();
+            boolean v = visit.pop();
+            if (cur != null) {
+                if (v) {                      // visited is true means all children had been visited.
+                    rst.add(cur.val);
+                } else {
+                    stack.push(cur);
+                    visit.push(true);         // second time visit the node, mark is as visited.
+                    stack.push(cur.right);
+                    visit.push(false);
+                    stack.push(cur.left);
+                    visit.push(false);
                 }
             }
         }
