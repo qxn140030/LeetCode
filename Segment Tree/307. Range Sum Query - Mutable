@@ -92,3 +92,64 @@ class NumArray {
         return sum;
     }
 }
+
+ class NumArray {
+    int[] nums;
+    class TreeNode {
+        int sum, low, high;
+        TreeNode left, right;
+        public TreeNode(int sum, int low, int high) {
+            this.sum = sum;
+            this.low = low;
+            this.high = high;
+        }
+    }
+    TreeNode root;
+    public NumArray(int[] nums) {
+        this.nums = nums;
+        root = build(nums, 0, nums.length - 1);
+    }
+    public TreeNode build(int[] nums, int i, int j) {
+        if (i == j) {
+            return new TreeNode(nums[i], i, j);
+        }
+        int mid = (i + j) / 2;
+        TreeNode root = new TreeNode(0, i, j);
+        root.left = build(nums, i, mid);
+        root.right = build(nums, mid + 1, j);
+        root.sum = root.left.sum + root.right.sum;
+        return root;
+    }
+    public void update(int index, int val) {
+        update(index, val, root);
+    }
+    private void update (int index, int val, TreeNode node) {
+        if (node.low == node.high) {
+            node.sum = val;
+            return;
+        }
+        int mid = (node.low + node.high) / 2;
+        if (index > mid) {
+            update(index, val, node.right);
+        } else {
+            update(index, val, node.left);
+        }
+        node.sum = node.left.sum + node.right.sum;
+    }
+    public int sumRange(int left, int right) {
+        return sumRangeHelper(root, left, right);
+    }
+    public int sumRangeHelper(TreeNode node, int left, int right) {
+        if (left == node.low && right == node.high) {
+            return node.sum;
+        }
+        int mid = (node.low + node.high) / 2;
+        if (left > mid) {
+            return sumRangeHelper(node.right, left, right);
+        } 
+        if (right <= mid) {
+            return sumRangeHelper(node.left, left, right);
+        }
+        return sumRangeHelper(node, left, mid) + sumRangeHelper(node, mid + 1, right);
+    }
+}
