@@ -23,8 +23,6 @@ Building the adjacency list will take O(E) space. To keep track of visited verti
 
 class Solution {
     public int countComponents(int n, int[][] edges) {
-        int components = 0;
-        int[] visited = new int[n];
         List<List<Integer>> adj = new ArrayList<>(); 
         for (int i = 0; i < n; i++) {
             adj.add(new ArrayList<>());
@@ -33,18 +31,20 @@ class Solution {
             adj.get(e[0]).add(e[1]);
             adj.get(e[1]).add(e[0]);
         }
+        boolean[] visited = new boolean[n];
+        int components = 0;
         for (int i = 0; i < n; i++) {
-            if (visited[i] == 0) {
+            if (!visited[i]) {
                 components++;
                 dfs(adj, visited, i);
             }
         }
         return components;
     }
-    private void dfs(List<List<Integer>> adj, int[] visited, int start) {
-        visited[start] = 1;
+    private void dfs(List<List<Integer>> adj, boolean[] visited, int start) {
+        visited[start] = true;
         for (int i = 0; i < adj.get(start).size(); i++) {
-            if (visited[adj.get(start).get(i)] == 0) {
+            if (!visited[adj.get(start).get(i)]) {
                 dfs(adj, visited, adj.get(start).get(i));
             }
         }
@@ -57,9 +57,6 @@ Space complexity: O(V + E)
 
 class Solution {
     public int countComponents(int n, int[][] edges) {
-        if (n < 1) {
-            return 0;
-        }
         List<List<Integer>> adj = new ArrayList<>();
         for (int i = 0; i < n; i++) {
             adj.add(new ArrayList<>());
@@ -94,31 +91,76 @@ class Solution {
 Approach 3: Union-find
 Initially, there are n nodes. The nodes that are involved in each edge is merged.
 There are k loops and each loop processing the root array costs log(n). 
-time complexity is O(k*log(n))
+time complexity is O(V + E)
+Space complexity: O(V)
 
-public int countComponents(int n, int[][] edges) {     // not run yet.
-    int count = n;  
-    int[] root = new int[n];
-    // initialize each node is an island
-    for (int i = 0; i < n; i++) {
-        root[i] = i;        
-    } 
-    for (int i = 0; i < edges.length; i++) {
-        int x = edges[i][0];
-        int y = edges[i][1]; 
-        int xRoot = getRoot(root, x);
-        int yRoot = getRoot(root, y); 
-        if (xRoot != yRoot) {
-            count--;
-            root[xRoot] = yRoot;
-        } 
+class DSU {
+    int[] parent;
+    int[] size;
+    public DSU(int n) {
+        parent = new int[n];
+        size = new int[n];
+        for (int i = 0; i < n; i++) {
+            parent[i] = i;
+            size[i] = 1;
+        }
     }
-    return count;
+    public int find(int x) {
+        while (parent[x] != x) {
+            parent[x] = parent[parent[x]];
+            x = parent[x];
+        }
+        return x;
+    }
+    public int union(int x, int y) {
+        int px = find(x), py = find(y);
+        if (px == py) {
+            return 0;
+        }
+        if (size[px] > size[py]) {
+            parent[py] = px;
+            size[px] += size[py];
+        } else {
+            parent[px] = py;
+            size[py] += size[px];
+        }
+        return 1;
+    }
 }
-public int getRoot(int[] arr, int i) {
-    while (arr[i] != i) {
-        arr[i] = arr[arr[i]];
-        i = arr[i];
+class Solution {
+    public int countComponents(int n, int[][] edges) {
+        DSU dsu = new DSU(n);
+        int components = n;
+        for (int[] e : edges) {
+            components -= dsu.union(e[0], e[1]);
+        }
+        return components;
     }
-    return i;
+}
+
+class Solution {
+    public int countComponents(int n, int[][] edges) {
+        int count = n;  
+        int[] root = new int[n];
+        for (int i = 0; i < n; i++) {
+            root[i] = i;        
+        } 
+        for (int[] e : edges) {
+            int x = e[0], y = e[1]; 
+            int xRoot = getRoot(root, x);
+            int yRoot = getRoot(root, y); 
+            if (xRoot != yRoot) {
+                count--;
+                root[xRoot] = yRoot;
+            } 
+        }
+        return count;
+    }
+    public int getRoot(int[] arr, int i) {
+        while (arr[i] != i) {
+            arr[i] = arr[arr[i]];
+            i = arr[i];
+        }
+        return i;
+    }
 }
