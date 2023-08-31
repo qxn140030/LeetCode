@@ -13,30 +13,34 @@ findMedian() -> 1.5
 add(3) 
 findMedian() -> 2
 
-Appraoch 1:
-Time complexity: O()
-Space complexity: O()
+Appraoch 1: Twpo Heaps
+Time complexity: O(logn) for insertion, O(1) for finding the median
+Space complexity: O(logn)
 
-public class MedianFinder {
-    PriorityQueue<Integer> minHeap = new PriorityQueue<>();
-    PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder());
-    // Adds a number into the data structure.
+class MedianFinder {
+    PriorityQueue<Integer> maxHeap;
+    PriorityQueue<Integer> minHeap;
+    public MedianFinder() {
+        maxHeap = new PriorityQueue<>(Collections.reverseOrder());
+        minHeap = new PriorityQueue<>();
+    }
     public void addNum(int num) {
         maxHeap.offer(num);
         minHeap.offer(maxHeap.poll());
-        while (minHeap.size() > maxHeap.size()) {
+        if (minHeap.size() > maxHeap.size()) {
             maxHeap.offer(minHeap.poll());
         }
     }
-    // Returns the median of current data stream
     public double findMedian() {
         if (minHeap.size() == maxHeap.size()) {
             return (minHeap.peek() + maxHeap.peek()) / 2.0;
         }
         return maxHeap.peek();
     }
-};
-// Your MedianFinder object will be instantiated and called as such:
-// MedianFinder mf = new MedianFinder();
-// mf.addNum(1);
-// mf.findMedian();
+}
+/**
+ * Your MedianFinder object will be instantiated and called as such:
+ * MedianFinder obj = new MedianFinder();
+ * obj.addNum(num);
+ * double param_2 = obj.findMedian();
+ */
