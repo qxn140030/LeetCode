@@ -1,0 +1,57 @@
+Given an m x n matrix mat where every row is sorted in strictly increasing order, return the smallest common element in all rows.
+If there is no common element, return -1.
+
+Example 1:
+Input: mat = [[1,2,3,4,5],[2,4,5,8,10],[3,5,7,9,11],[1,3,5,7,9]]
+Output: 5
+
+Example 2:
+Input: mat = [[1,2,3],[2,3,4],[2,3,5]]
+Output: 2
+
+Approach 1: Count Elements
+Time complexity: O(m * n)
+Space complexity: O(1)
+
+class Solution {
+    public int smallestCommonElement(int[][] mat) {
+        int count[] = new int[10001];
+        int m = mat.length, n = mat[0].length;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (++count[mat[i][j]] == m) {
+                    return mat[i][j];
+                }
+            }
+        }
+        return -1;
+    }
+}
+
+Approach 2: Row Positions
+Time complexity: O(m * n)
+Space complexity: O(n) to store row pointer index.
+
+class Solution {
+    public int smallestCommonElement(int[][] mat) {
+        int m = mat.length, n = mat[0].length;
+        int[] pos = new int[m];
+        int cur = 0, cnt = 0;
+        while (true) {
+            for (int i = 0; i < m; i++) {
+                while (pos[i] < n && mat[i][pos[i]] < cur) {
+                    pos[i]++;
+                }
+                if (pos[i] == n) {
+                    return -1;
+                }
+                if (mat[i][pos[i]] != cur) {
+                    cnt = 1;
+                    cur = mat[i][pos[i]];
+                } else if (++cnt == m) {
+                    return cur;
+                }
+            }
+        }
+    }
+}
