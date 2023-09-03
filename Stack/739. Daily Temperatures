@@ -1,0 +1,60 @@
+Given an array of integers temperatures represents the daily temperatures, return an array answer such that answer[i] is the number of days you have to wait after the ith day to get a warmer temperature. 
+If there is no future day for which this is possible, keep answer[i] == 0 instead.
+
+Example 1:
+Input: temperatures = [73,74,75,71,69,72,76,73]
+Output: [1,1,4,2,1,1,0,0]
+
+Example 2:
+Input: temperatures = [30,40,50,60]
+Output: [1,1,1,0]
+
+Example 3:
+Input: temperatures = [30,60,90]
+Output: [1,1,0]
+
+Approach 1: Monotonic Stack
+Time complexity: O(n)
+Space complexity: O(n)
+
+class Solution {
+    public int[] dailyTemperatures(int[] temperatures) {
+        int n = temperatures.length;
+        int[] rst = new int[n];
+        Deque<Integer> stack = new ArrayDeque<>();
+        for (int i = 0; i < n; i++) {
+            int cur = temperatures[i];
+            while (!stack.isEmpty() && temperatures[stack.peek()] < cur) {      // Pop until today's temperature is not warmer than the top of the stack.
+                int prev = stack.pop();
+                rst[prev] = i - prev;
+            }
+            stack.push(i);
+        }
+        return rst;
+    }
+}
+
+Approach 2: Array, Optimized Space
+Time complexity: O(n)
+Space complexity: O(1)
+
+class Solution {
+    public int[] dailyTemperatures(int[] temperatures) {
+        int n = temperatures.length;
+        int[] rst = new int[n];
+        int hottest = 0;
+        for (int i = n - 1; i >= 0; i--) {
+            int cur = temperatures[i];
+            if (cur >= hottest) {
+                hottest = cur;
+                continue;
+            }
+            int days = 1;
+            while (temperatures[i + days] <= cur) {
+                days += rst[i + days];                 // Use information from rst to search for the next warmer day.
+            }
+            rst[i] = days;
+        }
+        return rst;
+    }
+}
