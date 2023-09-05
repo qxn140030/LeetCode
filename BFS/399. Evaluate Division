@@ -119,12 +119,7 @@ class Solution {
         return -1.0;
     }
     private void buildGraph(Map<String, Map<String, Double>> graph, String first, String second, double val) {
-        Map<String, Double> edges;
-        if (graph.containsKey(first)) {
-            edges = graph.get(first);
-        } else {
-            edges = new HashMap<>();
-        }
+        Map<String, Double> edges = graph.getOrDefault(first, new HashMap<>());
         edges.put(second, val);
         graph.put(first, edges);
     }
