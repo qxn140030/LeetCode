@@ -38,10 +38,9 @@ class Twitter {
         tweet.put(userId, temp);
     }
     public List<Integer> getNewsFeed(int userId) {
-        List<Integer> list = new ArrayList<>();
         Set<Integer> set = followers.getOrDefault(userId, new HashSet<>());
         set.add(userId);
-        list.addAll(set);
+        List<Integer> list = new ArrayList<>(set);
         Map<Integer, Integer> map = new HashMap<>();
         for (int i : list) {
             if (tweet.get(i) != null) {
