@@ -101,12 +101,11 @@ class Solution {
         int[] indegree = new int[recipes.length];
         for (int i = 0; i < recipes.length; i++) {
             for (String ing : ingredients.get(i)) {
-                if (sup.contains(ing)) {
-                    continue;
+                if (!sup.contains(ing)) {
+                    ingToRecipes.putIfAbsent(ing, new ArrayList<String>());
+                    ingToRecipes.get(ing).add(recipes[i]);
+                    indegree[i]++;
                 }
-                ingToRecipes.putIfAbsent(ing, new ArrayList<String>());
-                ingToRecipes.get(ing).add(recipes[i]);
-                indegree[i]++;
             }
         }
         Queue<Integer> q = new LinkedList<>();
@@ -119,14 +118,13 @@ class Solution {
         while (!q.isEmpty()) {
             int i = q.poll();
             rst.add(recipes[i]);
-            if (!ingToRecipes.containsKey(recipes[i])) {    // if the map does not contain this recipe, this recipe is not an ingredient for any other recipe,
-                continue;                                   // and no further processing is required.
+            if (ingToRecipes.containsKey(recipes[i])) {    
+                for (String recipe : ingToRecipes.get(recipes[i])) {
+                    if (--indegree[index.get(recipe)] == 0) {
+                        q.add(index.get(recipe));
+                    }
+                }                                 
             } 
-            for (String recipe : ingToRecipes.get(recipes[i])) {
-                if (--indegree[index.get(recipe)] == 0) {
-                    q.add(index.get(recipe));
-                }
-            }
         }
         return rst;
     }
