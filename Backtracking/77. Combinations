@@ -25,9 +25,6 @@ class Solution {
             return;
         }
         for (int i = start; i <= n; i++) {
-            if (list.contains(i)) {
-                continue;
-            }
             list.add(i);
             helper(rst, list, n, k, i + 1);
             list.remove(list.size() - 1);
