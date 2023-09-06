@@ -60,8 +60,8 @@ class Solution {
     private int helper(int[] nums, int i, int j) {
         int local1 = 0, local2 = 0;
         for (int k = i; k <= j; k++) {
-            int tmp = local1, curr = nums[k];
-            local1 = Math.max(curr + local2, local1);
+            int tmp = local1;
+            local1 = Math.max(local1, local2 + nums[k]);
             local2 = tmp;
         }
         return local1;
