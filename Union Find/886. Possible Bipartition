@@ -116,6 +116,9 @@ class DSU {
     }
     public void union(int x, int y) {
         int px = find(x), py = find(y);
+        if (px == py) {
+            return;
+        }
         int rx = rank[px], ry = rank[py];
         if (rx == ry) {
             parent[py] = px;
