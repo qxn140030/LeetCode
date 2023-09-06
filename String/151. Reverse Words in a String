@@ -111,14 +111,14 @@ class Solution {
         while (left <= right) {
             char c = s.charAt(left);
             if (sb.length() > 0 && c == ' ') {
-                stack.offerFirst(sb.toString());
+                stack.push(sb.toString());
                 sb.setLength(0);
             } else if (c != ' ') {
                 sb.append(c);
             }
             left++;
         }
-        stack.offerFirst(sb.toString());
+        stack.push(sb.toString());
         return String.join(" ", stack);
     }
 }
