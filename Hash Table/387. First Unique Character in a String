@@ -32,6 +32,10 @@ class Solution {
     }
 }
 
+Approach 2: Array
+Time complexity: O(n)
+Space complexity: O(1)
+
 public class Solution {
     public int firstUniqChar(String s) {
         int[] arr = new int[26];
