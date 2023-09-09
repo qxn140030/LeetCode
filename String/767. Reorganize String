@@ -1,0 +1,90 @@
+Given a string s, rearrange the characters of s so that any two adjacent characters are not the same.
+Return any possible rearrangement of s or return "" if not possible.
+Example 1:
+Input: s = "aab"
+Output: "aba"
+
+Example 2:
+Input: s = "aaab"
+Output: ""
+
+Approach 1: Counting and Priority Queue
+Time complexity: O(nlog⁡k), where n is the total characters in the string, k is the total unique characters in the string.
+Space complexity: O(k)
+
+class Solution {
+    public String reorganizeString(String s) {
+        int[] cnt = new int[26];
+        for (char c : s.toCharArray()) {
+            cnt[c - 'a']++;
+        }
+        PriorityQueue<int[]> q = new PriorityQueue<>((a, b) -> b[1] - a[1]);      // max heap.
+        for (int i = 0; i < 26; i++) {
+            if (cnt[i] > 0) {
+                q.offer(new int[]{i + 'a', cnt[i]});                             
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        while (!q.isEmpty()) {
+            int[] first = q.poll();
+            if (sb.isEmpty() || first[0] != sb.charAt(sb.length() - 1)) {
+                sb.append((char)first[0]);
+                if (--first[1] > 0) {
+                    q.offer(first);
+                }
+            } else {
+                if (q.isEmpty()) {
+                    return "";
+                }
+                int[] second = q.poll();
+                sb.append((char)second[0]);
+                if (--second[1] > 0) {
+                    q.offer(second);
+                }
+                q.offer(first);
+            }
+        }
+        return sb.toString();
+    }
+}
+
+Approach 2: Counting and Odd/Even
+Time complexity: O(n)
+Space complexity: O(k)
+
+class Solution {
+    public String reorganizeString(String s) {
+        int[] cnt = new int[26];
+        for (char c : s.toCharArray()) {
+            cnt[c - 'a']++;
+        }
+        int maxCnt = 0, maxLetter = 0, n = s.length();
+        for (int i = 0; i < 26; i++) {
+            if (cnt[i] > maxCnt) {
+                maxCnt = cnt[i];
+                maxLetter = i;
+            }
+        }
+        if (maxCnt > (n + 1) / 2) {                    // Note.
+            return "";
+        }
+        char[] rst = new char[n];
+        int idx = 0;
+        while (cnt[maxLetter] > 0) {                   // Place the most frequent letter first.
+            rst[idx] = (char)('a' + maxLetter);
+            idx += 2;
+            cnt[maxLetter]--;
+        }
+        for (int i = 0; i < 26; i++) {                 // Place rest of the letters in any order in available slots.
+            while (cnt[i] > 0) {
+                if (idx >= n) {
+                    idx = 1;
+                }
+                rst[idx] = (char)('a' + i);
+                idx += 2;
+                cnt[i]--;
+            }
+        }
+        return String.valueOf(rst);
+    }
+}
