@@ -14,3 +14,18 @@ Example 2:
 Input: s = "axc", t = "ahbgdc"
 Output: false
 
+Approach 1: Two Pointers
+Time complexity: O(t), where t is the length of target string.
+Space complexity: O(1)
+
+class Solution {
+    public boolean isSubsequence(String s, String t) {
+        int j = 0;
+        for (int i = 0; i < t.length(); i++) {
+            if (j < s.length() && s.charAt(j) == t.charAt(i)) {
+                j++;
+            } 
+        }
+        return j == s.length();
+    }
+}
