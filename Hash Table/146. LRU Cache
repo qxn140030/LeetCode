@@ -42,15 +42,11 @@ Space complexity: O(n)
 
 class LRUCache {
     private class DLinkedNode{ 
-        int key; 
-        int value; 
-        DLinkedNode prev; 
-        DLinkedNode next; 
+        int key, value; 
+        DLinkedNode prev, next; 
         public DLinkedNode(int key, int value) { 
             this.key = key; 
-            this.value = value; 
-            this.prev = null; 
-            this.next = null; 
+            this.value = value;
         } 
     } 
     private int capacity; 
