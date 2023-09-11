@@ -77,12 +77,11 @@ public class Solution {
             if (candidates[i] > target) {
                 return;
             }
-            if (i > index && candidates[i] == candidates[i - 1]) {
-                continue;
+            if (i == index || candidates[i] > candidates[i - 1]) {
+                path.add(candidates[i]);
+                dfs(candidates, target - candidates[i], i + 1, path, rst);
+                path.remove(path.size() - 1);
             }
-            path.add(candidates[i]);
-            dfs(candidates, target - candidates[i], i + 1, path, rst);
-            path.remove(path.size() - 1);
         }
     }
 }
