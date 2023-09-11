@@ -70,8 +70,8 @@ Space complexity: O(n)
 
 public class Solution {
     public List<List<Integer>> subsetsWithDup(int[] nums) {
-        List<List<Integer>> rst = new ArrayList<>();
         Arrays.sort(nums);
+        List<List<Integer>> rst = new ArrayList<>();
         List<Integer> path = new ArrayList<>();
         dfs(nums, rst, path, 0);
         return rst;
