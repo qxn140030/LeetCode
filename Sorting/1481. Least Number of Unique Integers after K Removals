@@ -1,0 +1,88 @@
+Given an array of integers arr and an integer k. Find the least number of unique integers after removing exactly k elements.
+Example 1:
+Input: arr = [5,5,4], k = 1
+Output: 1
+Explanation: Remove the single 4, only 5 is left.
+
+Example 2:
+Input: arr = [4,3,1,1,3,3,2], k = 3
+Output: 2
+Explanation: Remove 4, 2 and either one of the two 1s or three 3s. 1 and 3 will be left.
+
+Approach 1: Frequency HashMap + PriorityQueue
+Time complexity: O(n + klogn)
+Space complexity: O(n)
+
+class Solution {
+    public int findLeastNumOfUniqueInts(int[] arr, int k) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int num : arr) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
+        PriorityQueue<Integer> q = new PriorityQueue<>(map.values());
+        while (k > 0) {
+            k -= q.poll();
+        }
+        return k < 0 ? q.size() + 1 : q.size();
+    }
+}
+
+Approach 2: Frequency HashMap + Arrays.sort
+Time complexity: O(nlogn)
+Space complexity: O(n)
+
+class Solution {
+    public int findLeastNumOfUniqueInts(int[] arr, int k) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int num : arr) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
+        int size = map.size(), i = 0;
+        int[] count = new int[size];
+        for (int key : map.keySet()) {
+            count[i++] = map.get(key);
+        }
+        Arrays.sort(count);       
+        for (int c : count) {
+            if (k >= c) {
+                k -= c;
+                size--;
+            } else {
+                break;
+            }
+        }
+        return size;
+    }
+}
+
+Approach 3: Frequency HashMap + bucket sort
+Time complexity: O(n)
+Space complexity: O(n)
+
+class Solution {
+    public int findLeastNumOfUniqueInts(int[] arr, int k) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int num : arr) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
+        int[] bucket = new int[arr.length + 1];        // Note.
+        for (int freq : map.values()) {
+            bucket[freq]++;                            // Note.
+        }
+        int unique = map.size();
+        for (int i = 1; i < bucket.length && k > 0; i++) {
+            if (bucket[i] > 0) {
+                int distinct = bucket[i];
+                while (i <= k && distinct > 0) {
+                    unique--;
+                    distinct--;
+                    k -= i;
+                }
+                if (i > k) {
+                    break;
+                }
+            }
+        }
+        return unique;
+    }
+}
