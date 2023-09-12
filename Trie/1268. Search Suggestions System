@@ -1,0 +1,84 @@
+You are given an array of strings products and a string searchWord.
+Design a system that suggests at most three product names from products after each character of searchWord is typed. Suggested products should have common prefix with searchWord. 
+If there are more than three products with a common prefix return the three lexicographically minimums products.
+Return a list of lists of the suggested products after each character of searchWord is typed.
+Example 1:
+Input: products = ["mobile","mouse","moneypot","monitor","mousepad"], searchWord = "mouse"
+Output: [["mobile","moneypot","monitor"],["mobile","moneypot","monitor"],["mouse","mousepad"],["mouse","mousepad"],["mouse","mousepad"]]
+Explanation: products sorted lexicographically = ["mobile","moneypot","monitor","mouse","mousepad"].
+After typing m and mo all products match and we show user ["mobile","moneypot","monitor"].
+After typing mou, mous and mouse the system suggests ["mouse","mousepad"].
+
+Example 2:
+Input: products = ["havana"], searchWord = "havana"
+Output: [["havana"],["havana"],["havana"],["havana"],["havana"],["havana"]]
+Explanation: The only word "havana" will be always suggested while typing the search word.
+
+Approach 1: Trie + DFS
+Time complexity: O(m) to build the trie where m is total number of characters in products.
+Space complexity: O(n), where n is the number of nodes in the trie.
+
+class Trie {
+    class Node {
+        Node[] children;
+        boolean isWord;
+        public Node() {
+            children = new Node[26];
+        }
+    }
+    Node root;
+    public Trie() {
+        root = new Node();
+    }
+    List<String> rstBuffer;
+    public List<String> getWordsStartingWith(String prefix) {
+        Node curr = root;
+        rstBuffer = new ArrayList<>();
+        for (char c : prefix.toCharArray()) {
+            if (curr.children[c - 'a'] == null) {
+                return rstBuffer;
+            }
+            curr = curr.children[c - 'a'];
+        }
+        dfsWithPrefix(curr, prefix);
+        return rstBuffer;
+    }
+    public void dfsWithPrefix(Node curr, String word) {
+        if (rstBuffer.size() == 3) {
+            return;
+        }
+        if (curr.isWord) {
+            rstBuffer.add(word);
+        }
+        for (char c = 'a'; c <= 'z'; c++) {
+            if (curr.children[c - 'a'] != null) {
+                dfsWithPrefix(curr.children[c - 'a'], word + c);
+            }
+        }
+    }
+    public void insert(String s) {
+        Node curr = root;
+        for (char c : s.toCharArray()) {
+            if (curr.children[c - 'a'] == null) {
+                curr.children[c - 'a'] = new Node();
+            }
+            curr = curr.children[c - 'a'];
+        }
+        curr.isWord = true;
+    }
+}
+class Solution {
+    public List<List<String>> suggestedProducts(String[] products, String searchWord) {
+        Trie trie = new Trie();
+        List<List<String>> rst = new ArrayList<>();
+        for (String p : products) {
+            trie.insert(p);
+        }
+        String prefix = "";
+        for (char c : searchWord.toCharArray()) {
+            prefix += c;
+            rst.add(trie.getWordsStartingWith(prefix));
+        }
+        return rst;
+    }
+}
