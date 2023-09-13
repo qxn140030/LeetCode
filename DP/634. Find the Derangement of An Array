@@ -1,0 +1,72 @@
+In combinatorial mathematics, a derangement is a permutation of the elements of a set, such that no element appears in its original position.
+You are given an integer n. There is originally an array consisting of n integers from 1 to n in ascending order, return the number of derangements it can generate. Since the answer may be huge, return it modulo 10^9 + 7.
+Example 1:
+Input: n = 3
+Output: 2
+Explanation: The original array is [1,2,3]. The two derangements are [2,3,1] and [3,1,2].
+
+Example 2:
+Input: n = 2
+Output: 1
+
+Approach 1: Recursion (StackOverflowError)
+Time complexity : O(n). memo array of length n is filled once only.
+Space complexity : O(n)
+
+class Solution {
+    public int findDerangement(int n) {
+        Integer[] memo = new Integer[n + 1];
+        return find(n, memo);
+    }
+    private int find(int n, Integer[] memo) {
+        if (n == 0) {
+            return 1;
+        }  
+        if (n == 1) {
+            return 0;
+        }
+        if (memo[n] != null) {
+            return memo[n];
+        }  
+        memo[n] = (int)(((n - 1L) * (find(n - 1, memo) + find(n - 2, memo))) % 1000000007);
+        return memo[n];
+    }
+}
+
+Approach 2: DP
+Time complexity : O(n)
+Space complexity : O(n)
+
+class Solution {
+    public int findDerangement(int n) {
+        if (n < 2) {
+            return 0;
+        }
+        int[] dp = new int[n + 1];
+        dp[1] = 0;
+        dp[2] = 1;
+        for (int i = 3; i <= n; i++) {
+            dp[i] = (int)(((i - 1L) * (dp[i - 1] + dp[i - 2])) % 1000000007);
+        }
+        return dp[n];
+    }
+}
+
+Approach 3: DP
+Time complexity : O(n)
+Space complexity : O(1)
+
+class Solution {
+    public int findDerangement(int n) {
+        if (n < 2) {
+            return 0;
+        }
+        int first = 1, second = 0;
+        for (int i = 2; i <= n; i++) {
+            int temp = second;
+            second = (int)(((i - 1L) * (first + second)) % 1000000007);
+            first = temp;
+        }
+        return second;
+    }
+}
