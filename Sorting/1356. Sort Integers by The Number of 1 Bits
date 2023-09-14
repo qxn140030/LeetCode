@@ -17,7 +17,7 @@ Explantion: All integers have 1 bit in the binary representation, you should jus
 
 Approach 1: Sort By Custom Comparator: Built-in
 Time complexity: O(nlog⁡n)
-Space Complexity: O(log⁡n)
+Space Complexity: O(n)
 
 class Solution {
     public int[] sortByBits(int[] arr) {
