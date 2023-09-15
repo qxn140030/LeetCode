@@ -25,52 +25,30 @@ Do not rely on any library method such as eval or serialize methods. You should 
 Approach 1: Non-ASCII delimiter
 Time complexity: O(n), where n denote the total number of characters across all strings in the input list.
                  both encoding and decoding processes iterate over every character in the input.
-Space complexity: O(k), where k denote the number of strings.
-                  for each word, we are using some space for the delimiter.
+Space complexity: O(k), where k denote the number of strings, for each word, we are using some space for the delimiter.
 
 public class Codec {
-    // Encodes a list of strings to a single string.
     public String encode(List<String> strs) {
         StringBuilder sb = new StringBuilder();
-        for (String s: strs) {
-            sb.append(s).append("π");
-        }
-        return sb.toString();
-    }
-    // Decodes a single string to a list of strings.
-    public List<String> decode(String s) {
-        String[] str = s.split("π", -1);
-        return new ArrayList<>(Arrays.asList(str).subList(0, str.length - 1));
-    }
-}
-
-public class Codec {
-    // Encodes a list of strings to a single string.
-    public String encode(List<String> strs) {
-        StringBuilder sb = new StringBuilder();
-        for (String s: strs) {
+        for (String s : strs) {
             sb.append(s).append("π");
         }
         sb.deleteCharAt(sb.length() - 1);
         return sb.toString();
     }
-    // Decodes a single string to a list of strings.
     public List<String> decode(String s) {
-        String[] str = s.split("π", -1);              // Note: use -1 as the limit parameter to ensure trailing empty strings are included.
-        List<String> rst = new ArrayList<>();
-        for (String t: str) {
-            rst.add(t);
-        }
-        return rst;
+        String[] str = s.split("π", -1);               // Note: use -1 as the limit parameter to ensure trailing empty strings are included.
+        return new ArrayList<>(Arrays.asList(str));
     }
 }
 
 Approach 2: Escaping
+The strings might contain any possible character, including our chosen delimiter.
+we select /: as the delimiter, choose the slash character / as our escape character.
 Time complexity: O(n)
 Space complexity: O(k)
 
 public class Codec {
-    // Encodes a list of strings to a single string.
     public String encode(List<String> strs) {
         StringBuilder sb = new StringBuilder();
         for (String s: strs) {
@@ -78,7 +56,6 @@ public class Codec {
         }
         return sb.toString();
     }
-    // Decodes a single string to a list of strings.
     public List<String> decode(String s) {
         List<String> decoded = new ArrayList<>();
         StringBuilder sb = new StringBuilder();
@@ -105,15 +82,13 @@ Time complexity: O(n)
 Space complexity: O(k)
 
 public class Codec {
-    // Encodes a list of strings to a single string.
     public String encode(List<String> strs) {
         StringBuilder sb = new StringBuilder();
         for (String s: strs) {
-            sb.append(s.length()).append("/:").append(s);
+            sb.append(s.length()).append("/:").append(s);        // length + delimiter + original string.
         }
         return sb.toString();
     }
-    // Decodes a single string to a list of strings.
     public List<String> decode(String s) {
         List<String> decoded = new ArrayList<>();
         int i = 0;
