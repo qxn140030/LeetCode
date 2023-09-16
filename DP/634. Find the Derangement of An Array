@@ -9,7 +9,7 @@ Example 2:
 Input: n = 2
 Output: 1
 
-Approach 1: Recursion (StackOverflowError)
+Approach 1: Recursion (Stack Overflow Error)
 Time complexity : O(n). memo array of length n is filled once only.
 Space complexity : O(n)
 
