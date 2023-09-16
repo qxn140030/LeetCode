@@ -32,11 +32,7 @@ class Leaderboard {
         map = new HashMap<>();
     }
     public void addScore(int playerId, int score) {
-        if (!map.containsKey(playerId)) {
-            map.put(playerId, score);
-        } else {
-            map.put(playerId, map.get(playerId) + score);
-        }
+        map.put(playerId, map.getOrDefault(playerId, 0) + score);
     }
     public int top(int K) {
         List<Integer> scoreList = new ArrayList<>(map.values());
@@ -67,11 +63,7 @@ class Leaderboard {
         map = new HashMap<>();
     }
     public void addScore(int playerId, int score) {
-        if (!map.containsKey(playerId)) {
-            map.put(playerId, score);
-        } else {
-            map.put(playerId, map.get(playerId) + score);
-        }
+        map.put(playerId, map.getOrDefault(playerId, 0) + score);
     }
     public int top(int K) {
         PriorityQueue<Map.Entry<Integer, Integer>> heap = new PriorityQueue<>((a, b) -> a.getValue() - b.getValue());
