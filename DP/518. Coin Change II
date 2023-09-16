@@ -1,0 +1,102 @@
+You are given an integer array coins representing coins of different denominations and an integer amount representing a total amount of money.
+Return the number of combinations that make up that amount. If that amount of money cannot be made up by any combination of the coins, return 0.
+You may assume that you have an infinite number of each kind of coin.
+The answer is guaranteed to fit into a signed 32-bit integer.
+Example 1:
+Input: amount = 5, coins = [1,2,5]
+Output: 4
+Explanation: there are four ways to make up the amount:
+5=5
+5=2+2+1
+5=2+1+1+1
+5=1+1+1+1+1
+
+Example 2:
+Input: amount = 3, coins = [2]
+Output: 0
+Explanation: the amount of 3 cannot be made up just with coins of 2.
+
+Example 3:
+Input: amount = 10, coins = [10]
+Output: 1
+
+Approach 1: Top-Down DP
+iterating over the coins. For a specific coin, we have two options: 
+either we take this coin and decrease the remaining amount we still need, 
+or we ignore the coin and move to the next one without changing the remaining amount we still need. 
+We add the number of ways to make up the required amount from both choices.
+Time complexity: O(n * amount)
+Space complexity: O(n * amount)
+
+class Solution {
+    int[][] memo;        // The first integer indicates the index of the current coin under consideration, the second number indicates how much amount we need to make up.
+    int[] coins;
+    public int change(int amount, int[] coins) {
+        this.coins = coins;
+        memo = new int[coins.length][amount + 1];
+        for (int[] row : memo) {
+            Arrays.fill(row, -1);
+        }
+        return numberOfWays(0, amount);
+    }
+    int numberOfWays(int i, int amount) {
+        if (amount == 0) {                // If amount equals 0, return 1 as we can always make up the 0 amount by not taking any coins.
+            return 1;
+        }
+        if (i == coins.length) {          // If i equals the number of coins, return 0 as we don't have any more coins and hence can't possibly make up the amount.
+            return 0;
+        }
+        if (memo[i][amount] != -1) {  
+            return memo[i][amount];
+        }
+        if (coins[i] > amount) {          // If the current coin is worth more than the remaining amount we need, we must skip the current coin.
+            return memo[i][amount] = numberOfWays(i + 1, amount);
+        }
+        memo[i][amount] = numberOfWays(i, amount - coins[i]) + numberOfWays(i + 1, amount);   // Otherwise, we consider both options: skip the current coin or use the current coin.
+        return memo[i][amount];
+    }
+}
+
+Approach 2: Bottom-Up DP
+Time complexity: O(n * amount)
+Space complexity: O(n * amount)
+
+class Solution {
+    public int change(int amount, int[] coins) {
+        int n = coins.length;
+        int[][] dp = new int[n + 1][amount + 1];     // dp[i][j] stores the number of ways to make up the j amount using the coins beginning from index i.
+        for (int i = 0; i < n; i++) {
+            dp[i][0] = 1;                            // we can always make up the amount 0 by not selecting any coins.
+        }
+        for (int i = 1; i <= amount; i++) {
+            dp[0][i] = 0;
+        }
+        for (int i = n - 1; i >= 0; i--) {
+            for (int j = 1; j <= amount; j++) {
+                if (coins[i] > j) {
+                    dp[i][j] = dp[i + 1][j];
+                } else {
+                    dp[i][j] = dp[i + 1][j] + dp[i][j - coins[i]];
+                }
+            }
+        }
+        return dp[0][amount];
+    }
+}
+
+Approach 3: DP with Space Optimization
+Time complexity: O(n * amount)
+Space complexity: O(amount)
+
+class Solution {
+    public int change(int amount, int[] coins) {
+        int[] dp = new int[amount + 1];
+        dp[0] = 1;
+        for (int i = coins.length - 1; i >= 0; i--) {
+            for (int j = coins[i]; j <= amount; j++) {
+                dp[j] += dp[j - coins[i]];
+            }  
+        }
+        return dp[amount];
+    }
+}
