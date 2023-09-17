@@ -29,8 +29,8 @@ snake.move("U"); -> Returns -1 (Game over because snake collides with border)
 Approach 1: Queue and Hash Set
 
 class SnakeGame {
-    Set<Integer> set;               // this is good for fast loop-up for eating body case.
-    Deque<Integer> body;            // this is good for updating tail.
+    Set<Integer> set;               // fast loop-up for eating body case.
+    Deque<Integer> body;            // for updating tail.
     int[][] food;
     int score, foodIndex, width, height;
     public SnakeGame(int width, int height, int[][] food) {
@@ -68,12 +68,12 @@ class SnakeGame {
         }
         set.add(head); 
         body.offerFirst(head);
-        if (foodIndex < food.length && rowHead == food[foodIndex][0] && colHead == food[foodIndex][1]) {    // case2: eating food, keep tail, add head.
+        if (foodIndex < food.length && rowHead == food[foodIndex][0] && colHead == food[foodIndex][1]) {    // case 2: eating food, keep tail, add head.
             set.add(body.peekLast());             // old tail does not change, so add it back to set.
             foodIndex++;
             return ++score;
         }
-        body.pollLast();             // case3: normal move, remove tail, add head.
+        body.pollLast();             // case 3: normal move, remove tail, add head.
         return score;
     }
 }
