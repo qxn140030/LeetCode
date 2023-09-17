@@ -1,7 +1,9 @@
-Given an integer array with all positive numbers and no duplicates, find the number of possible combinations that add up to a
-positive integer target.
-Example:
-nums = [1, 2, 3], target = 4
+Given an array of distinct integers nums and a target integer target, return the number of possible combinations that add up to target.
+The test cases are generated so that the answer can fit in a 32-bit integer.
+Example 1:
+Input: nums = [1,2,3], target = 4
+Output: 7
+Explanation:
 The possible combination ways are:
 (1, 1, 1, 1)
 (1, 1, 2)
@@ -11,23 +13,52 @@ The possible combination ways are:
 (2, 2)
 (3, 1)
 Note that different sequences are counted as different combinations.
-Therefore the output is 7.
-Follow up:
-What if negative numbers are allowed in the given array?
-How does it change the problem?
-What limitation we need to add to the question to allow negative numbers?
 
-Time complexity: O()
-Space complexity: O()
+Example 2:
+Input: nums = [9], target = 3
+Output: 0
+
+Follow up:
+- What if negative numbers are allowed in the given array?
+- How does it change the problem?
+- What limitation we need to add to the question to allow negative numbers?
+
+Approach 1: Top-Down DP
+Time complexity: O(t * n), where t is the target value.
+Space complexity: O(t)
+
+class Solution {
+    private HashMap<Integer, Integer> memo;
+    public int combinationSum4(int[] nums, int target) {
+        memo = new HashMap<>();
+        return combs(nums, target);
+    }
+    private int combs(int[] nums, int remain) {
+        if (remain == 0) {
+            return 1;
+        }
+        if (memo.containsKey(remain)) {
+            return memo.get(remain);
+        }
+        int result = 0;
+        for (int num : nums) {
+            if (remain - num >= 0) {
+                result += combs(nums, remain - num);
+            }
+        }
+        memo.put(remain, result);
+        return result;
+    }
+}
+
+Approach 2: Bottom-Up DP
+Time complexity: O(t * n)
+Space complexity: O(t)
 
 public class Solution {
     public int combinationSum4(int[] nums, int target) {
-        if (nums == null || nums.length == 0) {
-            return 0;
-        }
-        int n = nums.length;
-        int[] dp = new int[target + 1];           // Note.
-        dp[0] = 1;
+        int[] dp = new int[target + 1];                   // dp[i]: the number of combinations that sum up to the value of i.
+        dp[0] = 1;                                        // there exists one combination if the target value can be reduced down to zero.
         for (int i = 1; i <= target; i++) {
             for (int num : nums) {
                 if (i >= num) {
