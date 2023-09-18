@@ -13,27 +13,28 @@ Time complexity: O(n)
 Space complexity: O(1), both stack and seen are bounded by constant.
 
 class Solution {
-    public String removeDuplicateLetters(String s) {
-        Stack<Character> stack = new Stack<>();            // will get wrong result by using ArrayDeque here! do not understand!
-        Set<Character> seen = new HashSet<>();
-        Map<Character, Integer> lastOcc = new HashMap<>();
-        for (int i = 0; i < s.length(); i++) {
-            lastOcc.put(s.charAt(i), i);
+    public String smallestSubsequence(String s) {
+        int[] count = new int[26];
+        for(char c : s.toCharArray()) {
+            count[c - 'a']++;
         }
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            if (!seen.contains(c)) {
-                while (!stack.isEmpty() && c < stack.peek() && lastOcc.get(stack.peek()) > i) {
-                    seen.remove(stack.pop());
-                }
-                seen.add(c);
-                stack.push(c);
+        boolean[] visited = new boolean[26];        // to keep track of visited character so that we don't use them if present in answer.
+        Stack<Character> stack = new Stack<>();
+        for(char c : s.toCharArray()){
+            count[c - 'a']--;                       // decrement the frequncy of character since we are using it in answer.
+            if (visited[c - 'a']) {
+                continue;
             }
+            while (!stack.isEmpty() && c < stack.peek() && count[stack.peek() - 'a'] > 0) {
+                visited[stack.pop() - 'a'] = false;
+            }
+            stack.push(c);
+            visited[c - 'a'] = true;
         }
-        StringBuilder sb = new StringBuilder(stack.size());
-        for (Character c : stack) {
-            sb.append(c.charValue());
+        StringBuilder sb = new StringBuilder();
+        while (!stack.isEmpty()) {
+            sb.append(stack.pop());
         }
-        return sb.toString();
+        return sb.reverse().toString();
     }
 }
