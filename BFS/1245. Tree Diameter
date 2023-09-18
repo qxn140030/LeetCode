@@ -1,0 +1,65 @@
+The diameter of a tree is the number of edges in the longest path in that tree.
+There is an undirected tree of n nodes labeled from 0 to n - 1. You are given a 2D array edges where edges.
+length == n - 1 and edges[i] = [ai, bi] indicates that there is an undirected edge between nodes ai and bi in the tree.
+Return the diameter of the tree.
+Example 1:
+
+
+Input: edges = [[0,1],[0,2]]
+Output: 2
+Explanation: The longest path of the tree is the path 1 - 0 - 2.
+Example 2:
+
+
+Input: edges = [[0,1],[1,2],[2,3],[1,4],[4,5]]
+Output: 4
+Explanation: The longest path of the tree is the path 3 - 2 - 1 - 4 - 5.
+
+Approach 1: Farthest Nodes via BFS
+Time Complexity: O(n)
+Space Complexity: O(n)
+
+class Solution {
+    public int treeDiameter(int[][] edges) {
+        List<Set<Integer>> graph = new ArrayList<>();
+        for (int i = 0; i <= edges.length; i++) {
+            graph.add(new HashSet<>());
+        }
+        for (int[] e : edges) {
+            graph.get(e[0]).add(e[1]);
+            graph.get(e[1]).add(e[0]);
+        }
+        // 1). find one of the farthest nodes
+        // farthest_node, distance_1 = bfs(0)
+        int[] nodeDistance = bfs(0, graph);
+        // 2). find the other farthest node
+        // and the distance between two farthest nodes
+        // another_farthest_node, distance_2 = bfs(farthest_node)
+        nodeDistance = bfs(nodeDistance[0], graph);
+        return nodeDistance[1];
+    }
+    private int[] bfs(int start, List<Set<Integer>> graph) {
+        boolean[] visited = new boolean[graph.size()];
+        visited[start] = true;
+        Queue<Integer> q = new LinkedList<>();
+        q.offer(start);
+        int lastNode = start, distance = -1;
+        while (!q.isEmpty()) {
+            Queue<Integer> nextQueue = new LinkedList<>();
+            while (!q.isEmpty()) {
+                int nextNode = q.poll();
+                for (int neighbor : graph.get(nextNode)) {
+                    if (!visited[neighbor]) {
+                        visited[neighbor] = true;
+                        nextQueue.offer(neighbor);
+                        lastNode = neighbor;
+                    }
+                }
+            }
+            // increase the distance for each level of BFS traversal.
+            distance++;
+            q = nextQueue;
+        }
+        return new int[]{lastNode, distance};
+    }
+}
