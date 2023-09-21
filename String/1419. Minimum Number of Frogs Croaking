@@ -1,0 +1,66 @@
+You are given the string croakOfFrogs, which represents a combination of the string "croak" from different frogs, that is, multiple frogs can croak at the same time, so multiple "croak" are mixed.
+Return the minimum number of different frogs to finish all the croaks in the given string.
+A valid "croak" means a frog is printing five letters 'c', 'r', 'o', 'a', and 'k' sequentially. The frogs have to print all five letters to finish a croak. 
+If the given string is not a combination of a valid "croak" return -1.
+Example 1:
+Input: croakOfFrogs = "croakcroak"
+Output: 1 
+Explanation: One frog yelling "croak" twice.
+
+Example 2:
+Input: croakOfFrogs = "crcoakroak"
+Output: 2 
+Explanation: The minimum number of frogs is two. 
+The first frog could yell "crcoakroak".
+The second frog could yell later "crcoakroak".
+
+Example 3:
+Input: croakOfFrogs = "croakcrook"
+Output: -1
+Explanation: The given string is an invalid combination of "croak" from different frogs.
+
+Approach 1: Greedy
+index:             0  1  2  3  4  5  6  7  8  9  10  11  12  13  14
+                   C  R  O  C  R  O  A  K  A  K  C   R   O   A   K
+
+Boundary count: 0  1  1  1  2  2  2  2  1  1  0  1   1   1   1   0
+
+class Solution {
+    public int minNumberOfFrogs(String croakOfFrogs) {
+        int[] letters = new int[26]; 
+        int count = 0, maxCount = 0;
+        for (char c : croakOfFrogs.toCharArray()) {
+            letters[c - 'a']++; 
+            if (c == 'c') {                    // left boundary.
+                count++;
+                maxCount = Math.max(maxCount, count);
+            } else {
+                if (!isValid(c, letters)) {
+                    return -1; 
+                }
+                if (c == 'k') {                 // right boundary.
+                    count--;
+                }
+            }
+        }
+        return count == 0 ? maxCount : -1;      // check if the string is finished.
+    }
+    private boolean isValid(char c, int[] counts) {
+        char prevChar;
+        switch (c) {
+            case 'r':
+                prevChar = 'c';
+                break;
+            case 'o':
+                prevChar = 'r';
+                break;
+            case 'a':
+                prevChar = 'o';
+                break;
+            case 'k':
+            default:
+                prevChar = 'a';
+        }
+        return counts[prevChar - 'a'] >= counts[c - 'a']; 
+    }
+}
