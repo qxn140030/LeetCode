@@ -49,7 +49,7 @@ class MyCircularQueue {
             return false;
         }
         queue[(headIndex + count) % capacity] = value;
-        count += 1;
+        count++;
         return true;
     } 
     public boolean deQueue() {
@@ -57,14 +57,11 @@ class MyCircularQueue {
             return false;
         }
         headIndex = (headIndex + 1) % capacity;
-        count -= 1;
+        count--;
         return true;
     }
     public int Front() {
-        if (count == 0) {
-            return -1;
-        }
-        return queue[headIndex];
+        return count == 0 ? -1 : queue[headIndex];
     }  
     public int Rear() {
         if (count == 0) {
