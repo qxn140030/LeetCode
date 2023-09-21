@@ -1,16 +1,12 @@
 Design a hit counter which counts the number of hits received in the past 5 minutes (i.e., the past 300 seconds).
-
-Your system should accept a timestamp parameter (in seconds granularity), and you may assume that calls are being made to the system in chronological order (i.e., timestamp is monotonically increasing). Several hits may arrive roughly at the same time.
-
+Your system should accept a timestamp parameter (in seconds granularity), and you may assume that calls are being made to the system in chronological order (i.e., timestamp is monotonically increasing). 
+Several hits may arrive roughly at the same time.
 Implement the HitCounter class:
-
-HitCounter() Initializes the object of the hit counter system.
-void hit(int timestamp) Records a hit that happened at timestamp (in seconds). Several hits may happen at the same timestamp.
-int getHits(int timestamp) Returns the number of hits in the past 5 minutes from timestamp (i.e., the past 300 seconds).
- 
+- HitCounter() Initializes the object of the hit counter system.
+- void hit(int timestamp) Records a hit that happened at timestamp (in seconds). Several hits may happen at the same timestamp.
+- int getHits(int timestamp) Returns the number of hits in the past 5 minutes from timestamp (i.e., the past 300 seconds).
 
 Example 1:
-
 Input
 ["HitCounter", "hit", "hit", "hit", "getHits", "hit", "getHits", "getHits"]
 [[], [1], [2], [3], [4], [300], [300], [301]]
@@ -27,4 +23,67 @@ hitCounter.hit(300);     // hit at timestamp 300.
 hitCounter.getHits(300); // get hits at timestamp 300, return 4.
 hitCounter.getHits(301); // get hits at timestamp 301, return 3.
 
-Follow up: What if the number of hits per second could be huge? Does your design scale?
+Follow up: 
+What if the number of hits per second could be huge? Does your design scale?
+
+Approach 1: Using Queue
+
+class HitCounter {
+    private Queue<Integer> hits; 
+    public HitCounter() {
+        hits = new LinkedList<Integer>();
+    } 
+    public void hit(int timestamp) {
+        hits.add(timestamp);
+    }
+    public int getHits(int timestamp) {
+        while (!hits.isEmpty()) {
+            int diff = timestamp - hits.peek();
+            if (diff >= 300) {
+                hits.remove();
+            } else {
+                break;
+            }
+        }
+        return hits.size();
+    }
+}
+/**
+ * Your HitCounter object will be instantiated and called as such:
+ * HitCounter obj = new HitCounter();
+ * obj.hit(timestamp);
+ * int param_2 = obj.getHits(timestamp);
+ */
+
+Approach 2: Using Deque with Pairs
+
+class HitCounter {
+    private int total;
+    private Deque<Pair<Integer, Integer>> hits; 
+    public HitCounter() {
+        total = 0;
+        hits = new LinkedList<>();
+    }
+    public void hit(int timestamp) {
+        if (hits.isEmpty() || hits.getLast().getKey() != timestamp) {
+            hits.add(new Pair<Integer, Integer>(timestamp, 1));                 // Insert the new timestamp with count = 1.
+        } else {
+            int prevCount = hits.getLast().getValue();                          // Otherwise, obtain the current count of the latest timestamp.
+            hits.removeLast();                                                  // Remove the last pair of (timestamp, count) from the deque.
+            hits.add(new Pair<Integer, Integer>(timestamp, prevCount + 1));     // Insert a new pair of (timestamp, updated count) in the deque.
+        }
+        total++;
+    }
+    public int getHits(int timestamp) {
+        while (!hits.isEmpty()) {
+            int diff = timestamp - hits.getFirst().getKey();
+            if (diff >= 300) {
+                total -= hits.getFirst().getValue();
+                hits.removeFirst();
+            } else {
+                break;
+            }
+        }
+        return total;
+    }
+}
