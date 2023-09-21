@@ -78,9 +78,8 @@ Space complexity: O(1)
 
 public class Solution {
     public int trap(int[] height) {
-        int size = height.length
-        int left = 0, right = size - 1, rst = 0;
-        int smaller = 0;                // Note: mark the smaller one of the left and right pointer.
+        int size = height.length, smaller = 0;                         // Note: mark the smaller one of the left and right pointer.
+        int left = 0, right = size - 1, rst = 0;           
         while (left < right) {
             if (height[left] < height[right]) {
                 smaller = height[left];
