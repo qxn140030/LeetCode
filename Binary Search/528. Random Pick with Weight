@@ -22,24 +22,20 @@ class Solution {
     private int totalSum;
     public Solution(int[] w) {
         prefixSums = new int[w.length];
-        int prefixSum = 0;
+        totalSum = 0;
         for (int i = 0; i < w.length; i++) {
-            prefixSum += w[i];
-            prefixSums[i] = prefixSum;
+            totalSum += w[i];
+            prefixSums[i] = totalSum;
         }
-        totalSum = prefixSum;
     }
     public int pickIndex() {
         double target = totalSum * Math.random();
-        int i = 0;
-        // run a linear search to find the target zone
-        for (; i < prefixSums.length; i++) {
-            if (target < prefixSums[i]) {
+        for (int i = 0; i < prefixSums.length; i++) {
+            if (prefixSums[i] > target) {
                 return i;
             }
         }
-        // to have a return statement, though this should never happen.
-        return i - 1;
+        return - 1;
     }
 }
 /**
@@ -57,12 +53,11 @@ class Solution {
     private int totalSum;
     public Solution(int[] w) {
         prefixSums = new int[w.length];
-        int prefixSum = 0;
+        totalSum = 0;
         for (int i = 0; i < w.length; i++) {
-            prefixSum += w[i];
-            prefixSums[i] = prefixSum;
+            totalSum += w[i];
+            prefixSums[i] = totalSum;
         }
-        totalSum = prefixSum;
     }
     public int pickIndex() {
         double target = totalSum * Math.random();
