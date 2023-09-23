@@ -1,0 +1,100 @@
+You are given two jugs with capacities jug1Capacity and jug2Capacity liters. There is an infinite amount of water supply available. 
+Determine whether it is possible to measure exactly targetCapacity liters using these two jugs.
+If targetCapacity liters of water are measurable, you must have targetCapacity liters of water contained within one or both buckets by the end.
+Operations allowed:
+- Fill any of the jugs with water.
+- Empty any of the jugs.
+- Pour water from one jug into another till the other jug is completely full, or the first jug itself is empty.
+
+Example 1:
+Input: jug1Capacity = 3, jug2Capacity = 5, targetCapacity = 4
+Output: true
+Explanation: The famous Die Hard example 
+
+Example 2:
+Input: jug1Capacity = 2, jug2Capacity = 6, targetCapacity = 5
+Output: false
+
+Example 3:
+Input: jug1Capacity = 1, jug2Capacity = 2, targetCapacity = 3
+Output: true
+
+Approach 1: BFS [Time Limit Exceeded]
+
+class Solution {
+    public boolean canMeasureWater(int jug1Capacity, int jug2Capacity, int targetCapacity) {
+        if (jug1Capacity + jug2Capacity == targetCapacity) {
+            return true;
+        }
+        if ((jug1Capacity + jug2Capacity < targetCapacity) ||
+            (jug1Capacity % 2 == 0 && jug2Capacity % 2 == 0 && targetCapacity % 2 != 0)) {    // cannot measure odd capacity using even capacity jugs.
+            return false;
+        }
+        Set<int[]> visited = new HashSet<>();
+        Queue<int[]> q = new LinkedList<>();
+        q.add(new int[]{0, 0});                     // start with a queue containing only the state (0,0) (both jugs empty) initially.
+        while (!q.isEmpty()) {
+            int[] cur = q.poll();
+            int jug1 = cur[0], jug2 = cur[1];
+            if (jug1 + jug2 == targetCapacity) {    // keep checking whether in any of the states we get the summation of the capacities == targetCapacity.
+                return true;
+            }
+            visited.add(cur);
+            int new1, new2;
+            new1 = jug1 - Math.min(jug1, jug2Capacity - jug2);    // Pour contents of jug1 to jug2.
+            new2 = jug2 + Math.min(jug1, jug2Capacity - jug2);
+            if (!visited.contains(new int[]{new1, new2})) {
+                q.add(new int[]{new1, new2});
+            }
+            new1 = jug1 + Math.min(jug2, jug1Capacity - jug1);    // Pour contents of jug2 to jug1.
+            new2 = jug2 - Math.min(jug2, jug1Capacity - jug1);
+            if (!visited.contains(new int[]{new1, new2})) {
+                q.add(new int[]{new1, new2});
+            }
+            new1 = 0;
+            new2 = jug2;                                          // Empty jug1 completely.
+            if (!visited.contains(new int[]{new1, new2})) {
+                q.add(new int[]{new1, new2});
+            } 
+            new1 = jug1;
+            new2 = 0;                                             // Empty jug2 completely.
+            if (!visited.contains(new int[]{new1, new2})) {
+                q.add(new int[]{new1, new2});
+            }  
+            new1 = jug1Capacity;                                  // Fill jug1 completely.
+            new2 = jug2;
+            if (!visited.contains(new int[]{new1, new2})) {
+                q.add(new int[]{new1, new2});
+            } 
+            new1 = jug1;
+            new2 = jug2Capacity;                                  // Fill jug2 completely.
+            if (!visited.contains(new int[]{new1, new2})) {
+                q.add(new int[]{new1, new2});
+            } 
+        }
+        return false;
+    }
+}
+
+Approach 2: Math GCD
+find the gcd of two jugs capacity and then check the divisibilty for target.
+Time complexity: O(log(min(a, b)))
+Space complexity: O(log(min(a, b)))
+
+class Solution {
+    public boolean canMeasureWater(int jug1Capacity, int jug2Capacity, int targetCapacity) {
+        if (jug1Capacity + jug2Capacity < targetCapacity) {
+            return false;
+        }
+        int common = gcd(jug1Capacity, jug2Capacity);
+        return targetCapacity % common == 0 ? true : false;
+    }
+    private int gcd(int a, int b) {
+        while (b != 0) {
+            int tmp = a % b;
+            a = b;
+            b = tmp;
+        }
+        return a;
+    }
+}
