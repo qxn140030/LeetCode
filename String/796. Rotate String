@@ -1,0 +1,77 @@
+Given two strings s and goal, return true if and only if s can become goal after some number of shifts on s.
+A shift on s consists of moving the leftmost character of s to the rightmost position.
+For example, if s = "abcde", then it will be "bcdea" after one shift.
+ 
+Example 1:
+Input: s = "abcde", goal = "cdeab"
+Output: true
+
+Example 2:
+Input: s = "abcde", goal = "abced"
+Output: false
+
+Approach 1: Brute Force
+Time complexity: O(n^2)
+Space Complexity: O(1)
+
+class Solution {
+    public boolean rotateString(String s, String goal) {
+        int n = s.length();
+        if (n != goal.length()) {
+            return false;
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < n; i++) {
+            if (s.equals(goal)) {
+                return true;
+            }
+            sb.append(s.substring(1)).append(s.charAt(0));
+            s = sb.toString();
+            sb = new StringBuilder();
+        }
+        return false;
+    }
+}
+
+Approach 2: Simple Check
+Time complexity: O(n^2)
+Space Complexity: O(n)
+
+class Solution {
+    public boolean rotateString(String s, String goal) {
+        return s.length() == goal.length() && (s + s).contains(goal);
+    }
+}
+
+Approach 3: KMP (Knuth-Morris-Pratt)
+Time complexity: O(n)
+Space Complexity: O(n)
+
+class Solution {
+    public boolean rotateString(String s, String goal) {
+        int n = s.length();
+        if (n != goal.length()) {
+            return false;
+        }
+        int[] shifts = new int[n + 1];
+        Arrays.fill(shifts, 1);
+        int left = -1;
+        for (int right = 0; right < n; right++) {
+            while (left >= 0 && (goal.charAt(left) != goal.charAt(right))) {
+                left -= shifts[left];
+            }
+            shifts[right + 1] = right - left;
+            left++;   
+        }
+        int matchLen = 0;
+        for (char c : (s + s).toCharArray()) {
+            while (matchLen >= 0 && goal.charAt(matchLen) != c) {
+                matchLen -= shifts[matchLen];
+            }  
+            if (++matchLen == n) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
