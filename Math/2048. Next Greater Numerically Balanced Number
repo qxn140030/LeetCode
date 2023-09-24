@@ -30,7 +30,7 @@ It is also the smallest numerically balanced number strictly greater than 3000.
 
 Approach 1:
 Time complexity: O(n), where n represents the difference between the numerically balanced number and n.
-Space complexity is O(1) 
+Space complexity: O(1) 
 
 class Solution {
     public int nextBeautifulNumber(int n) {
