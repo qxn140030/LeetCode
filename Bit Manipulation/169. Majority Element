@@ -72,19 +72,15 @@ Space complexity: O(1)
 
 class Solution {
     public int majorityElement(int[] nums) {
-        int n = nums.length;
-        int majorityElement = 0;
-        int bit = 1;
+        int n = nums.length, majorityElement = 0, bit = 1;
         for (int i = 0; i < 32; i++) {
-            // Count how many numbers have this bit set.
-            int count = 0;
+            int count = 0;                   // Count how many numbers have this bit set.
             for (int num : nums) {
                 if ((num & bit) != 0) {
                     count++;
                 }
             }
-            // If this bit is present in more than n / 2 elements, it must be set in the majority element.
-            if (count > n / 2) {
+            if (count > n / 2) {             // If this bit is present in more than n / 2 elements, it must be set in the majority element.
                 majorityElement |= bit;
             }
             bit <<= 1;
@@ -144,16 +140,13 @@ class Solution {
         if (i == j) {
             return nums[i];
         }
-        // recurse on left and right halves of this slice.
         int mid = i + (j - i) / 2;
         int left = majorityElementRec(nums, i, mid);
         int right = majorityElementRec(nums, mid + 1, j);
-        // if the two halves agree on the majority element, return it.
-        if (left == right) {
+        if (left == right) {                                  // if the two halves agree on the majority element, return it.
             return left;
         }
-        // otherwise, count each element and return the "winner".
-        int leftCount = countInRange(nums, left, i, j);
+        int leftCount = countInRange(nums, left, i, j);       // otherwise, count each element and return the "winner".
         int rightCount = countInRange(nums, right, i, j);
         return leftCount > rightCount ? left : right;
     }
@@ -166,8 +159,7 @@ Space complexity: O(1)
 
 public class Solution {
     public int majorityElement(int[] nums) {
-        int num = nums[0];
-        int count = 1;
+        int num = nums[0], count = 1;
         for (int i = 1; i < nums.length; i++) {
             if (nums[i] == num) {
                 count++;
