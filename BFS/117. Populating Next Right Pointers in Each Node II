@@ -55,7 +55,6 @@ class Solution {
         queue.add(root);
         while (queue.size() > 0) { 
             int size = queue.size();
-            Node pre = null;
             for(int i = 0; i < size; i++) {  
                 Node node = queue.poll();
                 if (i < size - 1) {
