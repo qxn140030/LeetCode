@@ -30,8 +30,7 @@ Appraoch 1: Usinr Array
 
 class CustomStack {
     private int[] arr;
-    private int idx;
-    int maxSize;
+    private int idx, maxSize;
     public CustomStack(int maxSize) {
         this.idx = 0;
         this.arr = new int[maxSize];
@@ -43,10 +42,7 @@ class CustomStack {
         }
     }
     public int pop() {
-        if (idx > 0) {
-            return arr[--idx];
-        }
-        return -1;
+        return idx > 0 ? arr[--idx] : -1;
     }
     public void increment(int k, int val) {
         int n = Math.min(idx, k);
