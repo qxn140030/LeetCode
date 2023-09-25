@@ -91,8 +91,8 @@ class Solution {
         for (int j = 0; j < s.length(); j++) {
             int c = s.charAt(j) - 'A';
             frequency[c]++;
-            maxFrequency = Math.max(maxFrequency, frequency[c]);
-            if (j - i + 1 - maxFrequency > k) {
+            maxFrequency = Math.max(maxFrequency, frequency[c]);   // maxFrequency doesn't tell us about the maximum frequncy of a character in the current window.
+            if (j - i + 1 - maxFrequency > k) {                    // Rather, it tells us about the maximum frequncy of a character seen until now.
                 int startChar = s.charAt(i) - 'A';
                 frequency[startChar]--;
                 i++;
