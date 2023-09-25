@@ -142,7 +142,6 @@ public class WordDictionary {
         }
         char c = word.charAt(start);  
         if (c == '.') {
-            boolean rst = false;
             for (int j = 0; j < 26; j++) {
 	        if (p.children[j] != null) {
 		    if (dfsSearch(p.children[j], word, start + 1)) {
@@ -150,7 +149,7 @@ public class WordDictionary {
 		    }
 		}
 	    }
-            return rst;
+            return false;
         } else {
             int idx = c - 'a';
             if (p.children[idx] == null) {
