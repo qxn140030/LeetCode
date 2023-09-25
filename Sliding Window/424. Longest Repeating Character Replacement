@@ -86,19 +86,18 @@ Space complexity: O(1)
 
 class Solution {
     public int characterReplacement(String s, int k) {
-        int[] frequencyMap = new int[26];
-        int start = 0, maxFrequency = 0, maxLen = 0;
-        for (int end = 0; end < s.length(); end++) {
-            int c = s.charAt(end) - 'A';
-            frequencyMap[c]++;
-            maxFrequency = Math.max(maxFrequency, frequencyMap[c]);
-            boolean isValid = (end + 1 - start - maxFrequency <= k);
-            if (!isValid) {
-                int startChar = s.charAt(start) - 'A';
-                frequencyMap[startChar]--;
-                start++;
+        int[] frequency = new int[26];
+        int i = 0, maxFrequency = 0, maxLen = 0;
+        for (int j = 0; j < s.length(); j++) {
+            int c = s.charAt(j) - 'A';
+            frequency[c]++;
+            maxFrequency = Math.max(maxFrequency, frequency[c]);
+            if (j - i + 1 - maxFrequency > k) {
+                int startChar = s.charAt(i) - 'A';
+                frequency[startChar]--;
+                i++;
             }
-            maxLen = end + 1 - start;
+            maxLen = j - i + 1;
         }
         return maxLen;
     }
