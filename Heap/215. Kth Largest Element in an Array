@@ -41,7 +41,7 @@ public class Solution {
 Approach 3: Quick select
 good average performance, but is sensitive to the pivot that is chosen. consistently decrease the search set by a given fraction - linear.
 Time complexity: O(n) in avarage, O(n^2) in the worst case.
-Space complexity: O(1)
+Space complexity: O(n)
 
 class Solution {
     public int findKthLargest(int[] nums, int k) {
@@ -106,5 +106,31 @@ class Solution {
         int tmp = nums[a];
         nums[a] = nums[b];
         nums[b] = tmp;
+    }
+}
+
+Approach 4: Counting Sort
+Time complexity: O(n + m), Given n as the length of nums and m as maxValue - minValue.
+Space complexity: O(m)
+
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        int min = Integer.MAX_VALUE, max = Integer.MIN_VALUE;
+        for (int num : nums) {
+            min = Math.min(min, num);
+            max = Math.max(max, num);
+        }
+        int[] count = new int[max - min + 1];
+        for (int num : nums) {
+            count[num - min]++;
+        }
+        int remain = k;
+        for (int num = count.length - 1; num >= 0; num--) {
+            remain -= count[num];
+            if (remain <= 0) {
+                return num + min;
+            }
+        }
+        return -1;
     }
 }
