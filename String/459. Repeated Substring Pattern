@@ -20,7 +20,7 @@ Space complexity: O(n)
 class Solution {
     public boolean repeatedSubstringPattern(String s) {
         outer:
-        for (int i = 1; i < s.length(); i++) {
+        for (int i = 1; i <= s.length() / 2; i++) {
             String sub = s.substring(0, i);
             int len = i, j = i; 
             for (; j + len <= s.length(); j += len) {
