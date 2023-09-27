@@ -22,7 +22,7 @@ Space complexity: O(n)
 
 class Solution {
     public int[] asteroidCollision(int[] asteroids) {
-        Stack<Integer> stack = new Stack<Integer>();
+        Stack<Integer> stack = new Stack<>();
         for (int asteroid : asteroids) {
             boolean flag = true;
             while (!stack.isEmpty() && stack.peek() > 0 && asteroid < 0) {
