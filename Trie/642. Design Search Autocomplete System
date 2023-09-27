@@ -64,12 +64,12 @@ class AutocompleteSystem {
             addToTrie(currSentence.toString(), 1);
             currSentence.setLength(0);
             currNode = root;
-            return new ArrayList<String>();
+            return new ArrayList<>();
         }
         currSentence.append(c);
         if (!currNode.children.containsKey(c)) {
             currNode = dummy;
-            return new ArrayList<String>();
+            return new ArrayList<>();
         }
         currNode = currNode.children.get(c);
         List<String> sentences = new ArrayList<>(currNode.sentences.keySet());
