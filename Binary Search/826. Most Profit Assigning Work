@@ -33,7 +33,6 @@ class Solution {
                 totalProfit += jobMap.get(bestDifficulty);
             }
         }
-
         return totalProfit;
     }
 }
