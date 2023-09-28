@@ -50,14 +50,10 @@ class Solution {
                 pq.remove();
             }
             Job combinedJob = new Job(start, end, profit + maxProfit);
-            // push the job with combined profit
-            // if no non-conflicting job is present maxProfit will be 0
-            pq.add(combinedJob);
-        }
-        // update the value of maxProfit by comparing with
-        // profit of jobs that exits in the heap
+            pq.add(combinedJob);                                                     // push the job with combined profit
+        } 
         while (!pq.isEmpty()) {
-            maxProfit = Math.max(maxProfit, pq.peek().profit);
+            maxProfit = Math.max(maxProfit, pq.peek().profit);                       // update the value of maxProfit by comparing with profit of jobs that exits in the heap.
             pq.remove();
         }
         return maxProfit;
