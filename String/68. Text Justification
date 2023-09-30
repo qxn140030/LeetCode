@@ -1,38 +1,61 @@
-Given an array of words and a length L, format the text such that each line has exactly L characters and is fully (left and right)
-justified.
-You should pack your words in a greedy approach; that is, pack as many words as you can in each line. Pad extra spaces ' ' when
-necessary so that each line has exactly L characters.
-Extra spaces between words should be distributed as evenly as possible. If the number of spaces on a line do not divide evenly
-between words, the empty slots on the left will be assigned more spaces than the slots on the right.
-For the last line of text, it should be left justified and no extra space is inserted between words.
-For example,
-words: ["This", "is", "an", "example", "of", "text", "justification."], L: 16.
-Return the formatted lines as:
+Given an array of strings words and a width maxWidth, format the text such that each line has exactly maxWidth characters and is fully (left and right) justified.
+You should pack your words in a greedy approach; that is, pack as many words as you can in each line. Pad extra spaces ' ' when necessary so that each line has exactly maxWidth characters.
+Extra spaces between words should be distributed as evenly as possible. If the number of spaces on a line does not divide evenly between words, 
+the empty slots on the left will be assigned more spaces than the slots on the right.
+For the last line of text, it should be left-justified, and no extra space is inserted between words.
+Note:
+- A word is defined as a character sequence consisting of non-space characters only.
+- Each word's length is guaranteed to be greater than 0 and not exceed maxWidth.
+- The input array words contains at least one word.
+
+Example 1:
+Input: words = ["This", "is", "an", "example", "of", "text", "justification."], maxWidth = 16
+Output:
 [
    "This    is    an",
    "example  of text",
    "justification.  "
 ]
-Note: Each word is guaranteed not to exceed L in length.
-Corner Cases:
-A line other than the last line might contain only one word. What should you do in this case?
-In this case, that line should be left-justified.
 
-Time complexity: O(n). n is the total length of the strings.
-Space complexity: O(r * maxWidth). r is the result row numbers.
-public class Solution {
+Example 2:
+Input: words = ["What","must","be","acknowledgment","shall","be"], maxWidth = 16
+Output:
+[
+  "What   must   be",
+  "acknowledgment  ",
+  "shall be        "
+]
+Explanation: Note that the last line is "shall be    " instead of "shall     be", because the last line must be left-justified instead of fully-justified.
+Note that the second line is also left-justified because it contains only one word.
+
+Example 3:
+Input: words = ["Science","is","what","we","understand","well","enough","to","explain","to","a","computer.","Art","is","everything","else","we","do"], maxWidth = 20
+Output:
+[
+  "Science  is  what we",
+  "understand      well",
+  "enough to explain to",
+  "a  computer.  Art is",
+  "everything  else  we",
+  "do                  "
+]
+
+Approach 1:
+Time complexity: O(n * k), where n is the length of the words, k is the average length of a word.
+Space complexity: O(m), where m is maxWidth, we handle one line at a time.
+
+class Solution {
     public List<String> fullJustify(String[] words, int maxWidth) {
-        int wordsCount = words.length;
-        ArrayList<String> result = new ArrayList<String>();
-        int curLen = 0;
-        int lastI = 0;
-        for (int i = 0; i <= wordsCount; i++) {
-            if (i == wordsCount || curLen + words[i].length() + i - lastI > maxWidth) {
+        int n = words.length;
+        List<String> rst = new ArrayList<>();
+        int curLen = 0, lastIdx = 0;
+        for (int i = 0; i <= n; i++) {
+            if (i == n || curLen + words[i].length() + i - lastIdx > maxWidth) {
                 StringBuffer buf = new StringBuffer();
                 int spaceCount = maxWidth - curLen;
-                int spaceSlots = i - lastI - 1;
-                if (spaceSlots == 0 || i == wordsCount) {
-                    for (int j = lastI; j < i; j++) {
+                int spaceSlots = i - lastIdx - 1;
+                if (spaceSlots == 0 || i == n) {
+                    for (int j = lastIdx; j < i; j++) {
                         buf.append(words[j]);
                         if (j != i - 1) {
                             appendSpace(buf, 1);
@@ -42,25 +65,26 @@ public class Solution {
                 } else {
                     int spaceEach = spaceCount / spaceSlots;
                     int spaceExtra = spaceCount % spaceSlots;
-                    for (int j = lastI; j < i; j++) {
+                    for (int j = lastIdx; j < i; j++) {
                         buf.append(words[j]);
                         if (j != i - 1) {
-                            appendSpace(buf, spaceEach + (j - lastI < spaceExtra ? 1 : 0));
+                            appendSpace(buf, spaceEach + (j - lastIdx < spaceExtra ? 1 : 0));
                         }
                     }
                 }
-                result.add(buf.toString());
-                lastI = i;
+                rst.add(buf.toString());
+                lastIdx = i;
                 curLen = 0;
             }
-            if (i < wordsCount) {
+            if (i < n) {
                 curLen += words[i].length();
             }
         }
-        return result;
+        return rst;
     }
     private void appendSpace(StringBuffer sb, int count) {
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i < count; i++) {
             sb.append(' ');
+        }
     }
 }
