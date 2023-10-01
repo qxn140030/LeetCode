@@ -51,3 +51,48 @@ class Solution {
 }
 
 Approach 3: Binary Search
+Time Complexity: O(nlogn)
+Space Complexity: O(logn)
+
+class Solution {
+    public int twoSumLessThanK(int[] nums, int k) {
+        Arrays.sort(nums);
+        int n = nums.length, rst = -1;
+        for (int i = 0; i < nums.length; ++i) {
+            int idx = Arrays.binarySearch(nums, i + 1, n, k - nums[i] - 1);
+            int j = idx >= 0 ? idx : ~idx;
+            if (j == n || nums[j] > k - nums[i] - 1) {
+                j--;
+            }
+            if (j > i) {
+                rst = Math.max(rst, nums[i] + nums[j]);
+            }
+        }
+        return rst;
+    }
+}
+
+Approach 4: Counting Sort
+Time Complexity: O(m + n), where m corresponds to the range of values in the input array.
+Space Complexity: O(m)
+
+class Solution {
+    public int twoSumLessThanK(int[] nums, int k) {
+        int[] count = new int[1001];
+        for (int num : nums) {
+            count[num]++;
+        }
+        int low = 1, high = 1000, rst = -1;
+        while (low <= high) {
+            if (low + high >= k || count[high] == 0) {
+                high--;
+            } else {
+                if (count[low] > (low < high ? 0 : 1)) {
+                    rst = Math.max(rst, low + high);
+                }
+                low++;
+            }
+        }
+        return rst;
+    }
+}
