@@ -12,8 +12,9 @@ Can you solve the problem in O(1) extra memory space?
 
 Approach 1: Recursion
 A Linked list is a recursive structure. A sub-list in itself is a linked list.
-Time complexity: O(n) 
-Space complexity: O(n/k)
+Time complexity: O(n), since we process each node exactly twice. 
+Once when we are counting the number of nodes in each recursive call, and then once when we are actually reversing the sub-list. 
+Space complexity: O(n/k), used up by the recursion stack. In every recursive call, we process k nodes and then make a recursive call to process the rest.
 
 /**
  * Definition for singly-linked list.
@@ -36,11 +37,11 @@ class Solution {
         if (count < k) {
             return head;
         }
-        ListNode reversedHead = reverseLinkedList(head, k); 
+        ListNode reversedHead = reverse(head, k); 
         head.next = reverseKGroup(cur, k);
         return reversedHead;
     }
-    private ListNode reverseLinkedList(ListNode head, int k) {
+    private ListNode reverse(ListNode head, int k) {
         ListNode cur = head, newHead = null;
         while (k-- > 0) {    
             ListNode next = cur.next;
