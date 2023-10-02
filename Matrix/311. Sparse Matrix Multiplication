@@ -14,48 +14,52 @@ B = [
 AB = | -1 0 3 | x | 0 0 0 | = | -7 0 3 |
                   | 0 0 1 |
 
-public class Solution {
-    public int[][] multiply(int[][] A, int[][] B) {
-        int m = A.length, n = A[0].length, n2 = B[0].length;
-        int[][] rst = new int[m][n2];
+Approach 1: Naive Iteration
+Time complexity: O(m * k * n), Let m and k represent the number of rows and columns in mat1, respectively. Likewise, let k and n represent the number of rows and columns in mat2, respectively.
+Space complexity: O(1)
+
+class Solution {
+    public int[][] multiply(int[][] mat1, int[][] mat2) {
+        int m = mat1.length, k = mat1[0].length, n = mat2[0].length;
+        int[][] ans = new int[m][n];
         for (int i = 0; i < m; i++) {
-            for (int k = 0; k < n; k++) {
-                if (A[i][k] == 0) {
-                    continue;
-                }
-                for (int j = 0; j < n2; j++) {
-                    rst[i][j] += A[i][k] * B[k][j];
+            for (int j = 0; j < k; j++) {
+                if (mat1[i][j] != 0)  {
+                    for (int c = 0; c < n; c++) {
+                        ans[i][c] += mat1[i][j] * mat2[j][c];
+                    }
                 }
             }
         }
-        return rst;
+        return ans;
     }
 }
 
 A sparse matrix can be represented as a sequence of rows, each of which is a sequence of (column-number, value) pairs of the
 nonzero values in the row.
-public class Solution {
-    public int[][] multiply(int[][] A, int[][] B) {
-        int m = A.length, l = A[0].length, n = B[0].length;
-        int[][] C = new int[m][n];
-        Map<Integer, Map<Integer, Integer>> tableB = new HashMap<>();
-        for (int k = 0; k < l; k++) {
-            tableB.put(k, new HashMap<>());
+
+class Solution {
+    public int[][] multiply(int[][] mat1, int[][] mat2) {
+        int m = mat1.length, k = mat1[0].length, n = mat2[0].length;
+        int[][] ans = new int[m][n];
+        Map<Integer, Map<Integer, Integer>> map = new HashMap<>();
+        for (int i = 0; i < k; i++) {
+            map.put(i, new HashMap<>());
             for (int j = 0; j < n; j++) {
-                if (B[k][j] != 0) {
-                    tableB.get(k).put(j, B[k][j]);
+                if (mat2[i][j] != 0) {
+                    map.get(i).put(j, mat2[i][j]);
                 }
             }
         }
         for (int i = 0; i < m; i++) {
-            for (int k = 0; k < l; k++) {
-                if (A[i][k] != 0) {
-                    for (int j : tableB.get(k).keySet()) {
-                        C[i][j] += A[i][k] * tableB.get(k).get(j);
+            for (int c = 0; c < k; c++) {
+                if (mat1[i][c] != 0) {
+                    for (int j : map.get(c).keySet()) {
+                        ans[i][j] += mat1[i][c] * map.get(c).get(j);
                     }
                 }
             }
         }
-        return C;
+        return ans;
     }
 }
