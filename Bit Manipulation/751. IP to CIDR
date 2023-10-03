@@ -54,7 +54,7 @@ class Solution {
             }
             rst.add(helper(bits, (int) count));
             n -= (int) count;
-            bits += count;
+            bits += count;                                        // move to the next starting IP for the subsequent block, which is count addresses away from the current IP.
         }
         return rst;
     }
