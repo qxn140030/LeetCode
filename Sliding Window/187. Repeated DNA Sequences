@@ -15,17 +15,16 @@ Space complexity: O(n), O(l * (n - l)) to keep the hash table.
 
 class Solution {
     public List<String> findRepeatedDnaSequences(String s) {
-        Set<String> seen = new HashSet<>();
-        Set<String> res = new HashSet<>();
+        Set<String> seen = new HashSet<>(), rst = new HashSet<>();
         for (int i = 0; i + 10 <= s.length(); i++) {
             String subStr = s.substring(i, i + 10);
             if (seen.contains(subStr)){
-                res.add(subStr);
+                rst.add(subStr);
             } else {
                 seen.add(subStr);
             }
         }
-        return new ArrayList<>(res);
+        return new ArrayList<>(rst);
     }
 }
 
