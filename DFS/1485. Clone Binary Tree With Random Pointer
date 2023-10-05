@@ -22,7 +22,7 @@ Example 3:
 Input: root = [[1,6],[2,5],[3,4],[4,3],[5,2],[6,1],[7,0]]
 Output: [[1,6],[2,5],[3,4],[4,3],[5,2],[6,1],[7,0]]
 
-Approach 1: Depth-First Search On Binary Tree (2 Passes)
+Approach 1: DFS On Binary Tree (2 Passes)
 Time complexity: O(n)
 Space complexity: O(n)
 
@@ -70,5 +70,77 @@ class Solution {
         newNode.random = newNodeRandom;                   // Map newNode with it's respective random node.
         mapRandomPointers(node.left);
         mapRandomPointers(node.right);
+    }
+}
+
+Approach 2: DFS On Graph (1 Pass)
+Time complexity: O(n)
+Space complexity: O(n)
+
+class Solution {
+    private Map<Node, NodeCopy> seen = new HashMap<>();
+    public NodeCopy copyRandomBinaryTree(Node root) {
+        NodeCopy newRoot = dfs(root);
+        return newRoot;
+    }
+    private  NodeCopy dfs(Node root) {
+        if (root == null) {
+            return null;
+        }
+        if (seen.containsKey(root)) {
+            return seen.get(root);
+        }
+        NodeCopy newRoot = new NodeCopy(root.val);
+        seen.put(root, newRoot);
+        newRoot.left = dfs(root.left);               // Traverse on all 3 edges of root and attach respective new node to the newRoot.
+        newRoot.right = dfs(root.right);
+        newRoot.random = dfs(root.random);
+        return newRoot;
+    }
+}
+
+Approach 3: BFS on Graph
+Time complexity: O(n)
+Space complexity: O(n)
+
+class Solution {
+    private Map<Node, NodeCopy> seen = new HashMap<>();
+    public NodeCopy copyRandomBinaryTree(Node root) {
+        NodeCopy newRoot = bfs(root);
+        return newRoot;
+    }
+    private  NodeCopy bfs(Node root) {
+        if (root == null) {
+            return null;
+        }
+        Queue<Node> q = new LinkedList<>();
+        q.add(root);
+        seen.put(root, new NodeCopy(root.val));  
+        while (!q.isEmpty()) {
+            Node oldNode = q.poll();
+            NodeCopy newNode = seen.get(oldNode);
+            if (oldNode.left != null) {
+                if (!seen.containsKey(oldNode.left)) {
+                    q.add(oldNode.left);
+                    seen.put(oldNode.left, new NodeCopy(oldNode.left.val));
+                }
+                newNode.left = seen.get(oldNode.left);
+            }
+            if (oldNode.right != null) {
+                if (!seen.containsKey(oldNode.right)) {
+                    q.add(oldNode.right);
+                    seen.put(oldNode.right, new NodeCopy(oldNode.right.val));
+                }
+                newNode.right = seen.get(oldNode.right);
+            }
+            if (oldNode.random != null) {
+                if (!seen.containsKey(oldNode.random)) {
+                    q.add(oldNode.random);
+                    seen.put(oldNode.random, new NodeCopy(oldNode.random.val));
+                }
+                newNode.random = seen.get(oldNode.random);
+            }
+        }
+        return seen.get(root);
     }
 }
