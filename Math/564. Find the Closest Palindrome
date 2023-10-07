@@ -1,0 +1,42 @@
+Given a string n representing an integer, return the closest integer (not including itself), which is a palindrome. If there is a tie, return the smaller one.
+The closest is defined as the absolute difference minimized between two integers.
+
+Example 1:
+Input: n = "123"
+Output: "121"
+
+Example 2:
+Input: n = "1"
+Output: "0"
+Explanation: 0 and 2 are the closest palindromes but we return the smallest which is 0.
+
+Approach 1: Brute Force[Time Limit Exceeded]
+Time complexity: O(sqrt(n) * log⁡n), upto 2 * sqrt(n) numbers could be generated in the worst case.
+Space complexity: O(1)
+
+class Solution {
+    public String nearestPalindromic(String n) {
+        long num = Long.parseLong(n);
+        for (long i = 1;; i++) {
+            if (isPalindrome(num - i)) {
+                return "" + (num - i);
+            }
+            if (isPalindrome(num + i)) {
+                return "" + (num + i);
+            }
+        }
+    }
+    private boolean isPalindrome(long x) {
+        long t = x, rev = 0;
+        while (t > 0) {
+            rev = 10 * rev + t % 10;
+            t /= 10;
+        }
+        return rev == x;
+    }
+}
+
+Approach 2: Using Math
+Time complexity: O(len), length of the string.
+Space complexity: O(len)
+
