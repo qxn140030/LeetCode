@@ -84,12 +84,12 @@ class Solution {
                     break;
                 }
             }
-            if (i >= 0 && j >= 0 && s.charAt(i) != t.charAt(j)) {
-                return false;
-            } 
             if ((i >= 0) != (j >= 0)) {             // If expecting to compare char vs nothing.
                 return false;
             }
+            if (i >= 0 && j >= 0 && s.charAt(i) != t.charAt(j)) {
+                return false;
+            } 
             i--; 
             j--;
         }
