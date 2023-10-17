@@ -22,11 +22,9 @@ Time Complexity: O(n^4)
 Space Complexity: O(n^2)
 
 class Solution {
-    int[] dr = new int[]{-1, 0, 1, 0};
-    int[] dc = new int[]{0, -1, 0, 1};
+    int[][] dir = new int[][]{{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
     public int largestIsland(int[][] grid) {
-        int n = grid.length;
-        int ans = 0;
+        int n = grid.length, ans = 0;
         boolean hasZero = false;
         for (int r = 0; r < n; r++) {
             for (int c = 0; c < n; c++) {
@@ -50,7 +48,7 @@ class Solution {
             int code = stack.pop();
             int r = code / n, c = code % n;
             for (int k = 0; k < 4; k++) {
-                int nr = r + dr[k], nc = c + dc[k];
+                int nr = r + dir[k][0], nc = c + dir[k][1];
                 if (!seen.contains(nr * n + nc) && nr >= 0 && nr < n && nc >= 0 && nc < n && grid[nr][nc] == 1) {
                     stack.push(nr * n + nc);
                     seen.add(nr * n + nc);
