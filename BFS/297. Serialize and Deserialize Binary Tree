@@ -89,7 +89,6 @@ Time complexity: O()
 Space complexity: O()
 
 public class Codec {
-    // Encodes a tree to a single string.
     public String serialize(TreeNode root) {
         if (root == null) {
             return "";
@@ -110,7 +109,6 @@ public class Codec {
         sb.deleteCharAt(sb.length() - 1);
         return sb.toString();
     }
-    // Decodes your encoded data to tree.
     public TreeNode deserialize(String data) {
         if (data == null || data.length() == 0) {
             return null;
@@ -128,6 +126,42 @@ public class Codec {
         root.left = helper(arr, t);
         t[0] += 1;
         root.right = helper(arr, t);
+        return root;
+    }
+}
+
+Approach 3: DFS
+Time complexity: O(n)
+Space complexity: O(n)
+
+public class Codec {
+    public String serialize(TreeNode root) {
+        return serializeHelper(root, "");
+    }
+    public String serializeHelper(TreeNode root, String str) {
+        if (root == null) {
+            str += "null,";
+        } else {
+            str += str.valueOf(root.val) + ",";
+            str = serializeHelper(root.left, str);
+            str = serializeHelper(root.right, str);
+        }
+        return str;
+    }
+    public TreeNode deserialize(String data) {
+        String[] arr = data.split(",");
+        List<String> list = new ArrayList<>(Arrays.asList(arr));
+        return deserializeHelper(list);
+    }
+    public TreeNode deserializeHelper(List<String> list) {
+        if (list.get(0).equals("null")) {
+            list.remove(0);
+            return null;
+        }
+        TreeNode root = new TreeNode(Integer.valueOf(list.get(0)));
+        list.remove(0);
+        root.left = deserializeHelper(list);
+        root.right = deserializeHelper(list);
         return root;
     }
 }
