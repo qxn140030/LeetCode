@@ -23,16 +23,13 @@ timeMap.get("foo", 5);         // return "bar2"
 
 Approach 1: Hashmap + Linear Search (Time Limit Exceeded)
 If m is the number of set() calls, n is the number of get() calls, and k is average length of key and value strings.
-Time complexity:
-- In the set() function, in each call, we store a value at (key, timestamp) location, which takes O(k) time to hash the string.
-Thus, for m calls overall it will take, O(m * k) time.
-- In the get() function, in each call, we iterate linearly from timestamp to 1 which takes O(timestamp) time and again to hash the string it takes O(k) time.
-Thus, for n calls overall it will take, O(N * timestamp * k) time.
+- set(), in each call, we store a value at (key, timestamp) location, which takes O(k) time to hash the string.
+Time complexity: O(m * k)
+Space complexity: O(m * k), in each call we store one value string of length k, which takes O(k) space, for m calls we may store m unique values.
 
-Space complexity:
-- In the set() function, in each call we store one value string of length k, which takes O(k) space.
-Thus, for m calls we may store m unique values, so overall it may take O(m * k) space.
-- In the get() function, we are not using any additional space.
+- get(), in each call, we iterate linearly from timestamp to 1 which takes O(timestamp) time and again to hash the string it takes O(k) time.
+Time complexity: for n calls overall it will take, O(n * timestamp * k) time.
+Space complexity: O(1)
 
 class TimeMap {
     Map<String, Map<Integer, String>> map;
@@ -40,9 +37,7 @@ class TimeMap {
         map = new HashMap<>();
     }
     public void set(String key, String value, int timestamp) {
-        if (!map.containsKey(key)) {
-            map.put(key, new HashMap<>());
-        }
+        map.putIfAbsent(key, new HashMap<>());
         map.get(key).put(timestamp, value);
     }
     public String get(String key, int timestamp) {
@@ -64,17 +59,14 @@ class TimeMap {
  */
 
 Approach 2: Sorted Map + Binary Search
-Time complexity:
-- In the set() function, in each call we store a value at (key, timestamp) location, which takes O(klogm) time as the internal implementation of sorted maps is some kind of balanced binary tree 
+- set(), in each call we store a value at (key, timestamp) location, which takes O(klogm) time as the internal implementation of sorted maps is some kind of balanced binary tree 
 and in worst case we might have to compare logM nodes (height of tree) of length L each with our key.
-Thus, for m calls overall it will take, O(k * m * logm) time.
-- In the get() function, we will find correct key in our map, which can take O(klogm) time and then use binary search on that bucket which can have at most m elements, which takes O(logm) time.
-Thus, for n calls overall it will take, O(n * (k * logm + logm)) time.
+Time complexity: O(k * m * logm)
+Space complexity: O(m * k)
 
-Space complexity:
-- In the set() function, in each call we store one value string of length k, which takes O(k) space.
-Thus, for m calls we may store m unique values, so overall it may take O(m * k) space.
-- In the get() function, we are not using any additional space.
+- get(), we will find correct key in our map, which can take O(klogm) time and then use binary search on that bucket which can have at most m elements, which takes O(logm) time.
+Time complexity: O(n * (k * logm + logm))
+Space complexity: O(1)
 
 class TimeMap {
     Map<String, TreeMap<Integer, String>> map;
@@ -82,9 +74,7 @@ class TimeMap {
         map = new HashMap<>();
     }
     public void set(String key, String value, int timestamp) {
-        if (!map.containsKey(key)) {
-            map.put(key, new TreeMap<>());
-        }
+        map.putIfAbsent(key, new TreeMap<>());
         map.get(key).put(timestamp, value);
     } 
     public String get(String key, int timestamp) {
@@ -92,6 +82,43 @@ class TimeMap {
             Integer floorKey = map.get(key).floorKey(timestamp);
             if (floorKey != null) {
                 return map.get(key).get(floorKey);
+            }
+        }
+        return "";
+    }
+}
+
+Approach 3: Array + Binary Search
+- set(), in each call we push a (timestamp, value) pair in the key bucket, which takes O(k) time to hash the string.
+Time complexity: O(m * k)
+Space complexity: O(m * k)
+
+- get(), we will find correct key in our map, which can take O(klogm) time and then use binary search on that bucket which can have at most m elements, which takes O(logm) time.
+Time complexity: O(n * k * logm)
+Space complexity: O(1)
+
+class TimeMap {
+    Map<String, List<Pair<Integer, String>>> map;
+    public TimeMap() {
+        map = new HashMap<>();
+    }
+    public void set(String key, String value, int timestamp) {
+        map.putIfAbsent(key, new ArrayList<>());
+        map.get(key).add(new Pair<>(timestamp, value));
+    }
+    public String get(String key, int timestamp) {
+        if (map.containsKey(key)) {
+            int left = 0, right = map.get(key).size();
+            while (left < right) {
+                int mid = (left + right) / 2;
+                if (map.get(key).get(mid).getKey() <= timestamp) {
+                    left = mid + 1;
+                } else {
+                    right = mid;
+                }
+            }
+            if (right > 0) {
+                return map.get(key).get(right - 1).getValue();
             }
         }
         return "";
