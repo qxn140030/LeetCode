@@ -59,7 +59,7 @@ traverse the list containing n elements only once. Each look up in the table cos
 Space complexity: O(n)
 extra space required depends on the number of items stored in the hash table, which stores at most n elements.
 HashMap is generally preferred over HashTable if thread synchronization is not needed.
-HashMap allows one null key and multiple null values whereas HashTable doesn't allow any nul keys or value.
+HashMap allows one null key and multiple null values whereas HashTable doesn't allow any null keys or value.
 
 public class Solution {
     public int[] twoSum(int[] nums, int target) {
