@@ -1,0 +1,58 @@
+Given the root of a Binary Search Tree (BST), 
+return the minimum absolute difference between the values of any two different nodes in the tree.
+
+Example 1:      4
+               / \
+              2   6
+             / \ 
+            1   3          output: 1
+
+Approach 1: Recursive DFS (inorder traversal)
+Time complexity: O(n)
+Space complexity: O(h)
+
+class Solution {
+    private Integer prev = null;  
+    private int minDiff = Integer.MAX_VALUE;
+    public int getMinimumDifference(TreeNode root) {
+        inorderTraversal(root);
+        return minDiff;
+    }
+    private void inorderTraversal(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        inorderTraversal(root.left);
+        if (prev != null) {
+            minDiff = Math.min(minDiff, root.val - prev);
+        }
+        prev = root.val;
+        inorderTraversal(root.right);
+    }
+}
+
+Approach 1: Iterative (use an explicit stack)
+Time complexity: O(n)
+Space complexity: O(h)
+
+class Solution {
+    public int getMinimumDifference(TreeNode root) {
+        Stack<TreeNode> stack = new Stack<>();
+        int minDiff = Integer.MAX_VALUE;
+        Integer prev = null;  
+        TreeNode cur = root;
+        while (cur != null || !stack.isEmpty()) {
+            while (cur != null) {
+                stack.push(cur);
+                cur = cur.left;
+            }
+            cur = stack.pop();
+            if (prev != null) {
+                minDiff = Math.min(minDiff, cur.val - prev);
+            }
+            prev = cur.val;
+            cur = cur.right;
+        }
+        return minDiff;
+    }
+}
