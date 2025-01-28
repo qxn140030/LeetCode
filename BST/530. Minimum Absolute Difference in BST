@@ -31,7 +31,7 @@ class Solution {
     }
 }
 
-Approach 1: Iterative (use an explicit stack)
+Approach 2: Iterative (use an explicit stack)
 Time complexity: O(n)
 Space complexity: O(h)
 
