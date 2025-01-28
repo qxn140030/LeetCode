@@ -10,7 +10,7 @@ Output: [[1]]
 
 Approach 1: Backtracking
 Time complexity: O(k * C(k, n)), where C(k, n) = n! / ((n - k)! * k!)
-Space complexity: O(n)
+Space complexity: O(k)
 
 class Solution {
     public List<List<Integer>> combine(int n, int k) {
