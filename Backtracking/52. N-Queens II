@@ -9,7 +9,7 @@ public class Solution {
     public int totalNQueens(int n) {
         return helper(new ArrayList<>(), n);
     }
-    private void helper(List<Integer> cols, int n) {
+    private int helper(List<Integer> cols, int n) {
         if (cols.size() == n) {
             return 1;
         }
