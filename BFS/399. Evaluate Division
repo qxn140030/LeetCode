@@ -108,6 +108,9 @@ class Solution {
         val.put(first, 1.0);
         while (!q.isEmpty()) {
             String cur = q.poll();
+            if (cur.equals(second)) {
+                return val.get(cur);  
+            }
             for (Map.Entry<String, Double> entry : graph.get(cur).entrySet()) {
                 String next = entry.getKey();
                 if (!vals.containsKey(next)) {
