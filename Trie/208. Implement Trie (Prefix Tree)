@@ -50,10 +50,7 @@ public class Trie {
     }    
     public boolean search(String word) {
         TrieNode node = searchHelper(word);
-        if (node != null && node.isWord) {
-            return true;
-        }
-        return false;
+        return node != null && node.isWord;
     }
     public boolean startsWith(String prefix) {
         return searchHelper(prefix) == null ? false : true;
@@ -110,10 +107,7 @@ public class Trie {
     }        
     public boolean search(String word) {
         TrieNode node = searchHelper(word);
-        if (node != null && node.isWord) {
-            return true;
-        }
-        return false;
+        return node != null && node.isWord;
     }
     public boolean startsWith(String prefix) {
         return searchHelper(prefix) == null ? false : true;
