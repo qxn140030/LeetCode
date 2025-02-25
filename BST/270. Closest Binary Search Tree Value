@@ -13,7 +13,7 @@ Example 2:
 Input: root = [1], target = 4.428571
 Output: 1
 
-Approach 1: Revursive inorder + linear search
+Approach 1: Recursive inorder + linear search
 Time complexity: O(n)
 Space complexity: O(n) to keep inorder traversal.
 
