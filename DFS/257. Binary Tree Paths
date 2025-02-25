@@ -13,6 +13,33 @@ Space complexity: O(n)
 
 class Solution {
     public List<String> binaryTreePaths(TreeNode root) {
+        List<String> rst = new ArrayList<String>();
+        List<Integer> path = new ArrayList<Integer>();
+        helper(root, rst, path);
+        return rst;
+    }
+    void helper(TreeNode root, List<String> rst, List<Integer> path) {
+        if (root == null) {
+            return;
+        }
+        path.add(root.val);
+        if (root.left == null && root.right == null) {
+            StringBuilder sb = new StringBuilder();
+            for (int i : path) {
+                sb.append(i).append("->");
+            }
+            String s = sb.toString();
+            rst.add(s.substring(0, s.length() - 2));
+        } else {
+            helper(root.left, rst, path);
+            helper(root.right, rst, path);
+        }
+        path.remove(path.size() - 1);         
+    }
+}
+
+class Solution {
+    public List<String> binaryTreePaths(TreeNode root) {
         List<String> rst = new ArrayList<>();
         paths(root, "", rst);
         return rst;
