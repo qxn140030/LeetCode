@@ -67,16 +67,17 @@ class Solution {
         dfs(root, targetSum, path, rst);
         return rst;
     }
-    private void dfs(TreeNode root, int sum, List<Integer> path, List<List<Integer>> rst) {
+    void dfs(TreeNode root, int sum, List<Integer> path, List<List<Integer>> rst) {
         if (root == null) {
             return;
         }
         path.add(root.val);
-        if (sum == root.val && root.left == null && root.right == null) {
+        sum -= root.val
+        if (sum == 0 && root.left == null && root.right == null) {
             rst.add(new ArrayList<>(path));
         } else { 
-            dfs(root.left, sum - root.val, path, rst);
-            dfs(root.right, sum - root.val, path, rst);
+            dfs(root.left, sum, path, rst);
+            dfs(root.right, sum, path, rst);
         }
         path.remove(path.size() - 1);
     }
