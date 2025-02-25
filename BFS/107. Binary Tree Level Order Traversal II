@@ -63,23 +63,22 @@ public class Solution {
             return rst;
         }
         Queue<TreeNode> q = new LinkedList<>();
-        q.add(root);
+        q.offer(root);
         while (!q.isEmpty()) {
             int size = q.size();
             List<Integer> level = new ArrayList<>();
             for (int i = 0; i < size; i++) {
-                root = q.remove();
+                root = q.poll();
                 level.add(root.val);
                 if (root.left != null) {
-                    q.add(root.left);
+                    q.offer(root.left);
                 }
                 if (root.right != null) {
-                    q.add(root.right);
+                    q.offer(root.right);
                 }
             }
-            rst.add(level);
+            rst.add(0, level);
         }
-        Collections.reverse(rst);
         return rst;
     }
 }
