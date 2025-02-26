@@ -14,25 +14,23 @@ Space complexity: O(n), in the worst case we have to reverse the entire list. sp
 
 class Solution {
     public ListNode reverseBetween(ListNode head, int left, int right) {
-        ListNode dummy = new ListNode(0);
+        ListNode dummy = new ListNode(0), leftPre = dummy;
         dummy.next = head;
-        ListNode leftPre = dummy;
         for (int i = 1; i < left; i++) {
             leftPre = leftPre.next;
         }
         ListNode leftNode = leftPre.next, rightNode = leftNode;
-        int diff = right - left;
-        for (int i = 0; i < diff; i++) {
+        for (int i = left; i < right; i++) {
             rightNode = rightNode.next;
         }
         ListNode rightAfter = rightNode.next;
-        ListNode node = reverse(leftNode);
-        ListNode reversedTail = leftPre.next;
-        leftPre.next = node;
-        reversedTail.next = rightAfter;
+        rightNode.next = null;
+        ListNode reversedHead = reverse(leftNode);
+        leftPre.next = reversedHead;
+        leftNode.next = rightAfter;
         return dummy.next;
     }
-    private ListNode reverse(ListNode head) {
+    ListNode reverse(ListNode head) {
         if (head == null || head.next == null) {
             return head;
         }
@@ -59,15 +57,13 @@ Space complexity: O(1)
  */
 class Solution {
     public ListNode reverseBetween(ListNode head, int left, int right) {
-        ListNode dummy = new ListNode(0);
+        ListNode dummy = new ListNode(0), tail = dummy;
         dummy.next = head;
-        ListNode tail = dummy;
         for (int i = 1; i < left; i++) {
             tail = tail.next;
         }
         ListNode pre = tail.next, cur = pre.next, after = null;
-        int diff = right - left;
-        for (int i = 0; i < diff; i++) {
+        for (int i = left; i < right; i++) {
             after = cur.next;
             cur.next = pre;
             pre = cur;
