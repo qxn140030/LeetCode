@@ -4,6 +4,9 @@ return 3.
 Note:
 in some languages, such as Java, there is no unsigned integer type. 
 
+Follow up: 
+If this function is called many times, how would you optimize it?
+
 Approach 1: Loop and Flip
 Time complexity: O(1) 
 Space complexity is O(1)
