@@ -23,6 +23,12 @@ Input: deadends = ["8887","8889","8878","8898","8788","8988","7888","9888"], tar
 Output: -1
 Explanation: We cannot reach the target without getting stuck.
 
+Approach 1: BFS
+Time complexity: O(8 * 10^4)
+there are 10^4 possible combinations of 4 digits,each between 0000 to 9999.
+8 operations (for each digit, we perform two operations).
+Space complexity: O(10^4)
+
 public int openLock(String[] deadends, String target) {
     Set<String> deads = new HashSet<>();
     for (String s : deadends) {
@@ -77,4 +83,43 @@ String minusOne(String s, int i) {
         ch[i] -= 1;
     }
     return new String(ch);
+}
+
+Approch 2: Bidirectional BFS
+
+public int openLock(String[] deadends, String target) {
+    Set<String> deads = new HashSet<>();
+    for (String s : deadends) {
+        deads.add(s);
+    }
+    Set<String> visited = new HashSet<>(), q1 = new HashSet<>(), q2 = new HashSet<>();
+    q1.add("0000");
+    q2.add(target);
+    int steps = 0;
+    while (!q1.isEmpty() && !q2.isEmpty()) {
+        Set<String> tmp = new HashSet<>();
+        for (String cur : q1) {
+            if (deads.contains(cur)) {
+                continue;
+            }
+            if (q2.contains(cur)) {
+                return steps;
+            }
+            visited.add(cur);
+            for (int j = 0; j < 4; j++) {
+                String next = plusOne(cur, j);
+                if (!visited.contains(next)) {
+                    tmp.add(next);
+                }
+                next = minusOne(cur, j);
+                if (!visited.contains(next)) {
+                    tmp.add(next);
+                }
+            }    
+        }
+        steps++;
+        q1 = q2;
+        q2 = tmp;
+    }
+    return -1;
 }
