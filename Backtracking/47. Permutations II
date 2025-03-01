@@ -17,7 +17,7 @@ public class Solution {
         List<List<Integer>> rst = new ArrayList<>();
         List<Integer> path = new ArrayList<>();
         int[] visited = new int[nums.length];
-        dfs(nums,  rst, path, visited);
+        dfs(nums, rst, path, visited);
         return rst;
     }
     private void dfs(int[] nums, List<List<Integer>> rst, List<Integer> path, int[] visited) {
