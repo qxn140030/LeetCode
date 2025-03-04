@@ -84,7 +84,47 @@ public class Codec {
 // Codec codec = new Codec();
 // codec.deserialize(codec.serialize(root));
 
-Approach 2: preorder traversal
+Approach 2: preorder traversal (recursion)
+public class Codec {
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        StringBuilder sb = new StringBuilder();
+        serialize(root, sb);
+        return sb.toString();
+    }
+    void serialize(TreeNode root, StringBuilder sb) {
+        if (root == null) {
+            sb.append("#,");
+            return;
+        }
+        sb.append(root.val).append(",");
+        serialize(root.left, sb);
+        serialize(root.right, sb);
+    }
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        List<String> nodes = new ArrayList<>();
+        for (String s : data.split(",")) {
+            nodes.add(s);
+        }
+        return deserialize(nodes);
+    }
+    TreeNode deserialize(List<String> nodes) {
+        if (nodes.isEmpty()) {
+            return null;
+        }
+        String first = nodes.remove(0);
+        if (first.equals("#")) {
+            return null;
+        }
+        TreeNode root = new TreeNode(Integer.parseInt(first));
+        root.left = deserialize(nodes);
+        root.right = deserialize(nodes);
+        return root;
+    }
+}
+
+Approach 2: preorder traversal (iteration)
 Time complexity: O()
 Space complexity: O()
 
