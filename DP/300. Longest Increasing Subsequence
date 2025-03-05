@@ -60,7 +60,7 @@ class Solution {
     }
 }
 
-Approach 3: Binary Search
+Approach 3: Binary Search - patience sorting
 Since sub is in sorted order, we can use binary search instead to greatly improve the efficiency of our algorithm.
 Time complexity: O(nlogn)
 Space complexity: O(n)
