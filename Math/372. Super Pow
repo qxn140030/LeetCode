@@ -1,0 +1,42 @@
+Your task is to calculate ab mod 1337 where a is a positive integer and b is an extremely large positive integer given in the form of an array.
+
+Example 1:
+Input: a = 2, b = [3]
+Output: 8
+
+Example 2:
+Input: a = 2, b = [1,0]
+Output: 1024
+
+Example 3:
+Input: a = 1, b = [4,3,3,8,5,2]
+Output: 1
+
+Time complexity: O(n)
+
+int base = 1337;
+public int superPow(int a, int[] b) {
+    List<Integer> bb = new LinkedList<>();
+    for (int num : b) {
+        bb.add(num);
+    }
+    return helper(a, bb);
+}
+int helper(int a, List<Integer> b) {
+    if (b.size() == 0) {
+        return 1;
+    }
+    int last = b.removeLast();
+    int part1 = myPow(a, last);
+    int part2 = myPow(helper(a, b), 10);
+    return (part1 * part2) % base;
+}
+int myPow(int a, int k) {
+    a %= base;
+    int res = 1;
+    for (int i = 0; i < k; i++) {
+        res *= a;
+        res %= base;
+    }
+    return res;
+}
