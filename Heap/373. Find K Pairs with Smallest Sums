@@ -22,26 +22,21 @@ All possible pairs are returned from the sequence:
 Time complexity: O()
 Space complexity: O()
 
-public class Solution {
-    public List<int[]> kSmallestPairs(int[] nums1, int[] nums2, int k) {
-        List<int[]> rst = new ArrayList<int[]>();
-        k = Math.min(k, nums1.length * nums2.length);
-        if (k == 0) {
-            return rst;
-        }
-        int[] idx = new int[nums1.length];
-        while (k-- > 0) {
-            int t = 0;
-            int min = Integer.MAX_VALUE;
-            for (int i = 0; i < nums1.length; i++) {
-                if (idx[i] < nums2.length && nums1[i] + nums2[idx[i]] < min) {
-                    t = i;
-                    min = nums1[i] + nums2[idx[i]];
-                }
-            }
-            rst.add(new int[] {nums1[t], nums2[idx[t]]});
-            idx[t]++;
-        }
-        return rst;
+public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
+    List<List<Integer>> rst = new ArrayList<>();
+    PriorityQueue<int[]> pq = new PriorityQueue<>(
+        (a, b) -> Integer.compare((a[0] + a[1]), (b[0] + b[1])) 
+    );
+    for (int i = 0; i < nums1.length; i++) {
+        pq.offer(new int[] {nums1[i], nums2[0], 0}); 
     }
+    while (k-- > 0 && !pq.isEmpty()) {
+        int[] pair = pq.poll();
+        int num1 = pair[0], num2 = pair[1], index2 = pair[2];
+        rst.add(Arrays.asList(num1, num2));
+        if (index2 + 1 < nums2.length) {
+            pq.offer(new int[] {num1, nums2[index2 + 1], index2 + 1});
+        }
+    }
+    return rst;
 }
