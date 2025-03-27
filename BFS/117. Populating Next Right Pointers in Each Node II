@@ -89,7 +89,7 @@ public class Solution {
                 if (next == null) {
                     next = parent.left != null ? parent.left: parent.right;
                 }
-                if (parent.left != null){
+                if (parent.left != null) {
                     if (pre != null) {
                         pre.next = parent.left;
                         pre = pre.next;
