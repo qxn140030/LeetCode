@@ -59,12 +59,11 @@ class Solution {
         return helper(1, n);
     }
     List<TreeNode> helper(int start, int end) {
-        if (start > end) {
-            return new ArrayList<>() {{
-                add(null);
-            }};
-        }
         List<TreeNode> list = new ArrayList<>();
+        if (start > end) {
+            list.add(null);
+            return list;
+        }
         Pair<Integer, Integer> pair = new Pair(start, end);
         if (memo.containsKey(pair)) {
             return memo.get(pair);
