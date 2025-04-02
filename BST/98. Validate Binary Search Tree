@@ -36,7 +36,7 @@ class Solution {
     public boolean isValidBST(TreeNode root) {
         return check(root, null, null);
     }
-    private boolean check(TreeNode root, Integer low, Integer high) {
+    boolean check(TreeNode root, Integer low, Integer high) {
         if (root == null) {
             return true;
         }
@@ -51,7 +51,7 @@ class Solution {
     public boolean isValidBST(TreeNode root) {
         return check(root, Long.MIN_VALUE, Long.MAX_VALUE);
     }
-    private boolean check(TreeNode root, long low, long high) {
+    boolean check(TreeNode root, long low, long high) {
         if (root == null) {
             return true;
         }
@@ -67,9 +67,9 @@ Time complexity: O(n)
 Space complexity: O(n)
 
 class Solution {
-    private Stack<TreeNode> stack = new Stack<>();
-    private Stack<Integer> upperLimits = new Stack<>();  
-    private Stack<Integer> lowerLimits = new Stack<>();
+    Stack<TreeNode> stack = new Stack<>();
+    Stack<Integer> upperLimits = new Stack<>();  
+    Stack<Integer> lowerLimits = new Stack<>();
     public boolean isValidBST(TreeNode root) {
         Integer low = null, high = null, val;
         update(root, low, high);
@@ -89,7 +89,7 @@ class Solution {
         }
         return true;
     }
-    private void update(TreeNode root, Integer low, Integer high) {
+    void update(TreeNode root, Integer low, Integer high) {
         stack.push(root);
         lowerLimits.push(low);
         upperLimits.push(high);
@@ -101,11 +101,11 @@ Time complexity: O(n)
 Space complexity: O(n)
 
 class Solution {
-    private Integer pre = null;                  // use Integer instead of int as it supports a null value.
+    Integer pre = null;                  // use Integer instead of int as it supports a null value.
     public boolean isValidBST(TreeNode root) {
         return inorder(root);
     }
-    private boolean inorder(TreeNode root) {
+    boolean inorder(TreeNode root) {
         if (root == null) {
             return true;
         }
