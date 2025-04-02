@@ -45,7 +45,7 @@ class Solution {
         }
         return Math.max(largestBSTSubtree(root.left), largestBSTSubtree(root.right));
     }
-    private boolean isValidBST(TreeNode root, Integer low, Integer high) {
+    boolean isValidBST(TreeNode root, Integer low, Integer high) {
         if (root == null) {
             return true;
         }
@@ -54,7 +54,7 @@ class Solution {
         }
         return isValidBST(root.left, low, root.val) && isValidBST(root.right, root.val, high);
     }
-    private int countNodes(TreeNode root) {
+    int countNodes(TreeNode root) {
         if (root == null) {
              return 0;
         }
