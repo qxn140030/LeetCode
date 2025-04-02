@@ -51,7 +51,7 @@ class Solution {
         int[] swapped = findTwoSwapped(nums);
         recover(root, 2, swapped[0], swapped[1]);
     }
-    private void inorder(TreeNode root, List<Integer> nums) {
+    void inorder(TreeNode root, List<Integer> nums) {
         if (root == null) {
             return;
         }
@@ -59,7 +59,7 @@ class Solution {
         nums.add(root.val);
         inorder(root.right, nums);
     }
-    private int[] findTwoSwapped(List<Integer> nums) {
+    int[] findTwoSwapped(List<Integer> nums) {
         int n = nums.size(), x = -1, y = -1;
         boolean flag = false;
         for (int i = 1; i < n; i++) {
@@ -75,7 +75,7 @@ class Solution {
         }
         return new int[]{x, y};
     }
-    private void recover(TreeNode root, int count, int x, int y) {
+    void recover(TreeNode root, int count, int x, int y) {
         if (root == null || count == 0) {
             return;
         }
@@ -118,7 +118,7 @@ class Solution {
         }
         swap(x, y);
     }
-    private void swap(TreeNode a, TreeNode b) {
+    void swap(TreeNode a, TreeNode b) {
         int tmp = a.val;
         a.val = b.val;
         b.val = tmp;
@@ -130,14 +130,14 @@ Time complexity: O(n)
 Space complexity: O(n)
 
 public class Solution {
-    private TreeNode pre = null;
-    private TreeNode first = null;
-    private TreeNode second = null;
+    TreeNode pre = null;
+    TreeNode first = null;
+    TreeNode second = null;
     public void recoverTree(TreeNode root) {
         helper(root);
         swap(first, second);
     }
-    private void helper(TreeNode root) {
+    void helper(TreeNode root) {
         if (root == null) {
             return;
         }
