@@ -7,7 +7,7 @@ Output:      0
        -10   5
 
 Approach 1: Recursion
-Time compexity: O(nlogn)
+Time complexity: O(nlogn)
 O(n) to find the mid, we do this for every half of the original linked list.
 From the looks of it, it seems to be O(n^2), on closed analysis, it turns out to be a bit more efficient than O(n^2)
 n/2 + 2 * n/4 + 4 * n/8 + 8 * n/16 ... = (n/2)logn
@@ -66,7 +66,7 @@ public class Solution {
 Approach 2: Recursion + Conversion to Array
 convert the given linked list into an array and then use that array to form our binary search tree.
 get the time complexity down by using more space.
-Time compexity: O(n)
+Time compelxity: O(n)
 Space complexity: O(n)
 
 class Solution {
@@ -81,7 +81,7 @@ class Solution {
         }
         return formBST(list, 0, list.size() - 1);
     }
-    private TreeNode formBST(List<Integer> list, int i, int j) {
+    TreeNode formBST(List<Integer> list, int i, int j) {
         if (i > j) {
             return null;
         }
@@ -96,11 +96,11 @@ class Solution {
 Approach 3: Inorder Simulation
 The invariance that we maintain is that whenever we are done building the left half of the BST, 
 the head pointer in the linked list will point to the root node or the middle node (which becomes the root).
-Time compexity: O(n)
+Time complexity: O(n)
 Space complexity: O(logn)
 
 public class Solution {
-    private ListNode cur;
+    ListNode cur;
     public TreeNode sortedListToBST(ListNode head) {
         if (head == null) {
             return null;
@@ -113,7 +113,7 @@ public class Solution {
         }
         return helper(0, len - 1);
     }
-    private TreeNode helper(int i, int j) {         // build the tree bottom up.
+    TreeNode helper(int i, int j) {         // build the tree bottom up.
         if (i > j) {
             return null;
         }
