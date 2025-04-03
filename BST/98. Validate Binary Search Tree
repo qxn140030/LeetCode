@@ -103,17 +103,14 @@ Space complexity: O(n)
 class Solution {
     Integer pre = null;                  // use Integer instead of int as it supports a null value.
     public boolean isValidBST(TreeNode root) {
-        return inorder(root);
-    }
-    boolean inorder(TreeNode root) {
         if (root == null) {
             return true;
         }
-        if (!inorder(root.left) || pre != null && root.val <= pre) {
+        if (!isValidBST(root.left) || pre != null && root.val <= pre) {
             return false;
         }
         pre = root.val;
-        return inorder(root.right);
+        return isValidBST(root.right);
     }
 }
 
