@@ -35,8 +35,7 @@ class Node {
 };
 */
 class Solution {
-    Node first = null;
-    Node last = null;
+    Node first = null, last = null;
     public Node treeToDoublyList(Node root) {
         if (root == null) {
             return null;
@@ -46,22 +45,23 @@ class Solution {
         first.left = last;
         return first;
     }
-    private void helper(Node node) {
-        if (node != null) {
-            helper(node.left);
-            if (last != null) {
-                last.right = node;
-                node.left = last;
-            } else {
-                first = node;
-            }
-            last = node;
-            helper(node.right);
+    void helper(Node node) {
+        if (node == null) {
+            return;
         }
+        helper(node.left);
+        if (last != null) {
+            last.right = node;
+            node.left = last;
+        } else {
+            first = node;
+        }
+        last = node;
+        helper(node.right);
     }
 }
 
-Approach 1: Iteration
+Approach 2: Iteration
 Time complexity: O(n)
 Space complexity: O(n)
 
@@ -88,7 +88,7 @@ class Solution {
         tail.right = head;
         return head;
     }
-    private void traverse(Node root, Queue<Node> queue){
+    void traverse(Node root, Queue<Node> queue){
         if (root != null) {
             traverse(root.left, queue);
             queue.add(root);
