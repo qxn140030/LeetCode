@@ -98,25 +98,21 @@ Space complexity: O(n)
 class Solution {
     public void recoverTree(TreeNode root) {
         Deque<TreeNode> stack = new ArrayDeque<>();       // use ArrayDeque instead of Stack in Java.
-        TreeNode x = null, y = null, pre = null;
-        while (!stack.isEmpty() || root != null) {
+        TreeNode first = null, second = null, pre = null;
+        while (root != null || !stack.isEmpty()) {
             while (root != null) {
                 stack.add(root);                          // or stack.push(root);
                 root = root.left;
             }
             root = stack.removeLast();                    // or stack.pop();
-            if (pre != null && root.val < pre.val) {
-                y = root;
-                if (x == null) {
-                    x = pre;
-                } else {
-                    break;
-                }
+            if (pre != null && pre.val >= root.val) {
+                first = first == null ? pre : first;
+                second = root;
             }
             pre = root;
             root = root.right;
         }
-        swap(x, y);
+        swap(first, second);
     }
     void swap(TreeNode a, TreeNode b) {
         int tmp = a.val;
@@ -130,9 +126,7 @@ Time complexity: O(n)
 Space complexity: O(n)
 
 public class Solution {
-    TreeNode pre = null;
-    TreeNode first = null;
-    TreeNode second = null;
+    TreeNode pre = null, first = null, second = null;
     public void recoverTree(TreeNode root) {
         helper(root);
         swap(first, second);
@@ -142,17 +136,11 @@ public class Solution {
             return;
         }
         helper(root.left);
-        if (pre == null) {
-            pre = root;
-        } else {
-            if (pre.val >= root.val) {
-                if (first == null) {
-                    first = pre;
-                }
-                second = root;
-            }
-            pre = root;
+        if (pre != null && pre.val >= root.val) {
+            first = first == null ? pre : first;
+            second = root;
         }
+        pre = root;
         helper(root.right);
     }
 }
