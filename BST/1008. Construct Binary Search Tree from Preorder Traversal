@@ -63,58 +63,42 @@ class Solution {
 
 Approach 2: Recursion
 Time complexity: O(n)
-Space complexity: O(n)
+Space complexity: O(h)
 
-class Solution {
-    int[] preorder;
-    int n, idx = 0;
-    public TreeNode bstFromPreorder(int[] preorder) {
-        this.preorder = preorder;
-        n = preorder.length;
-        return helper(Integer.MIN_VALUE, Integer.MAX_VALUE);
+int idx = 0;
+public TreeNode bstFromPreorder(int[] preorder) {
+    return helper(preorder, Integer.MAX_VALUE);
+}
+TreeNode helper(int[] preorder, int bound) {
+    if (idx == preorder.length || preorder[idx] > bound) {
+        return null;
     }
-    private TreeNode helper(int left, int right) {
-        if (idx == n) {
-            return null;
-        }
-        int val = preorder[idx];
-        if (val < left || val > right) {
-            return null;
-        }
-        idx++;
-        TreeNode root = new TreeNode(val);
-        root.left = helper(left, val);
-        root.right = helper(val, right);
-        return root;
-    }
+    TreeNode root = new TreeNode(preorder[idx++]);
+    root.left = helper(preorder, root.val);
+    root.right = helper(preorder, bound);
+    return root;
 }
 
 Approach 3: Iteration
 Time complexity: O(n)
 Space complexity: O(n)
 
-class Solution {
-    public TreeNode bstFromPreorder(int[] preorder) {
-        int n = preorder.length;
-        if (n == 0) {
-            return null;
+public TreeNode bstFromPreorder(int[] preorder) {
+    TreeNode root = new TreeNode(preorder[0]);
+    Deque<TreeNode> stack = new ArrayDeque<>();
+    stack.push(root);
+    for (int i = 1; i < preorder.length; i++) {
+        TreeNode parent = stack.peek();        
+        TreeNode child = new TreeNode(preorder[i]);
+        while (!stack.isEmpty() && child.val > stack.peek().val) { 
+            parent = stack.pop();
         }
-        TreeNode root = new TreeNode(preorder[0]);
-        Deque<TreeNode> deque = new ArrayDeque<>();
-        deque.push(root);
-        for (int i = 1; i < n; i++) {
-            TreeNode node = deque.peek();
-            TreeNode child = new TreeNode(preorder[i]);
-            while (!deque.isEmpty() && deque.peek().val < child.val) {   // adjust the parent.
-                node = deque.pop();
-            }
-            if (node.val < child.val) {     // follow BST logic to create a parent-child link.
-                node.right = child;
-            } else {
-                node.left = child;
-            }
-            deque.push(child);              // add the child into deque.
+        if (child.val > parent.val) { 
+            parent.right = child;
+        } else {
+            parent.left = child;
         }
-        return root;
+        stack.push(child);       
     }
+    return root;
 }
