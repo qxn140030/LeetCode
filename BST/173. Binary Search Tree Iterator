@@ -24,7 +24,7 @@ Space complexity: O(n) since we create a new array to contain all the nodes of t
  */
 class BSTIterator {
     List<Integer> nodesSorted = new ArrayList<>();
-    int index = -1;
+    int index = 0;
     public BSTIterator(TreeNode root) {
         inorderTraversal(root);
     }
@@ -37,11 +37,11 @@ class BSTIterator {
         inorderTraversal(root.right);
     }
     public int next() {
-        return nodesSorted.get(++index);
+        return nodesSorted.get(index++);
     }
     
     public boolean hasNext() {
-        return index < nodesSorted.size() - 1;
+        return index < nodesSorted.size();
     }
 }
 /**
