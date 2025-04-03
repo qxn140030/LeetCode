@@ -62,9 +62,8 @@ class BSTIterator {
     }
     public int next() {
         TreeNode node = stack.pop();
-        int next = node.val;
         findLeftMost(node.right);
-        return next;
+        return node.val;
     }
     public boolean hasNext() {
         return !stack.isEmpty();
