@@ -1,0 +1,19 @@
+The first circular linked list should contain the first half of the nodes (⌈list.length / 2⌉ nodes).
+
+Time complexity: O(n)
+Space complexity: O(1)
+
+public LinkedListNode[] splitCircularLinkedList(LinkedListNode head) {
+    LinkedListNode slow = head, fast = head;
+    while (fast.next != head && fast.next.next != head) {
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+    if (fast.next != head) {
+        fast = fast.next;
+    }
+    LinkedListNode head2 = slow.next;
+    fast.next = head2;
+    slow.next = head;
+    return new LinkedListNode[]{head, head2}; 
+}
