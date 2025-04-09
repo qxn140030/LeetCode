@@ -13,40 +13,33 @@ Approach 1: Reverse input + Construct output by adding to front
 Time complexity: O(m + n)
 Space complexity: O(1)
 
-class Solution {
-    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        l1 = reverse(l1);
-        l2 = reverse(l2);
-        ListNode head = null;
-        int carry = 0;
-        while (l1 != null || l2 != null) {
-            int val1 = l1 != null ? l1.val : 0;
-            int val2 = l2 != null ? l2.val : 0;
-            int sum = val1 + val2 + carry;
-            carry = sum / 10;
-            ListNode curr = new ListNode(sum % 10);
-            curr.next = head;
-            head = curr;
-            l1 = l1 != null ? l1.next : null;
-            l2 = l2 != null ? l2.next : null;
-        }
-        if (carry > 0) {
-            ListNode curr = new ListNode(carry);
-            curr.next = head;
-            head = curr;
-        }
-        return head;
+public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+    l1 = reverse(l1);
+    l2 = reverse(l2);
+    ListNode head = null;
+    int carry = 0;
+    while (l1 != null || l2 != null || carry > 0) {
+        int val1 = l1 != null ? l1.val : 0;
+        int val2 = l2 != null ? l2.val : 0;
+        int sum = val1 + val2 + carry;
+        ListNode curr = new ListNode(sum % 10);
+        curr.next = head;
+        head = curr;
+        carry = sum / 10;
+        l1 = l1 != null ? l1.next : null;
+        l2 = l2 != null ? l2.next : null;
     }
-    private ListNode reverse(ListNode head) {
-        ListNode last = null;
-        while (head != null) {
-            ListNode tmp = head.next;
-            head.next = last;
-            last = head;
-            head = tmp;    
-        }    
-        return last;
-    }
+    return head;
+}
+ListNode reverse(ListNode head) {
+    ListNode last = null;
+    while (head != null) {
+        ListNode tmp = head.next;
+        head.next = last;
+        last = head;
+        head = tmp;    
+    }    
+    return last;
 }
 
 Approach 2: Follow up: do not reverse input
