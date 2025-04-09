@@ -14,17 +14,15 @@ Space complexity: O(1)
  *     ListNode(int x) { val = x; }
  * }
  */
-public class Solution {
-    public ListNode reverseList(ListNode head) {
-        ListNode pre = null, cur = head;
-        while (cur != null) {
-            ListNode tmp = cur.next;
-            cur.next = pre;
-            pre = cur;
-            cur = tmp;
-        }
-        return pre;
+public ListNode reverseList(ListNode head) {
+    ListNode last = null;
+    while (head != null) {
+        ListNode tmp = head.next;
+        head.next = last;
+        last = head;
+        head = tmp;
     }
+    return last;
 }
 
 Approach 2: Recursive
