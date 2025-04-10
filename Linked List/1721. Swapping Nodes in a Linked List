@@ -77,19 +77,20 @@ Space complexity: O(1)
 class Solution {
     public ListNode swapNodes(ListNode head, int k) {
         int len = 0;
+        // front and end pointers will be used to track the kth node from the start and end of the linked list, respectively.
         ListNode cur = head, frontNode = null, endNode = null;
         while (cur != null) {
             len++;
-            if (endNode != null) {
-                endNode = endNode.next;
+            if (endNode != null) {          // means the kth node from the beginning has been found,
+                endNode = endNode.next;     // we can start moving the end pointer to find the kth node from the end.
             }
-            if (len == k) {
-                frontNode = cur;
+            if (len == k) {                 // if the count has become equal to k,
+                frontNode = cur;            // it means the curr is pointing the kth node at the begining of the linked list.
                 endNode = head;
             }
             cur = cur.next;
         }
-        int temp = frontNode.val;
+        int temp = frontNode.val;           // swap the values of two nodes.
         frontNode.val = endNode.val;
         endNode.val = temp;
         return head;
