@@ -1,0 +1,21 @@
+Connect ant two sticks into one stick at a cost equal to the sum of their length. 
+This process continues until there is only one stick remaining. 
+
+Time Complexity: O(nlogn)
+Space Complexity: O(n)
+
+public static int connectSticks (int[] sticks) {
+    int totalCost = 0;
+    PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+    for (int stick : sticks) {
+        minHeap.offer(stick);
+    }
+    while (minHeap.size() > 1) {
+        int first = minHeap.poll();
+        int second = minHeap.poll();
+        int cost = first + second;
+        totalCost += cost;
+        minHeap.add(cost); 
+    }
+    return totalCost;
+}
