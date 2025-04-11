@@ -13,7 +13,26 @@ Input: [2, 2, 3, 1], Output: 1
 Explanation: Note that the third maximum here means the third maximum distinct number.
 Both numbers with value 2 are both considered as second maximum.
 
-Approach 1: three variables
+Approach 1: Sorting
+Time complexity: O(nlogn)
+Space complexity: O(1)
+
+public int thirdMax(int[] nums) {
+    Arrays.sort(nums);
+    int distinct = 1, n = nums.length, prev = nums[n - 1];
+    for (int i = n - 2; i >= 0; i--) {
+        if (nums[i] < prev) {
+            distinct++;
+            prev = nums[i];
+        }
+        if (distinct == 3) {
+            return nums[i];
+        }
+    }
+    return nums[n - 1];
+}
+
+Approach 2: three variables
 Time complexity: O(n)
 Space complexity: O(1)
 
