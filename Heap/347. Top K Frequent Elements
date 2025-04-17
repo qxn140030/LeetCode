@@ -15,9 +15,6 @@ Space complexity: O(n + k)
 
 class Solution {
     public int[] topKFrequent(int[] nums, int k) {
-        if (k == nums.length) {
-            return nums;
-        }
         Map<Integer, Integer> count = new HashMap<>();
         for (int n: nums) {
           count.put(n, count.getOrDefault(n, 0) + 1);
@@ -76,7 +73,7 @@ class Solution {
         quickSelect(0, n - 1, n - k);
         return Arrays.copyOfRange(unique, n - k, n);
     }
-    private void quickSelect(int i, int j, int k) {
+    void quickSelect(int i, int j, int k) {
         while (i < j) {
             int pivotIndex = partition(i, j);
             if (index < k) {
@@ -88,7 +85,7 @@ class Solution {
             }
         }
     }
-    private int partition(int left, int right) {
+    int partition(int left, int right) {
         Random random = new Random();
         int pivotIndex = left + random.nextInt(right - left); 
         int pivot = unique[pivotIndex];
@@ -103,9 +100,9 @@ class Solution {
         swap(storeIndex, right);                             // 3. move pivot to its final place.
         return storeIndex;
     }
-    private void swap(int a, int b) {
-        int tmp = unique[a];
-        unique[a] = unique[b];
-        unique[b] = tmp;
+    void swap(int i, int j) {
+        int tmp = unique[i];
+        unique[i] = unique[j];
+        unique[j] = tmp;
     }
 }
