@@ -18,7 +18,7 @@ class Solution {
         for (char c : s.toCharArray()) {
             cnt[c - 'a']++;
         }
-        PriorityQueue<int[]> q = new PriorityQueue<>((a, b) -> b[1] - a[1]);      // max heap.
+        PriorityQueue<int[]> q = new PriorityQueue<>((a, b) -> Integer.compare(b[1], a[1]));      // max heap.
         for (int i = 0; i < 26; i++) {
             if (cnt[i] > 0) {
                 q.offer(new int[]{i + 'a', cnt[i]});                             
