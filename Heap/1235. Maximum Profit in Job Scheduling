@@ -46,15 +46,13 @@ class Solution {
         for (int i = 0; i < n; i++) {
             int start = jobs[i].start, end = jobs[i].end, profit = jobs[i].profit;
             while (!pq.isEmpty() && start >= pq.peek().end) {                        // keep popping while jobs are not conflicting.
-                maxProfit = Math.max(maxProfit, pq.peek().profit);
-                pq.remove();
+                maxProfit = Math.max(maxProfit, pq.poll().profit);
             }
             Job combinedJob = new Job(start, end, profit + maxProfit);
             pq.add(combinedJob);                                                     // push the job with combined profit
         } 
         while (!pq.isEmpty()) {
-            maxProfit = Math.max(maxProfit, pq.peek().profit);                       // update the value of maxProfit by comparing with profit of jobs that exits in the heap.
-            pq.remove();
+            maxProfit = Math.max(maxProfit, pq.poll().profit);                       // update the value of maxProfit by comparing with profit of jobs that exits in the heap.
         }
         return maxProfit;
     }
