@@ -45,11 +45,7 @@ public class Solution {
                 end = mid;
             }
         }
-        if (nums[end] == target) {
-            result[1] = end;
-        } else {
-            result[1] = start;
-        }
+        result[1] = nums[end] == target ? end : start;
         return result;
     }
 }
