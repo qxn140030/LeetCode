@@ -79,12 +79,12 @@ Space complexity: O(n)
 class Solution {
     public int subarraySum(int[] nums, int k) {
         int count = 0, sum = 0;
-        Map<Integer, Integer> map = new HashMap<>();
-        map.put(0, 1);
+        Map<Integer, Integer> map = new HashMap<>();   // to store (prefixSum -> number of occurrences)
+        map.put(0, 1);                                 // assume that there has been 1 prefix sum of 0 before we start.
         for (int i = 0; i < nums.length; i++) {
             sum += nums[i];
-            if (map.containsKey(sum - k)) {
-                count += map.get(sum - k);
+            if (map.containsKey(sum - k)) {            // Check if there exists a prefix sum such that (current sum - prefix sum) == k
+                count += map.get(sum - k);             // If found, add the number of such prefix sums to the count.
             }
             map.put(sum, map.getOrDefault(sum, 0) + 1);
         }
