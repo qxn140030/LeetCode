@@ -11,6 +11,38 @@ Approach 1: Sliding Window
 Time complexity: O(m + n)
 Space complexity: O(n)
 
+public String minWindow(String s, String t) {
+    Map<Character, Integer> need = new HashMap<>(), window = new HashMap<>();
+    for (int i = 0; i < t.length(); i++) {
+        char c = t.charAt(i);
+        need.put(c, need.getOrDefault(c, 0) + 1);
+    }
+    int minStart = 0, valid = 0, left = 0, minLen = s.length() + 1;
+    for (int i = 0; i < s.length(); i++) { 
+        char c = s.charAt(i);
+        if (need.containsKey(c)) {
+            window.put(c, window.getOrDefault(c, 0) + 1);
+            if (window.get(c).equals(need.get(c))) {
+                valid++;
+            }
+        }                         
+        while (valid == need.size()) {     
+            if (i - left + 1 < minLen) {
+                minStart = left;
+                minLen = i - left + 1;
+            }
+            char ch = s.charAt(left++);
+            if (need.containsKey(ch)) {
+                if (window.get(ch).equals(need.get(ch))) {
+                    valid--;
+                }
+                window.put(ch, window.get(ch) - 1);
+            }
+        }
+    }
+    return minLen == s.length() + 1 ? "" : s.substring(minStart, minStart + minLen);
+}
+
 public class Solution {
     public String minWindow(String s, String t) {
         Map<Character, Integer> map = new HashMap<>();
