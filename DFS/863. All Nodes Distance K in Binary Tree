@@ -1,0 +1,83 @@
+Given the root of a binary tree, the value of a target node target, and an integer k, return an array of the values of all nodes that have a distance k from the target node.
+
+You can return the answer in any order.
+
+Example 1:
+
+Input: root = [3,5,1,6,2,0,8,null,null,7,4], target = 5, k = 2
+Output: [7,4,1]
+Explanation: The nodes that are a distance 2 from the target node (with value 5) have values 7, 4, and 1.
+
+Example 2:
+
+Input: root = [1], target = 1, k = 3
+Output: []
+
+Approach 1: Implementing Parent Pointers
+Time / Space Complexity: O(n)
+
+Map<TreeNode, TreeNode> parent = new HashMap<>();
+List<Integer> rst = new ArrayList<>();
+Set<TreeNode> visited = new HashSet<>();
+public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
+    addParent(root, null);
+    dfs(target, k);
+    return rst;
+}
+void addParent(TreeNode node, TreeNode p) {
+    if (node == null) {
+        return;
+    }
+    parent.put(node, p);
+    addParent(node.left, node);
+    addParent(node.right, node);
+}
+void dfs(TreeNode node, int distance) {
+    if (node == null || visited.contains(node)) {
+        return;
+    }
+    visited.add(node);
+    if (distance == 0) {
+        rst.add(node.val);
+        return;
+    }
+    dfs(parent.get(node), distance - 1);
+    dfs(node.left, distance - 1);
+    dfs(node.right, distance - 1);
+}
+
+Approach 2: Depth-First Search on Equivalent Graph
+Time / Space Complexity: O(n)
+
+Map<Integer, List<Integer>> graph = new HashMap<>();
+List<Integer> rst = new ArrayList<>();
+Set<Integer> visited = new HashSet<>();
+public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
+    buildGraph(root, null);
+    visited.add(target.val);
+    dfs(target.val, k, 0);
+    return rst;
+}
+void buildGraph(TreeNode node, TreeNode parent) {
+    if (node == null) {
+        return;
+    }
+    if (parent != null) {
+        graph.computeIfAbsent(node.val, k -> new ArrayList<>()).add(parent.val);
+        graph.computeIfAbsent(parent.val, k -> new ArrayList<>()).add(node.val);
+    }
+    buildGraph(node.left, node);
+    buildGraph(node.right, node);
+}
+void dfs(int val, int k, int distance) {
+    if (distance == k) {
+        rst.add(val);
+        return;
+    }
+    for (int neighbor : graph.getOrDefault(val, new ArrayList<>())) {
+        if (!visited.contains(neighbor)) {
+            visited.add(neighbor);
+            dfs(neighbor, k, distance + 1);
+        }
+    }
+}
