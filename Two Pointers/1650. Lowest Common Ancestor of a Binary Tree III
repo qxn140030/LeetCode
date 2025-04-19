@@ -35,7 +35,7 @@ public Node lowestCommonAncestor(Node p, Node q) {
     Set<Integer> seen = new HashSet<>();
     while (p != null || q != null) {
         if (p != null) {
-            if (!seen.add(p.val)) {
+            if (!seen.add(p.val)) {        // return false if the element was already in the set.
                 return p;
             }
             p = p.parent;
