@@ -42,7 +42,7 @@ public class Solution {
     }
 }
 
-Approach 2: use Deque.
+Approach 2: use Monotonic Deque
 Time complexity: O(n)
 Space complexity: O(k)
 
