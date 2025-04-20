@@ -112,10 +112,7 @@ class Solution {
                 }
             }
         }
-        if (index == numCourses) {
-            return order;
-        }
-        return new int[0];  
+        return index == numCourses ? order : new int[0];  
     }
 }
 
