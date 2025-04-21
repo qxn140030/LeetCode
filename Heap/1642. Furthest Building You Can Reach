@@ -34,7 +34,7 @@ Time Complexity: O(nlogL)
 Space Complexity: O(L)
 
 public int furthestBuilding(int[] heights, int bricks, int ladders) {
-    PriorityQueue<Integer> minHeap = new PriorityQueue<>((a, b) -> Integer.compare(a, b));
+    PriorityQueue<Integer> minHeap = new PriorityQueue<>();
     for (int i = 0; i < heights.length - 1; i++) {
         int gap = heights[i + 1] - heights[i];
         if (gap <= 0) {
