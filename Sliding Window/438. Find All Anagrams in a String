@@ -29,8 +29,7 @@ public List<Integer> findAnagrams(String s, String p) {
             ch = s.charAt(i - np);
             if (sCount.get(ch) == 1) {
                 sCount.remove(ch);
-            }
-            else {
+            } else {
                 sCount.put(ch, sCount.get(ch) - 1);
             }
         }
