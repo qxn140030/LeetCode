@@ -101,8 +101,8 @@ class TimeMap {
     public TimeMap() {
         map = new HashMap<>();
     }
-    public void set(String key, String value, int timestamp) {
-        map.computeIfAbsent(key, k -> new ArrayList<>()).add(new Pair<>(timestamp, value));
+    public void set(String key, String value, int timestamp) {  
+        map.computeIfAbsent(key, k -> new ArrayList<>()).add(new Pair<>(timestamp, value));   // adding entries in timestamp order.
     }
     public String get(String key, int timestamp) {
         if (map.containsKey(key)) {
