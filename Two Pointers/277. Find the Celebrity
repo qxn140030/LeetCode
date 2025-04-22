@@ -8,6 +8,9 @@ int findCelebrity(n), your function should minimize the number of calls to knows
 Note: There will be exactly one celebrity if he/she is in the party. Return the celebrity's label if there is a celebrity
 in the party. If there is no celebrity, return -1.
 
+Follow up: 
+If the maximum number of allowed calls to the API knows is 3 * n, could you find a solution without exceeding the maximum number of calls?
+
 Approach 1: 
 Time complexity: O(n^2)
 Space complexity: O(n)
