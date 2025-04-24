@@ -13,25 +13,23 @@ Approach 1: Min Heap
 Time complexity: O(nlogk)
 Space complexity: O(n + k)
 
-class Solution {
-    public int[] topKFrequent(int[] nums, int k) {
-        Map<Integer, Integer> count = new HashMap<>();
-        for (int n: nums) {
-          count.put(n, count.getOrDefault(n, 0) + 1);
-        }
-        Queue<Integer> heap = new PriorityQueue<>((n1, n2) -> count.get(n1) - count.get(n2));      // Min Heap.
-        for (int n: count.keySet()) {
-            heap.add(n);
-            if (heap.size() > k) {                                                                 // keep k top frequent elements in the heap.
-                heap.poll();
-            }    
-        }
-        int[] top = new int[k];
-        for (int i = k - 1; i >= 0; i--) {
-            top[i] = heap.poll();                                                                 // O(klogk) time.
-        }
-        return top;
+public int[] topKFrequent(int[] nums, int k) {
+    Map<Integer, Integer> map = new HashMap<>();
+    for (int num : nums) {
+      map.put(num, map.getOrDefault(num, 0) + 1);
     }
+    Queue<Integer> minHeap = new PriorityQueue<>((a, b) -> Integer.compare(map.get(a), map.get(b)));   
+    for (int num : map.keySet()) {
+        minHeap.add(num);
+        if (minHeap.size() > k) {                 
+            minHeap.poll();
+        }    
+    }
+    int[] top = new int[k];
+    for (int i = k - 1; i >= 0; i--) {
+        top[i] = minHeap.poll();  
+    }
+    return top;
 }
 
 class Solution {
