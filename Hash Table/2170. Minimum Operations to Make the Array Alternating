@@ -25,3 +25,46 @@ One way to make the array alternating is by converting it to [1,2,1,2,1].
 The number of operations required in this case is 2.
 Note that the array cannot be converted to [2,2,2,2,2] because in this case nums[0] == nums[1] which violates the conditions of an alternating array.
 
+public int minimumOperations(int[] nums) {
+    Map<Integer, Integer> evenFreq = new HashMap<>(), oddFreq = new HashMap<>();
+    int n = nums.length;
+    // Step 1: Count frequencies
+    for (int i = 0; i < n; i++) {
+        int num = nums[i];
+        if (i % 2 == 0) {
+            evenFreq.put(num, evenFreq.getOrDefault(num, 0) + 1);
+        } else {
+            oddFreq.put(num, oddFreq.getOrDefault(num, 0) + 1);
+        }
+    }
+    // Step 2: Find top two most frequent values in even positions
+    List<int[]> evenTop = getTopTwoList(evenFreq); // each element: [num, freq]
+    List<int[]> oddTop = getTopTwoList(oddFreq);
+    int evenCount = (n + 1) / 2;
+    int oddCount = n / 2;
+    int minOps = Integer.MAX_VALUE;
+    // Step 3: Try all combinations of even and odd top elements
+    for (int[] e : evenTop) {
+        for (int[] o : oddTop) {
+            if (e[0] != o[0]) {
+                int ops = (evenCount - e[1]) + (oddCount - o[1]);
+                minOps = Math.min(minOps, ops);
+            }
+        }
+    }
+
+    return minOps;
+}
+List<int[]> getTopTwoList(Map<Integer, Integer> freqMap) {
+    List<int[]> top = new ArrayList<>();
+    for (Map.Entry<Integer, Integer> entry : freqMap.entrySet()) {
+        top.add(new int[]{entry.getKey(), entry.getValue()});
+    }
+    // Sort descending by frequency
+    top.sort((a, b) -> Integer.compare(b[1], a[1]));
+    // Ensure always return 2 elements
+    while (top.size() < 2) {
+        top.add(new int[]{-1, 0});
+    }
+    return top.subList(0, 2);
+}
