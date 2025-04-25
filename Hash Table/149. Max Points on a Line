@@ -20,38 +20,29 @@ Space complexity: O(n)
  *     Point(int a, int b) { x = a; y = b; }
  * }
  */
-public class Solution {
-    public int maxPoints(Point[] points) {
-        if (points == null || points.length == 0) {
-            return 0;
-        }
-        int max = 0;
-        for (int i = 0; i < points.length; i++) {
-            int same = 1;
-            int vertical = 0;
-            Map<Double, Integer> map = new HashMap<>();
-            for (int j = i + 1; j < points.length; j++) {
-                if (points[i].x == points[j].x) {
-                    if (points[i].y == points[j].y) {
-                        same++;
-                    } else {
-                        vertical++;
-                    }
+public int maxPoints(int[][] points) {
+    int maxPoints = 0;
+    for (int i = 0; i < points.length; i++) {
+        int same = 1, vertical = 0;
+        Map<Double, Integer> map = new HashMap<>();
+        for (int j = i + 1; j < points.length; j++) {
+            if (points[i][0] == points[j][0]) {
+                if (points[i][1] == points[j][1]) {
+                    same++;
                 } else {
-                    double slope = points[i].y == points[j].y ? 0 : 
-                                   1.0 * (points[i].y - points[j].y) / (points[i].x - points[j].x);
-                    if (!map.containsKey(slope)) {
-                        map.put(slope, 1);
-                    } else {
-                        map.put(slope, map.get(slope) + 1);
-                    }
+                    vertical++;
                 }
+            } else {
+                double slope = points[i][1] == points[j][1] ? 0 : 
+                               1.0 * (points[i][1] - points[j][1]) / (points[i][0] - points[j][0]);
+                map.put(slope, map.getOrDefault(slope, 0) + 1);
             }
-            for (int num : map.values()) {
-                max = Math.max(max, num + same);          // Note: + same; for normal cases.
-            }
-            max = Math.max(max, vertical + same);         // Note: + same; for vertical cases.
         }
-        return max;
+        int localMax = vertical;           // Start by assuming the vertical line (same x) has the most points for this base point.
+        for (int count : map.values()) {
+            localMax = Math.max(localMax, count); 
+        }                        // Add the number of duplicate points (same coordinates) to the best line through this base point.
+        maxPoints = Math.max(maxPoints, localMax + same); 
     }
+    return maxPoints;
 }
