@@ -50,8 +50,9 @@ public int countCharacters(String[] words, String chars) {
         cnt[c - 'a']++;
     }
     int rst = 0;
+    int[] tmp = new int[26];
     for (String word : words) {
-        int[] tmp = new int[26];
+        Arrays.fill(tmp, 0);
         boolean good = true;
         for (char c : word.toCharArray()) {
             if (tmp[c - 'a'] == cnt[c - 'a']) {
