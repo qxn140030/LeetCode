@@ -28,7 +28,7 @@ public class Solution {
         }
         return false;
     }
-    private boolean search(char[][] board, String word, int index, int row, int col, boolean[][] visited) {
+    boolean search(char[][] board, String word, int index, int row, int col, boolean[][] visited) {
         if (index >= word.length()) { 
             return true;
         }
@@ -43,6 +43,33 @@ public class Solution {
         visited[row][col] = false;
         return rst;
     }
+}
+
+Follow up: Could you use search pruning to make your solution faster with a larger board?
+Frequency check: If any character in word appears more than it does in the board, return false early.
+Only start from matching letters: Don’t even call search() unless the starting cell matches the first character.
+
+// PRUNING 1 helper: Check if the board contains enough characters to form the word.
+boolean canFormWord(char[][] board, String word) {
+    int[] boardCount = new int[128];                     // Assuming ASCII
+    int[] wordCount = new int[128];
+    for (char[] row : board) {
+        for (char c : row) {
+            boardCount[c]++;
+        }
+    }
+    for (char c : word.toCharArray()) {
+        wordCount[c]++;
+        if (wordCount[c] > boardCount[c]) {
+            return false;
+        }
+    }
+    return true;
+}
+
+// PRUNING 2: Only start search if first letter matches
+if (board[i][j] == word.charAt(0) && search(board, word, 0, i, j, visited)) {
+    return true;
 }
 
 Space complexity: O(1)
