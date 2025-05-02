@@ -21,22 +21,23 @@ Explanation: "bob" used the keycard 3 times in a one-hour period ("21:00","21:20
 public List<String> alertNames(String[] keyName, String[] keyTime) {
     Map<String, TreeSet<Integer>> map = new HashMap<>();
     for (int i = 0; i < keyName.length; i++) {
-        int time = Integer.parseInt(keyTime[i].substring(0, 2)) * 60 + Integer.parseInt(keyTime[i].substring(3));
-        map.computeIfAbsent(keyName[i], k -> new TreeSet<>()).add(time);
+        int hour = Integer.parseInt(keyTime[i].substring(0, 2));
+        int minute = Integer.parseInt(keyTime[i].substring(3));
+        map.computeIfAbsent(keyName[i], k -> new TreeSet<>()).add(hour * 60 + minute);
     }
     TreeSet<String> rst = new TreeSet<>();
-    for (String name : map.keySet()) {
+    for (Map.Entry<String, TreeSet<Integer>> e : map.entrySet()) {
         Deque<Integer> window = new ArrayDeque<>();
-        for (int time : map.get(name)) {
-            window.offer(time);                                                // Add the time to the end of the queue.
+        for (int time : e.getValue()) {
+            window.offer(time);                           // Add the time to the end of the queue.
             if (window.peekLast() - window.peek() > 60) {
-                window.pop();                                                       // remove from the front of the queue.
+                window.poll();                            // remove from the front of the queue.
             }
             if (window.size() >= 3) {
-                rst.add(name);
+                rst.add(e.getKey());
                 break;
             }
         }
     }
-    return new ArrayList<>(rst);                                       // Convert the TreeSet of names to a List.
+    return new ArrayList<>(rst);                         // Convert the TreeSet of names to a List.
 }
