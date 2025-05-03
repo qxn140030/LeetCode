@@ -33,8 +33,8 @@ class Solution {
             }
         } 
         List<String> rst = new ArrayList<>();
-        for (String s : map.keySet()) {
-            rst.add(map.get(s) + " " + s);
+        for (Map.Entry<String, Integer> e : map.entrySet()) {
+            rst.add(e.getValue() + " " + e.getKey());
         }
         return rst;
     }
