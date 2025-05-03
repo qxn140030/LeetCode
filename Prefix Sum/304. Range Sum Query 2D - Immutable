@@ -59,14 +59,14 @@ Approach 4: Caching smarter
 Time complexity: O(1) per query, O(m * n) pre-computation.
 Space complexity: O(m * n)
 
-public class NumMatrix {
+class NumMatrix {
     int[][] sum;
     public NumMatrix(int[][] matrix) {
         int m = matrix.length, n = matrix[0].length;
         sum = new int[m + 1][n + 1];
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                sum[i + 1][j + 1] = sum[i + 1][j] + sum[i][j + 1] - sum[i][j] + matrix[i][j];
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                sum[i][j] = sum[i - 1][j] + sum[i][j - 1] - sum[i - 1][j - 1] + matrix[i - 1][j - 1];
             }
         }
     }
