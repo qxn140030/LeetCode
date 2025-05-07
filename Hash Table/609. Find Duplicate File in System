@@ -18,9 +18,10 @@ Output: [["root/a/2.txt","root/c/d/4.txt"],["root/a/1.txt","root/c/3.txt"]]
 
 Follow up:
 - Imagine you are given a real file system, how will you search files? DFS or BFS?
-DFS. In this case the directory path could be large. DFS can reuse the shared the parent directory before leaving that directory.
+DFS. In this case the directory path could be large. DFS can reuse the shared parent directory before leaving that directory.
 BFS explores neighbors first. This means that files which are located close to each other are also accessed one after another. 
-This is great e.g. for reducing HDD seek times due to space locality and is expected to be faster. For SSDs, larger number of small sequential reads can be grouped into smaller number of large reads.
+This is great e.g. for reducing HDD seek times due to space locality and is expected to be faster. 
+For SSDs, larger number of small sequential reads can be grouped into smaller number of large reads.
 
 - If the file content is very large (GB level), how will you modify your solution?
 For very large files we should do the following comparisons in this order:
@@ -37,6 +38,13 @@ Runtime - Worst case (which is very unlikely to happen): O(N^2 * L) where L is t
 Space - Worst case: all files are hashed and inserted in the hashmap, so O(H^2 * L), H is the hash code size and L is the filename size
 
 - How to make sure the duplicated files you find are not false positive?
+Detecting duplicates by comparing file content as strings is a good start, but it can lead to false positives in large-scale systems.
+1. Hash the file content (e.g., MD5, SHA-256)
+Use a cryptographic hash instead of the raw string. This reduces memory and ensures better uniqueness.
+2. Compare file size before content
+3. Byte-by-byte comparison (for final confirmation)
+4. Avoiding Same Filename Confusion
+5. Use full path + content to avoid ambiguity
 
 Approach 1: Using HashMap
 Time complexity: O(n * m), n strings of average length m is parsed.
