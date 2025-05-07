@@ -38,25 +38,22 @@ Approach 1: Using HashMap
 Time complexity: O(n * m), n strings of average length m is parsed.
 Space complexity: O(n * m)
 
-class Solution {
-    public List<List<String>> findDuplicate(String[] paths) {
-        Map<String, List<String>> map = new HashMap<>();
-        for (String s: paths) {
-            String[] path = s.split(" ");
-            for (int i = 1; i < path.length; i++) {
-                String content = path[i].substring(path[i].indexOf("("), path[i].indexOf(")") + 1);
-                if (!map.containsKey(content)) {
-                    map.put(content, new ArrayList<>());
-                }
-                map.get(content).add(path[0] + "/" + path[i].substring(0, path[i].indexOf("(")));
-            }
-        }
-        List<List<String>> rst = new ArrayList<>();
-        for (String key: map.keySet()) {               // for (Map.Entry<String, List<String>> entry: map.entrySet()) {
-            if (map.get(key).size() > 1) {             // if (entry.getValue().size() > 1)
-                rst.add(map.get(key));                 // rst.add(new ArrayList<>(entry.getValue()));
-            }
-        }
-        return rst;
+public List<List<String>> findDuplicate(String[] paths) {
+    Map<String, List<String>> map = new HashMap<>();
+    for (String path : paths) {
+        String[] files = path.split("\\s+");
+        for (int i = 1; i < files.length; i++) {
+            int openIndex = files[i].indexOf('(');
+            String content = files[i].substring(openIndex, files[i].length() - 1);
+            String filePath = files[0] + '/' + files[i].substring(0, openIndex);
+            map.computeIfAbsent(content, k -> new ArrayList<>()).add(filePath);
+        }        
     }
+    List<List<String>> rst = new ArrayList<>();
+    for (List<String> v : map.values()) {
+        if (v.size() > 1) {
+            rst.add(v);
+        }
+    }
+    return rst;
 }
