@@ -27,9 +27,10 @@ Approach 1: BFS from Houses to Empty Land
 Time Complexity: O(m^2 * n^2)
 Space Complexity: O(m * n)
 
+int dirs[][] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
 public int shortestDistance(int[][] grid) {
     int m = grid.length, n = grid[0].length;
-    int totalHouses = 0, minDistance = Integer.MAX_VALUE;
+    int totalHouses = 0;
     int[][][] distances = new int[m][n][2];               // Store { total_dist, houses_count } for each cell
     for (int i = 0; i < m; i++) {
         for (int j = 0; j < n; j++) {
@@ -39,6 +40,7 @@ public int shortestDistance(int[][] grid) {
             }
         }
     }
+    int minDistance = Integer.MAX_VALUE;
     for (int i = 0; i < m; i++) {                       // Check all empty lands with houses count equal to total houses and find the min ans
         for (int j = 0; j < n; j++) {
             if (distances[i][j][1] == totalHouses) {  
@@ -46,13 +48,9 @@ public int shortestDistance(int[][] grid) {
             }
         }
     }
-    if (minDistance == Integer.MAX_VALUE) {            // If we haven't found a valid cell return -1
-        return -1;
-    }
-    return minDistance;
+    return minDistance == Integer.MAX_VALUE ? -1 : minDistance;
 }
 void bfs(int[][] grid, int[][][] distances, int row, int col) {
-    int dirs[][] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
     int m = grid.length, n = grid[0].length;
     Queue<int[]> q = new LinkedList<>();
     q.offer(new int[]{ row, col });
