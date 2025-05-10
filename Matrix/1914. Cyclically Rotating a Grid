@@ -39,40 +39,32 @@ void rotateLayer(int[][] grid, int p, int k) {
 List<Integer> extractLayer(int[][] grid, int p) {
     List<Integer> layer = new ArrayList<>();
     int m = grid.length, n = grid[0].length;
-    // Top row
-    for (int j = p; j < n - p - 1; j++) {
+    for (int j = p; j < n - p - 1; j++) {     // Top row
         layer.add(grid[p][j]);
     }
-    // Right column
-    for (int i = p; i < m - p - 1; i++) {
+    for (int i = p; i < m - p - 1; i++) {     // Right column
         layer.add(grid[i][n - p - 1]);
     }
-    // Bottom row
-    for (int j = n - p - 1; j > p; j--) {
+    for (int j = n - p - 1; j > p; j--) {     // Bottom row
         layer.add(grid[m - p - 1][j]);
     }
-    // Left column
-    for (int i = m - p - 1; i > p; i--) {
+    for (int i = m - p - 1; i > p; i--) {     // Left column
         layer.add(grid[i][p]);
     }
     return layer;
 }
 void insertLayer(int[][] grid, int p, List<Integer> layer) {
     int m = grid.length, n = grid[0].length, idx = 0;
-    // Top row
-    for (int j = p; j < n - p - 1; j++) {
+    for (int j = p; j < n - p - 1; j++) {             // Top row
         grid[p][j] = layer.get(idx++);
     }
-    // Right column
-    for (int i = p; i < m - p - 1; i++) {
+    for (int i = p; i < m - p - 1; i++) {             // Right column
         grid[i][n - p - 1] = layer.get(idx++);
     }
-    // Bottom row
-    for (int j = n - p - 1; j > p; j--) {
+    for (int j = n - p - 1; j > p; j--) {             // Bottom row
         grid[m - p - 1][j] = layer.get(idx++);
     }
-    // Left column
-    for (int i = m - p - 1; i > p; i--) {
+    for (int i = m - p - 1; i > p; i--) {             // Left column
         grid[i][p] = layer.get(idx++);
     }
 }
