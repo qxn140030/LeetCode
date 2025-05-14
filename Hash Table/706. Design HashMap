@@ -109,8 +109,8 @@ class MyHashMap {
             return;
         }
         Node prev = temp;
-        while (temp != null){
-            if (temp.key == key){
+        while (temp != null) {
+            if (temp.key == key) {
                 temp.val = value;
                 return;
             }
@@ -123,7 +123,7 @@ class MyHashMap {
         int index = hash(key);
         Node temp = nodeHeads[index];
         while (temp != null ){
-            if (temp.key == key){
+            if (temp.key == key) {
                 return temp.val;
             }
             temp = temp.next;
@@ -133,21 +133,21 @@ class MyHashMap {
     public void remove(int key) {
         int index = hash(key);
         Node temp = nodeHeads[index];
-        if (temp == null){
+        if (temp == null) {
             return;
         }
-        if (temp.key == key){
+        if (temp.key == key) {
             nodeHeads[index] = nodeHeads[index].next;
         }
-        while (temp.next != null ){
-            if (temp.next.key == key){
+        while (temp.next != null) {
+            if (temp.next.key == key) {
                 temp.next = temp.next.next;
                 return;
             }
             temp = temp.next;
         }
     }
-    private int hash(int key){
+    private int hash(int key) {
         return key % size;
     }
 }
