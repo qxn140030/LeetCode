@@ -138,6 +138,7 @@ class MyHashMap {
         }
         if (temp.key == key) {
             nodeHeads[index] = nodeHeads[index].next;
+            return;
         }
         while (temp.next != null) {
             if (temp.next.key == key) {
