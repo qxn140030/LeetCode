@@ -19,48 +19,39 @@ counter.hit(300);
 counter.getHits(300);
 // get hits at timestamp 301, should return 3.
 counter.getHits(301); 
-Follow up:
-What if the number of hits per second could be very large? Does your design scale?
+
+Follow up: What if the number of hits per second could be very large? Does your design scale?
 
 Approach 1: using a queue to store timestamp.
-Time complexity: O()
-Space complexity: O()
-
-public class HitCounter {
+class HitCounter {
     Queue<Integer> q;
-    /** Initialize your data structure here. */
     public HitCounter() {
         q = new LinkedList<>();
-    }    
-    /** Record a hit.
-        @param timestamp - The current timestamp (in seconds granularity). */
+    }
     public void hit(int timestamp) {
         q.offer(timestamp);
-    }    
-    /** Return the number of hits in the past 5 minutes.
-        @param timestamp - The current timestamp (in seconds granularity). */
+    }  
     public int getHits(int timestamp) {
-        while (!q.isEmpty() && (timestamp - q.peek() >= 300)) {
+        while (!q.isEmpty() && q.peek() + 300 <= timestamp) {
             q.poll();
         }
         return q.size();
     }
 }
+/**
+ * Your HitCounter object will be instantiated and called as such:
+ * HitCounter obj = new HitCounter();
+ * obj.hit(timestamp);
+ * int param_2 = obj.getHits(timestamp);
+ */
 
 Approach 2: Follow up. using two arrays.
-Time complexity: O()
-Space complexity: O()
-
-public class HitCounter {
-    int[] time;
-    int[] hits;
-    /** Initialize your data structure here. */
+class HitCounter {
+    int[] time, hits;
     public HitCounter() {
         time = new int[300];
         hits = new int[300];
-    }    
-    /** Record a hit.
-        @param timestamp - The current timestamp (in seconds granularity). */
+    }
     public void hit(int timestamp) {
         int index = timestamp % 300;
         if (time[index] != timestamp) {
@@ -69,9 +60,7 @@ public class HitCounter {
         } else {
             hits[index]++;
         }
-    }    
-    /** Return the number of hits in the past 5 minutes.
-        @param timestamp - The current timestamp (in seconds granularity). */
+    }
     public int getHits(int timestamp) {
         int total = 0;
         for (int i = 0; i < 300; i++) {
@@ -82,9 +71,3 @@ public class HitCounter {
         return total;
     }
 }
-/**
- * Your HitCounter object will be instantiated and called as such:
- * HitCounter obj = new HitCounter();
- * obj.hit(timestamp);
- * int param_2 = obj.getHits(timestamp);
- */
