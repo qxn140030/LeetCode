@@ -19,8 +19,26 @@ The total number of units will be = (1 * 3) + (2 * 2) + (1 * 1) = 8.
 Example 2:
 Input: boxTypes = [[5,10],[2,5],[4,7],[3,9]], truckSize = 10
 Output: 91
+
+Approach 1: Array Sort
+Time Complexity: O(nlogn)
+Space Complexity: O(1)
+
+public int maximumUnits(int[][] boxTypes, int truckSize) {
+    Arrays.sort(boxTypes, (a, b) -> Integer.compare(b[1], a[1]));
+    int rst = 0;
+    for (int[] b : boxTypes) {
+        int boxCount = Math.min(truckSize, b[0]);
+        rst += boxCount * b[1];
+        truckSize -= b[0];
+        if (truckSize <= 0) {
+            break;
+        }
+    }
+    return rst;
+}
  
-Approach 1: Priority Queue
+Approach 2: Priority Queue
 Time Complexity: O(nlogn)
 Space Complexity: O(n)
 
