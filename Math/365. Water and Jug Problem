@@ -87,9 +87,9 @@ class Solution {
             return false;
         }
         int common = gcd(jug1Capacity, jug2Capacity);
-        return targetCapacity % common == 0 ? true : false;
+        return targetCapacity % common == 0;
     }
-    private int gcd(int a, int b) {
+    int gcd(int a, int b) {
         while (b != 0) {
             int tmp = a % b;
             a = b;
