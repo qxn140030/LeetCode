@@ -90,6 +90,7 @@ class Solution {
                 }
             }
         }
-        return distance[destination[0]][destination[1]] == Integer.MAX_VALUE ? -1 : distance[destination[0]][destination[1]];
+        int rst = distance[destination[0]][destination[1]];
+        return rst == Integer.MAX_VALUE ? -1 : rst;
     }
 }
