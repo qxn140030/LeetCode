@@ -49,6 +49,7 @@ class MyCalendar {
  */
 
 Approach 2: Sorted List + Binary Search
+Java’s TreeMap is a sorted map — it stores key-value pairs in ascending order of keys (according to natural order or a custom comparator).
 Time complexity: O(nlogn)
 Space complexity: O(n)
 
@@ -58,7 +59,8 @@ class MyCalendar {
         events = new TreeMap<>();
     }
     public boolean book(int start, int end) {
-        Integer prev = events.floorKey(start), next = events.ceilingKey(start);                  // Note.
+        Integer prev = events.floorKey(start);        // Returns the largest key in the map <= given key.
+        Integer next = events.ceilingKey(start);      // Returns the smallest key in the map >= given key.
         if ((prev == null || events.get(prev) <= start) && (next == null || end <= next)) {      // Note.
             events.put(start, end);
             return true;
