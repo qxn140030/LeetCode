@@ -92,7 +92,7 @@ class Solution {
     public Node construct(int[][] grid) {
         return helper(grid, 0, 0, grid.length);
     }
-    private Node helper(int[][] grid, int i, int j, int w) {
+    Node helper(int[][] grid, int i, int j, int w) {
         if (allSame(grid, i, j, w)) {
             return new Node(grid[i][j] == 1, true);
         }
@@ -103,7 +103,7 @@ class Solution {
         node.bottomRight = helper(grid, i + w / 2, j + w / 2, w / 2);
         return node;
     }
-    private boolean allSame(int[][] grid, int row, int col, int w) {
+    boolean allSame(int[][] grid, int row, int col, int w) {
         for (int i = row; i < row + w; i++) {
             for (int j = col; j < col + w; j++) {
                 if (grid[i][j] != grid[row][col]) {
