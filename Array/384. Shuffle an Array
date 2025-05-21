@@ -39,8 +39,8 @@ class Solution {
     }
     public int[] shuffle() {
         for (int i = 0; i < array.length; i++) {
-            swapAt(i, randRange(i, array.length));
-        }
+            swapAt(i, randRange(i, array.length));       // Each index is filled once with a randomly chosen value
+        }                                                // No value is picked twice
         return array;
     }
     int randRange(int min, int max) {
