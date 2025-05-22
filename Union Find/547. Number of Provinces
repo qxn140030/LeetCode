@@ -12,14 +12,13 @@ Example 2:
 Input: isConnected = [[1,0,0],[0,1,0],[0,0,1]]
 Output: 3
 
-Approach 3: Union-find
+Approach 1: Union-find
 Time complexity: O(n^2)
 Space complexity: O(n)
 
 class Solution {
     class DSU {
-        int[] parent;
-        int[] rank;
+        int[] parent, rank;
         public DSU(int size) {
             parent = new int[size + 1];
             rank = new int[size + 1];
@@ -36,17 +35,16 @@ class Solution {
         } 
         public void union(int x, int y) {
             int px = find(x), py = find(y);
-            if (px == py) {
-                return;
-            }
-            int rx = rank[px], ry = rank[py];
-            if (rx == ry) {
-                parent[px] = py;
-                rank[py]++;
-            } else if (rx > ry) {
-                parent[py] = px;
-            } else {
-                parent[px] = py;
+            if (px != py) {
+                int rx = rank[px], ry = rank[py];
+                if (rx == ry) {
+                    parent[px] = py;
+                    rank[py]++;
+                } else if (rx > ry) {
+                    parent[py] = px;
+                } else {
+                    parent[px] = py;
+                }
             }
         }
     }
