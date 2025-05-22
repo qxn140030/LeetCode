@@ -31,7 +31,7 @@ class Solution {
     public int pickIndex() {
         double target = totalSum * Math.random();
         for (int i = 0; i < prefixSums.length; i++) {
-            if (prefixSums[i] > target) {
+            if (prefixSums[i] > target) {             // checks whether the target lies in the current index's range.
                 return i;
             }
         }
