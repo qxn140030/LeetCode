@@ -21,48 +21,46 @@ Space complexity : O(1)
 
 class Solution {
     public String alienOrder(String[] words) {
-        Map<Character, List<Character>> adjList = new HashMap<>();
-        Map<Character, Integer> counts = new HashMap<>();
-        for (String word : words) {                               // Step 0: Create data structures and find all unique letters.
-            for (char c : word.toCharArray()) {
-                counts.put(c, 0);
+        Map<Character, List<Character>> adjList = new HashMap<>();     // each character maps to a list of characters that come after it
+        Map<Character, Integer> indegree = new HashMap<>();            // count of incoming edges for each character
+        for (String word : words) {  
+            for (char c : word.toCharArray()) {                        // Step 0: Create data structures and find all unique letters.
+                indegree.put(c, 0);
                 adjList.put(c, new ArrayList<>());
             }
         } 
-        for (int i = 0; i < words.length - 1; i++) {              // Step 1: Find all edges.
+        for (int i = 0; i < words.length - 1; i++) { 
             String word1 = words[i], word2 = words[i + 1];
-            if (word1.length() > word2.length() && word1.startsWith(word2)) {    // Check that word2 is not a prefix of word1.
+            if (word1.length() > word2.length() && word1.startsWith(word2)) {   // Edge case: prefix conflict (e.g., "abc", "ab")   
                 return "";
             }
             int len = Math.min(word1.length(), word2.length());
             for (int j = 0; j < len; j++) {
-                if (word1.charAt(j) != word2.charAt(j)) {                // Find the first non match and insert the corresponding relation.
-                    adjList.get(word1.charAt(j)).add(word2.charAt(j));
-                    counts.put(word2.charAt(j), counts.get(word2.charAt(j)) + 1);
-                    break;
+                char c1 = word1.charAt(j), c2 = word2.charAt(j);
+                if (c1 != c2) {                                       // Find the first non match and insert the corresponding relation.
+                    adjList.get(c1).add(c2);
+                    indegree.put(c2, indegree.get(c2) + 1);
+                    break;                                            // Only first differing character matters
                 }
             }
         }
         StringBuilder sb = new StringBuilder();
-        Queue<Character> queue = new LinkedList<>();
-        for (Character c : counts.keySet()) {
-            if (counts.get(c).equals(0)) {
+        Queue<Character> queue = new LinkedList<>();                 // Topological sort using BFS (Kahn's Algorithm)
+        for (Character c : indegree.keySet()) {
+            if (indegree.get(c) == 0) {
                 queue.add(c);
             }
         }
-        while (!queue.isEmpty()) {                  // Step 2: BFS.
+        while (!queue.isEmpty()) {           
             Character c = queue.remove();
             sb.append(c);
             for (Character next : adjList.get(c)) {
-                counts.put(next, counts.get(next) - 1);
-                if (counts.get(next).equals(0)) {
+                indegree.put(next, indegree.get(next) - 1);
+                if (indegree.get(next) == 0) {
                     queue.add(next);
                 }
             }
         }
-        if (sb.length() < counts.size()) {
-            return "";
-        }
-        return sb.toString();
+        return sb.length() == indegree.size() ? sb.toString() : "";    // If result doesn't contain all characters, there's a cycle
     }
 }
