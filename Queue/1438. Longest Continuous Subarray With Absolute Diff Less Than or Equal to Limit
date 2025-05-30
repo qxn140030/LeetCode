@@ -42,10 +42,10 @@ class Solution {
             }
             min.add(j);
             while (!max.isEmpty() && !min.isEmpty() && nums[max.peekFirst()] - nums[min.peekFirst()] > limit) {
-                if (max.peekFirst() <= i) {
+                if (max.peekFirst() == i) {
                     max.pollFirst();
                 }
-                if (min.peekFirst() <= i) {
+                if (min.peekFirst() == i) {
                     min.pollFirst();
                 }
                 i++;
