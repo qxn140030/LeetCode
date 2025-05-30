@@ -90,42 +90,39 @@ Approach 2: Topological sort
 2. Store all 0-indegree recipes into a list as the starting points of topological sort;
 3. Use topogical sort to decrease the indegree of recipes, whenever the indegree reaches 0, add it to return list.
 
-class Solution {
-    public List<String> findAllRecipes(String[] recipes, List<List<String>> ingredients, String[] supplies) {
-        Set<String> sup = new HashSet<>(Arrays.asList(supplies));
-        Map<String, Integer> index = new HashMap<>();
-        Map<String, List<String>> ingToRecipes = new HashMap<>();
-        for (int i = 0; i < recipes.length; i++) {
-            index.put(recipes[i], i);              // store index of all recipes
-        }
-        int[] indegree = new int[recipes.length];
-        for (int i = 0; i < recipes.length; i++) {
-            for (String ing : ingredients.get(i)) {
-                if (!sup.contains(ing)) {
-                    ingToRecipes.putIfAbsent(ing, new ArrayList<String>());
-                    ingToRecipes.get(ing).add(recipes[i]);
-                    indegree[i]++;
-                }
-            }
-        }
-        Queue<Integer> q = new LinkedList<>();
-        for (int i = 0; i < recipes.length; i++) {
-            if (indegree[i] == 0) {
-                q.add(i);                        // add all the recipes with indegree 0 to the queue.
-            }
-        }
-        List<String> rst = new ArrayList<>();
-        while (!q.isEmpty()) {
-            int i = q.poll();
-            rst.add(recipes[i]);
-            if (ingToRecipes.containsKey(recipes[i])) {    
-                for (String recipe : ingToRecipes.get(recipes[i])) {
-                    if (--indegree[index.get(recipe)] == 0) {
-                        q.add(index.get(recipe));
-                    }
-                }                                 
-            } 
-        }
-        return rst;
+public List<String> findAllRecipes(String[] recipes, List<List<String>> ingredients, String[] supplies) {
+    Set<String> sup = new HashSet<>(Arrays.asList(supplies));  // Step 1: Initialize a set of available supplies
+    Map<String, Integer> recipesIndex = new HashMap<>(); 
+    for (int i = 0; i < recipes.length; i++) {
+        recipesIndex.put(recipes[i], i);              // Step 2: Map each recipe to its index for quick lookup
     }
+    Map<String, List<String>> ingToRecipes = new HashMap<>();
+    int[] indegree = new int[recipes.length];
+    for (int i = 0; i < recipes.length; i++) {    // Step 3: Build the graph (ingredient -> recipes that depend on it)
+        for (String ing : ingredients.get(i)) {
+            if (!sup.contains(ing)) {       // If the ingredient is not a supply, track its dependency
+                ingToRecipes.computeIfAbsent(ing, k -> new ArrayList<String>()).add(recipes[i]);
+                indegree[i]++;
+            }
+        }
+    }
+    Queue<Integer> q = new LinkedList<>();
+    for (int i = 0; i < recipes.length; i++) {
+        if (indegree[i] == 0) {
+            q.add(i);                        // add all the recipes with indegree 0 to the queue.
+        }
+    }
+    List<String> rst = new ArrayList<>();
+    while (!q.isEmpty()) {
+        int i = q.poll();
+        rst.add(recipes[i]);
+        if (ingToRecipes.containsKey(recipes[i])) {    
+            for (String recipe : ingToRecipes.get(recipes[i])) {
+                if (--indegree[recipesIndex.get(recipe)] == 0) {
+                    q.add(recipesIndex.get(recipe));
+                }
+            }                                 
+        } 
+    }
+    return rst;
 }
