@@ -26,36 +26,37 @@ Space complexity : O(m * n)
 public int shortestDistance(int[][] maze, int[] start, int[] destination) {
     int m = maze.length, n = maze[0].length;
     int[][] dist = new int[m][n];
+    int[][] dir = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
     for (int[] d : dist) {
         Arrays.fill(d, Integer.MAX_VALUE);
     }
+    dist[start[0]][start[1]] = 0;
     PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(a[2], b[2]));
     pq.offer(new int[]{start[0], start[1], 0});
-    dist[start[0]][start[1]] = 0;
-    int[][] dir = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
     while (!pq.isEmpty()) {
         int[] cur = pq.poll();
         int row = cur[0], col = cur[1], steps = cur[2];
-        if (steps > dist[row][col]) {
+        if (dist[row][col] < steps) {
             continue;
         }
         for (int[] d : dir) {
-            int nextRow = cur[0], nextCol = cur[1], NextSteps = steps;
-            while (nextRow >= 0 && nextRow < m && nextCol >= 0 && nextCol < n && maze[nextRow][nextCol] == 0) {
-                nextRow += d[0];
-                nextCol += d[1];
-                NextSteps++;
+            int r = cur[0], c = cur[1], nextSteps = cur[2];
+            while (isValid(maze, r + d[0], c + d[1])) {
+                r += d[0];
+                c += d[1];
+                nextSteps++;
             }
-            nextRow -= d[0];
-            nextCol -= d[1];
-            NextSteps--;
-            if (NextSteps < dist[nextRow][nextCol]) {
-                pq.offer(new int[]{nextRow, nextCol, NextSteps});
-                dist[nextRow][nextCol] = NextSteps;
+            if (nextSteps < dist[r][c]) {
+                pq.offer(new int[]{r, c, nextSteps});
+                dist[r][c] = nextSteps;
             }
         }
     }
-    return dist[destination[0]][destination[1]] == Integer.MAX_VALUE ? -1 : dist[destination[0]][destination[1]];
+    int rst = dist[destination[0]][destination[1]];
+    return rst == Integer.MAX_VALUE ? -1 : rst;
+}
+boolean isValid(int[][] maze, int i, int j) {
+    return i >= 0 && i < maze.length && j >= 0 && j < maze[0].length && maze[i][j] == 0;
 }
 
 Approach 2: BFS
