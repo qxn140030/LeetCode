@@ -46,15 +46,15 @@ class Solution {
         }
         StringBuilder sb = new StringBuilder();
         Queue<Character> queue = new LinkedList<>();                 // Topological sort using BFS (Kahn's Algorithm)
-        for (Character c : indegree.keySet()) {
+        for (char c : indegree.keySet()) {
             if (indegree.get(c) == 0) {
                 queue.add(c);
             }
         }
         while (!queue.isEmpty()) {           
-            Character c = queue.remove();
+            char c = queue.remove();
             sb.append(c);
-            for (Character next : adjList.get(c)) {
+            for (char next : adjList.get(c)) {
                 indegree.put(next, indegree.get(next) - 1);
                 if (indegree.get(next) == 0) {
                     queue.add(next);
