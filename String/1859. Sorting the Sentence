@@ -16,7 +16,7 @@ Output: "Me Myself and I"
 Explanation: Sort the words in s to their original positions "Me1 Myself2 and3 I4", then remove the numbers.
 
 public String sortSentence(String s) {
-    String[] words = s.split(" ");
+    String[] words = s.split("\\s+");
     String[] rst = new String[words.length];
     for (String word : words) {
         int len = word.length();
