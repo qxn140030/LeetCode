@@ -77,10 +77,10 @@ class UnionFind {
         if (xRoot != yRoot) {
             if (size[xRoot] < size[yRoot]) {
                 parent[xRoot] = yRoot;
-                size[yRoot]++;
+                size[yRoot] += size[xRoot];
             } else {
                 parent[yRoot] = xRoot;
-                size[xRoot]++;
+                size[xRoot] += size[yRoot];
             }
             count--;
         }
