@@ -28,49 +28,73 @@ We return the result as an array: [1, 1, 2, 3]
 Challenge:
 Can you do it in time complexity O(k log mn), where k is the length of the positions?
 
-Appraoch 1: union-find. Use an array to track the parent node for each cell.
-Time complexity: O()
-Space complexity: O()
+Appraoch 1: union-find
+Time complexity: O(1)
+Space complexity: O(n)
 
-public List<Integer> numIslands2(int m, int n, int[][] positions) {
-    int[] rootArray = new int[m*n];
-    Arrays.fill(rootArray,-1);
- 
-    ArrayList<Integer> result = new ArrayList<Integer>();
- 
-    int[][] directions = {{-1,0},{0,1},{1,0},{0,-1}};
-    int count=0;
- 
-    for(int k=0; k<positions.length; k++){
-        count++;
- 
-        int[] p = positions[k];
-        int index = p[0]*n+p[1];
-        rootArray[index]=index;//set root to be itself for each node
- 
-        for(int r=0;r<4;r++){
-            int i=p[0]+directions[r][0];
-            int j=p[1]+directions[r][1];
- 
-            if(i>=0&&j>=0&&i<m&&j<n&&rootArray[i*n+j]!=-1){
-                //get neighbor's root
-                int thisRoot = getRoot(rootArray, i*n+j);
-                if(thisRoot!=index){
-                    rootArray[thisRoot]=index;//set previous root's root
-                    count--;
+class Solution {
+    public List<Integer> numIslands2(int m, int n, int[][] positions) {
+        int[][] dir = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+        UnionFind dsu = new UnionFind(m * n);
+        List<Integer> rst = new ArrayList<>();
+        for (int[] p : positions) {
+            int land = p[0] * n + p[1];
+            dsu.addLand(land);
+            for (int[] d : dir) {
+                int rowX = p[0] + d[0], rowY = p[1] + d[1];
+                if (rowX >= 0 && rowX < m && rowY >= 0 && rowY < n) {
+                    int neighbor = rowX * n + rowY;
+                    if (dsu.isLand(neighbor)) {
+                        dsu.union(land, neighbor);
+                    }
                 }
             }
+            rst.add(dsu.islandsCount());
         }
- 
-        result.add(count);
+        return rst;
     }
- 
-    return result;
 }
- 
-public int getRoot(int[] arr, int i){
-    while(i!=arr[i]){
-        i=arr[i];
+class UnionFind {
+    int[] parent, size;
+    int count;
+    public UnionFind(int n) {
+        parent = new int[n];
+        size = new int[n];
+        for (int i = 0; i < n; i++) {
+            parent[i] = -1;
+            size[i] = 1;
+        }
     }
-    return i;
+    public int find(int x) {
+        while (parent[x] != x) {
+            parent[x] = parent[parent[x]];
+            x = parent[x];
+        }
+        return x;
+    }
+    public void union(int x, int y) {
+        int xRoot = find(x), yRoot = find(y);
+        if (xRoot != yRoot) {
+            if (size[xRoot] < size[yRoot]) {
+                parent[xRoot] = yRoot;
+                size[yRoot]++;
+            } else {
+                parent[yRoot] = xRoot;
+                size[xRoot]++;
+            }
+            count--;
+        }
+    }
+    public void addLand(int x) {
+        if (parent[x] < 0) {
+            parent[x] = x;
+            count++;
+        }
+    }
+    public boolean isLand(int x) {
+        return parent[x] >= 0;
+    }
+    int islandsCount() {
+        return count;
+    }
 }
