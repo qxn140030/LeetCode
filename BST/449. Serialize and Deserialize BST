@@ -50,8 +50,7 @@ public class Codec {
         }
         postorder(root.left, sb);
         postorder(root.right, sb);
-        sb.append(root.val);
-        sb.append(' ');
+        sb.append(root.val).append(' ');
         return sb;
     }
     TreeNode helper(Integer lower, Integer upper, Deque<Integer> nums) {
