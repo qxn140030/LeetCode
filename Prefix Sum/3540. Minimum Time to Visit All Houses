@@ -23,10 +23,10 @@ The path travelled is 0 →​​​​​​​ 1 →​​​​​​​ 2 �
 
 public long minTotalTime(int[] forward, int[] backward, int[] queries) {
     int n = forward.length;
-    long[] fwd = new long[n+1], bwd = new long[n+1];
+    long[] fwd = new long[n + 1], bwd = new long[n + 1];
     for (int i = 1; i <= n; i++) {
         fwd[i] = fwd[i - 1] + forward[i - 1];
-        bwd[i] = bwd[i - 1] + (i < n ? backward[i] : backward[0]);
+        bwd[i] = bwd[i - 1] + (i == n ? backward[0] : backward[i]);
     }
     long res = 0;
     int cur = 0;
