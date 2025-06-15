@@ -57,26 +57,24 @@ Approach 3: Work Backwards (Modulo Variant)
 Time Complexity: O(log⁡(max⁡(tx, ty)))
 Space Complexity: O(1)
 
-class Solution {
-    public boolean reachingPoints(int sx, int sy, int tx, int ty) {
-        while (tx >= sx && ty >= sy) {
-            if (tx == ty) {
-                break;
+public boolean reachingPoints(int sx, int sy, int tx, int ty) {
+    while (tx >= sx && ty >= sy) {
+        if (tx == ty) {           // If tx == ty, no more progress can be made using modulo
+            break;
+        }
+        if (tx > ty) {            // try to reduce the larger coordinate
+            if (ty > sy) {        
+                tx %= ty;         // Reduce tx by multiples of ty to backtrack quickly
+            } else {              // ty can't be reduced further, so only tx can change
+                return (tx - sx) % ty == 0;
             }
-            if (tx > ty) {
-                if (ty > sy) {
-                    tx %= ty;
-                } else {
-                    return (tx - sx) % ty == 0;
-                }
+        } else {
+            if (tx > sx) {
+                ty %= tx;
             } else {
-                if (tx > sx) {
-                    ty %= tx;
-                } else {
-                    return (ty - sy) % tx == 0;
-                }
+                return (ty - sy) % tx == 0;
             }
         }
-        return (tx == sx && ty == sy);
     }
+    return tx == sx && ty == sy;
 }
