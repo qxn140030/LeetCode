@@ -84,7 +84,7 @@ class Solution {
     }
 }
 
-Approach 4: Using Stack
+Approach 4: Using Monotonic Stack
 Maintain a stack to store indicies, only keep the increasing bars.
 Keep pushing the current bar's index onto the stack until we get two successive numbers in descending order
 Time complexity: O(n)
@@ -96,9 +96,9 @@ public class Solution {
         Stack<Integer> stack = new Stack<>();
         for (int i = 0; i <= heights.length; i++) {
             int cur = i == heights.length ? -1 : heights[i];
-            while (!stack.empty() && cur <= heights[stack.peek()]) {
+            while (!stack.isEmpty() && cur <= heights[stack.peek()]) {
                 int h = heights[stack.pop()];
-                int w = stack.empty() ? i : i - stack.peek() - 1;
+                int w = stack.isEmpty() ? i : i - stack.peek() - 1;
                 rst = Math.max(rst, w * h);
             }
             stack.push(i);
