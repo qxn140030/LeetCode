@@ -80,24 +80,19 @@ Approach 2: Two pointers
 Time complexity: O(n)
 Space complexity: O(1)
 
-public class Solution {
-    public boolean isStrobogrammatic(String num) {
-        if (num == null || num.length() == 0) {
-            return true;
+public boolean isStrobogrammatic(String num) {
+    for (int i = 0, j = num.length() - 1; i <= j; i++, j--) {
+        char num1 = num.charAt(i), num2 = num.charAt(j);
+        if (!check(num1, num2)) {
+            return false;
         }
-        for (int i = 0, j = num.length() - 1; i <= j; i++, j--) {
-            char num1 = num.charAt(i), num2 = num.charAt(j);
-            if (!check(num1, num2)) {
-                return false;
-            }
-        }
-        return true;
     }
-    private boolean check(char c1, char c2) {
-        return (c1 == '0' && c2 == '0') 
-            || (c1 == '1' && c2 == '1') 
-            || (c1 == '8' && c2 == '8') 
-            || (c1 == '6' && c2 == '9') 
-            || (c1 == '9' && c2 == '6');
-    }
+    return true;
+}
+boolean check(char c1, char c2) {
+    return (c1 == '0' && c2 == '0') 
+        || (c1 == '1' && c2 == '1') 
+        || (c1 == '8' && c2 == '8') 
+        || (c1 == '6' && c2 == '9') 
+        || (c1 == '9' && c2 == '6');
 }
