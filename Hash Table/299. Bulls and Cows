@@ -24,21 +24,19 @@ public class Solution {
         int bulls = 0, cows = 0;
         Map<Character, Integer> map = new HashMap<>();
         for (int i = 0; i < secret.length(); i++) {
-            char cs = secret.charAt(i);
-            char cg = guess.charAt(i);
+            char cs = secret.charAt(i), cg = guess.charAt(i);
             if (cs == cg) {
                 bulls++;
             } else {
-                if (!map.containsKey(cs)) {
-                    map.put(cs, 1);
-                } else {
+                if (map.containsKey(cs)) {
                     map.put(cs, map.get(cs) + 1);
+                } else {
+                    map.put(cs, 1);
                 }
             }
         }
         for (int i = 0; i < guess.length(); i++) {
-            char cs = secret.charAt(i);
-            char cg = guess.charAt(i);
+            char cs = secret.charAt(i), cg = guess.charAt(i);
             if (cs != cg) {
                 if (map.containsKey(cg) && map.get(cg) > 0) {
                     cows++;
@@ -57,11 +55,9 @@ Space complexity: O()
 public class Solution {
     public String getHint(String secret, String guess) {
         int bulls = 0, cows = 0;
-        int[] ds = new int[10];
-        int[] dg = new int[10];
+        int[] ds = new int[10], dg = new int[10];
         for (int i = 0; i < secret.length(); i++) {
-            char cs = secret.charAt(i);
-            char cg = guess.charAt(i);
+            char cs = secret.charAt(i), cg = guess.charAt(i);
             if (cs == cg) {
                 bulls++;
             } else {
