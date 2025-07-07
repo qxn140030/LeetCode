@@ -178,11 +178,11 @@ public class Codec {
     public String serialize(TreeNode root) {
         return serializeHelper(root, "");
     }
-    public String serializeHelper(TreeNode root, String str) {
+    String serializeHelper(TreeNode root, String str) {
         if (root == null) {
             str += "null,";
         } else {
-            str += str.valueOf(root.val) + ",";
+            str += root.val + ",";
             str = serializeHelper(root.left, str);
             str = serializeHelper(root.right, str);
         }
@@ -193,7 +193,7 @@ public class Codec {
         List<String> list = new ArrayList<>(Arrays.asList(arr));
         return deserializeHelper(list);
     }
-    public TreeNode deserializeHelper(List<String> list) {
+    TreeNode deserializeHelper(List<String> list) {
         if (list.get(0).equals("null")) {
             list.remove(0);
             return null;
