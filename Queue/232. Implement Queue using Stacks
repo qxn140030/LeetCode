@@ -16,8 +16,7 @@ Approach 1: Two stacks
 Push - O(n) per operation, Pop - O(1) per operation.
 
 class MyQueue {
-    Stack<Integer> s1;
-    Stack<Integer> s2;
+    Stack<Integer> s1, s2;
     public MyQueue() {
         s1 = new Stack<>();
         s2 = new Stack<>();
@@ -46,8 +45,7 @@ Approach 2: Two stacks
 Push - O(1) per operation, Pop - Amortized O(1) per operation.
 
 class MyQueue {
-    Stack<Integer> s1;
-    Stack<Integer> s2;
+    Stack<Integer> s1, s2;
     int front;
     public MyQueue() {
         s1 = new Stack<>();
