@@ -166,24 +166,24 @@ class Solution {
                     predecessor.right = root;
                     root = root.left;
                 }  else {                                        // link is broken: time to change subtree and go right.    
-                    if (pred != null && root.val < pred.val) {
+                    if (prev != null && root.val < prev.val) {
                         y = root;
                         if (x == null) {
-                            x = pred;
+                            x = prev;
                         }
                     }
-                    pred = root;
+                    prev = root;
                     predecessor.right = null;
                     root = root.right;
                 }
             } else {                                            // If there is no left child, then just go right.
-                if (pred != null && root.val < pred.val) {
+                if (prev != null && root.val < prev.val) {
                     y = root;
                     if (x == null) {
-                        x = pred;
+                        x = prev;
                     }
                 }
-                pred = root;
+                prev = root;
                 root = root.right;
             }
         }
