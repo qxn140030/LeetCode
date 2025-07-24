@@ -66,14 +66,10 @@ public int[] processQueries(int c, int[][] connections, int[][] queries) {
             } else {
                 int root = uf.find(x);
                 PriorityQueue<Integer> heap = map.get(root);
-                if (heap != null) {
-                    while (!heap.isEmpty() && !online[heap.peek()]) {
-                        heap.poll();
+                while (heap != null && !heap.isEmpty() && !online[heap.peek()]) {
+                        heap.poll(); 
                     }
-                    rst.add(heap.isEmpty() ? -1 : heap.peek());
-                } else {
-                    rst.add(-1);
-                }
+                    rst.add(heap == null || heap.isEmpty() ? -1 : heap.peek());
             }
         }
     }
@@ -93,10 +89,9 @@ class UnionFind {
     }
     int find(int x) {
         if (parent[x] != x) {
-            parent[x] = parent[parent[x]]; 
-            x = parent[x];
+            parent[x] = find(parent[x]); 
         }
-        return x;
+        return parent[x];
     }
     void union(int x, int y) {
         int rootX = find(x), rootY = find(y);
