@@ -15,7 +15,7 @@ Space complexity: O(n)
 
 class Solution {
     public int nextGreaterElement(int n) {
-        char[] arr = ("" + n).toCharArray();
+        char[] arr = String.valueOf(n).toCharArray();
         int i = arr.length - 2;
         while (i >= 0 && arr[i + 1] <= arr[i]) {
             i--;
