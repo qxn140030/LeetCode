@@ -77,17 +77,15 @@ scan the string from right to left. when the character at left of current charac
 Time complexity: O(1)
 Space complexity: O(1)
 
-public class Solution {
-    public int romanToInt(String s) {
-        Map<Character, Integer> map = Map.of('I', 1, 'V', 5, 'X', 10, 'L', 50, 'C', 100, 'D', 500, 'M', 1000);
-        int rst = map.get(s.charAt(s.length() - 1));
-        for (int i = s.length() - 2; i >= 0; i--) {
-            if (map.get(s.charAt(i)) < map.get(s.charAt(i + 1))) {
-                rst -= map.get(s.charAt(i));
-            } else {
-                rst += map.get(s.charAt(i));
-            }
+public int romanToInt(String s) {
+    Map<Character, Integer> map = Map.of('I', 1, 'V', 5, 'X', 10, 'L', 50, 'C', 100, 'D', 500, 'M', 1000);
+    int rst = map.get(s.charAt(s.length() - 1));
+    for (int i = s.length() - 2; i >= 0; i--) {
+        if (map.get(s.charAt(i)) < map.get(s.charAt(i + 1))) {
+            rst -= map.get(s.charAt(i));
+        } else {
+            rst += map.get(s.charAt(i));
         }
-        return rst;
     }
+    return rst;
 }
