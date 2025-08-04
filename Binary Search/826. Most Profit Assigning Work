@@ -18,7 +18,7 @@ Approach 1: TreeMap
 
 class Solution {
     public int maxProfitAssignment(int[] difficulty, int[] profit, int[] worker) {
-        TreeMap<Integer, Integer> jobMap = new TreeMap<>();
+        TreeMap<Integer, Integer> jobMap = new TreeMap<>();       // difficulty → max profit
         for (int i = 0; i < difficulty.length; i++) {
             jobMap.put(difficulty[i], Math.max(jobMap.getOrDefault(difficulty[i], 0), profit[i]));
         }
@@ -35,4 +35,32 @@ class Solution {
         }
         return totalProfit;
     }
+}
+
+Approach 2: Memoization
+public int maxProfitAssignment(int[] difficulty, int[] profit, int[] worker) {
+    // Step 1: Find the highest skill level among all workers
+    int maxAbility = 0;
+    for (int w : worker) {
+        maxAbility = Math.max(maxAbility, w);
+    }
+    // Step 2: Create an array to store the best profit available for each difficulty level up to maxAbility
+    int[] jobs = new int[maxAbility + 1];
+    // Step 3: For each job, record the max profit for its difficulty (if within bounds)
+    for (int i = 0; i < difficulty.length; i++) {
+        if (difficulty[i] <= maxAbility) {
+            jobs[difficulty[i]] = Math.max(jobs[difficulty[i]], profit[i]);
+        }
+    }
+    // Step 4: Build prefix max — for every difficulty level i,
+    // make sure jobs[i] holds the best profit for any difficulty ≤ i
+    for (int i = 1; i <= maxAbility; i++) {
+        jobs[i] = Math.max(jobs[i], jobs[i - 1]);
+    }
+    // Step 5: Sum up profits for each worker based on their ability
+    int netProfit = 0;
+    for (int ability : worker) {
+        netProfit += jobs[ability];    // best profit for this worker's ability
+    }
+    return netProfit;
 }
