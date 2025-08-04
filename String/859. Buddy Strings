@@ -21,36 +21,34 @@ Approach 1:
 Time complexity: O(n)
 Space complexity: O(1)
 
-class Solution {
-    public boolean buddyStrings(String s, String goal) {
-        if (s.length() != goal.length()) {
-            return false;
-        }
-        if (s.equals(goal)) {
-            int[] frequency = new int[26];
-            for (char ch : s.toCharArray()) {
-                frequency[ch - 'a']++;
-                if (frequency[ch - 'a'] == 2) {     // If we have 2 same characters in string 's', we can swap them and still the strings will remain equal.
-                    return true;
-                }
-            }
-            return false;
-        }
-        int firstIndex = -1, secondIndex = -1;
-        for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) != goal.charAt(i)) {
-                if (firstIndex == -1) {
-                    firstIndex = i;
-                } else if (secondIndex == -1) {
-                    secondIndex = i;
-                } else {                           // We have at least 3 indices with different characters,
-                    return false;                  // thus, we can never make the strings equal with only one swap.
-                }
-            }
-        }
-        if (secondIndex == -1) {                   // We can't swap if the character at only one index is different.
-            return false;
-        }
-        return s.charAt(firstIndex) == goal.charAt(secondIndex) && s.charAt(secondIndex) == goal.charAt(firstIndex);
+public boolean buddyStrings(String s, String goal) {
+    if (s.length() != goal.length()) {
+        return false;
     }
+    if (s.equals(goal)) {
+        int[] frequency = new int[26];
+        for (char ch : s.toCharArray()) {
+            frequency[ch - 'a']++;
+            if (frequency[ch - 'a'] == 2) {     // If we have 2 same characters in string 's', we can swap them and still the strings will remain equal.
+                return true;
+            }
+        }
+        return false;
+    }
+    int firstIndex = -1, secondIndex = -1;
+    for (int i = 0; i < s.length(); i++) {
+        if (s.charAt(i) != goal.charAt(i)) {
+            if (firstIndex == -1) {
+                firstIndex = i;
+            } else if (secondIndex == -1) {
+                secondIndex = i;
+            } else {                           // We have at least 3 indices with different characters,
+                return false;                  // thus, we can never make the strings equal with only one swap.
+            }
+        }
+    }
+    if (secondIndex == -1) {                   // We can't swap if the character at only one index is different.
+        return false;
+    }
+    return s.charAt(firstIndex) == goal.charAt(secondIndex) && s.charAt(secondIndex) == goal.charAt(firstIndex);
 }
