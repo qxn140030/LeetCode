@@ -35,31 +35,30 @@ Explanation: The events go as follows:
 - At time = 28, the CPU finishes task 0 and starts processing task 1. Available tasks = {}.
 - At time = 40, the CPU finishes task 1 and becomes idle.
 
-class Solution {
-    public int[] getOrder(int[][] tasks) {                                 // Store enqueue time, processing time, task index.
-        PriorityQueue<int[]> nextTask = new PriorityQueue<int[]>((a, b) -> (a[1] != b[1] ? Integer.compare(a[1], b[1]) : Integer.compare(a[2], b[2])));
-        int sortedTasks[][] = new int[tasks.length][3];
-        for (int i = 0; i < tasks.length; ++i) {              // Store task enqueue time, processing time, index.
-            sortedTasks[i][0] = tasks[i][0];
-            sortedTasks[i][1] = tasks[i][1];
-            sortedTasks[i][2] = i;
-        }
-        Arrays.sort(sortedTasks, (a, b) -> Integer.compare(a[0], b[0]));
-        int tasksProcessingOrder[] = new int[tasks.length];
-        int currTime = 0, taskIndex = 0, ansIndex = 0;
-        while (taskIndex < tasks.length || !nextTask.isEmpty()) {
-            if (nextTask.isEmpty() && currTime < sortedTasks[taskIndex][0]) {    // When the heap is empty, 
-                currTime = sortedTasks[taskIndex][0];                            // try updating currTime to next task's enqueue time.
-            }
-            while (taskIndex < tasks.length && currTime >= sortedTasks[taskIndex][0]) {  // Push all the tasks whose enqueueTime <= currtTime into the heap.
-                nextTask.add(sortedTasks[taskIndex]);
-                taskIndex++;
-            }
-            int processTime = nextTask.peek()[1], index = nextTask.peek()[2];
-            nextTask.remove();
-            currTime += processTime;                   // Complete this task and increment currTime.
-            tasksProcessingOrder[ansIndex++] = index;
-        }
-        return tasksProcessingOrder;
+
+public int[] getOrder(int[][] tasks) {                                 // Store enqueue time, processing time, task index.
+    PriorityQueue<int[]> nextTask = new PriorityQueue<int[]>((a, b) -> (a[1] != b[1] ? Integer.compare(a[1], b[1]) : Integer.compare(a[2], b[2])));
+    int sortedTasks[][] = new int[tasks.length][3];
+    for (int i = 0; i < tasks.length; ++i) {              // Store task enqueue time, processing time, index.
+        sortedTasks[i][0] = tasks[i][0];
+        sortedTasks[i][1] = tasks[i][1];
+        sortedTasks[i][2] = i;
     }
+    Arrays.sort(sortedTasks, (a, b) -> Integer.compare(a[0], b[0]));
+    int tasksProcessingOrder[] = new int[tasks.length];
+    int currTime = 0, taskIndex = 0, ansIndex = 0;
+    while (taskIndex < tasks.length || !nextTask.isEmpty()) {
+        if (nextTask.isEmpty() && currTime < sortedTasks[taskIndex][0]) {    // When the heap is empty, 
+            currTime = sortedTasks[taskIndex][0];                            // try updating currTime to next task's enqueue time.
+        }
+        while (taskIndex < tasks.length && currTime >= sortedTasks[taskIndex][0]) {  // Push all the tasks whose enqueueTime <= currtTime into the heap.
+            nextTask.add(sortedTasks[taskIndex]);
+            taskIndex++;
+        }
+        int processTime = nextTask.peek()[1], index = nextTask.peek()[2];
+        nextTask.remove();
+        currTime += processTime;                   // Complete this task and increment currTime.
+        tasksProcessingOrder[ansIndex++] = index;
+    }
+    return tasksProcessingOrder;
 }
