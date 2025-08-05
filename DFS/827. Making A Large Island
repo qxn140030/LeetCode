@@ -63,3 +63,84 @@ Approach 2: Component Sizes
 Time Complexity: O(n^2)
 Space Complexity: O(n^2)
 
+public int largestIsland(int[][] grid) {
+    int m = grid.length, n = grid[0].length;
+    DSU dsu = new DSU(m * n);
+    int zeroCount = 0;
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            if (grid[i][j] == 0) {
+                zeroCount++;
+            }
+        }
+    }
+    if (zeroCount < 2) {
+        return m * n;
+    } 
+    int[][] dir = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            if (grid[i][j] == 1) {
+                int cur = i * n + j;
+                for (int[] d : dir) {
+                    int r = i + d[0], c = j + d[1];
+                    if (r >= 0 && r < m && c >= 0 && c < n && grid[r][c] == 1) {
+                        int next = r * n + c;
+                        dsu.union(cur, next);
+                    }
+                }
+            }
+        }
+    }
+    int maxSize = 0;
+    Set<Integer> uniqueRoots = new HashSet<>();
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            if (grid[i][j] == 0) {
+                int curSize = 1;
+                for (int[] d : dir) {
+                    int r = i + d[0], c = j + d[1];
+                    if (r >= 0 && r < m && c >= 0 && c < n && grid[r][c] == 1) {
+                        int root = dsu.find(r * n + c);
+                        if (uniqueRoots.add(root)) {
+                            curSize += dsu.size[root];
+                        }
+                    }
+                }
+                uniqueRoots.clear();
+                maxSize = Math.max(maxSize, curSize);
+            }
+        }
+    }
+    return maxSize;
+}
+class DSU {
+    int[] parent, size;
+    public DSU(int n) {
+        parent = new int[n];
+        size = new int[n];
+        for (int i = 0; i < n; i++) {
+            parent[i] = i;
+            size[i] = 1;
+        }
+    }
+    public int find(int x) {
+        while (parent[x] != x) {
+            parent[x] = parent[parent[x]];
+            x = parent[x];
+        }
+        return x;
+    }
+    public void union(int x, int y) {
+        int rootX = find(x), rootY = find(y);
+        if (rootX != rootY) {
+            if (size[rootX] < size[rootY]) {
+                parent[rootX] = rootY;
+                size[rootY] += size[rootX];
+            } else {
+                parent[rootY] = rootX;
+                size[rootX] += size[rootY];
+            }
+        }
+    }
+}
