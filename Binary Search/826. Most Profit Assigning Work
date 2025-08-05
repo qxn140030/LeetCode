@@ -21,7 +21,7 @@ public int maxProfitAssignment(int[] difficulty, int[] profit, int[] worker) {
     for (int i = 0; i < difficulty.length; i++) {
         jobMap.put(difficulty[i], Math.max(jobMap.getOrDefault(difficulty[i], 0), profit[i]));
     }
-    int totalProfit = 0, res = 0, max = 0;
+    int totalProfit = 0, max = 0;
     for(Integer key : jobMap.keySet()) {        // keys are traversed in ascending order.
         max = Math.max(jobMap.get(key), max);
         jobMap.put(key, max);
