@@ -34,16 +34,14 @@ Approach 2: One pass
 Time complexity: O(n)
 Space complexity: O(1)
 
-public class Solution {
-    public int maxProfit(int[] prices) {
-        int profit = 0, lowest = prices[0];
-        for (int i = 1; i < prices.length; i++) {
-            if (prices[i] > lowest) {
-                profit = Math.max(profit, prices[i] - lowest);
-            } else {
-                lowest = prices[i];
-            }
+public int maxProfit(int[] prices) {
+    int profit = 0, lowest = prices[0];
+    for (int i = 1; i < prices.length; i++) {
+        if (prices[i] > lowest) {
+            profit = Math.max(profit, prices[i] - lowest);
+        } else {
+            lowest = prices[i];
         }
-        return profit;
     }
+    return profit;
 }
