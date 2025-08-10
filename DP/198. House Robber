@@ -57,14 +57,12 @@ Approach 3: Optimized DP
 Time complexity: O(n)
 Space complexity: O(1)
 
-public class Solution {
-    public int rob(int[] nums) {
-        int local1 = 0, local2 = nums[0];
-        for (int i = 1; i < nums.length; i++) {
-            int tmp = local1 + nums[i];
-            local1 = Math.max(local1, local2);
-            local2 = tmp;
-        }
-        return Math.max(local1, local2);
+public int rob(int[] nums) {
+    int local1 = 0, local2 = nums[0];
+    for (int i = 1; i < nums.length; i++) {
+        int tmp = local1 + nums[i];
+        local1 = Math.max(local1, local2);
+        local2 = tmp;
     }
+    return Math.max(local1, local2);
 }
