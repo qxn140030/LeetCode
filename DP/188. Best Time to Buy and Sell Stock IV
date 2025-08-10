@@ -18,7 +18,7 @@ Space complexity: O(k * n)
 
 public int maxProfit(int k, int[] prices) {
     int n = prices.length;
-    if (k >= n / 2) {                         // whihc means we can make as many transactions as needed.
+    if (k >= n / 2) {                         // which means we can make as many transactions as needed.
         return maxProfitUnlimited(prices);
     }
     int[][] dp = new int[k + 1][n];           // dp[t][i]: max profit on day i with at most t transactions.
