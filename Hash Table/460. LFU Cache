@@ -89,7 +89,6 @@ class LFUCache {
     }
     void insert(int key, int frequency, int value) {
         cache.put(key, new Pair<>(frequency, value));
-        freq.putIfAbsent(frequency, new LinkedHashSet<>());
-        freq.get(frequency).add(key);
+        freq.computeIfAbsent(frequency, k -> new LinkedHashSet<>()).add(key);
     }
 }
