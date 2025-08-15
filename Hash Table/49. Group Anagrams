@@ -12,17 +12,14 @@ Space complexity: O(n * k)
 
 class Solution {
     public List<List<String>> groupAnagrams(String[] strs) {
-        Map<String, List<String>> ans = new HashMap<>();
+        Map<String, List<String>> map = new HashMap<>();
         for (String s : strs) {
             char[] charArr = s.toCharArray();
             Arrays.sort(charArr);
             String key = String.valueOf(charArr);
-            if (!ans.containsKey(key)) {
-                ans.put(key, new ArrayList<>());
-            }
-            ans.get(key).add(s);
+            map.computeIfAbsent(key, k -> new ArrayList<>()).add(s);
         }
-        return new ArrayList<>(ans.values());       // HashMap.values(): return a collection view containing all the values of the map.
+        return new ArrayList<>(map.values());       // HashMap.values(): return a collection view containing all the values of the map.
     }
 }
 
