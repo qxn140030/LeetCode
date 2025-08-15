@@ -29,7 +29,7 @@ Space complexity: O(n * k)
 
 class Solution {
     public List<List<String>> groupAnagrams(String[] strs) {
-        Map<String, List<String>> ans = new HashMap<>();
+        Map<String, List<String>> map = new HashMap<>();
         int[] count = new int[26];
         for (String s : strs) {
             Arrays.fill(count, 0);
@@ -41,11 +41,8 @@ class Solution {
                 sb.append('#').append(count[i]);
             }
             String key = sb.toString();
-            if (!ans.containsKey(key)) {
-                ans.put(key, new ArrayList<>());
-            }
-            ans.get(key).add(s);
+            map.computeIfAbsent(key, k -> new ArrayList<>()).add(s);
         }
-        return new ArrayList<>(ans.values());
+        return new ArrayList<>(map.values());
     }
 }
