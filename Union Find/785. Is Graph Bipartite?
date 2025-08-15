@@ -22,8 +22,7 @@ Time complexity: O(V + E)
 Space complexity: O(V + E)
 
 class DSU {
-    int[] parent;
-    int[] rank;
+    int[] parent, rank;
     public DSU(int size) {
         parent = new int[size];
         rank = new int[size];
