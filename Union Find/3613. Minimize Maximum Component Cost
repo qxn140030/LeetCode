@@ -38,7 +38,7 @@ class Solution {
                 return w; 
             }
         }
-        return 0;
+        return 0;        // For connected graphs and k >= 1, we should have returned above
     }
 }
 class DSU {
