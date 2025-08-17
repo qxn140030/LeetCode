@@ -22,23 +22,34 @@ That single component’s cost equals its largest edge weight, which is 5.
 
 class Solution {
     public int minCost(int n, int[][] edges, int k) {
-        if (k >= n) {                                   // If we can have at least n components,
-            return 0;                                   // we can isolate every node -> max edge in any component is 0
+        int maxWeight = 0;
+        for (int [] edge : edges) {
+            maxWeight = Math.max(maxWeight, edge[2]);
         }
-        Arrays.sort(edges, (e1, e2) -> Integer.compare(e1[2], e2[2]));     // Sort edges by weight ascending
+        return findMinCost(edges, k, n, maxWeight);
+    }
+    int findMinCost(int [][] edges, int k, int n, int maxWeight) {
+        int low = 0, high = maxWeight, answer = -1;
+        while (low <= high) {
+            int middle = low + (high - low) / 2;
+            if (isGraphHaveKComponent(edges, k, middle, n)) {
+                answer = middle;
+                high = middle - 1;
+            } else {
+                low = middle + 1;
+            }
+        }
+        return answer;
+    }
+    boolean isGraphHaveKComponent(int [][] edges, int k, int currentMaxWeight, int n) {
         DSU dsu = new DSU(n);
-        int i = 0, m = edges.length;
-        while (i < m) {
-            int w = edges[i][2];
-            while (i < m && edges[i][2] == w) {          // Union all edges having weight == w
-                dsu.union(edges[i][0], edges[i][1]);
-                i++;
-            }
-            if (dsu.comps <= k) {
-                return w; 
+        for (int [] edge : edges) {
+            int node1 = edge[0], node2 = edge[1], weight = edge[2];
+            if (weight <= currentMaxWeight) {
+                dsu.union(node1, node2);
             }
         }
-        return 0;        // For connected graphs and k >= 1, we should have returned above
+        return dsu.comps <= k;
     }
 }
 class DSU {
