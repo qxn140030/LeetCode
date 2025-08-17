@@ -18,27 +18,24 @@ Output: 1
 Explanation: [3] is the only subarray that has a median equal to 3.
 
 public int countSubarrays(int[] nums, int k) {
-    int n = nums.length, kIndex = -1;
+    int n = nums.length, kIndex = -1, ans = 0;
     for (int i = 0; i < n; i++) {
         if (nums[i] == k) {
             kIndex = i;
             break;
         }
     }
-    // Step 2: Map prefix balances after kIndex
     Map<Integer, Integer> count = new HashMap<>();
-    count.put(0, 1); // balance 0 occurs once (empty prefix)
+    count.put(0, 1);          // balance 0 occurs once (empty prefix)
     int balance = 0;
     for (int i = kIndex + 1; i < n; i++) {
         if (nums[i] > k) {
             balance++;
-        } else if (nums[i] < k) {
+        } else {
             balance--;
         }
         count.put(balance, count.getOrDefault(balance, 0) + 1);
     }
-    // Step 3: Go backward from kIndex and count matching balances
-    int ans = 0;
     balance = 0;
     for (int i = kIndex; i >= 0; i--) {
         if (nums[i] > k) {
@@ -46,8 +43,8 @@ public int countSubarrays(int[] nums, int k) {
         } else if (nums[i] < k) {
             balance--;
         }
-        ans += count.getOrDefault(-balance, 0);
-        ans += count.getOrDefault(-balance + 1, 0);
+        ans += count.getOrDefault(-balance, 0);           // leftBalance + rightBalance == 0 (case median works with odd length)
+        ans += count.getOrDefault(-balance + 1, 0);       // leftBalance + rightBalance == 1 (case median works with even length)
     }
     return ans;
 }
