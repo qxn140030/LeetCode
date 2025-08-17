@@ -20,6 +20,7 @@ Person #1 gave person #2 $5.
 Person #2 gave person #0 $5.
 Therefore, person #1 only need to give person #0 $4, and all debt is settled.
 
+List<Integer> creditList;
 public int minTransfers(int[][] transactions) {
     Map<Integer, Integer> creditMap = new HashMap<>();     // Step 1: Calculate net balance for each person
     for (int[] t : transactions) {
@@ -35,7 +36,6 @@ public int minTransfers(int[][] transactions) {
     int n = creditList.size();
     return dfs(0, n);
 }
-List<Integer> creditList;
 int dfs(int cur, int n) {                             // DFS function to compute the minimum number of transactions needed to settle debts
     while (cur < n && creditList.get(cur) == 0) {     // Skip people who already have zero balance
         cur++;
