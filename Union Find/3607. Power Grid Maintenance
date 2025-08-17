@@ -14,30 +14,21 @@ Return an array of integers representing the results of each query of type [1, x
 
 Note: The power grid preserves its structure; an offline (non‑operational) node remains part of its grid and taking it offline does not alter connectivity.
 
- 
-
 Example 1:
-
 Input: c = 5, connections = [[1,2],[2,3],[3,4],[4,5]], queries = [[1,3],[2,1],[1,1],[2,2],[1,2]]
-
 Output: [3,2,3]
-
 Explanation:
-
 Initially, all stations {1, 2, 3, 4, 5} are online and form a single power grid.
 Query [1,3]: Station 3 is online, so the maintenance check is resolved by station 3.
 Query [2,1]: Station 1 goes offline. The remaining online stations are {2, 3, 4, 5}.
 Query [1,1]: Station 1 is offline, so the check is resolved by the operational station with the smallest id among {2, 3, 4, 5}, which is station 2.
 Query [2,2]: Station 2 goes offline. The remaining online stations are {3, 4, 5}.
 Query [1,2]: Station 2 is offline, so the check is resolved by the operational station with the smallest id among {3, 4, 5}, which is station 3.
+
 Example 2:
-
 Input: c = 3, connections = [], queries = [[1,1],[2,1],[1,1]]
-
 Output: [1,-1]
-
 Explanation:
-
 There are no connections, so each station is its own isolated grid.
 Query [1,1]: Station 1 is online in its isolated grid, so the maintenance check is resolved by station 1.
 Query [2,1]: Station 1 goes offline.
@@ -67,9 +58,9 @@ public int[] processQueries(int c, int[][] connections, int[][] queries) {
                 int root = uf.find(x);
                 PriorityQueue<Integer> heap = map.get(root);
                 while (heap != null && !heap.isEmpty() && !online[heap.peek()]) {
-                        heap.poll(); 
-                    }
-                    rst.add(heap == null || heap.isEmpty() ? -1 : heap.peek());
+                     heap.poll(); 
+                }
+                rst.add(heap == null || heap.isEmpty() ? -1 : heap.peek());
             }
         }
     }
