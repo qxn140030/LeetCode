@@ -59,7 +59,7 @@ public int maximumDetonation(int[][] bombs) {
     return answer;
 }
 int bfs(int i, Map<Integer, List<Integer>> graph) {
-    Deque<Integer> queue = new ArrayDeque<>();
+    Queue<Integer> queue = new LinkedList<>();
     Set<Integer> visited = new HashSet<>();
     queue.offer(i);
     visited.add(i);
