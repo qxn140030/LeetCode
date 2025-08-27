@@ -44,47 +44,45 @@ Approach 1:
 Time complexity: O(n * k), where n is the length of the words, k is the average length of a word.
 Space complexity: O(m), where m is maxWidth, we handle one line at a time.
 
-class Solution {
-    public List<String> fullJustify(String[] words, int maxWidth) {
-        int n = words.length;
-        List<String> rst = new ArrayList<>();
-        int curLen = 0, lastIdx = 0;
-        for (int i = 0; i <= n; i++) {
-            if (i == n || curLen + words[i].length() + i - lastIdx > maxWidth) {
-                StringBuffer buf = new StringBuffer();
-                int spaceCount = maxWidth - curLen;
-                int spaceSlots = i - lastIdx - 1;
-                if (spaceSlots == 0 || i == n) {
-                    for (int j = lastIdx; j < i; j++) {
-                        buf.append(words[j]);
-                        if (j != i - 1) {
-                            appendSpace(buf, 1);
-                        }
-                    }
-                    appendSpace(buf, maxWidth - buf.length());
-                } else {
-                    int spaceEach = spaceCount / spaceSlots;
-                    int spaceExtra = spaceCount % spaceSlots;
-                    for (int j = lastIdx; j < i; j++) {
-                        buf.append(words[j]);
-                        if (j != i - 1) {
-                            appendSpace(buf, spaceEach + (j - lastIdx < spaceExtra ? 1 : 0));
-                        }
-                    }
-                }
-                rst.add(buf.toString());
-                lastIdx = i;
-                curLen = 0;
-            }
-            if (i < n) {
-                curLen += words[i].length();
-            }
-        }
-        return rst;
-    }
-    private void appendSpace(StringBuffer sb, int count) {
-        for (int i = 0; i < count; i++) {
-            sb.append(' ');
-        }
-    }
+public List<String> fullJustify(String[] words, int maxWidth) {
+  int n = words.length;
+  List<String> rst = new ArrayList<>();
+  int curLen = 0, lastIdx = 0;
+  for (int i = 0; i <= n; i++) {
+      if (i == n || curLen + words[i].length() + i - lastIdx > maxWidth) {
+          StringBuffer buf = new StringBuffer();
+          int spaceCount = maxWidth - curLen;
+          int spaceSlots = i - lastIdx - 1;
+          if (spaceSlots == 0 || i == n) {
+              for (int j = lastIdx; j < i; j++) {
+                  buf.append(words[j]);
+                  if (j != i - 1) {
+                      appendSpace(buf, 1);
+                  }
+              }
+              appendSpace(buf, maxWidth - buf.length());
+          } else {
+              int spaceEach = spaceCount / spaceSlots;
+              int spaceExtra = spaceCount % spaceSlots;
+              for (int j = lastIdx; j < i; j++) {
+                  buf.append(words[j]);
+                  if (j != i - 1) {
+                      appendSpace(buf, spaceEach + (j - lastIdx < spaceExtra ? 1 : 0));
+                  }
+              }
+          }
+          rst.add(buf.toString());
+          lastIdx = i;
+          curLen = 0;
+      }
+      if (i < n) {
+          curLen += words[i].length();
+      }
+  }
+  return rst;
+}
+void appendSpace(StringBuffer sb, int count) {
+  for (int i = 0; i < count; i++) {
+      sb.append(' ');
+  }
 }
