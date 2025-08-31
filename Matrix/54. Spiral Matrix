@@ -11,37 +11,35 @@ Approach 1: Set Up Boundaries
 Time complexity: O(m * n)
 Space complexity: O(1)
 
-public class Solution {
-    public List<Integer> spiralOrder(int[][] matrix) {
-        List<Integer> rst = new ArrayList<>();
-        int m = matrix.length, n = matrix[0].length;
-        int left = 0, top = 0, right = n - 1, bottom = m - 1;
-        while (rst.size() < m * n) {
-            for (int i = left; i <= right; i++) {
-                rst.add(matrix[top][i]);
-            }
-            top++;
-            if (top > bottom) {
-                break;
-            }
-            for (int i = top; i <= bottom; i++) {
-                rst.add(matrix[i][right]);
-            }
-            right--;
-            if (left > right) {
-                break;
-            }
-            for (int i = right; i >= left; i--) {
-                rst.add(matrix[bottom][i]);
-            }
-            bottom--;
-            for (int i = bottom; i >= top; i--) {
-                rst.add(matrix[i][left]);
-            }
-            left++;
+public List<Integer> spiralOrder(int[][] matrix) {
+    List<Integer> rst = new ArrayList<>();
+    int m = matrix.length, n = matrix[0].length;
+    int left = 0, top = 0, right = n - 1, bottom = m - 1;
+    while (rst.size() < m * n) {
+        for (int i = left; i <= right; i++) {
+            rst.add(matrix[top][i]);
         }
-        return rst;
+        top++;
+        if (top > bottom) {
+            break;
+        }
+        for (int i = top; i <= bottom; i++) {
+            rst.add(matrix[i][right]);
+        }
+        right--;
+        if (left > right) {
+            break;
+        }
+        for (int i = right; i >= left; i--) {
+            rst.add(matrix[bottom][i]);
+        }
+        bottom--;
+        for (int i = bottom; i >= top; i--) {
+            rst.add(matrix[i][left]);
+        }
+        left++;
     }
+    return rst;
 }
 
 Approach 2: Mark Visited Elements
