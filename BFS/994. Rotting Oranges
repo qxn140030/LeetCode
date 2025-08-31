@@ -22,40 +22,38 @@ Approach 1: BFS
 Time complexity: O(m * n)
 Space complexity: O(m * n)
 
-class Solution {
-    public int orangesRotting(int[][] grid) {
-        int m = grid.length, n = grid[0].length, fresh = 0;
-        Queue<int[]> q = new LinkedList<>();
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (grid[i][j] == 1) {
-                    fresh++;
-                } else if (grid[i][j] == 2) {
-                    q.offer(new int[]{i, j});
-                }
+public int orangesRotting(int[][] grid) {
+    int m = grid.length, n = grid[0].length, fresh = 0;
+    Queue<int[]> q = new LinkedList<>();
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            if (grid[i][j] == 1) {
+                fresh++;
+            } else if (grid[i][j] == 2) {
+                q.offer(new int[]{i, j});
             }
         }
-        int rst = 0;
-        int[][] dir = {{0, -1}, {1, 0}, {0, 1}, {-1, 0}};
-        while (!q.isEmpty()) {
-            int size = q.size();
-            boolean flag = false;
-            for (int j = 0; j < size; j++) {
-                int[] cur = q.poll();
-                for (int i = 0; i < dir.length; i++) {
-                    int r = cur[0] + dir[i][0], c = cur[1] + dir[i][1];
-                    if (r >= 0 && r < m && c >= 0 && c < n && grid[r][c] == 1) {
-                        grid[r][c]++;
-                        fresh--;
-                        q.offer(new int[]{r, c});
-                        flag = true;
-                    }
-                }
-            }
-            if (flag) {
-                rst++;
-            }
-        }
-        return fresh == 0 ? rst : -1;
     }
+    int rst = 0;
+    int[][] dir = {{0, -1}, {1, 0}, {0, 1}, {-1, 0}};
+    while (!q.isEmpty()) {
+        int size = q.size();
+        boolean flag = false;
+        for (int j = 0; j < size; j++) {
+            int[] cur = q.poll();
+            for (int i = 0; i < dir.length; i++) {
+                int r = cur[0] + dir[i][0], c = cur[1] + dir[i][1];
+                if (r >= 0 && r < m && c >= 0 && c < n && grid[r][c] == 1) {
+                    grid[r][c]++;
+                    fresh--;
+                    q.offer(new int[]{r, c});
+                    flag = true;
+                }
+            }
+        }
+        if (flag) {
+            rst++;
+        }
+    }
+    return fresh == 0 ? rst : -1;
 }
