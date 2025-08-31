@@ -95,54 +95,50 @@ which should be used in preference to Stack class.
 Time complexity: O(n)
 Space complexity: O(n)
 
-class Solution {
-    public void recoverTree(TreeNode root) {
-        Deque<TreeNode> stack = new ArrayDeque<>();       // use ArrayDeque instead of Stack in Java.
-        TreeNode first = null, second = null, pre = null;
-        while (root != null || !stack.isEmpty()) {
-            while (root != null) {
-                stack.add(root);                          // or stack.push(root);
-                root = root.left;
-            }
-            root = stack.removeLast();                    // or stack.pop();
-            if (pre != null && pre.val >= root.val) {
-                first = first == null ? pre : first;
-                second = root;
-            }
-            pre = root;
-            root = root.right;
+public void recoverTree(TreeNode root) {
+    Deque<TreeNode> stack = new ArrayDeque<>();       // use ArrayDeque instead of Stack in Java.
+    TreeNode first = null, second = null, pre = null;
+    while (root != null || !stack.isEmpty()) {
+        while (root != null) {
+            stack.add(root);                          // or stack.push(root);
+            root = root.left;
         }
-        swap(first, second);
+        root = stack.removeLast();                    // or stack.pop();
+        if (pre != null && pre.val >= root.val) {
+            first = first == null ? pre : first;
+            second = root;
+        }
+        pre = root;
+        root = root.right;
     }
-    void swap(TreeNode a, TreeNode b) {
-        int tmp = a.val;
-        a.val = b.val;
-        b.val = tmp;
-    }
+    swap(first, second);
+}
+void swap(TreeNode a, TreeNode b) {
+    int tmp = a.val;
+    a.val = b.val;
+    b.val = tmp;
 }
 
 Approach 3: Recursive Inorder Traversal
 Time complexity: O(n)
 Space complexity: O(n)
 
-public class Solution {
-    TreeNode pre = null, first = null, second = null;
-    public void recoverTree(TreeNode root) {
-        helper(root);
-        swap(first, second);
+TreeNode pre = null, first = null, second = null;
+public void recoverTree(TreeNode root) {
+    helper(root);
+    swap(first, second);
+}
+void helper(TreeNode root) {
+    if (root == null) {
+        return;
     }
-    void helper(TreeNode root) {
-        if (root == null) {
-            return;
-        }
-        helper(root.left);
-        if (pre != null && pre.val >= root.val) {
-            first = first == null ? pre : first;
-            second = root;
-        }
-        pre = root;
-        helper(root.right);
+    helper(root.left);
+    if (pre != null && pre.val >= root.val) {
+        first = first == null ? pre : first;
+        second = root;
     }
+    pre = root;
+    helper(root.right);
 }
 
 Approach 4: Morris Inorder Traversal
