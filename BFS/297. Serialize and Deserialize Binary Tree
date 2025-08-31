@@ -174,34 +174,32 @@ Approach 3: DFS
 Time complexity: O(n)
 Space complexity: O(n)
 
-public class Codec {
-    public String serialize(TreeNode root) {
-        return serializeHelper(root, "");
+public String serialize(TreeNode root) {
+    return serializeHelper(root, "");
+}
+String serializeHelper(TreeNode root, String str) {
+    if (root == null) {
+        str += "null,";
+    } else {
+        str += root.val + ",";
+        str = serializeHelper(root.left, str);
+        str = serializeHelper(root.right, str);
     }
-    String serializeHelper(TreeNode root, String str) {
-        if (root == null) {
-            str += "null,";
-        } else {
-            str += root.val + ",";
-            str = serializeHelper(root.left, str);
-            str = serializeHelper(root.right, str);
-        }
-        return str;
-    }
-    public TreeNode deserialize(String data) {
-        String[] arr = data.split(",");
-        List<String> list = new ArrayList<>(Arrays.asList(arr));
-        return deserializeHelper(list);
-    }
-    TreeNode deserializeHelper(List<String> list) {
-        if (list.get(0).equals("null")) {
-            list.remove(0);
-            return null;
-        }
-        TreeNode root = new TreeNode(Integer.valueOf(list.get(0)));
+    return str;
+}
+public TreeNode deserialize(String data) {
+    String[] arr = data.split(",");
+    List<String> list = new ArrayList<>(Arrays.asList(arr));
+    return deserializeHelper(list);
+}
+TreeNode deserializeHelper(List<String> list) {
+    if (list.get(0).equals("null")) {
         list.remove(0);
-        root.left = deserializeHelper(list);
-        root.right = deserializeHelper(list);
-        return root;
+        return null;
     }
+    TreeNode root = new TreeNode(Integer.valueOf(list.get(0)));
+    list.remove(0);
+    root.left = deserializeHelper(list);
+    root.right = deserializeHelper(list);
+    return root;
 }
