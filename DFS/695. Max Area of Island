@@ -21,35 +21,33 @@ Approach 1: DFS
 Time complexity: O(m * n)
 Space complexity: O(m * n)
 
-class Solution {
-    public int maxAreaOfIsland(int[][] grid) {
-        int max = 0, m = grid.length, n = grid[0].length;
-        boolean[][] visit = new boolean[m][n];
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (grid[i][j] == 1 && !visit[i][j]) {
-                    int tmp = dfs(grid, i, j, visit);
-                    if (tmp > max) {
-                        max = tmp;
-                    }
+public int maxAreaOfIsland(int[][] grid) {
+    int max = 0, m = grid.length, n = grid[0].length;
+    boolean[][] visit = new boolean[m][n];
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            if (grid[i][j] == 1 && !visit[i][j]) {
+                int tmp = dfs(grid, i, j, visit);
+                if (tmp > max) {
+                    max = tmp;
                 }
             }
-        } 
-        return max;
-    }
-    private int dfs(int[][] grid, int i, int j, boolean[][] visit) {
-        int m = grid.length, n = grid[0].length, cnt = 0;
-        if (i < 0 || j < 0 || i == m || j == n || grid[i][j] == 0 || visit[i][j]) {
-            return cnt;
         }
-        cnt++;
-        visit[i][j] = true;
-        cnt += dfs(grid, i + 1, j, visit);
-        cnt += dfs(grid, i - 1, j, visit);
-        cnt += dfs(grid, i, j + 1, visit);
-        cnt += dfs(grid, i, j - 1, visit);
+    } 
+    return max;
+}
+int dfs(int[][] grid, int i, int j, boolean[][] visit) {
+    int m = grid.length, n = grid[0].length, cnt = 0;
+    if (i < 0 || j < 0 || i == m || j == n || grid[i][j] == 0 || visit[i][j]) {
         return cnt;
     }
+    cnt++;
+    visit[i][j] = true;
+    cnt += dfs(grid, i + 1, j, visit);
+    cnt += dfs(grid, i - 1, j, visit);
+    cnt += dfs(grid, i, j + 1, visit);
+    cnt += dfs(grid, i, j - 1, visit);
+    return cnt;
 }
 
 Approach 2: BFS
