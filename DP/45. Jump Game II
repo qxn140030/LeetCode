@@ -36,19 +36,17 @@ Approach 2: Greedy
 Time complexity: O(n)
 Space complexity: O(1)
 
-public class Solution {
-    public int jump(int[] nums) {
-        int steps = 0, start = 0, end = 0, furthest = 0;
-        while (furthest < nums.length - 1) {
-            steps++;
-            for (int i = start; i <= end; i++) {
-                if (nums[i] + i > furthest) {
-                    furthest = nums[i] + i;
-                }
+public int jump(int[] nums) {
+    int steps = 0, start = 0, end = 0, furthest = 0;
+    while (furthest < nums.length - 1) {
+        steps++;
+        for (int i = start; i <= end; i++) {
+            if (nums[i] + i > furthest) {
+                furthest = nums[i] + i;
             }
-            start = end + 1;
-            end = furthest;
         }
-        return steps;
+        start = end + 1;
+        end = furthest;
     }
+    return steps;
 }
