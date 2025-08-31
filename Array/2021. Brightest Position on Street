@@ -39,8 +39,7 @@ public int brightestPosition(int[][] lights) {
    Map<Long, Integer> events = new HashMap<>();
    for (int[] light : lights) {
        long point = light[0], range = light[1];
-       long start = point - range;
-       long end = point + range + 1; 
+       long start = point - range, end = point + range + 1; 
        events.put(start, events.getOrDefault(start, 0) + 1);
        events.put(end, events.getOrDefault(end, 0) - 1);
    }
