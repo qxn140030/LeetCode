@@ -1,0 +1,36 @@
+Given an integer array nums and an integer k, return the number of good subarrays of nums.
+A subarray arr is good if there are at least k pairs of indices (i, j) such that i < j and arr[i] == arr[j].
+A subarray is a contiguous non-empty sequence of elements within an array.
+
+Example 1:
+Input: nums = [1,1,1,1,1], k = 10
+Output: 1
+Explanation: The only good subarray is the array nums itself.
+
+Example 2:
+Input: nums = [3,1,4,3,2,2,4], k = 2
+Output: 4
+Explanation: There are 4 different good subarrays:
+- [3,1,4,3,2,2] that has 2 pairs.
+- [3,1,4,3,2,2,4] that has 3 pairs.
+- [1,4,3,2,2,4] that has 2 pairs.
+- [4,3,2,2,4] that has 2 pairs.
+
+public long countGood(int[] nums, int k) {
+   int n = nums.length, same = 0, j = -1;        // store counts of each number in the current window
+   Map<Integer, Integer> cnt = new HashMap<>();
+   long ans = 0;
+   for (int i = 0; i < n; i++) {                               
+       while (same < k && j + 1 < n) {           // expand the right boundary until the window has at least k equal pairs
+           j++;
+           same += cnt.getOrDefault(nums[j], 0);
+           cnt.put(nums[j], cnt.getOrDefault(nums[j], 0) + 1);
+       }
+       if (same >= k) {             // if window [i..j] has at least k pairs, 
+           ans += n - j;            // then all subarrays ending at >= j are good
+       }
+       cnt.put(nums[i], cnt.get(nums[i]) - 1);      // shrink from left: 
+       same -= cnt.get(nums[i]);                    // remove nums[i] before moving i forward
+   }
+   return ans;
+}
