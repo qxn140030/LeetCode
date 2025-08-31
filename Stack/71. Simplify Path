@@ -11,24 +11,22 @@ This directly translates to a part of the implementation of the cd command funct
 Time complexity: O(n)
 Space complexity: O(n)
 
-public class Solution {
-    public String simplifyPath(String path) {
-        Stack<String> stack = new Stack<>();
-        String[] pathSplit = path.split("/");
-        for (String s : pathSplit) {                  // no-op for a "." or an empty string
-            if (s.equals("..") && !stack.empty()) {
-                stack.pop();
-            } else if (!s.isEmpty() && !s.equals(".") && !s.equals("..")) {
-                stack.push(s);
-            }
+public String simplifyPath(String path) {
+    Stack<String> stack = new Stack<>();
+    String[] pathSplit = path.split("/");
+    for (String s : pathSplit) {                  // no-op for a "." or an empty string
+        if (s.equals("..") && !stack.empty()) {
+            stack.pop();
+        } else if (!s.isEmpty() && !s.equals(".") && !s.equals("..")) {
+            stack.push(s);
         }
-        if (stack.empty()) {
-            return "/";
-        }
-        StringBuilder sb = new StringBuilder();
-        for (String s : stack) {
-            sb.append("/").append(s);
-        }
-        return sb.toString();
     }
+    if (stack.empty()) {
+        return "/";
+    }
+    StringBuilder sb = new StringBuilder();
+    for (String s : stack) {
+        sb.append("/").append(s);
+    }
+    return sb.toString();
 }
