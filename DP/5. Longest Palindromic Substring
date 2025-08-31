@@ -23,28 +23,26 @@ palindrome mirrors around its center. there are 2n - 1 centers, n letters and (n
 Time complexity: O(n^2). since expanding a palindrome around its center take O(n) time. 
 Space complexity: O(1)
 
-public class Solution {
-    public String longestPalindrome(String s) {
-        String longest = "";
-        for (int i = 0; i < s.length(); i++) {
-            String tmp = expandAroundCenter(s, i, i);
-            if (tmp.length() > longest.length()) {
-                longest = tmp;
-            }
-            tmp = expandAroundCenter(s, i, i + 1);
-            if (tmp.length() > longest.length()) {
-                longest = tmp;
-            }
+public String longestPalindrome(String s) {
+    String longest = "";
+    for (int i = 0; i < s.length(); i++) {
+        String tmp = expandAroundCenter(s, i, i);
+        if (tmp.length() > longest.length()) {
+            longest = tmp;
         }
-        return longest;
-    }
-    private String expandAroundCenter(String s, int left, int right) {
-        while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
-            right++;
-            left--;
+        tmp = expandAroundCenter(s, i, i + 1);
+        if (tmp.length() > longest.length()) {
+            longest = tmp;
         }
-        return s.substring(left + 1, right);
     }
+    return longest;
+}
+String expandAroundCenter(String s, int left, int right) {
+    while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+        right++;
+        left--;
+    }
+    return s.substring(left + 1, right);
 }
 
 Approach 4: Dynamic Programming
