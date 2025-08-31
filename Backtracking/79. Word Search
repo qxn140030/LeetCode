@@ -15,34 +15,32 @@ Approach 1: Backtracking
 Time complexity: O(m * n * 4^k), where k is the length of the word. 
 Space complexity: O(m * n)
 
-public class Solution {
-    public boolean exist(char[][] board, String word) {
-        int m = board.length, n = board[0].length;
-        boolean[][] visited = new boolean[m][n];
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (search(board, word, 0, i, j, visited)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-    boolean search(char[][] board, String word, int index, int row, int col, boolean[][] visited) {
-        if (index >= word.length()) { 
-            return true;
-        }
-        if (row < 0 || col < 0 || row >= board.length || col >= board[0].length || visited[row][col] || word.charAt(index) != board[row][col]) {
-            return false;
-        }
-        visited[row][col] = true;
-        boolean rst = search(board, word, index + 1, row + 1, col, visited) 
- 		   || search(board, word, index + 1, row, col + 1, visited) 
-		   || search(board, word, index + 1, row - 1, col, visited) 
-		   || search(board, word, index + 1, row, col - 1, visited);
-        visited[row][col] = false;
-        return rst;
-    }
+public boolean exist(char[][] board, String word) {
+	int m = board.length, n = board[0].length;
+	boolean[][] visited = new boolean[m][n];
+	for (int i = 0; i < m; i++) {
+		for (int j = 0; j < n; j++) {
+			if (search(board, word, 0, i, j, visited)) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+boolean search(char[][] board, String word, int index, int row, int col, boolean[][] visited) {
+	if (index >= word.length()) { 
+		return true;
+	}
+	if (row < 0 || col < 0 || row >= board.length || col >= board[0].length || visited[row][col] || word.charAt(index) != board[row][col]) {
+		return false;
+	}
+	visited[row][col] = true;
+	boolean rst = search(board, word, index + 1, row + 1, col, visited) 
+	   || search(board, word, index + 1, row, col + 1, visited) 
+	   || search(board, word, index + 1, row - 1, col, visited) 
+	   || search(board, word, index + 1, row, col - 1, visited);
+	visited[row][col] = false;
+	return rst;
 }
 
 Follow up: Could you use search pruning to make your solution faster with a larger board?
