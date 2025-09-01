@@ -47,31 +47,29 @@ only add them when we know it will remain a valid sequence.
 Time complexity: O(4^n / sqr(n))
 Space complexity: O(4^n / sqr(n))
 
-public class Solution {
-    public List<String> generateParenthesis(int n) {
-        List<String> rst = new ArrayList<>();
-        StringBuilder sb = new StringBuilder();
-        helper(rst, sb, n, n);
-        return rst;
+public List<String> generateParenthesis(int n) {
+    List<String> rst = new ArrayList<>();
+    StringBuilder sb = new StringBuilder();
+    helper(rst, sb, n, n);
+    return rst;
+}
+void helper(List<String> rst, StringBuilder sb, int left, int right) {
+    if (left == 0 && right == 0) {
+        rst.add(sb.toString());
+        return;
     }
-    private void helper(List<String> rst, StringBuilder sb, int left, int right) {
-        if (left == 0 && right == 0) {
-            rst.add(sb.toString());
-            return;
-        }
-        if (left > right) {
-            return;
-        }
-        if (left > 0) {
-            sb.append('(');
-            helper(rst, sb, left - 1, right);
-            sb.deleteCharAt(sb.length() - 1);
-        }
-        if (right > 0) {
-            sb.append(')');
-            helper(rst, sb, left, right - 1);
-            sb.deleteCharAt(sb.length() - 1);
-        }
+    if (left > right) {
+        return;
+    }
+    if (left > 0) {
+        sb.append('(');
+        helper(rst, sb, left - 1, right);
+        sb.deleteCharAt(sb.length() - 1);
+    }
+    if (right > 0) {
+        sb.append(')');
+        helper(rst, sb, left, right - 1);
+        sb.deleteCharAt(sb.length() - 1);
     }
 }
 
