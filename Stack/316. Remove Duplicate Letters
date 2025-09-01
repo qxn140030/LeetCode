@@ -12,29 +12,27 @@ Approach 1: Greedy - Solving with Stack
 Time complexity: O(n)
 Space complexity: O(1), both stack and seen are bounded by constant.
 
-class Solution {
-    public String smallestSubsequence(String s) {
-        int[] count = new int[26];
-        for(char c : s.toCharArray()) {
-            count[c - 'a']++;
-        }
-        boolean[] visited = new boolean[26];        // to keep track of visited character so that we don't use them if present in answer.
-        Stack<Character> stack = new Stack<>();
-        for(char c : s.toCharArray()){
-            count[c - 'a']--;                       // decrement the frequncy of character since we are using it in answer.
-            if (visited[c - 'a']) {
-                continue;
-            }
-            while (!stack.isEmpty() && c < stack.peek() && count[stack.peek() - 'a'] > 0) {
-                visited[stack.pop() - 'a'] = false;
-            }
-            stack.push(c);
-            visited[c - 'a'] = true;
-        }
-        StringBuilder sb = new StringBuilder();
-        while (!stack.isEmpty()) {
-            sb.append(stack.pop());
-        }
-        return sb.reverse().toString();
+public String smallestSubsequence(String s) {
+    int[] count = new int[26];
+    for(char c : s.toCharArray()) {
+        count[c - 'a']++;
     }
+    boolean[] visited = new boolean[26];        // to keep track of visited character so that we don't use them if present in answer.
+    Stack<Character> stack = new Stack<>();
+    for(char c : s.toCharArray()){
+        count[c - 'a']--;                       // decrement the frequncy of character since we are using it in answer.
+        if (visited[c - 'a']) {
+            continue;
+        }
+        while (!stack.isEmpty() && c < stack.peek() && count[stack.peek() - 'a'] > 0) {
+            visited[stack.pop() - 'a'] = false;
+        }
+        stack.push(c);
+        visited[c - 'a'] = true;
+    }
+    StringBuilder sb = new StringBuilder();
+    while (!stack.isEmpty()) {
+        sb.append(stack.pop());
+    }
+    return sb.reverse().toString();
 }
