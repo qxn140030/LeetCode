@@ -35,19 +35,17 @@ Use two variables to track the previous and next node of each pair.
 Time complexity: O(n)
 Space complexity: O(1)
 
-public class Solution {
-    public ListNode swapPairs(ListNode head) {
-        ListNode dummy = new ListNode(0);
-        dummy.next = head;
-        ListNode tail = dummy;
-        while (head != null && head.next != null) {
-            ListNode cur = head.next;
-            tail.next = cur;
-            head.next = cur.next;
-            cur.next = head;
-            tail = head;
-            head = head.next;
-        }
-        return dummy.next;
+public ListNode swapPairs(ListNode head) {
+    ListNode dummy = new ListNode(0);
+    dummy.next = head;
+    ListNode tail = dummy;
+    while (head != null && head.next != null) {
+        ListNode cur = head.next;
+        tail.next = cur;
+        head.next = cur.next;
+        cur.next = head;
+        tail = head;
+        head = head.next;
     }
+    return dummy.next;
 }
