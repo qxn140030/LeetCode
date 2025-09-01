@@ -44,23 +44,22 @@ public class Solution {
     }
 }
 
-class Solution {
-    int index = 0;                                                  // preorder index.
-    Map<Integer, Integer> map = new HashMap<>();                    // inorder index map.
-    public TreeNode buildTree(int[] preorder, int[] inorder) {
-        for (int i = 0; i < inorder.length; i++) {
-            map.put(inorder[i], i);
-        }
-        return arrayToTree(preorder, 0, preorder.length - 1);
+
+int index = 0;                                                  // preorder index.
+Map<Integer, Integer> map = new HashMap<>();                    // inorder index map.
+public TreeNode buildTree(int[] preorder, int[] inorder) {
+    for (int i = 0; i < inorder.length; i++) {
+        map.put(inorder[i], i);
     }
-    private TreeNode arrayToTree(int[] preorder, int left, int right) {
-        if (left > right) {
-            return null;
-        }
-        int rootValue = preorder[index++];
-        TreeNode root = new TreeNode(rootValue);
-        root.left = arrayToTree(preorder, left, map.get(rootValue) - 1);
-        root.right = arrayToTree(preorder, map.get(rootValue) + 1, right);
-        return root;
+    return arrayToTree(preorder, 0, preorder.length - 1);
+}
+TreeNode arrayToTree(int[] preorder, int left, int right) {
+    if (left > right) {
+        return null;
     }
+    int rootValue = preorder[index++];
+    TreeNode root = new TreeNode(rootValue);
+    root.left = arrayToTree(preorder, left, map.get(rootValue) - 1);
+    root.right = arrayToTree(preorder, map.get(rootValue) + 1, right);
+    return root;
 }
