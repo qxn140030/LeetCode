@@ -46,25 +46,20 @@ Approach 2: use Monotonic Deque
 Time complexity: O(n)
 Space complexity: O(k)
 
-public class Solution {
-    public int[] maxSlidingWindow(int[] nums, int k) {
-        if (nums == null || nums.length == 0) {
-            return new int[0];
+public int[] maxSlidingWindow(int[] nums, int k) {
+    int[] rst = new int[nums.length - k + 1];   
+    Deque<Integer> q = new LinkedList<>();
+    for (int i = 0; i < nums.length; i++) {
+        if (!q.isEmpty() && q.peek() == (i - k)) {      
+            q.poll();
         }
-        int[] rst = new int[nums.length - k + 1];   
-        Deque<Integer> q = new LinkedList<>();
-        for (int i = 0; i < nums.length; i++) {
-            if (!q.isEmpty() && q.peek() == (i - k)) {      
-                q.poll();
-            }
-            while (!q.isEmpty() && nums[q.peekLast()] < nums[i]) {         // in descending order.
-                q.pollLast();
-            }
-            q.offer(i);
-            if (i - k + 1 >= 0) {
-                rst[i - k + 1] = nums[q.peek()];         // the head of deque is the largest number.
-            }
+        while (!q.isEmpty() && nums[q.peekLast()] < nums[i]) {         // in descending order.
+            q.pollLast();
         }
-        return rst;        
+        q.offer(i);
+        if (i - k + 1 >= 0) {
+            rst[i - k + 1] = nums[q.peek()];         // the head of deque is the largest number.
+        }
     }
+    return rst;        
 }
