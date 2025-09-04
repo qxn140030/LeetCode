@@ -17,87 +17,81 @@ Approach 1: Sorting
 Time complexity: O(nlogn)
 Space complexity: O(1)
 
-class Solution {
-    public List<Integer> majorityElement(int[] nums) {
-        List<Integer> rst = new ArrayList<>();
-        Arrays.sort(nums);
-        int count = 1, n = nums.length;
-        for (int i = 1; i <= n; i++) {
-            if (i < n && nums[i] == nums[i - 1]) {
-                count++;
-            } else {
-                if (count > n / 3) {
-                    rst.add(nums[i - 1]);
-                }
-                count = 1;
+public List<Integer> majorityElement(int[] nums) {
+    List<Integer> rst = new ArrayList<>();
+    Arrays.sort(nums);
+    int count = 1, n = nums.length;
+    for (int i = 1; i <= n; i++) {
+        if (i < n && nums[i] == nums[i - 1]) {
+            count++;
+        } else {
+            if (count > n / 3) {
+                rst.add(nums[i - 1]);
             }
+            count = 1;
         }
-        return rst;
     }
+    return rst;
 }
 
 Approach 2: Hash Table
 Time complexity: O(n)
 Space complexity: O(n)
 
-class Solution {
-    public List<Integer> majorityElement(int[] nums) {
-        Map<Integer, Integer> map = new HashMap<>();
-        for (int num : nums) {
-            map.put(num, map.getOrDefault(num, 0) + 1);
-        }
-        int n = nums.length;
-        List<Integer> rst = new ArrayList<>();
-        for (int num : map.keySet()) {
-            if (map.get(num) > n / 3) {
-                rst.add(num);
-            }
-        }
-        return rst;
+public List<Integer> majorityElement(int[] nums) {
+    Map<Integer, Integer> map = new HashMap<>();
+    for (int num : nums) {
+        map.put(num, map.getOrDefault(num, 0) + 1);
     }
+    int n = nums.length;
+    List<Integer> rst = new ArrayList<>();
+    for (int num : map.keySet()) {
+        if (map.get(num) > n / 3) {
+            rst.add(num);
+        }
+    }
+    return rst;
 }
 
 Approach 3: Boyer-Moore Voting Algorithm
 Time complexity: O(n)
 Space complexity: O(1)
 
-class Solution {
-    public List<Integer> majorityElement(int[] nums) {
-        int count1 = 0, count2 = 0, n = nums.length;
-        Integer candidate1 = null, candidate2 = null;
-        for (int num : nums) {                                       // first pass.
-            if (candidate1 != null && candidate1 == num) {
-                count1++;
-            } else if (candidate2 != null && candidate2 == num) {
-                count2++;
-            } else if (count1 == 0) {
-                candidate1 = num;
-                count1++;
-            } else if (count2 == 0) {
-                candidate2 = num;
-                count2++;
-            } else {
-                count1--;
-                count2--;
-            }
+public List<Integer> majorityElement(int[] nums) {
+    int count1 = 0, count2 = 0, n = nums.length;
+    Integer candidate1 = null, candidate2 = null;
+    for (int num : nums) {                                       // first pass.
+        if (candidate1 != null && candidate1 == num) {
+            count1++;
+        } else if (candidate2 != null && candidate2 == num) {
+            count2++;
+        } else if (count1 == 0) {
+            candidate1 = num;
+            count1++;
+        } else if (count2 == 0) {
+            candidate2 = num;
+            count2++;
+        } else {
+            count1--;
+            count2--;
         }
-        List<Integer> rst = new ArrayList<>();
-        count1 = 0;
-        count2 = 0;
-        for (int num : nums) {                                     // second pass.
-            if (candidate1 != null && num == candidate1) {
-                count1++;
-            }
-            if (candidate2 != null && num == candidate2) {
-                count2++;
-            }
-        } 
-        if (count1 > n/3) {
-            rst.add(candidate1);
-        } 
-        if (count2 > n/3) {
-            rst.add(candidate2);
-        }
-        return rst;
     }
+    List<Integer> rst = new ArrayList<>();
+    count1 = 0;
+    count2 = 0;
+    for (int num : nums) {                                     // second pass.
+        if (candidate1 != null && num == candidate1) {
+            count1++;
+        }
+        if (candidate2 != null && num == candidate2) {
+            count2++;
+        }
+    } 
+    if (count1 > n/3) {
+        rst.add(candidate1);
+    } 
+    if (count2 > n/3) {
+        rst.add(candidate2);
+    }
+    return rst;
 }
