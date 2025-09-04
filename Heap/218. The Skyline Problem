@@ -24,40 +24,29 @@ Approach 1:
 Time complexity: O(nlogn)
 Space complexity: O(n)
 
-public class Solution {
-    public List<int[]> getSkyline(int[][] buildings) {
-        List<int[]> rst = new ArrayList<>();
-        if (buildings == null || buildings.length == 0) {
-            return rst;
-        }
-        List<int[]> height = new ArrayList<>();
-        for (int[] b : buildings) {
-            height.add(new int[] {b[0], -b[2]});    // left top point(x, -y)
-            height.add(new int[] {b[1], b[2]});     // right top point(x, y)
-        }
-        Collections.sort(height, new Comparator<int[]>() {
-            public int compare(int[] a, int[] b) {
-                if (a[0] == b[0]) {
-                    return a[1] - b[1];
-                }
-                return a[0] - b[0];
-            }
-        });
-        PriorityQueue<Integer> pq = new PriorityQueue<>(10, Collections.reverseOrder());   // y
-        pq.offer(0);
-        int pre = 0;
-        for (int[] h : height) {
-            if (h[1] < 0) {     // left 
-                pq.offer(-h[1]);
-            } else {
-                pq.remove(h[1]);
-            }
-            int cur = pq.peek();
-            if (pre != cur) {
-                rst.add(new int[] {h[0], cur});
-                pre = cur;
-            }
-        }
-        return rst;
+public List<List<Integer>> getSkyline(int[][] buildings) {
+    List<int[]> events = new ArrayList<>();
+    for (int[] b : buildings) {
+        events.add(new int[]{b[0], -b[2]}); // start: negative height
+        events.add(new int[]{b[1], b[2]}); // end:   positive height
     }
+    events.sort((a, b) -> (a[0] != b[0]) ? a[0] - b[0] : a[1] - b[1]);
+    PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());   
+    pq.offer(0);
+    int pre = 0;
+    List<List<Integer>> res = new ArrayList<>();
+    for (int[] e : events) {
+        if (e[1] < 0) {    
+            pq.offer(-e[1]);
+        } else {
+            pq.remove(e[1]);
+        }
+        int cur = pq.peek();
+        if (pre != cur) {
+            res.add(Arrays.asList(e[0], cur));
+            pre = cur;
+        }
+    }
+    return res;
 }
+
