@@ -1,0 +1,53 @@
+You are given an integer array matchsticks where matchsticks[i] is the length of the ith matchstick. You want to use all the matchsticks to make one square. 
+You should not break any stick, but you can link them up, and each matchstick must be used exactly one time.
+
+Return true if you can make this square and false otherwise.
+
+Example 1:
+Input: matchsticks = [1,1,2,2,2]
+Output: true
+Explanation: You can form a square with length 2, one side of the square came two sticks with length 1.
+
+Example 2:
+Input: matchsticks = [3,3,3,3,4]
+Output: false
+Explanation: You cannot find a way to form a square with all the matchsticks.
+
+Approach 1: DFS
+Time complexity: O(4^n)
+Space complexity: O(n)
+
+public boolean makesquare(int[] matchsticks) {
+    int perimeter = 0;
+    for (int matchstick : matchsticks) {
+        perimeter += matchstick;
+    }
+    if (perimeter % 4 != 0) {
+        return false;
+    }
+    int squareSide = perimeter / 4;
+    Arrays.sort(matchsticks);
+    int[] sideSum = new int[4];
+    return dfs(matchsticks, matchsticks.length - 1, squareSide, sideSum);
+}
+boolean dfs(int[] matchsticks, int idx, int squareSide, int[] sideSum) {
+    if (idx < 0) {
+        return sideSum[0] == sideSum[1] && sideSum[1] == sideSum[2] && sideSum[2] == sideSum[3];
+    }
+    int cur = matchsticks[idx];
+    for (int i = 0; i < 4; i++) {
+        if (sideSum[i] + cur <= squareSide) {
+            sideSum[i] += cur;
+            if (dfs(matchsticks, idx - 1, squareSide, sideSum)) {
+                return true;
+            }
+            sideSum[i] -= cur;
+        }
+    }
+    return false;
+}
+
+Appraoch 2: DP
+Time complexity: O(n * 2^n)
+Space complexity: O(n + 2^n)
+
