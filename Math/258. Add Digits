@@ -12,26 +12,22 @@ Approach 1: Naive
 Time complexity: O(logn)
 Space complexity: O(1)
 
-public class Solution {
-    public int addDigits(int num) {
-        while (num >= 10) {
-            int rst = 0;
-            while (num > 0) {
-                rst += num % 10;
-                num /= 10;
-            }
-            num = rst;
+public int addDigits(int num) {
+    while (num >= 10) {
+        int rst = 0;
+        while (num > 0) {
+            rst += num % 10;
+            num /= 10;
         }
-        return num;
+        num = rst;
     }
+    return num;
 }
 
 Approach 2: Mathematical: Digital Root
 Time complexity: O(1)
 Space complexity: O(1)
 
-public class Solution {
-    public int addDigits(int num) {
-        return (num - 1) % 9 + 1;
-    }
+public int addDigits(int num) {
+    return (num - 1) % 9 + 1;
 }
