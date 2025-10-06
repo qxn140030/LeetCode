@@ -29,5 +29,5 @@ Time complexity: O(1)
 Space complexity: O(1)
 
 public int addDigits(int num) {
-    return (num - 1) % 9 + 1;
+    return (num - 1) % 9 + 1;         // In base 10, the sum of digits of a number is congruent to the number modulo 9.
 }
