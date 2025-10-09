@@ -20,29 +20,27 @@ Approach 1: Stack
 Time complexity: O(n)
 Space complexity: O(n)
 
-class Solution {
-    public int[] asteroidCollision(int[] asteroids) {
-        Stack<Integer> stack = new Stack<>();
-        for (int asteroid : asteroids) {
-            boolean flag = true;
-            while (!stack.isEmpty() && stack.peek() > 0 && asteroid < 0) {
-                if (Math.abs(stack.peek()) < Math.abs(asteroid)) {            // If the top asteroid in the stack is smaller, then it will explode.
-                    stack.pop();                                              // Hence pop it from the stack,
-                    continue;                                                 // also continue with the next asteroid in the stack.
-                } else if (Math.abs(stack.peek()) == Math.abs(asteroid)) {    // If both asteroids have the same size, then both asteroids will explode.
-                    stack.pop();                                              // Pop the asteroid from the stack; also, we won't push the current asteroid to the stack.
-                }
-                flag = false;                                                 // If we reach here, the current asteroid will be destroyed
-                break;                                                        // Hence, we should not add it to the stack
+public int[] asteroidCollision(int[] asteroids) {
+    Stack<Integer> stack = new Stack<>();
+    for (int asteroid : asteroids) {
+        boolean flag = true;
+        while (!stack.isEmpty() && stack.peek() > 0 && asteroid < 0) {
+            if (Math.abs(stack.peek()) < Math.abs(asteroid)) {            // If the top asteroid in the stack is smaller, then it will explode.
+                stack.pop();                                              // Hence pop it from the stack,
+                continue;                                                 // also continue with the next asteroid in the stack.
+            } else if (Math.abs(stack.peek()) == Math.abs(asteroid)) {    // If both asteroids have the same size, then both asteroids will explode.
+                stack.pop();                                              // Pop the asteroid from the stack; also, we won't push the current asteroid to the stack.
             }
-            if (flag) {
-                stack.push(asteroid);
-            }
+            flag = false;                                                 // If we reach here, the current asteroid will be destroyed
+            break;                                                        // Hence, we should not add it to the stack
         }
-        int[] remain = new int[stack.size()];
-        for (int i = remain.length - 1; i >= 0; i--) {                       // Add the asteroids from the stack to the vector in the reverse order.
-            remain[i] = stack.pop();
+        if (flag) {
+            stack.push(asteroid);
         }
-        return remain;
     }
+    int[] remain = new int[stack.size()];
+    for (int i = remain.length - 1; i >= 0; i--) {                       // Add the asteroids from the stack to the vector in the reverse order.
+        remain[i] = stack.pop();
+    }
+    return remain;
 }
