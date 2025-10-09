@@ -16,23 +16,21 @@ Space complexity: O(1)
  *     ListNode(int x) { val = x; }
  * }
  */
-public class Solution {
-    public ListNode partition(ListNode head, int x) {
-        ListNode leftDummy = new ListNode(0);
-        ListNode rightDummy = new ListNode(0);
-        ListNode leftTail = leftDummy, rightTail = rightDummy;
-        while (head != null) {
-            if (head.val < x) {
-                leftTail.next = head;
-                leftTail = leftTail.next;
-            } else {
-                rightTail.next = head;
-                rightTail = rightTail.next;
-            }
-            head = head.next;
+public ListNode partition(ListNode head, int x) {
+    ListNode leftDummy = new ListNode(0);
+    ListNode rightDummy = new ListNode(0);
+    ListNode leftTail = leftDummy, rightTail = rightDummy;
+    while (head != null) {
+        if (head.val < x) {
+            leftTail.next = head;
+            leftTail = leftTail.next;
+        } else {
+            rightTail.next = head;
+            rightTail = rightTail.next;
         }
-        leftTail.next = rightDummy.next;
-        rightTail.next = null;
-        return leftDummy.next;
+        head = head.next;
     }
+    leftTail.next = rightDummy.next;
+    rightTail.next = null;
+    return leftDummy.next;
 }
