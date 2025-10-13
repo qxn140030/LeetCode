@@ -118,22 +118,20 @@ Approach 4: Iterative Inorder Traversal
 Time complexity: O(n)
 Space complexity: O(n)
 
-public class Solution {
-    public boolean isValidBST(TreeNode root) {
-        long pre = Long.MIN_VALUE;
-        Deque<TreeNode> stack = new ArrayDeque<>();
-        while (root != null || !stack.isEmpty()) {
-            while (root != null) {
-                stack.push(root);
-                root = root.left;
-            }
-            root = stack.pop();
-            if (pre >= root.val) {
-                return false;
-            }
-            pre = root.val;
-            root = root.right;
+public boolean isValidBST(TreeNode root) {
+    long pre = Long.MIN_VALUE;
+    Deque<TreeNode> stack = new ArrayDeque<>();
+    while (root != null || !stack.isEmpty()) {
+        while (root != null) {
+            stack.push(root);
+            root = root.left;
         }
-        return true;
+        root = stack.pop();
+        if (pre >= root.val) {
+            return false;
+        }
+        pre = root.val;
+        root = root.right;
     }
+    return true;
 }
