@@ -19,36 +19,39 @@ Approach 1: Using Stack
 Time complexity: O(n)
 Space complexity: O(n)
 
-class Solution {
-    public int calculate(String s) {
-        int len = s.length(), curr = 0;
-        Deque<Integer> stack = new ArrayDeque<>();
-        char operation = '+';
-        for (int i = 0; i < len; i++) {
-            char ch = s.charAt(i);
-            if (Character.isDigit(ch)) {
-                curr = curr * 10 + (ch - '0');
-            }
-            if (i == len - 1 || !Character.isDigit(ch) && !Character.isWhitespace(ch)) {
-                if (operation == '-') {
-                    stack.push(-curr);
-                } else if (operation == '+') {
+public int calculate(String s) {
+    int curr = 0;
+    char op = '+';
+    Deque<Integer> stack = new ArrayDeque<>();
+    for (int i = 0; i < s.length(); i++) {
+        char c = s.charAt(i);
+        if (Character.isDigit(c)) {
+            curr = curr * 10 + (c - '0');
+        } 
+        if (c == '+' || c == '-' || c == '*' || c == '/' || i == s.length() - 1) {
+            switch (op) {
+                case '+':
                     stack.push(curr);
-                } else if (operation == '*') {
+                    break;
+                case '-':
+                    stack.push(-curr);
+                    break;
+                case '*':
                     stack.push(stack.pop() * curr);
-                } else if (operation == '/') {
+                    break;
+                case '/':
                     stack.push(stack.pop() / curr);
-                }
-                operation = ch;
-                curr = 0;
+                    break;
             }
-        }
-        int rst = 0;
-        while (!stack.isEmpty()) {
-            rst += stack.pop();
-        }
-        return rst;
+            curr = 0;
+            op = c;
+        } 
     }
+    int rst = 0;
+    while (!stack.isEmpty()) {
+        rst += stack.pop();
+    }
+    return rst;
 }
 
 Approach 2: Optimized Without Using Stack
