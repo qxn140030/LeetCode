@@ -54,6 +54,7 @@ class Solution {
 }
 
 Approach 3: Work Backwards (Modulo Variant) 
+reverse simulation (or backward BFS/DFS) approach to solve the problem efficiently.
 Time Complexity: O(log⁡(max⁡(tx, ty)))
 Space Complexity: O(1)
 
