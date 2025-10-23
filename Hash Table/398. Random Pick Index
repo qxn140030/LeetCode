@@ -10,10 +10,11 @@ solution.pick(3);
 // pick(1) should return 0. Since in the array only nums[0] is equal to 1.
 solution.pick(1);
 
-Time complexity: O()
-Space complexity: O()
+Approach 1: Brute Force
+Time complexity: O(n)
+Space complexity: O(k)
 
-public class Solution {
+class Solution {
     int[] nums;
     Random r;
     public Solution(int[] nums) {
@@ -35,3 +36,28 @@ public class Solution {
  * Solution obj = new Solution(nums);
  * int param_1 = obj.pick(target);
  */
+
+Approach 2: Reservoir sampling
+Time complexity: O(n)
+Space complexity: O(1)
+
+class Solution {
+    int[] nums;
+    Random rand;
+    public Solution(int[] nums) {
+        this.nums = nums;
+        this.rand = new Random();
+    }
+    public int pick(int target) {
+        int n = nums.length, count = 0, idx = 0;
+        for (int i = 0; i < n; i++) {
+            if (nums[i] == target) {
+                count++;
+                if (rand.nextInt(count) == 0) {    // we pick the current number with probability 1 / count (reservoir sampling)
+                    idx = i;
+                }
+            }
+        }
+        return idx;
+    }
+}
