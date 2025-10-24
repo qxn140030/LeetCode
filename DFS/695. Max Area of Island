@@ -35,17 +35,13 @@ public int maxAreaOfIsland(int[][] grid) {
     return max;
 }
 int dfs(int[][] grid, int i, int j, boolean[][] visit) {
-    int m = grid.length, n = grid[0].length, cnt = 0;
+    int m = grid.length, n = grid[0].length;
     if (i < 0 || j < 0 || i == m || j == n || grid[i][j] == 0 || visit[i][j]) {
-        return cnt;
+        return 0;
     }
-    cnt++;
     visit[i][j] = true;
-    cnt += dfs(grid, i + 1, j, visit);
-    cnt += dfs(grid, i - 1, j, visit);
-    cnt += dfs(grid, i, j + 1, visit);
-    cnt += dfs(grid, i, j - 1, visit);
-    return cnt;
+    return 1 + dfs(grid, i + 1, j, visit) + dfs(grid, i, j + 1, visit)
+             + dfs(grid, i - 1, j, visit) + dfs(grid, i, j - 1, visit);
 }
 
 Approach 2: BFS
