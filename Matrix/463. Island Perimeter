@@ -22,46 +22,42 @@ Approach 1: Simple Counting
 Time complexity: O(m * n)
 Space complexity: O(1)
 
-class Solution {
-    public int islandPerimeter(int[][] grid) {
-        int m = grid.length, n = grid[0].length;
-        int up, down, left, right;
-        int result = 0;
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (grid[i][j] == 1) {
-                    up = i == 0 ? 0 : grid[i - 1][j];  
-                    left = j == 0 ? 0 : grid[i][j - 1]; 
-                    down = i == m - 1 ? 0 : grid[i + 1][j];  
-                    right = j == n - 1 ? 0 : grid[i][j + 1];    
-                    result += 4 - (up + left + right + down);
-                }
+public int islandPerimeter(int[][] grid) {
+    int m = grid.length, n = grid[0].length;
+    int up, down, left, right;
+    int result = 0;
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            if (grid[i][j] == 1) {
+                up = i == 0 ? 0 : grid[i - 1][j];  
+                left = j == 0 ? 0 : grid[i][j - 1]; 
+                down = i == m - 1 ? 0 : grid[i + 1][j];  
+                right = j == n - 1 ? 0 : grid[i][j + 1];    
+                result += 4 - (up + left + right + down);
             }
         }
-        return result;
     }
+    return result;
 }
 
 Approach 2: Better Counting
 Time complexity: O(m * n)
 Space complexity: O(1)
 
-class Solution {
-    public int islandPerimeter(int[][] grid) {
-        int m = grid.length, n = grid[0].length, result = 0;
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (grid[i][j] == 1) {
-                    result += 4;
-                    if (i > 0 && grid[i - 1][j] == 1) {
-                        result -= 2;
-                    }
-                    if (j > 0 && grid[i][j - 1] == 1) {
-                        result -= 2;
-                    }
+public int islandPerimeter(int[][] grid) {
+    int m = grid.length, n = grid[0].length, result = 0;
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            if (grid[i][j] == 1) {
+                result += 4;
+                if (i > 0 && grid[i - 1][j] == 1) {
+                    result -= 2;
+                }
+                if (j > 0 && grid[i][j - 1] == 1) {
+                    result -= 2;
                 }
             }
         }
-        return result;
     }
+    return result;
 }
