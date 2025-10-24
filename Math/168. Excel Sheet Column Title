@@ -12,14 +12,12 @@ Approach 1: 26-bit number
 Time complexity: O(n), where n is the length of result. 
 Space complexity: O(1)
 
-public class Solution {
-    public String convertToTitle(int n) {
-        StringBuilder sb = new StringBuilder();
-        while (n-- > 0) {                     // Note.
-            char c = (char)(n % 26 + 'A');
-            sb.append(c);
-            n /= 26;
-        }
-        return sb.reverse().toString();
+public String convertToTitle(int n) {
+    StringBuilder sb = new StringBuilder();
+    while (n-- > 0) {                     // Note.
+        char c = (char)(n % 26 + 'A');
+        sb.append(c);
+        n /= 26;
     }
+    return sb.reverse().toString();
 }
