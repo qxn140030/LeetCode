@@ -14,33 +14,29 @@ Approach 1: Right to left
 Time complexity: O(n)
 Space complexity: O(1), even though we have an alphabet to index mapping, it's constant.
 
-class Solution {
-    public int titleToNumber(String columnTitle) {
-        int rst = 0;
-        Map<Character, Integer> map = new HashMap<>();
-        for (int i = 0; i < 26; i++) {
-            int c = i + 65;                            // Decimal 65 in ASCII corresponds to char 'A'
-            map.put((char)c, i + 1);
-        }
-        int n = columnTitle.length();
-        for (int i = n - 1; i >= 0; i--) {
-            char ch = columnTitle.charAt(i);
-            rst += map.get(ch) * Math.pow(26, n - 1 - i);
-        }
-        return rst;
+public int titleToNumber(String columnTitle) {
+    int rst = 0;
+    Map<Character, Integer> map = new HashMap<>();
+    for (int i = 0; i < 26; i++) {
+        int c = i + 65;                            // Decimal 65 in ASCII corresponds to char 'A'
+        map.put((char)c, i + 1);
     }
+    int n = columnTitle.length();
+    for (int i = n - 1; i >= 0; i--) {
+        char ch = columnTitle.charAt(i);
+        rst += map.get(ch) * Math.pow(26, n - 1 - i);
+    }
+    return rst;
 }
 
 Approach 2: Left to Right
 Time complexity: O(n)
 Space complexity: O(1)
 
-public class Solution {
-    public int titleToNumber(String s) {
-        int rst = 0;
-        for (int i = 0; i < s.length(); i++) {
-            rst = rst * 26 + s.charAt(i) - 'A' + 1;      // In Java, subtracting characters is subtracting ASCII values of characters.
-        }
-        return rst;
+public int titleToNumber(String s) {
+    int rst = 0;
+    for (int i = 0; i < s.length(); i++) {
+        rst = rst * 26 + s.charAt(i) - 'A' + 1;      // In Java, subtracting characters is subtracting ASCII values of characters.
     }
+    return rst;
 }
