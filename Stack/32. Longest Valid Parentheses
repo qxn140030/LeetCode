@@ -2,35 +2,34 @@ Given a string containing just the characters '(' and ')', find the length of th
 For "(()", the longest valid parentheses substring is "()", which has length = 2.
 Another example is ")()())", where the longest valid parentheses substring is "()()", which has length = 4.
 
-Approach 1: Brute Force
+Approach 1: Brute Force [Time Limit Exceeded]
+consider every possible non-empty even length substring from the given string and check whether it's valid.
 Time complexity: O(n^3)
 Space cpmplexity: O(n)
 
-class Solution {
-    public int longestValidParentheses(String s) {
-        int maxlen = 0;
-        for (int i = 0; i < s.length(); i++) {
-            for (int j = i + 2; j <= s.length(); j += 2) {
-                if (isValid(s.substring(i, j))) {
-                    maxlen = Math.max(maxlen, j - i);
-                }
+public int longestValidParentheses(String s) {
+    int maxlen = 0;
+    for (int i = 0; i < s.length(); i++) {
+        for (int j = i + 2; j <= s.length(); j += 2) {
+            if (isValid(s.substring(i, j))) {
+                maxlen = Math.max(maxlen, j - i);
             }
         }
-        return maxlen;
     }
-    private boolean isValid(String s) {
-        Stack<Character> stack = new Stack<>();
-        for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) == '(') {
-                stack.push('(');
-            } else if (!stack.empty() && stack.peek() == '(') {
-                stack.pop();
-            } else {
-                return false;
-            }
+    return maxlen;
+}
+boolean isValid(String s) {
+    Stack<Character> stack = new Stack<>();
+    for (int i = 0; i < s.length(); i++) {
+        if (s.charAt(i) == '(') {
+            stack.push('(');
+        } else if (!stack.empty() && stack.peek() == '(') {
+            stack.pop();
+        } else {
+            return false;
         }
-        return stack.empty();
     }
+    return stack.isEmpty();
 }
 
 Approach 2: DP
@@ -39,47 +38,43 @@ substrings ending with ‘(’ will always contain '0' at their corresponding dp
 Time complexity: O(n)
 Space cpmplexity: O(n)
 
-class Solution {
-    public int longestValidParentheses(String s) {
-        int rst = 0;
-        int dp[] = new int[s.length()];
-        for (int i = 1; i < s.length(); i++) {
-            if (s.charAt(i) == ')') {
-                if (s.charAt(i - 1) == '(') {
-                    dp[i] = (i >= 2 ? dp[i - 2] : 0) + 2;                                // string looks like ".......()"
-                } else if (i - dp[i - 1] > 0 && s.charAt(i - dp[i - 1] - 1) == '(') {    // string looks like ".......))"
-                    dp[i] = dp[i - 1] + ((i - dp[i - 1]) >= 2 ? dp[i - dp[i - 1] - 2] : 0) + 2;
-                }
-                rst = Math.max(rst, dp[i]);
+public int longestValidParentheses(String s) {
+    int rst = 0;
+    int dp[] = new int[s.length()];
+    for (int i = 1; i < s.length(); i++) {
+        if (s.charAt(i) == ')') {
+            if (s.charAt(i - 1) == '(') {
+                dp[i] = (i >= 2 ? dp[i - 2] : 0) + 2;                                // string looks like ".......()"
+            } else if (i - dp[i - 1] > 0 && s.charAt(i - dp[i - 1] - 1) == '(') {    // string looks like ".......))"
+                dp[i] = dp[i - 1] + ((i - dp[i - 1]) >= 2 ? dp[i - dp[i - 1] - 2] : 0) + 2;
             }
+            rst = Math.max(rst, dp[i]);
         }
-        return rst;
     }
+    return rst;
 }
 
 Approach 3: Using Stack
 Time complexity: O(n)
 Space cpmplexity: O(n)
 
-class Solution {
-    public int longestValidParentheses(String s) {
-        int rst = 0;
-        Stack<Integer> stack = new Stack<>();
-        stack.push(-1);                            // Find the length of the longest valid string.
-        for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) == '(') {
-                stack.push(i);                     // For every ‘(’ encountered, we push its index onto the stack.          
+public int longestValidParentheses(String s) {
+    int rst = 0;
+    Stack<Integer> stack = new Stack<>();
+    stack.push(-1);                            // Find the length of the longest valid string.
+    for (int i = 0; i < s.length(); i++) {
+        if (s.charAt(i) == '(') {
+            stack.push(i);                     // For every ‘(’ encountered, we push its index onto the stack.          
+        } else {
+            stack.pop();                       // For every ‘)’ encountered, we pop the topmost element.
+            if (stack.isEmpty()) {
+                stack.push(i);                 // always holds indices of the last unmatched parentheses.
             } else {
-                stack.pop();                       // For every ‘)’ encountered, we pop the topmost element.
-                if (stack.empty()) {
-                    stack.push(i);     
-                } else {
-                    rst = Math.max(rst, i - stack.peek());
-                }
+                rst = Math.max(rst, i - stack.peek());
             }
         }
-        return rst;
     }
+    return rst;
 }
 
 class Solution {
