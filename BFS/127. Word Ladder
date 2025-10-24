@@ -67,27 +67,21 @@ public int ladderLength(String beginWord, String endWord, List<String> wordList)
             allComboDict.computeIfAbsent(pattern, k -> new ArrayList<>()).add(word);
         }
     }
-    // Queue for BFS: stores current word and current transformation level
     Queue<Pair<String, Integer>> queue = new LinkedList<>();
-    queue.add(new Pair<>(beginWord, 1));
-    // To keep track of visited words to avoid cycles
+    queue.add(new Pair<>(beginWord, 1));                        // stores current word and current transformation level
     Set<String> visited = new HashSet<>();
     visited.add(beginWord);
     while (!queue.isEmpty()) {
         Pair<String, Integer> node = queue.poll();
-        String word = node.getKey();   // Current word
-        int level = node.getValue();   // Current depth in BFS
-        // Try all possible intermediate patterns for the current word
+        String word = node.getKey();              
+        int level = node.getValue();              
         for (int i = 0; i < n; i++) {
             String pattern = word.substring(0, i) + '*' + word.substring(i + 1);
-            // Get all the words that share the same pattern
             List<String> neighbors = allComboDict.getOrDefault(pattern, Collections.emptyList());
             for (String adjacentWord : neighbors) {
-                // If we found the endWord, return the transformation sequence length
                 if (adjacentWord.equals(endWord)) {
                     return level + 1;
                 }
-                // Otherwise, enqueue the word if it hasn’t been visited
                 if (!visited.contains(adjacentWord)) {
                     visited.add(adjacentWord);
                     queue.add(new Pair<>(adjacentWord, level + 1));
