@@ -29,8 +29,8 @@ Challenge:
 Can you do it in time complexity O(k log mn), where k is the length of the positions?
 
 Appraoch 1: union-find
-Time complexity: O(1)
-Space complexity: O(n)
+Time complexity: O(m * n + l), where l is the size of positions.
+Space complexity: O(m * n)
 
 class Solution {
     public List<Integer> numIslands2(int m, int n, int[][] positions) {
