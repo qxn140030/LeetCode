@@ -46,21 +46,19 @@ Approach 2: Stack
 Time Complexity: O(n), where n is the length of s.
 Space Complexity: O(n), the size of the stack.
 
-class Solution {
-    public int scoreOfParentheses(String s) {
-        Stack<Integer> stack = new Stack();
-        stack.push(0);               // score of the current frame.
-        for (char c: s.toCharArray()) {
-            if (c == '(') {
-                stack.push(0);
-            } else {
-                int v = stack.pop();
-                int w = stack.pop();
-                stack.push(w + Math.max(2 * v, 1));
-            }
+public int scoreOfParentheses(String s) {
+    Stack<Integer> stack = new Stack();
+    stack.push(0);                       // score of the current frame.
+    for (char c: s.toCharArray()) {
+        if (c == '(') {
+            stack.push(0);
+        } else {
+            int v = stack.pop();
+            int w = stack.pop();
+            stack.push(w + Math.max(2 * v, 1));
         }
-        return stack.pop();
     }
+    return stack.pop();
 }
 
 Approach 3: Count Cores
