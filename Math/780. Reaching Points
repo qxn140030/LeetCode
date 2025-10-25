@@ -60,14 +60,14 @@ Space Complexity: O(1)
 
 public boolean reachingPoints(int sx, int sy, int tx, int ty) {
     while (tx >= sx && ty >= sy) {
-        if (tx == ty) {           // If tx == ty, no more progress can be made using modulo
+        if (tx == ty) {          
             break;
         }
         if (tx > ty) {            // try to reduce the larger coordinate
             if (ty > sy) {        
-                tx %= ty;         // Reduce tx by multiples of ty to backtrack quickly
+                tx %= ty;         // This is equivalent to repeatedly doing tx = tx - ty while tx > ty
             } else {              // ty can't be reduced further, so only tx can change
-                return (tx - sx) % ty == 0;
+                return (tx - sx) % ty == 0;     // tx = sx + k * sy
             }
         } else {
             if (tx > sx) {
