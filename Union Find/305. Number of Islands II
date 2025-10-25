@@ -41,9 +41,9 @@ class Solution {
             int land = p[0] * n + p[1];
             dsu.addLand(land);
             for (int[] d : dir) {
-                int rowX = p[0] + d[0], rowY = p[1] + d[1];
-                if (rowX >= 0 && rowX < m && rowY >= 0 && rowY < n) {
-                    int neighbor = rowX * n + rowY;
+                int neighborX = p[0] + d[0], neighborY = p[1] + d[1];
+                if (neighborX >= 0 && neighborX < m && neighborY >= 0 && neighborY < n) {
+                    int neighbor = neighborX * n + neighborY;
                     if (dsu.isLand(neighbor)) {
                         dsu.union(land, neighbor);
                     }
