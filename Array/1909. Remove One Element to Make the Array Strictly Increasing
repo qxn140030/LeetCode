@@ -23,26 +23,28 @@ Output: false
 Explanation: The result of removing any element is [1,1].
 [1,1] is not strictly increasing, so return false.
 
-class Solution {
-    public boolean canBeIncreasing(int[] nums) {
-        int n = nums.length, peakCnt = 0, peak = 0;
-        for (int i = 0; i < n - 1; i++) {
-            if (nums[i] >= nums[i + 1]) {
-                peakCnt++;
-                peak = i;
-            }
+Approach 1: One-pass greedy check
+Time complexity: O(n)
+Space complexity: O(1)
+
+public boolean canBeIncreasing(int[] nums) {
+    int n = nums.length, peakCnt = 0, peak = 0;
+    for (int i = 0; i < n - 1; i++) {
+        if (nums[i] >= nums[i + 1]) {
+            peakCnt++;
+            peak = i;
         }
-        if (peakCnt > 1) {
-            return false;
-        } else if (peakCnt == 1) {
-            if (peak == 0 || peak == n - 2) {
-                return true;
-            } 
-            if (nums[peak + 1] > nums[peak - 1] || nums[peak + 2] > nums[peak]) {
-                return true;
-            } 
-            return false;
-        }
-        return true;
     }
+    if (peakCnt > 1) {
+        return false;
+    } else if (peakCnt == 1) {
+        if (peak == 0 || peak == n - 2) {            // violation at the start or end,  
+            return true;                             // trivially fixable by removing one element.
+        } 
+        if (nums[peak + 1] > nums[peak - 1] || nums[peak + 2] > nums[peak]) {      // removing nume[peak] if the next number > the previouse one.
+            return true;                                                           // removing nume[peak + 1] if the number after next > current.
+        } 
+        return false;
+    }
+    return true;                                    // no violation -> already strictly increasing.
 }
