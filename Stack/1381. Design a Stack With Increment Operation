@@ -26,18 +26,17 @@ stk.pop();                            // return 202 --> Return top of the stack 
 stk.pop();                            // return 201 --> Return top of the stack 201, stack becomes []
 stk.pop();                            // return -1 --> Stack is empty return -1.
 
-Appraoch 1: Usinr Array
+Appraoch 1: Using Array
 
 class CustomStack {
     private int[] arr;
-    private int idx, maxSize;
+    private int idx;
     public CustomStack(int maxSize) {
         this.idx = 0;
         this.arr = new int[maxSize];
-        this.maxSize = maxSize;
     }
     public void push(int x) {
-        if (idx < maxSize) {
+        if (idx < arr.length) {
             arr[idx++] = x;
         }
     }
