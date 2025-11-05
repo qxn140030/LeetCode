@@ -13,32 +13,24 @@ tickets = [["JFK","SFO"],["JFK","ATL"],["SFO","ATL"],["ATL","JFK"],["ATL","SFO"]
 Return ["JFK","ATL","JFK","SFO","ATL","SFO"].
 Another possible reconstruction is ["JFK","SFO","ATL","JFK","ATL","SFO"]. But it is larger in lexical order.
 
-Approach 1:
-Time complexity: O()
-Space complexity: O()
+Approach 1: DFS
+Time complexity: O(nlogn)
+Space complexity: O(n)
 
-public class Solution {
-    public List<String> findItinerary(String[][] tickets) {
-        List<String> rst = new ArrayList<>();
-        if (tickets == null || tickets.length == 0 || tickets[0].length == 0) {
-            return rst;
-        }
-        Map<String, PriorityQueue<String>> map = new HashMap<>();
-        for (int i = 0; i < tickets.length; i++) {
-            if (!map.containsKey(tickets[i][0])) {
-                map.put(tickets[i][0], new PriorityQueue<String>());
-            }
-            map.get(tickets[i][0]).offer(tickets[i][1]);
-        }
-        String cur = "JFK";
-        dfs(map, rst, cur);
-        Collections.reverse(rst);
-        return rst;
+public List<String> findItinerary(List<List<String>> tickets) {
+    List<String> rst = new ArrayList<>();
+    Map<String, PriorityQueue<String>> map = new HashMap<>();
+    for (int i = 0; i < tickets.size(); i++) {
+        map.computeIfAbsent(tickets.get(i).get(0), k -> new PriorityQueue<String>()).offer(tickets.get(i).get(1));
     }
-    private void dfs(Map<String, PriorityQueue<String>> map, List<String> rst, String cur) {
-        while (map.containsKey(cur) && !map.get(cur).isEmpty()) {
-            dfs(map, rst, map.get(cur).poll());
-        }
-        rst.add(cur);
+    String cur = "JFK";
+    dfs(map, rst, cur);
+    Collections.reverse(rst);
+    return rst;
+}
+void dfs(Map<String, PriorityQueue<String>> map, List<String> rst, String cur) {
+    while (map.containsKey(cur) && !map.get(cur).isEmpty()) {
+        dfs(map, rst, map.get(cur).poll());
     }
+    rst.add(cur);
 }
