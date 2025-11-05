@@ -61,24 +61,22 @@ Approach 2: DFS without sorting
 Time complexity: O(n)
 Space complexity: O(n)
 
-class Solution {
-    List<List<Integer>> rst;
-    public List<List<Integer>> findLeaves(TreeNode root) {
-        rst = new ArrayList<>();
-        getHeight(root);
-        return rst;
+List<List<Integer>> rst;
+public List<List<Integer>> findLeaves(TreeNode root) {
+    rst = new ArrayList<>();
+    getHeight(root);
+    return rst;
+}
+int getHeight(TreeNode root) {
+    if (root == null) {
+        return -1;                     // Note.
     }
-    private int getHeight(TreeNode root) {
-        if (root == null) {
-            return -1;                     // Note.
-        }
-        int leftHeight = getHeight(root.left);
-        int rightHeight = getHeight(root.right);
-        int currHeight = Math.max(leftHeight, rightHeight) + 1;
-        if (rst.size() == currHeight) {
-            rst.add(new ArrayList<>());
-        }
-        rst.get(currHeight).add(root.val);
-        return currHeight;
+    int leftHeight = getHeight(root.left);
+    int rightHeight = getHeight(root.right);
+    int currHeight = Math.max(leftHeight, rightHeight) + 1;
+    if (rst.size() == currHeight) {
+        rst.add(new ArrayList<>());
     }
+    rst.get(currHeight).add(root.val);
+    return currHeight;
 }
