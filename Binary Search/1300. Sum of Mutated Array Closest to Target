@@ -1,0 +1,51 @@
+Given an integer array arr and a target value target, return the integer value such that when we change all the integers larger than value in the given array to be equal to value, the sum of the array gets as close as possible (in absolute difference) to target.
+In case of a tie, return the minimum such integer.
+Notice that the answer is not neccesarilly a number from arr.
+
+Example 1:
+Input: arr = [4,9,3], target = 10
+Output: 3
+Explanation: When using 3 arr converts to [3, 3, 3] which sums 9 and that's the optimal answer.
+
+Example 2:
+Input: arr = [2,3,5], target = 10
+Output: 5
+
+Example 3:
+Input: arr = [60864,25176,27249,21296,20204], target = 56803
+Output: 11361
+
+public int findBestValue(int[] arr, int target) {
+    int max = 0;
+    long sum = 0;
+    for (int x : arr) {
+        max = Math.max(max, x);
+        sum += x;
+    }
+    if (sum <= target) {               // If sum already <= target, no capping helps.
+        return max;
+    }
+    int lo = 0, hi = max;              // search cap value
+    while (lo < hi) {
+        int mid = lo + (hi - lo) / 2;
+        long s = cappedSum(arr, mid);
+        if (s < target) {
+            lo = mid + 1;             // lo is the smallest cap whose sum >= target.
+        } else {
+            hi = mid;
+        }
+    }
+    long s1 = cappedSum(arr, lo);
+    long s0 = cappedSum(arr, lo - 1);
+    if (Math.abs(s0 - target) <= Math.abs(s1 - target)) {    // Compare lo and lo-1 to pick the closer (tie -> smaller).
+        return lo - 1;
+    }
+    return lo;
+}
+long cappedSum(int[] arr, int cap) {
+    long sum = 0;
+    for (int x : arr) {
+        sum += Math.min(x, cap);
+    }
+    return sum;
+}
