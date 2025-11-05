@@ -79,36 +79,34 @@ Approach 3: Quick Sort
 Time complexity: O(nlogn)
 Space complexity: O(1)
 
-class Solution {
-    private static Random random;
-    public int[] sortArray(int[] nums) {
-        random = new Random();
-        quickSort(nums, 0, nums.length - 1);
-        return nums;
+private static Random random;
+public int[] sortArray(int[] nums) {
+    random = new Random();
+    quickSort(nums, 0, nums.length - 1);
+    return nums;
+}
+void quickSort(int[] nums, int start, int end) {
+    if (start < end) {
+        int mid = partition(nums, start, end);
+        quickSort(nums, start, mid - 1);
+        quickSort(nums, mid + 1, end);
     }
-    private void quickSort(int[] nums, int start, int end) {
-        if (start < end) {
-            int mid = partition(nums, start, end);
-            quickSort(nums, start, mid - 1);
-            quickSort(nums, mid + 1, end);
+}
+int partition(int[] nums, int start, int end) {
+    int pivotIndex = start + random.nextInt(end - start + 1);    // use random to avoid worst case. 
+    int pivot = nums[pivotIndex], left = start;
+    swap(nums, pivotIndex, end);
+    for (int i = start; i < end; i++) {
+        if (nums[i] < pivot) {
+            swap(nums, i, left);
+            left++;
         }
     }
-    private int partition(int[] nums, int start, int end) {
-        int pivotIndex = start + random.nextInt(end - start + 1);    // use random to avoid worst case. 
-        int pivot = nums[pivotIndex], left = start;
-        swap(nums, pivotIndex, end);
-        for (int i = start; i < end; i++) {
-            if (nums[i] < pivot) {
-                swap(nums, i, left);
-                left++;
-            }
-        }
-        swap(nums, left, end);
-        return left;
-    }
-    private void swap(int[] nums, int i, int j) {
-        int tmp = nums[i];
-        nums[i] = nums[j];
-        nums[j] = tmp;
-    }
+    swap(nums, left, end);
+    return left;
+}
+void swap(int[] nums, int i, int j) {
+    int tmp = nums[i];
+    nums[i] = nums[j];
+    nums[j] = tmp;
 }
