@@ -15,35 +15,31 @@ Approach 1: Naive Solution
 Time complexity: O(logn)
 Space complexity: O(1)
 
-class Solution {
-    public boolean isPowerOfTwo(int n) {
-        if (n < 1) {
-            return false;
-        }
-        while (n % 2 == 0) {
-            n /= 2;
-        }
-        return n == 1;
+public boolean isPowerOfTwo(int n) {
+    if (n < 1) {
+        return false;
     }
+    while (n % 2 == 0) {
+        n /= 2;
+    }
+    return n == 1;
 }
 
-public class Solution {
-    public boolean isPowerOfTwo(int n) {
-        if (n <= 0) {
-            return false;
-        }
-        boolean flag = false;
-        for (int i = 0; i < 32; i++) {
-            if ((n & 1) == 1) {
-                if (flag) {
-                    return false;
-                }
-                flag = true;
-            }
-            n >>= 1;
-        }
-        return true;
+public boolean isPowerOfTwo(int n) {
+    if (n <= 0) {
+        return false;
     }
+    boolean flag = false;
+    for (int i = 0; i < 32; i++) {
+        if ((n & 1) == 1) {
+            if (flag) {
+                return false;
+            }
+            flag = true;
+        }
+        n >>= 1;
+    }
+    return true;
 }
 
 Approach 2: Bitwise operators: get the rightmost 1-bit
@@ -52,14 +48,12 @@ x & (-x) keeps the rightmost 1-bit and sets all the other bits to 0
 Time complexity: O(1)
 Space complexity: O(1)
 
-class Solution {
-    public boolean isPowerOfTwo(int n) {
-        if (n == 0) {
-            return false;
-        }
-        long x = (long)n;
-        return (x & (-x)) == x;
+public boolean isPowerOfTwo(int n) {
+    if (n == 0) {
+        return false;
     }
+    long x = (long)n;
+    return (x & (-x)) == x;
 }
 
 Approach 3: Bitwise operators: turn off the rightmost 1-bit
@@ -67,8 +61,6 @@ x & (x - 1) is a way to set the rightmost 1-bit to zero.
 Time complexity: O(1)
 Space complexity: O(1)
 
-public class Solution {
-    public boolean isPowerOfTwo(int n) {
-        return n > 0 && (n & (n - 1)) == 0;
-    }
+public boolean isPowerOfTwo(int n) {
+    return n > 0 && (n & (n - 1)) == 0;
 }
