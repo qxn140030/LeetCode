@@ -11,36 +11,34 @@ Approach 1: Using stack
 Time complexity: O(n)
 Space complexity: O(n)
 
-public class Solution {
-    public int calculate(String s) {
-        Stack<Integer> stack = new Stack<>();
-        int rst = 0, sign = 1;
-        for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) == ' ') {           // if (Character.isWhitespace(c))
-                continue;
-            }
-            if (Character.isDigit(s.charAt(i))) {
-                int num = s.charAt(i) - '0';
-                while (i + 1 < s.length() && Character.isDigit(s.charAt(i + 1))) {
-                    num = num * 10 + (s.charAt(i + 1) - '0');
-                    i++;
-                }
-                rst += num * sign;
-            } else if (s.charAt(i) == '+') {
-                sign = 1;
-            } else if (s.charAt(i) == '-') {
-                sign = -1;
-            } else if (s.charAt(i) == '(') {
-                stack.push(rst);
-                stack.push(sign);
-                rst = 0;
-                sign = 1;
-            } else {
-                rst = rst * stack.pop() + stack.pop();
-            }
+public int calculate(String s) {
+    Stack<Integer> stack = new Stack<>();
+    int rst = 0, sign = 1;
+    for (int i = 0; i < s.length(); i++) {
+        if (Character.isWhitespace(c)) {           // if (s.charAt(i) == ' ')
+            continue;
         }
-        return rst;
+        if (Character.isDigit(s.charAt(i))) {
+            int num = s.charAt(i) - '0';
+            while (i + 1 < s.length() && Character.isDigit(s.charAt(i + 1))) {
+                num = num * 10 + (s.charAt(i + 1) - '0');
+                i++;
+            }
+            rst += num * sign;
+        } else if (s.charAt(i) == '+') {
+            sign = 1;
+        } else if (s.charAt(i) == '-') {
+            sign = -1;
+        } else if (s.charAt(i) == '(') {
+            stack.push(rst);
+            stack.push(sign);
+            rst = 0;
+            sign = 1;
+        } else {
+            rst = rst * stack.pop() + stack.pop();
+        }
     }
+    return rst;
 }
 
 Approach 2: Recursion
