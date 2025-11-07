@@ -20,7 +20,7 @@ Space complexity: O(1)
 
 public boolean searchMatrix(int[][] matrix, int target) {
     int rows = matrix.length, cols = matrix[0].length;
-    int top = 0, bottom = rows - 1, row;
+    int top = 0, bottom = rows - 1;
     while (top + 1 < bottom) {
         int mid = top + (bottom - top) / 2;
         if (matrix[mid][0] <= target) {
@@ -29,11 +29,7 @@ public boolean searchMatrix(int[][] matrix, int target) {
             bottom = mid;
         }
     }
-    if (matrix[bottom][0] <= target) {
-        row = bottom;
-    } else {
-        row = top;
-    } 
+    int row = matrix[bottom][0] <= target ? bottom : top; 
     int start = 0, end = cols - 1;
     while (start + 1 < end) {
         int mid = start + (end - start) / 2;
