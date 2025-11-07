@@ -39,7 +39,7 @@ public boolean isMatch(String s, String p) {
                 dp[i][j] = dp[i - 1][j - 1];
             } else if (p.charAt(j - 1) == '*') {        
                 dp[i][j] = dp[i][j - 1] || dp[i - 1][j];                    
-            }                   // beause dp[i][j] = dp[i][j - 1] || dp[i - 1][j - 1] || ... || dp[0][j - 1];
+            }                   // because dp[i][j] = dp[i][j - 1] || dp[i - 1][j - 1] || ... || dp[0][j - 1];
         }                       // and dp[i - 1][j] = dp[i - 1][j - 1] || dp[i - 2][j - 1] || ... || dp[0][j - 1];
     }
     return dp[m][n];
