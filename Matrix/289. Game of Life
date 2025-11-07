@@ -13,35 +13,63 @@ then use their updated values to update other cells.
 In this question, we represent the board using a 2D array. In principle, the board is infinite, which would cause problems when the
 active area encroaches the border of the array. How would you address these problems?
 
-public class Solution {
-    public void gameOfLife(int[][] board) {
-        int m = board.length, n = board[0].length;
-        int[] x = {-1, 0, 1, 1, 1, 0, -1, -1};
-        int[] y = {1, 1, 1, 0, -1, -1, -1, 0};
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                int live = 0;
-                for (int k = 0; k < 8; k++) {
-                    int xx = i + x[k], yy = j + y[k];
-                    if (xx >= 0 && xx < m && yy >= 0 && yy < n && (board[xx][yy] & 1) == 1) {
-                        live++;
-                    }
+public void gameOfLife(int[][] board) {
+    int m = board.length, n = board[0].length;
+    int[] x = {-1, 0, 1, 1, 1, 0, -1, -1};
+    int[] y = {1, 1, 1, 0, -1, -1, -1, 0};
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            int live = 0;
+            for (int k = 0; k < 8; k++) {
+                int xx = i + x[k], yy = j + y[k];
+                if (xx >= 0 && xx < m && yy >= 0 && yy < n && (board[xx][yy] & 1) == 1) {
+                    live++;
                 }
-                if (live < 2 || live > 3) {
-                    board[i][j] &= 1;
-                }
-                if (live == 2 || live == 3) {
-                    board[i][j] |= (board[i][j] << 1);
-                }
-                if (live == 3) {
-                    board[i][j] |= 2;
-                }
+            }
+            if (live < 2 || live > 3) {
+                board[i][j] &= 1;
+            }
+            if (live == 2 || live == 3) {
+                board[i][j] |= (board[i][j] << 1);
+            }
+            if (live == 3) {
+                board[i][j] |= 2;
             }
         }
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                board[i][j] >>>= 1;
+    }
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            board[i][j] >>>= 1;
+        }
+    }
+}
+
+public void gameOfLife(int[][] board) {
+    int m = board.length, n = board[0].length;
+    int[] dirs = {-1, 0, 1};
+    for (int r = 0; r < m; r++) {
+        for (int c = 0; c < n; c++) {
+            int live = 0;
+            for (int dr : dirs) {
+                for (int dc : dirs) {
+                    if (dr == 0 && dc == 0) {
+                        continue;
+                    }
+                    int nr = r + dr, nc = c + dc;
+                    if (nr >= 0 && nr < m && nc >= 0 && nc < n) {
+                        live += board[nr][nc] & 1;
+                    }
+                }
             }
+            int cur = board[r][c] & 1;
+            if ((cur == 1 && (live == 2 || live == 3)) || (cur == 0 && live == 3)) {
+                board[r][c] |= 2; 
+            }
+        }
+    }
+    for (int r = 0; r < m; r++) {
+        for (int c = 0; c < n; c++) {
+            board[r][c] >>= 1;
         }
     }
 }
