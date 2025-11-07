@@ -60,28 +60,26 @@ Time complexity: O(2^n)
 Space complexity: O(n)
 use the variable path to keep track of the current combination we build - O(n) + recursion stack - O(n).
 
-public class Solution {
-    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
-        Arrays.sort(candidates);
-        List<List<Integer>> rst = new ArrayList<>();
-        List<Integer> path = new ArrayList<>();
-        dfs(candidates, target, 0, path, rst);
-        return rst;
+public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+    Arrays.sort(candidates);
+    List<List<Integer>> rst = new ArrayList<>();
+    List<Integer> path = new ArrayList<>();
+    dfs(candidates, target, 0, path, rst);
+    return rst;
+}
+void dfs(int[] candidates, int target, int index, List<Integer> path, List<List<Integer>> rst) {
+    if (target == 0) {
+        rst.add(new ArrayList<>(path));
+        return;
     }
-    private void dfs(int[] candidates, int target, int index, List<Integer> path, List<List<Integer>> rst) {
-        if (target == 0) {
-            rst.add(new ArrayList<>(path));
+    for (int i = index; i < candidates.length; i++) {
+        if (candidates[i] > target) {
             return;
         }
-        for (int i = index; i < candidates.length; i++) {
-            if (candidates[i] > target) {
-                return;
-            }
-            if (i == index || candidates[i] > candidates[i - 1]) {
-                path.add(candidates[i]);
-                dfs(candidates, target - candidates[i], i + 1, path, rst);
-                path.remove(path.size() - 1);
-            }
+        if (i == index || candidates[i] > candidates[i - 1]) {
+            path.add(candidates[i]);
+            dfs(candidates, target - candidates[i], i + 1, path, rst);
+            path.remove(path.size() - 1);
         }
     }
 }
