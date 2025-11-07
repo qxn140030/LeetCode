@@ -22,25 +22,21 @@ Approach 1: Built-in Split + Reverse
 Time complexity: O(n)
 Space complexity: O(n)
 
-public class Solution {
-    public String reverseWords(String s) {
-        String[] arr = s.trim().split("\\s+");
-        StringBuilder sb = new StringBuilder();
-        for (int i = arr.length - 1; i >= 0; i--) {
-            sb.append(arr[i]).append(" ");
-        }
-        sb.deleteCharAt(sb.length() - 1);
-        return sb.toString();
+public String reverseWords(String s) {
+    String[] arr = s.trim().split("\\s+");
+    StringBuilder sb = new StringBuilder();
+    for (int i = arr.length - 1; i >= 0; i--) {
+        sb.append(arr[i]).append(" ");
     }
+    sb.deleteCharAt(sb.length() - 1);
+    return sb.toString();
 }
 
-class Solution {
-    public String reverseWords(String s) {
-        s = s.trim();
-        List<String> words = Arrays.asList(s.split("\\s+"));
-        Collections.reverse(words);
-        return String.join(" ", words);
-    }
+public String reverseWords(String s) {
+    s = s.trim();
+    List<String> words = Arrays.asList(s.split("\\s+"));
+    Collections.reverse(words);
+    return String.join(" ", words);
 }
 
 Approach 2: Reverse the Whole String and Then Reverse Each Word
@@ -97,28 +93,26 @@ Approach 3: Deque of Words
 Time complexity: O(n)
 Space complexity: O(n)
 
-class Solution {
-    public String reverseWords(String s) {
-        int left = 0, right = s.length() - 1;
-        while (left <= right && s.charAt(left) == ' ') {
-            left++;
-        }
-        while (left <= right && s.charAt(right) == ' ') {
-            right--;
-        }
-        Deque<String> stack = new ArrayDeque<>();
-        StringBuilder sb = new StringBuilder();
-        while (left <= right) {
-            char c = s.charAt(left);
-            if (sb.length() > 0 && c == ' ') {
-                stack.push(sb.toString());
-                sb.setLength(0);
-            } else if (c != ' ') {
-                sb.append(c);
-            }
-            left++;
-        }
-        stack.push(sb.toString());
-        return String.join(" ", stack);
+public String reverseWords(String s) {
+    int left = 0, right = s.length() - 1;
+    while (left <= right && s.charAt(left) == ' ') {
+        left++;
     }
+    while (left <= right && s.charAt(right) == ' ') {
+        right--;
+    }
+    Deque<String> stack = new ArrayDeque<>();
+    StringBuilder sb = new StringBuilder();
+    while (left <= right) {
+        char c = s.charAt(left);
+        if (sb.length() > 0 && c == ' ') {
+            stack.push(sb.toString());
+            sb.setLength(0);
+        } else if (c != ' ') {
+            sb.append(c);
+        }
+        left++;
+    }
+    stack.push(sb.toString());
+    return String.join(" ", stack);
 }
