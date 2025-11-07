@@ -30,24 +30,22 @@ a loose upper bound on the number of nodes:
 Note: the actual number of nodes would be much smaller than the upper bound, since the fan-out of nodes are decreasing level by level.
 Space complexity: O(t/m)
 
-class Solution {
-    public List<List<Integer>> combinationSum(int[] candidates, int target) {
-        List<List<Integer>> rst = new ArrayList<>();
-        List<Integer> path = new ArrayList<>();
-        dfs(candidates, target, 0, path, rst);
-        return rst;
+public List<List<Integer>> combinationSum(int[] candidates, int target) {
+    List<List<Integer>> rst = new ArrayList<>();
+    List<Integer> path = new ArrayList<>();
+    dfs(candidates, target, 0, path, rst);
+    return rst;
+}
+void dfs(int[] candidates, int target, int index, List<Integer> path, List<List<Integer>> rst) {
+    if (target <= 0) {
+        if (target == 0) {
+            rst.add(new ArrayList<>(path));
+        }
+        return;
     }
-    private void dfs(int[] candidates, int target, int index, List<Integer> path, List<List<Integer>> rst) {
-        if (target <= 0) {
-            if (target == 0) {
-                rst.add(new ArrayList<>(path));
-            }
-            return;
-        }
-        for (int i = index; i < candidates.length; i++) {
-            path.add(candidates[i]);
-            dfs(candidates, target - candidates[i], i, path, rst);
-            path.remove(path.size() - 1);
-        }
+    for (int i = index; i < candidates.length; i++) {
+        path.add(candidates[i]);
+        dfs(candidates, target - candidates[i], i, path, rst);
+        path.remove(path.size() - 1);
     }
 }
