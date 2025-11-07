@@ -6,37 +6,35 @@ Approach 1: HashSet
 Time complexity: O(3 * n^2) = O(n^2). n = 9, is the board length.
 Space complexity: O(n)
 
-public class Solution {
-    public boolean isValidSudoku(char[][] board) {
-        Set<Character> hs = new HashSet<>();        
-        for (int i = 0; i < 9; i++) {                 // check rows.
-            for (int j = 0; j < 9; j++) {
-                if (board[i][j] != '.' && !hs.add(board[i][j])) {
-                    return false;
-                }
+public boolean isValidSudoku(char[][] board) {
+    Set<Character> hs = new HashSet<>();        
+    for (int i = 0; i < 9; i++) {                 // check rows.
+        for (int j = 0; j < 9; j++) {
+            if (board[i][j] != '.' && !hs.add(board[i][j])) {
+                return false;
             }
-            hs.clear();                              // Note.
-        }        
-        for (int i = 0; i < 9; i++) {                // check columns.
-            for (int j = 0; j < 9; j++) {
-                if (board[j][i] != '.' && !hs.add(board[j][i])) {
-                    return false;
-                }
-            }
-            hs.clear();
-        }        
-        for (int i = 0; i < 9; i++) {                         // check cells.
-            for (int j = i / 3 * 3; j < i / 3 * 3 + 3; j++) {
-                for (int k = i % 3 * 3; k < i % 3 * 3 + 3; k++) {
-                    if (board[j][k] != '.' && !hs.add(board[j][k])) {
-                        return false;
-                    }
-                }
-            }
-            hs.clear();
         }
-        return true;
+        hs.clear();                              // Note.
+    }        
+    for (int i = 0; i < 9; i++) {                // check columns.
+        for (int j = 0; j < 9; j++) {
+            if (board[j][i] != '.' && !hs.add(board[j][i])) {
+                return false;
+            }
+        }
+        hs.clear();
+    }        
+    for (int i = 0; i < 9; i++) {                         // check cells.
+        for (int j = i / 3 * 3; j < i / 3 * 3 + 3; j++) {
+            for (int k = i % 3 * 3; k < i % 3 * 3 + 3; k++) {
+                if (board[j][k] != '.' && !hs.add(board[j][k])) {
+                    return false;
+                }
+            }
+        }
+        hs.clear();
     }
+    return true;
 }
 
 Approach 2: Array of Fixed Length
