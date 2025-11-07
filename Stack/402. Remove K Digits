@@ -13,7 +13,7 @@ Example 3:
 Input: num = "10", k = 2, Output: "0"
 Explanation: Remove all the digits from the number and it is left with nothing which is 0.
 
-Approach 1: Greedy
+Approach 1: Greedy [Time Limit Exceeded]
 Time complexity: O()
 Space complexity: O()
 
@@ -34,3 +34,8 @@ public String removeKdigits(String num, int k) {
     }
     return sb.toString();
 }
+
+Approach 2: Greedy with Stack
+Time complexity: O()
+Space complexity: O()
+
