@@ -29,25 +29,24 @@ the concurrent processes wait for some necessary resources from each other.
 a process is perpetually denied necessary resources to progress its works.
 
 Approach 1: Pair Synchronization
-In order to enforce the execution sequence of the jobs, we could create some dependencies between pairs of jobs, i.e. the second job should depend on the completion of the first job and the third job should depend on the completion of the second job.
+In order to enforce the execution sequence of the jobs, we could create some dependencies between pairs of jobs, 
+i.e. the second job should depend on the completion of the first job and the third job should depend on the completion of the second job.
 
 class Foo {
-    private AtomicInteger firstJobDone;
-    private AtomicInteger secondJobDone;
+    private AtomicInteger firstJobDone, secondJobDone;
     public Foo() {
         firstJobDone = new AtomicInteger(0);
         secondJobDone = new AtomicInteger(0);
     }
     public void first(Runnable printFirst) throws InterruptedException {    
-        printFirst.run();
-        firstJobDone.incrementAndGet();                                       // mark the first job as done, by increasing its count.
+        printFirst.run();                          // printFirst.run() outputs "first".
+        firstJobDone.incrementAndGet();            // mark the first job as done, by increasing its count.
     }
     public void second(Runnable printSecond) throws InterruptedException {
-        while (firstJobDone.get() != 1) {}                                    // waiting for the first job to be done.
+        while (firstJobDone.get() != 1) {}         // waiting for the first job to be done.
         printSecond.run();
         secondJobDone.incrementAndGet();
     }
-
     public void third(Runnable printThird) throws InterruptedException {
         while (secondJobDone.get() != 1) {}
         printThird.run();
@@ -57,8 +56,7 @@ class Foo {
 Approach 2: Synchronized
 
 class Foo {
-    private boolean oneDone;
-    private boolean twoDone;
+    private boolean oneDone, twoDone;
     public Foo() {
         oneDone = false;
         twoDone = false;
@@ -68,7 +66,6 @@ class Foo {
         oneDone = true;
         notifyAll();
     }
-
     public synchronized void second(Runnable printSecond) throws InterruptedException {
         while (!oneDone) {
             wait();
@@ -77,7 +74,6 @@ class Foo {
         twoDone = true;
         notifyAll();
     }
-
     public synchronized void third(Runnable printThird) throws InterruptedException {
         while (!twoDone) {
             wait();
@@ -89,17 +85,16 @@ class Foo {
 Approach 3: Synchronized on Object
 
 class Foo {
-    private Object lock;
-    private boolean oneDone;
-    private boolean twoDone;
+    private final Object lock;
+    private boolean oneDone, twoDone;
     public Foo() {
         lock = new Object();
         oneDone = false;
         twoDone = false;
     }
     public void first(Runnable printFirst) throws InterruptedException {
+        printFirst.run();
         synchronized (lock) {
-            printFirst.run();
             oneDone = true;
             lock.notifyAll();
         }
@@ -109,7 +104,9 @@ class Foo {
             while (!oneDone) {
                 lock.wait();
             }
-            printSecond.run();
+        }
+        printSecond.run();
+        synchronized (lock) {
             twoDone = true;
             lock.notifyAll();
         }
@@ -119,7 +116,7 @@ class Foo {
             while (!twoDone) {
                 lock.wait();
             }
-            printThird.run();
         }
+        printThird.run();
     }
 }
