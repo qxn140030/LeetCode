@@ -41,34 +41,27 @@ it is impossible to construct s by repeating substrings whose length is not a di
 Time complexity: O(n * sqrt(n)), a number n can have a maximum of 2 * sqrt(n) number of divisors.
 Space complexity: O(n)
 
-class Solution {
-    public boolean repeatedSubstringPattern(String s) {
-        int n = s.length();
-        for (int i = 1; i <= n / 2; i++) {
-            if (n % i == 0) {
-                StringBuilder pattern = new StringBuilder();
-                for (int j = 0; j < n / i; j++) {               // concatenate the prefix n / i times to generate another string.
-                    pattern.append(s.substring(0, i));
-                }
-                if (s.equals(pattern.toString())) {
-                    return true;
-                }
+public boolean repeatedSubstringPattern(String s) {
+    int n = s.length();
+    for (int i = 1; i <= n / 2; i++) {
+        if (n % i == 0) {
+            StringBuilder pattern = new StringBuilder();
+            for (int j = 0; j < n / i; j++) {               // concatenate the prefix n / i times to generate another string.
+                pattern.append(s.substring(0, i));
+            }
+            if (s.equals(pattern.toString())) {
+                return true;
             }
         }
-        return false;
     }
+    return false;
 }
 
 Approach 3: String Concatenation (very advanced approach)
 Time complexity: O(n)
 Space complexity: O(n)
 
-class Solution {
-    public boolean repeatedSubstringPattern(String s) {
-        String t = s + s;
-        if (t.substring(1, t.length() - 1).contains(s)) {
-            return true;
-        }
-        return false;
-    }
+public boolean repeatedSubstringPattern(String s) {
+    String t = s + s;
+    return t.substring(1, t.length() - 1).contains(s);
 }
