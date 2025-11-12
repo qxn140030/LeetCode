@@ -36,8 +36,8 @@ class SnapshotArray {
     public int snap() {
         return snapId++;
     }
-    public int get(int index, int snapId) {
-        return history[index].floorEntry(snapId).getValue();
+    public int get(int index, int snap_id) {
+        return history[index].floorEntry(snap_id).getValue();
     }
 }
 /**
