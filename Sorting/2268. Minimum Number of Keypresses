@@ -45,23 +45,21 @@ Approach 1: Sorting
 Time complexity: O(n)
 Space complexity: O(1)
 
-class Solution {
-    public int minimumKeypresses(String s) {
-        int[] arr = new int[26];
-        for (char c : s.toCharArray()) {
-            arr[c - 'a']++;
-        }
-        Arrays.sort(arr);
-        int cnt = 0;
-        for (int i = 25; i > 16; i--) {
-            cnt += arr[i];
-        }
-        for (int i = 16; i > 7; i--) {
-            cnt += 2 * arr[i];
-        }
-        for (int i = 7; i >= 0; i--) {
-            cnt += 3 * arr[i];
-        }
-        return cnt;
+public int minimumKeypresses(String s) {
+    int[] arr = new int[26];
+    for (char c : s.toCharArray()) {
+        arr[c - 'a']++;
     }
+    Arrays.sort(arr);
+    int cnt = 0;
+    for (int i = 25; i > 16; i--) {
+        cnt += arr[i];
+    }
+    for (int i = 16; i > 7; i--) {
+        cnt += 2 * arr[i];
+    }
+    for (int i = 7; i >= 0; i--) {
+        cnt += 3 * arr[i];
+    }
+    return cnt;
 }
