@@ -63,35 +63,33 @@ Approach 2: Dijkstra
 Time complexity: O(V + E * K * log(E * K))
 Space complexity: O(V + E * K)
 
-class Solution {
-    public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
-        Map<Integer, List<int[]>> adj = new HashMap<>();
-        for (int[] f : flights) {
-            adj.putIfAbsent(f[0], new ArrayList<>());
-            adj.get(f[0]).add(new int[]{f[1], f[2]});
-        }
-        int[] stops = new int[n];
-        Arrays.fill(stops, Integer.MAX_VALUE);
-        PriorityQueue<int[]> q = new PriorityQueue<>((a, b) -> a[0] - b[0]);
-        q.offer(new int[]{0, src, 0});
-        while (!q.isEmpty()) {
-            int size = q.size();
-            for (int i = 0; i < size; i++) {
-                int[] cur = q.poll();
-                int dist = cur[0], city = cur[1], steps = cur[2];
-                if (steps <= stops[city] && steps <= k + 1) {
-                    stops[city] = steps;
-                    if (city == dst) {
-                        return dist;
-                    }
-                    if (adj.containsKey(city)) {
-                        for (int[] e : adj.get(city)) {
-                            q.offer(new int[]{dist + e[1], e[0], steps + 1});
-                        }
-                    }  
+public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
+    Map<Integer, List<int[]>> adj = new HashMap<>();
+    for (int[] f : flights) {
+        adj.putIfAbsent(f[0], new ArrayList<>());
+        adj.get(f[0]).add(new int[]{f[1], f[2]});
+    }
+    int[] stops = new int[n];
+    Arrays.fill(stops, Integer.MAX_VALUE);
+    PriorityQueue<int[]> q = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+    q.offer(new int[]{0, src, 0});
+    while (!q.isEmpty()) {
+        int size = q.size();
+        for (int i = 0; i < size; i++) {
+            int[] cur = q.poll();
+            int dist = cur[0], city = cur[1], steps = cur[2];
+            if (steps <= stops[city] && steps <= k + 1) {
+                stops[city] = steps;
+                if (city == dst) {
+                    return dist;
                 }
+                if (adj.containsKey(city)) {
+                    for (int[] e : adj.get(city)) {
+                        q.offer(new int[]{dist + e[1], e[0], steps + 1});
+                    }
+                }  
             }
         }
-        return -1;
     }
+    return -1;
 }
