@@ -41,9 +41,7 @@ public int jump(int[] nums) {
     while (furthest < nums.length - 1) {
         steps++;
         for (int i = start; i <= end; i++) {
-            if (nums[i] + i > furthest) {
-                furthest = nums[i] + i;
-            }
+            furthest = Math.max(furthest, nums[i] + i);
         }
         start = end + 1;
         end = furthest;
