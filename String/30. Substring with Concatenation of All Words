@@ -59,8 +59,7 @@ Space complexity: O(w), where w is the number of words
 
 public List<Integer> findSubstring(String s, String[] words) {
     List<Integer> res = new ArrayList<>();
-    int n = s.length(), wordCount = words.length;
-    int wordLen = words[0].length();
+    int n = s.length(), wordCount = words.length, wordLen = words[0].length();
     int windowLen = wordLen * wordCount;
     Map<String, Integer> target = new HashMap<>();
     for (String w : words) {
