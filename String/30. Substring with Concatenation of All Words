@@ -13,11 +13,6 @@ Time complexity: O(n * a * b - (a * b)^2)
 n is the length of s, a is the length of words, b is the length of each word.
 Space complexity: O(a + b)
 
-
-
-
-
-
 public class Solution {
     public List<Integer> findSubstring(String s, String[] words) {
         List<Integer> rst = new ArrayList<>();
@@ -59,32 +54,46 @@ public class Solution {
 }
 
 Approach 2: Sliding Window
+Time complexity: O(n * L), where n is the length of the string, L is the length of each word
+Space complexity: O(w), where w is the number of words
 
-// wrong!
-public class Solution {
-    public List<Integer> findSubstring(String s, String[] words) {
-        List<Integer> rst = new ArrayList<Integer>();
-        int size = 1;
-        for (String word : words) {
-            s = s.replaceAll(word, "" + size);
-            size++;
-        }
-        size--;
-        for (int i = 0; i < s.length() - size; i++) {
-            String str = s.substring(i, i + size);
-            List<Character> list = new ArrayList<>();
-            for (char c : str.toCharArray()) {
-                if (list.contains(c)) {
-                    break;
-                }
-                if (c > '0' && c <= '9') {
-                    list.add(c);
-                }
-            }
-            if (list.size() == size) {
-                rst.add(i);
-            }
-        }
-        return rst;
+public List<Integer> findSubstring(String s, String[] words) {
+    List<Integer> res = new ArrayList<>();
+    int n = s.length(), wordCount = words.length;
+    int wordLen = words[0].length();
+    int windowLen = wordLen * wordCount;
+    Map<String, Integer> target = new HashMap<>();
+    for (String w : words) {
+        target.put(w, target.getOrDefault(w, 0) + 1);
     }
+    for (int offset = 0; offset < wordLen; offset++) {
+        int left = offset, right = offset, matchedWords = 0;
+        Map<String, Integer> window = new HashMap<>();
+        while (right + wordLen <= n) {
+            String w = s.substring(right, right + wordLen);    // Take the next word on the right
+            right += wordLen;
+            if (target.containsKey(w)) {           // If it's part of our target words
+                window.put(w, window.getOrDefault(w, 0) + 1);
+                matchedWords++;
+                while (window.get(w) > target.get(w)) {    // If we have too many of this word, shrink from the left
+                    String leftWord = s.substring(left, left + wordLen);
+                    window.put(leftWord, window.get(leftWord) - 1);
+                    left += wordLen;
+                    matchedWords--;
+                }
+                if (matchedWords == wordCount) {    // If we matched exactly wordCount words, record the start
+                    res.add(left);
+                    String leftWord = s.substring(left, left + wordLen);   // Move left forward to look for next window
+                    window.put(leftWord, window.get(leftWord) - 1);
+                    left += wordLen;
+                    matchedWords--;
+                }
+            } else {           // Word not in target: reset window
+                window.clear();
+                matchedWords = 0;
+                left = right;
+            }
+        }
+    }
+    return res;
 }
