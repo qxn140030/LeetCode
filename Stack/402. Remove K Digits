@@ -36,6 +36,31 @@ public String removeKdigits(String num, int k) {
 }
 
 Approach 2: Greedy with Stack
-Time complexity: O()
-Space complexity: O()
+Time complexity: O(n)
+Space complexity: O(n)
 
+public String removeKdigits(String num, int k) {
+    Deque<Character> stack = new ArrayDeque<>();
+    for (char digit : num.toCharArray()) {
+        while (!stack.isEmpty() && k > 0 && stack.peekLast() > digit) {
+            stack.removeLast();
+            k--;
+        }
+        stack.addLast(digit);
+    }   
+    /* remove the remaining digits from the tail. */
+    for (int i = 0; i < k; i++) {
+        stack.removeLast();
+    }    
+    // build the final string, while removing the leading zeros.
+    StringBuilder sb = new StringBuilder();
+    boolean leadingZero = true;
+    for (char digit: stack) {
+        if (leadingZero && digit == '0') {
+            continue;
+        }
+        leadingZero = false;
+        sb.append(digit);
+    }   
+    return sb.length() > 0 ? sb.toString() : "0";
+}
