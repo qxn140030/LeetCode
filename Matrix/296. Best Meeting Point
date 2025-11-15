@@ -1,8 +1,7 @@
 Given an m x n binary grid grid where each 1 marks the home of one friend, return the minimal total travel distance.
-
 The total travel distance is the sum of the distances between the houses of the friends and the meeting point.
-
 The distance is calculated using Manhattan Distance, where distance(p1, p2) = |p2.x - p1.x| + |p2.y - p1.y|.
+
 Example 1:
 Input: grid = [[1,0,0,0,1],[0,0,0,0,0],[0,0,1,0,0]]
 Output: 6
@@ -23,7 +22,7 @@ Space Complexity: O(m + n)
 public int minTotalDistance(int[][] grid) {
     List<Integer> rows = collectRows(grid), cols = collectCols(grid);
     int row = rows.get(rows.size() / 2), col = cols.get(cols.size() / 2);     // Find the median row and column — best meeting point in 1D
-    return minDistance1D(rows, row) + minDistance1D(cols, col);
+    return minDistance1D(rows, row) + minDistance1D(cols, col);               // Manhattan distance is minimized at any median for 1D
 }
 int minDistance1D(List<Integer> points, int origin) {
     int distance = 0;
