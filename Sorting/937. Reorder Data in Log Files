@@ -1,0 +1,53 @@
+You are given an array of logs. Each log is a space-delimited string of words, where the first word is the identifier.
+
+There are two types of logs:
+
+Letter-logs: All words (except the identifier) consist of lowercase English letters.
+Digit-logs: All words (except the identifier) consist of digits.
+Reorder these logs so that:
+
+The letter-logs come before all digit-logs.
+The letter-logs are sorted lexicographically by their contents. If their contents are the same, then sort them lexicographically by their identifiers.
+The digit-logs maintain their relative ordering.
+Return the final order of the logs.
+
+Example 1:
+Input: logs = ["dig1 8 1 5 1","let1 art can","dig2 3 6","let2 own kit dig","let3 art zero"]
+Output: ["let1 art can","let3 art zero","let2 own kit dig","dig1 8 1 5 1","dig2 3 6"]
+Explanation:
+The letter-log contents are all different, so their ordering is "art can", "art zero", "own kit dig".
+The digit-logs have a relative order of "dig1 8 1 5 1", "dig2 3 6".
+
+Example 2:
+Input: logs = ["a1 9 2 3 1","g1 act car","zo4 4 7","ab1 off key dog","a8 act zoo"]
+Output: ["g1 act car","a8 act zoo","ab1 off key dog","a1 9 2 3 1","zo4 4 7"]
+
+
+public String[] reorderLogFiles(String[] logs) {
+    List<String> letterLogs = new ArrayList<>(), digitLogs = new ArrayList<>();
+    for (String log : logs) {
+        int firstSpace = log.indexOf(' ');
+        char firstCharAfterId = log.charAt(firstSpace + 1);
+        if (Character.isDigit(firstCharAfterId)) {
+            digitLogs.add(log);
+        } else {
+            letterLogs.add(log);
+        }
+    }
+    Collections.sort(letterLogs, (a, b) -> {
+        int idxA = a.indexOf(' '), idxB = b.indexOf(' ');
+        String idA = a.substring(0, idxA), idB = b.substring(0, idxB);
+        String contentA = a.substring(idxA + 1), contentB = b.substring(idxB + 1);
+        int cmp = contentA.compareTo(contentB);
+        return cmp != 0 ? cmp : idA.compareTo(idB);
+    });
+    String[] res = new String[logs.length];
+    int i = 0;
+    for (String log : letterLogs) {
+        res[i++] = log;
+    }
+    for (String log : digitLogs) {
+        res[i++] = log;
+    }
+    return res;
+}
