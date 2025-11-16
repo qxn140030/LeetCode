@@ -55,13 +55,13 @@ class TextEditor {
     }
     public void addText(String text) {
         for (char c : text.toCharArray()) {
-            left.addLast(c);   // insert at cursor = push to left side
+            left.addLast(c);                  // insert at cursor = push to left side
         }
     }
     public int deleteText(int k) {
         int deleted = 0;
         while (k > 0 && !left.isEmpty()) {
-            left.removeLast(); // delete from left of cursor
+            left.removeLast();               // delete from left of cursor
             k--;
             deleted++;
         }
@@ -69,7 +69,6 @@ class TextEditor {
     }
     public String cursorLeft(int k) {
         while (k > 0 && !left.isEmpty()) {
-            // move one char from left side to the front of right side
             right.addFirst(left.removeLast());
             k--;
         }
@@ -77,7 +76,6 @@ class TextEditor {
     }
     public String cursorRight(int k) {
         while (k > 0 && !right.isEmpty()) {
-            // move one char from right side to the end of left side
             left.addLast(right.removeFirst());
             k--;
         }
@@ -85,15 +83,13 @@ class TextEditor {
     }
     String getLast10() {
         StringBuilder sb = new StringBuilder();
-        // iterate from the end of 'left' backwards
-        Iterator<Character> it = left.descendingIterator();
+        Iterator<Character> it = left.descendingIterator();     // iterate from the end of 'left' backwards
         int count = 0;
         while (it.hasNext() && count < 10) {
             sb.append(it.next());
             count++;
         }
-        // we traversed backwards, so reverse to restore correct order
-        return sb.reverse().toString();
+        return sb.reverse().toString();          // we traversed backwards, so reverse to restore correct order
     }
 }
 /**
