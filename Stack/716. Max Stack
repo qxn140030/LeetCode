@@ -127,47 +127,49 @@ Time Complexity: O(log⁡n)
 Space Complexity: O(n)
 
 class MaxStack {
-    private Stack<int[]> stack;
-    private PriorityQueue<int[]> heap;
-    private Set<Integer> removed;      // To memorize all IDs of deleted elements.
-    private int cnt;
+    Deque<int[]> stack;
+    PriorityQueue<int[]> heap;
+    Set<Integer> removed;      // To memorize all IDs of deleted elements.
+    int cnt;
     public MaxStack() {
-        stack = new Stack<>();
+        stack = new ArrayDeque<>();
         heap = new PriorityQueue<>((a, b) -> a[0] == b[0] ? b[1] - a[1] : b[0] - a[0]);
         removed = new HashSet<>();
         cnt = 0;
-    } 
+    }
     public void push(int x) {
-        stack.push(new int[] { x, cnt });
-        heap.add(new int[] { x, cnt });
-        cnt++;
-    }   
+        int[] node = new int[] { x, ++cnt };
+        stack.push(node);
+        heap.add(node);
+    }
     public int pop() {
-        while (removed.contains(stack.peek()[1])) {
-            stack.pop();
-        }
+        pruneStack();
         int[] top = stack.pop();
         removed.add(top[1]);
         return top[0];
-    } 
+    }
     public int top() {
-        while (removed.contains(stack.peek()[1])) {
-            stack.pop();
-        }
+        pruneStack();
         return stack.peek()[0];
-    }  
+    }
     public int peekMax() {
-        while (removed.contains(heap.peek()[1])) {
-            heap.poll();
-        }
+        pruneHeap();
         return heap.peek()[0];
     }
     public int popMax() {
-        while (removed.contains(heap.peek()[1])) {
-            heap.poll();
-        }
+        pruneHeap();
         int[] top = heap.poll();
         removed.add(top[1]);
         return top[0];
+    }
+    void pruneStack() {
+        while (!stack.isEmpty() && removed.contains(stack.peek()[1])) {
+            stack.pop();
+        }
+    }
+    void pruneHeap() {
+        while (!heap.isEmpty() && removed.contains(heap.peek()[1])) {
+            heap.poll();
+        }
     }
 }
