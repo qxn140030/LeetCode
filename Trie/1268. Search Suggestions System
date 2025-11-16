@@ -18,6 +18,21 @@ Approach 1: Trie + DFS
 Time complexity: O(m) to build the trie where m is total number of characters in products.
 Space complexity: O(n), where n is the number of nodes in the trie.
 
+class Solution {
+    public List<List<String>> suggestedProducts(String[] products, String searchWord) {
+        Trie trie = new Trie();
+        for (String p : products) {
+            trie.insert(p);
+        }
+        List<List<String>> rst = new ArrayList<>();
+        String prefix = "";
+        for (char c : searchWord.toCharArray()) {
+            prefix += c;
+            rst.add(trie.getWordsStartingWith(prefix));
+        }
+        return rst;
+    }
+}
 class Trie {
     class Node {
         Node[] children;
@@ -65,21 +80,6 @@ class Trie {
             curr = curr.children[c - 'a'];
         }
         curr.isWord = true;
-    }
-}
-class Solution {
-    public List<List<String>> suggestedProducts(String[] products, String searchWord) {
-        Trie trie = new Trie();
-        List<List<String>> rst = new ArrayList<>();
-        for (String p : products) {
-            trie.insert(p);
-        }
-        String prefix = "";
-        for (char c : searchWord.toCharArray()) {
-            prefix += c;
-            rst.add(trie.getWordsStartingWith(prefix));
-        }
-        return rst;
     }
 }
 
