@@ -24,8 +24,8 @@ public String alienOrder(String[] words) {
     Map<Character, Integer> indegree = new HashMap<>();            // count of incoming edges for each character
     for (String word : words) {  
         for (char c : word.toCharArray()) {                        // Step 0: Create data structures and find all unique letters.
-            indegree.put(c, 0);
-            adjList.put(c, new ArrayList<>());
+            indegree.putIfAbsent(c, 0);
+            adjList.putIfAbsent(c, new ArrayList<>());
         }
     } 
     for (int i = 0; i < words.length - 1; i++) { 
