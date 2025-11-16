@@ -64,31 +64,30 @@ Time complexity: O(V + E * K * log(E * K))
 Space complexity: O(V + E * K)
 
 public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
-    Map<Integer, List<int[]>> adj = new HashMap<>();
+    List<int[]>[] adj = new ArrayList[n];
+    for (int i = 0; i < n; i++) {
+        adj[i] = new ArrayList<>();
+    }
     for (int[] f : flights) {
-        adj.putIfAbsent(f[0], new ArrayList<>());
-        adj.get(f[0]).add(new int[]{f[1], f[2]});
+        adj[f[0]].add(new int[]{f[1], f[2]});
     }
     int[] stops = new int[n];
     Arrays.fill(stops, Integer.MAX_VALUE);
-    PriorityQueue<int[]> q = new PriorityQueue<>((a, b) -> a[0] - b[0]);
-    q.offer(new int[]{0, src, 0});
-    while (!q.isEmpty()) {
-        int size = q.size();
-        for (int i = 0; i < size; i++) {
-            int[] cur = q.poll();
-            int dist = cur[0], city = cur[1], steps = cur[2];
-            if (steps <= stops[city] && steps <= k + 1) {
-                stops[city] = steps;
-                if (city == dst) {
-                    return dist;
-                }
-                if (adj.containsKey(city)) {
-                    for (int[] e : adj.get(city)) {
-                        q.offer(new int[]{dist + e[1], e[0], steps + 1});
-                    }
-                }  
-            }
+    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(a[0], b[0]));
+    pq.offer(new int[]{0, src, 0});
+    while (!pq.isEmpty()) {
+        int[] cur = pq.poll();
+        int cost = cur[0], city = cur[1], steps = cur[2];
+        if (steps > stops[city] || steps > k + 1) {
+            continue;
+        }
+        stops[city] = steps;
+        if (city == dst) {
+            return cost;
+        }
+        for (int[] e : adj[city]) {
+            int next = e[0], price = e[1];
+            pq.offer(new int[]{cost + price, next, steps + 1});
         }
     }
     return -1;
