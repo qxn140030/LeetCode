@@ -1,7 +1,8 @@
-You are given an integer n, which indicates that there are n courses labeled from 1 to n. You are also given a 2D integer array relations where relations[j] = [prevCoursej, nextCoursej] denotes that course prevCoursej has to be completed before course nextCoursej (prerequisite relationship). Furthermore, you are given a 0-indexed integer array time where time[i] denotes how many months it takes to complete the (i+1)th course.
+You are given an integer n, which indicates that there are n courses labeled from 1 to n. 
+You are also given a 2D integer array relations where relations[j] = [prevCoursej, nextCoursej] denotes that course prevCoursej has to be completed before course nextCoursej (prerequisite relationship). 
+Furthermore, you are given a 0-indexed integer array time where time[i] denotes how many months it takes to complete the (i+1)th course.
 
 You must find the minimum number of months needed to complete all the courses following these rules:
-
 You may start taking a course at any time if the prerequisites are met.
 Any number of courses can be taken at the same time.
 Return the minimum number of months needed to complete all the courses.
@@ -31,14 +32,14 @@ Time complexity: O(n + e), where e is the length of relations
 Space complexity: O(n + e)
 
 public int minimumTime(int n, int[][] relations, int[] time) {
-    Map<Integer, List<Integer>> graph = new HashMap<>();
+    List<Integer>[] graph = new ArrayList[n];
     for (int i = 0; i < n; i++) {
-        graph.put(i, new ArrayList<>());
+        graph[i] = new ArrayList<>();
     }
     int[] indegree = new int[n];
-    for (int[] edge: relations) {
+    for (int[] edge : relations) {
         int x = edge[0] - 1, y = edge[1] - 1;
-        graph.get(x).add(y);
+        graph[x].add(y);
         indegree[y]++;
     }
     Queue<Integer> queue = new LinkedList<>();
@@ -50,18 +51,17 @@ public int minimumTime(int n, int[][] relations, int[] time) {
         }
     }
     while (!queue.isEmpty()) {
-        int node = queue.remove();
-        for (int neighbor: graph.get(node)) {
+        int node = queue.poll();
+        for (int neighbor : graph[node]) {
             maxTime[neighbor] = Math.max(maxTime[neighbor], maxTime[node] + time[neighbor]);
-            indegree[neighbor]--;
-            if (indegree[neighbor] == 0) {
-                queue.add(neighbor);
+            if (--indegree[neighbor] == 0) {
+                queue.offer(neighbor);
             }
         }
     }
     int ans = 0;
-    for (int node = 0; node < n; node++) {
-        ans = Math.max(ans, maxTime[node]);
+    for (int val : maxTime) {
+        ans = Math.max(ans, val);
     }
     return ans;
 }
