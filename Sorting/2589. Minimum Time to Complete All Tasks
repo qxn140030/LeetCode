@@ -22,9 +22,9 @@ Explanation:
 - The third task can be run in the two inclusive time range [5, 6].
 The computer will be on for a total of 4 seconds.
 
-public int findMinimumTime(int[][] tasks) {
-    Arrays.sort(tasks, (a, b) -> (a[1] == b[1]) ? a[0] - b[0] : a[1] - b[1]);
-    Set<Integer> used = new HashSet<>();
+public int findMinimumTime(int[][] tasks) {                                     // Sort tasks by end time (if same end, earlier start first)
+    Arrays.sort(tasks, (a, b) -> (a[1] == b[1]) ? a[0] - b[0] : a[1] - b[1]);   // This ensures we always schedule earlier deadlines first
+    Set<Integer> used = new HashSet<>();                                        // A set of all time points already used
     int answer = 0;
     for (int[] task : tasks) {
         int start = task[0], end = task[1], duration = task[2]; 
