@@ -36,7 +36,7 @@ public int shortestPath(int[][] grid, int k) {
             if (obs < 0 || visit[row][col][obs]) {
                 continue;
             }
-            if (row == m - 1 && col == n - 1 && obs >= 0) {
+            if (row == m - 1 && col == n - 1) {
                 return step;
             }
             visit[row][col][obs] = true;
