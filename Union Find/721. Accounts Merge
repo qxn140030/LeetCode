@@ -81,36 +81,37 @@ Space complexity: O(nk)
 
 class Solution {
     public List<List<String>> accountsMerge(List<List<String>> accounts) {
-        int accountSize = accounts.size();
-        DSU dsu = new DSU(accountSize);
-        Map<String, Integer> groups = new HashMap<>();
-        for (int i = 0 ; i < accountSize; i++) {
-            for (int j = 1; j < accounts.get(i).size(); j++) {
-                String email = accounts.get(i).get(j);
-                if (!groups.containsKey(email)) {
-                    groups.put(email, i);                    // Maps email to their component index.
+        int n = accounts.size();
+        DSU dsu = new DSU(n);
+        Map<String, Integer> emailToAccount = new HashMap<>();
+        for (int i = 0; i < n; i++) {                         // 1) Union accounts that share an email
+            List<String> acc = accounts.get(i);
+            for (int j = 1; j < acc.size(); j++) {
+                String email = acc.get(j);
+                if (!emailToAccount.containsKey(email)) {
+                    emailToAccount.put(email, i);                    // Maps email to their component index.
                 } else {
-                    dsu.union(i, groups.get(email));
+                    dsu.union(i, emailToAccount.get(email));
                 }
             }
         }
-        Map<Integer, List<String>> comp = new HashMap<>();
-        for (String email : groups.keySet()) {
-            int group = groups.get(email);
-            int groupParent = dsu.find(group);
-            if (!comp.containsKey(groupParent)) {
-                comp.put(groupParent, new ArrayList<>());
-            }
-            comp.get(groupParent).add(email);
+        Map<Integer, List<String>> rootToEmails = new HashMap<>();       // 2) Group emails by DSU root (representative account index)
+        for (Map.Entry<String, Integer> e : emailToAccount.entrySet()) {
+            String email = e.getKey();
+            int accIdx = e.getValue();
+            int root = dsu.find(accIdx);
+            rootToEmails.computeIfAbsent(root, k -> new ArrayList<>()).add(email);
         }
-        List<List<String>> rst = new ArrayList<>();
-        for (int group : comp.keySet()) {
-            List<String> component = comp.get(group);
-            Collections.sort(component);
-            component.add(0, accounts.get(group).get(0));     // Add account name.
-            rst.add(component);
+        List<List<String>> res = new ArrayList<>();
+        for (Map.Entry<Integer, List<String>> entry : rootToEmails.entrySet()) {
+            int root = entry.getKey();
+            List<String> emails = entry.getValue();
+            Collections.sort(emails);
+            String name = accounts.get(root).get(0);
+            emails.add(0, name);
+            res.add(emails);
         }
-        return rst;
+        return res;
     }
 }
 class DSU {
