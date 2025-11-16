@@ -48,19 +48,17 @@ public String removeKdigits(String num, int k) {
         }
         stack.addLast(digit);
     }   
-    /* remove the remaining digits from the tail. */
-    for (int i = 0; i < k; i++) {
+    for (int i = 0; i < k; i++) {       // remove the remaining digits from the tail
         stack.removeLast();
     }    
-    // build the final string, while removing the leading zeros.
     StringBuilder sb = new StringBuilder();
-    boolean leadingZero = true;
-    for (char digit: stack) {
-        if (leadingZero && digit == '0') {
-            continue;
-        }
-        leadingZero = false;
+    for (char digit : stack) {
         sb.append(digit);
     }   
-    return sb.length() > 0 ? sb.toString() : "0";
+    int idx = 0;
+    while (idx < sb.length() && sb.charAt(idx) == '0') {
+        idx++;
+    }
+    String res = sb.substring(idx);
+    return res.isEmpty() ? "0" : res;
 }
