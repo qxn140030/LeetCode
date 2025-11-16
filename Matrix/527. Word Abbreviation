@@ -17,38 +17,46 @@ Input: words = ["aa","aaa"]
 Output: ["aa","aaa"]
 
 Appraoch 1: Group + Trie
-Time / Space Complexity: O(C), where C is the number of characters across all words in the given array.
+Time complexity: O(C), where C is the number of characters across all words in the given array.
+Space complexity: O(C)
 
 class Solution {
     public List<String> wordsAbbreviation(List<String> words) {
+        int n = words.size();
         Map<String, List<IndexedWord>> groups = new HashMap();
-        String[] ans = new String[words.size()];
-        int index = 0;
-        for (String word: words) {
-            String ab = abbrev(word, 0);
-            groups.computeIfAbsent(ab, k -> new ArrayList<>()).add(new IndexedWord(word, index));
-            index++;
+        for (int i = 0; i < n; i++) {                               // Group words that get the same abbreviation
+            String w = words.get(i);
+            String ab = abbrev(w, 0); 
+            groups.computeIfAbsent(ab, k -> new ArrayList<>()).add(new IndexedWord(w, i));
         }
-        for (List<IndexedWord> group : groups.values()) {
-            TrieNode trie = new TrieNode();
+        String[] ans = new String[n];
+        for (Map.Entry<String, List<IndexedWord>> entry : groups.entrySet()) {
+            List<IndexedWord> group = entry.getValue();
+            if (group.size() == 1) {
+                IndexedWord iw = group.get(0);
+                ans[iw.index] = entry.getKey();
+                continue;
+            }
+            TrieNode root = new TrieNode();
             for (IndexedWord iw : group) {
-                TrieNode cur = trie;
-                for (char letter : iw.word.substring(1).toCharArray()) {
-                    if (cur.children[letter - 'a'] == null) {
-                        cur.children[letter - 'a'] = new TrieNode();
+                TrieNode cur = root;
+                for (char c : iw.word.substring(1).toCharArray()) {
+                    int idx = c - 'a';
+                    if (cur.children[idx] == null) {
+                        cur.children[idx] = new TrieNode();
                     }
                     cur.count++;
-                    cur = cur.children[letter - 'a'];
+                    cur = cur.children[idx];
                 }
             }
             for (IndexedWord iw : group) {
-                TrieNode cur = trie;
+                TrieNode cur = root;
                 int i = 1;
-                for (char letter : iw.word.substring(1).toCharArray()) {
+                for (char c : iw.word.substring(1).toCharArray()) {
                     if (cur.count == 1) {
                         break;
                     }
-                    cur = cur.children[letter - 'a'];
+                    cur = cur.children[c - 'a'];
                     i++;
                 }
                 ans[iw.index] = abbrev(iw.word, i - 1);
@@ -66,12 +74,12 @@ class Solution {
 }
 class TrieNode {
     TrieNode[] children;
-    int count;
+    int count;    // to count shared prefixes
     TrieNode() {
         children = new TrieNode[26];
     }
 }
-class IndexedWord {
+class IndexedWord {   // pairs original word with its index
     String word;
     int index;
     IndexedWord(String w, int i) {
