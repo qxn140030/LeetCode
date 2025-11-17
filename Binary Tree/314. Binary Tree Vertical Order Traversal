@@ -75,10 +75,7 @@ public List<List<Integer>> verticalOrder(TreeNode root) {
      while (!q.isEmpty()) {
          root = q.poll();
          int col = column.poll();
-         if (!map.containsKey(col)) {
-             map.put(col, new ArrayList<>());
-         }
-         map.get(col).add(root.val);
+         map.computeIfAbsent(col, k -> new ArrayList<>()).add(root.val);
          minCol = Math.min(minCol, col);
          maxCol = Math.max(maxCol, col);
          if (root.left != null) {
