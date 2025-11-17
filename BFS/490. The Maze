@@ -59,33 +59,31 @@ Approach 2: BFS
 Time complexity: O(m * n * (m + n))
 Space complexity: O(m * n)
 
-class Solution {
-    public boolean hasPath(int[][] maze, int[] start, int[] destination) {
-        int m = maze.length, n = maze[0].length;
-        boolean[][] visit = new boolean[m][n];
-        int[][] dir = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-        Queue<int[]> queue = new LinkedList<>();
-        queue.offer(start);
-        visit[start[0]][start[1]] = true;
-        while (!queue.isEmpty()) {
-            int[] curr = queue.poll();
-            if (curr[0] == destination[0] && curr[1] == destination[1]) {
-                return true;
+public boolean hasPath(int[][] maze, int[] start, int[] destination) {
+    int m = maze.length, n = maze[0].length;
+    boolean[][] visit = new boolean[m][n];
+    int[][] dir = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+    Queue<int[]> queue = new LinkedList<>();
+    queue.offer(start);
+    visit[start[0]][start[1]] = true;
+    while (!queue.isEmpty()) {
+        int[] curr = queue.poll();
+        if (curr[0] == destination[0] && curr[1] == destination[1]) {
+            return true;
+        }
+        for (int[] d : dir) {
+            int r = curr[0], c = curr[1];
+            while (r >= 0 && r < m && c >= 0 && c < n && maze[r][c] == 0) {
+                r += dir[0];
+                c += dir[1];
             }
-            for (int[] d : dir) {
-                int r = curr[0], c = curr[1];
-                while (r >= 0 && r < m && c >= 0 && c < n && maze[r][c] == 0) {
-                    r += dir[0];
-                    c += dir[1];
-                }
-                r -= dir[0];
-                c -= dir[1];
-                if (!visit[r][c]) {
-                    queue.offer(new int[]{r, c});
-                    visit[r][c] = true;
-                }
+            r -= dir[0];
+            c -= dir[1];
+            if (!visit[r][c]) {
+                queue.offer(new int[]{r, c});
+                visit[r][c] = true;
             }
         }
-        return false;
     }
+    return false;
 }
