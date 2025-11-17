@@ -38,21 +38,21 @@ int dfs(int x, int target) {
         return memo.get(target);
     }
     int ans = 0;
-    if (x > target) {
+    if (x > target) {           
         ans = Math.min(2 * target - 1, 2 * (x - target));
-    } else if (x < target) {
-        long power = x;
+    } else if (x < target) {          
+        long power = x;            // current power value (x^1)
         int mulCount = 0;
         while (power < target) {
             power *= x;
             mulCount++;
         }
         if (power == target) {
-            ans = mulCount + 0; 
+            ans = mulCount; 
         } else {
-            int useSmallerPower = dfs(x, target - (int)(power / x)) + mulCount;
+            int useSmallerPower = dfs(x, target - (int)(power / x)) + mulCount;   // LOWER POWER CASE
             ans = useSmallerPower;
-            if (power < 2L * target) {
+            if (power < 2L * target) {             // HIGHER POWER CASE (only makes sense if power < 2 * target) power - target < target
                 int useLargerPower = dfs(x, (int)(power - target)) + mulCount + 1;
                 ans = Math.min(ans, useLargerPower);
             }
