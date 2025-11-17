@@ -13,7 +13,7 @@ Example 2:
 Input: nums = [1,5]
 Output: 10
 
-public int maxCoins(int[] nums) {
+public int maxCoins(int[] nums) {         // think which balloon to burst LAST in an interval
     int n = nums.length;
     int[] points = new int[n + 2];
     points[0] = 1;
@@ -21,7 +21,7 @@ public int maxCoins(int[] nums) {
     for (int i = 1; i <= n; i++) {
         points[i] = nums[i - 1];
     }
-    int[][] dp = new int[n + 2][n + 2];
+    int[][] dp = new int[n + 2][n + 2];    // dp[i][j]: max coins you can get from bursting ALL balloons in the open interval (i, j)
     for (int i = n; i >= 0; i--) {
         for (int j = i + 1; j < n + 2; j++) {
             for (int k = i + 1; k < j; k++) {
@@ -29,5 +29,5 @@ public int maxCoins(int[] nums) {
             }
         }
     }
-    return dp[0][n + 1];
+    return dp[0][n + 1];      // dp[0][n + 1]: answer for the entire array
 }
