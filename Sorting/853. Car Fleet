@@ -29,18 +29,18 @@ Then, the fleet at 4 (speed 2) and the car at position 5 (speed 1) become one fl
 
 public int carFleet(int target, int[] position, int[] speed) {
     int n = position.length;
-    double[][] cars = new double[n][2];
+    double[][] cars = new double[n][2];         // cars[i]: {position, timeToTarget}
     for (int i = 0; i < n; i++) {
         cars[i][0] = position[i];
         cars[i][1] = (double)(target - position[i]) / speed[i]; 
     }
-    Arrays.sort(cars, (a, b) -> Double.compare(b[0], a[0]));
+    Arrays.sort(cars, (a, b) -> Double.compare(b[0], a[0]));     // Sort cars by position in DESCENDING order  
     int fleets = 0;
     double maxTime = 0;
     for (int i = 0; i < n; i++) {
         double time = cars[i][1];
-        if (time > maxTime) {
-            fleets++;
+        if (time > maxTime) {        // If this car's time is GREATER than maxTime, it *cannot* catch up to the fleet in front
+            fleets++;                // So it becomes a NEW fleet
             maxTime = time;
         }
     }
