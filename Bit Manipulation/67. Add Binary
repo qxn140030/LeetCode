@@ -24,25 +24,23 @@ Approach 2: Bit-by-bit computation
 Time complexity: O(max(m, n)). m, n are the length of two strings. 
 Space complexity: O(max(m, n)), length of result.
 
-public class Solution {
-    public String addBinary(String a, String b) {
-        int carries = 0;
-        int i = a.length() - 1, j = b.length() - 1;
-        StringBuilder sb = new StringBuilder();
-        while (i >= 0 || j >= 0) {
-            int na = i >= 0 ? a.charAt(i) - '0' : 0;
-            int nb = j >= 0 ? b.charAt(j) - '0' : 0;
-            int sum = na + nb + carries;
-            carries = sum / 2;
-            sb.append(sum % 2);
-            i--;
-            j--;
-        }
-        if (carries > 0) {
-            sb.append(carries);
-        }
-        return sb.reverse().toString();
+public String addBinary(String a, String b) {
+    int carries = 0;
+    int i = a.length() - 1, j = b.length() - 1;
+    StringBuilder sb = new StringBuilder();
+    while (i >= 0 || j >= 0) {
+        int na = i >= 0 ? a.charAt(i) - '0' : 0;
+        int nb = j >= 0 ? b.charAt(j) - '0' : 0;
+        int sum = na + nb + carries;
+        carries = sum / 2;
+        sb.append(sum % 2);
+        i--;
+        j--;
     }
+    if (carries > 0) {
+        sb.append(carries);
+    }
+    return sb.reverse().toString();
 }
 
 Approach 3: Bit manipulation
