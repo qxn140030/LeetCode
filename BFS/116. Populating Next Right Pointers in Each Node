@@ -65,30 +65,28 @@ Approach 2: BFS (Iterative)
 Time complexity: O(n)
 Space complexity: O(n), this is a perfect binary tree which means the last level contains n/2 nodes.
 
-class Solution {
-    public Node connect(Node root) {
-        if (root == null) {
-            return root;
-        }
-        Queue<Node> queue = new LinkedList<>(); 
-        queue.add(root);
-        while (!queue.isEmpty()) { 
-            int size = queue.size();
-            for (int i = 0; i < size; i++) {  
-                Node node = queue.poll();
-                if (i < size - 1) {
-                    node.next = queue.peek();
-                }
-                if (node.left != null) {
-                    queue.add(node.left);
-                }
-                if (node.right != null) {
-                    queue.add(node.right);
-                }
-            }
-        }
+public Node connect(Node root) {
+    if (root == null) {
         return root;
     }
+    Queue<Node> queue = new LinkedList<>(); 
+    queue.add(root);
+    while (!queue.isEmpty()) { 
+        int size = queue.size();
+        for (int i = 0; i < size; i++) {  
+            Node node = queue.poll();
+            if (i < size - 1) {
+                node.next = queue.peek();
+            }
+            if (node.left != null) {
+                queue.add(node.left);
+            }
+            if (node.right != null) {
+                queue.add(node.right);
+            }
+        }
+    }
+    return root;
 }
 
 Approach 3: BFS (Using previously established next pointers) 
