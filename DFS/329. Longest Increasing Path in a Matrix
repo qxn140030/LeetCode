@@ -66,8 +66,8 @@ public int longestIncreasingPath(int[][] matrix) {
     }
     return ans;
 }
-int dfs(int[][] matrix, int i, int j, int[][] cache) {
-    if (cache[i][j] != 0) {
+int dfs(int[][] matrix, int i, int j, int[][] cache) {   // dfs(i, j): the longest increasing path length that starts at (i, j)
+    if (cache[i][j] != 0) {                              // cache[i][j]: store that exact value after the first time we compute it
         return cache[i][j];
     }
     for (int[] d : dirs) {
