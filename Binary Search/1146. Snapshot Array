@@ -37,7 +37,7 @@ class SnapshotArray {
         return snapId++;
     }
     public int get(int index, int snap_id) {
-        return history[index].floorEntry(snap_id).getValue();
+        return history[index].floorEntry(snap_id).getValue();   // floorEntry(key): returns the entry whose key is the greatest key ≤ given key
     }
 }
 /**
