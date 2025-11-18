@@ -37,8 +37,8 @@ public int findMinimumTime(int[][] tasks) {                                     
         int timeLeft = duration - usedTime;
         for (int i = end; timeLeft > 0; i--) {
             if (used.add(i)) {
-                answer++;
-                timeLeft--;
+                answer++;        // this is a new time unit consumed
+                timeLeft--;      // one less unit remaining to schedule
             }
         }
     }
