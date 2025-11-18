@@ -71,15 +71,15 @@ public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
     for (int[] f : flights) {
         adj[f[0]].add(new int[]{f[1], f[2]});
     }
-    int[] stops = new int[n];
+    int[] stops = new int[n];              // stops[city]: The minimum number of steps (flights) we have used so far to reach this city
     Arrays.fill(stops, Integer.MAX_VALUE);
     PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(a[0], b[0]));
     pq.offer(new int[]{0, src, 0});
     while (!pq.isEmpty()) {
         int[] cur = pq.poll();
         int cost = cur[0], city = cur[1], steps = cur[2];
-        if (steps > stops[city] || steps > k + 1) {
-            continue;
+        if (steps > stops[city] || steps > k + 1) {       // prune paths that reach a city using more flights than a previous attempt
+            continue;                                     // because such paths can never be cheaper (due to Dijkstra’s property)
         }
         stops[city] = steps;
         if (city == dst) {
