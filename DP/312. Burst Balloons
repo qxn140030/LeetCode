@@ -24,7 +24,7 @@ public int maxCoins(int[] nums) {         // think which balloon to burst LAST i
     int[][] dp = new int[n + 2][n + 2];    // dp[i][j]: max coins you can get from bursting ALL balloons in the open interval (i, j)
     for (int i = n; i >= 0; i--) {
         for (int j = i + 1; j < n + 2; j++) {
-            for (int k = i + 1; k < j; k++) {
+            for (int k = i + 1; k < j; k++) {     // k is the index of the last balloon to burst inside (i, j)
                 dp[i][j] = Math.max(dp[i][j], dp[i][k] + dp[k][j] + points[i] * points[j] * points[k]);
             }
         }
