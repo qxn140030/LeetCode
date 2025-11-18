@@ -42,9 +42,7 @@ boolean dfs(List<Double> nums) {
                 }
             }
             double a = nums.get(i), b = nums.get(j);
-            // All possible results from a and b
-            // We consider both orders where non-commutative (subtraction/division)
-            List<Double> candidates = new ArrayList<>();
+            List<Double> candidates = new ArrayList<>();     // All possible results from a and b
             candidates.add(a + b);
             candidates.add(a - b);
             candidates.add(b - a);
@@ -55,13 +53,12 @@ boolean dfs(List<Double> nums) {
             if (Math.abs(a) > EPS) {
                 candidates.add(b / a);
             }
-            // Try each candidate as the new number, recurse
-            for (double val : candidates) {
+            for (double val : candidates) {      // Try each candidate as the new number, recurse
                 next.add(val);
                 if (dfs(next)) {
                     return true;
                 }
-                next.remove(next.size() - 1); // backtrack
+                next.remove(next.size() - 1);    // backtrack
             }
         }
     }
