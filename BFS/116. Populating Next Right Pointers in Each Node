@@ -46,21 +46,19 @@ class Node {
     }
 };
 */
-class Solution {
-    public Node connect(Node root) {
-        if (root == null) {
-            return root;
-        }
-        if (root.left != null) {
-            root.left.next = root.right;
-        }
-        if (root.right != null && root.next != null) {
-            root.right.next = root.next.left;
-        }
-        connect(root.left);
-        connect(root.right);
+public Node connect(Node root) {
+    if (root == null) {
         return root;
     }
+    if (root.left != null) {
+        root.left.next = root.right;
+    }
+    if (root.right != null && root.next != null) {
+        root.right.next = root.next.left;
+    }
+    connect(root.left);
+    connect(root.right);
+    return root;
 }
 
 Approach 2: BFS (Iterative) 
@@ -97,23 +95,21 @@ Approach 3: BFS (Using previously established next pointers)
 Time complexity: O(n)
 Space complexity: O(1)
 
-class Solution {
-    public Node connect(Node root) {
-        if (root == null) {
-            return root;
-        }
-        Node parent = root;
-        while (parent.left != null) {
-            Node cur = parent;
-            while (cur != null) {
-                cur.left.next = cur.right;
-                if (cur.next != null) {
-                    cur.right.next = cur.next.left;
-                }
-                cur = cur.next;
-            }
-            parent = parent.left;
-        }
+public Node connect(Node root) {
+    if (root == null) {
         return root;
     }
+    Node parent = root;
+    while (parent.left != null) {
+        Node cur = parent;
+        while (cur != null) {
+            cur.left.next = cur.right;
+            if (cur.next != null) {
+                cur.right.next = cur.next.left;
+            }
+            cur = cur.next;
+        }
+        parent = parent.left;
+    }
+    return root;
 }
